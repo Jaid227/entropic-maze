@@ -178,9 +178,25 @@
 
         .editor-grid-container {
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             overflow-x: auto;
-            padding: 0.8rem 0;
+            overflow-y: hidden;
+            padding: 0.8rem 1.5rem; /* padding lateral para no cortar bordes */
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) var(--bg-grid);
+            border-radius: 12px;
+        }
+        .editor-grid-container::-webkit-scrollbar {
+            height: 10px;
+        }
+        .editor-grid-container::-webkit-scrollbar-track {
+            background: var(--bg-grid);
+            border-radius: 10px;
+        }
+        .editor-grid-container::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
         }
         .grid {
             display: grid;
@@ -190,6 +206,7 @@
             border-radius: 12px;
             width: fit-content;
             margin: 0 auto;
+            flex-shrink: 0;
         }
         .cell {
             width: 48px;
@@ -275,6 +292,16 @@
         }
         .slider-item { display: flex; align-items: center; gap: 0.6rem; font-size: 0.92rem; }
         input[type=range] { width: 120px; accent-color: var(--accent); }
+        input[type=number] {
+            width: 70px;
+            padding: 0.4rem 0.6rem;
+            border-radius: 1rem;
+            border: 2px solid var(--border-cell);
+            background: var(--bg-panel);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            text-align: center;
+        }
 
         /* Lista de cuartos */
         .room-list {
@@ -344,7 +371,7 @@
             color: var(--text-primary);
             border-radius: 1.6rem;
             padding: 1.4rem;
-            width: min(340px, 100%);
+            width: min(380px, 100%);
             text-align: center;
             box-shadow: var(--shadow);
             display: flex;
@@ -353,12 +380,12 @@
             border: 1px solid var(--border-cell);
         }
         .modal-box p { font-size: 0.88rem; color: var(--text-secondary); }
-        .id-choices { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; }
+        .id-choices { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; }
         .id-btn {
-            height: 56px;
+            height: 50px;
             border-radius: 1rem;
             border: 3px solid transparent;
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: #fff;
             cursor: pointer;
@@ -452,10 +479,14 @@
             .slider-group { flex-direction: column; gap: 0.6rem; }
             input[type=range] { width: 100%; }
             .theme-toggle-fixed { width: 40px; height: 40px; font-size: 1.2rem; top: 8px; right: 8px; }
+            .editor-grid-container { padding: 0.8rem 0.8rem; }
         }
         @media (max-width: 450px) {
             .cell { width: 32px; height: 32px; font-size: 1.2rem; border-width: 1px; }
             .cell .icon { font-size: 1.1rem; }
+            .editor-grid-container { padding: 0.5rem 0.5rem; }
+            .id-choices { grid-template-columns: repeat(5, 1fr); gap: 0.3rem; }
+            .id-btn { height: 40px; font-size: 1rem; }
         }
     </style>
 </head>
@@ -481,7 +512,7 @@
         </div>
 
         <div class="size-selector">
-            <label for="gridSizeSelect">📐 Tamaño del cuarto:</label>
+            <label for="gridSizeSelect">📐 Tamaño:</label>
             <select id="gridSizeSelect">
                 <option value="8">8 × 8</option>
                 <option value="10">10 × 10</option>
@@ -489,6 +520,8 @@
                 <option value="16">16 × 16</option>
                 <option value="20">20 × 20</option>
             </select>
+            <label for="timeLimitInput" style="margin-left:0.8rem;">⏱️ Tiempo (s):</label>
+            <input type="number" id="timeLimitInput" min="10" max="600" value="60" step="5">
         </div>
 
         <div class="toolbar-wrap" id="toolbar">
@@ -538,7 +571,7 @@
             </div>
         </div>
 
-        <div class="editor-grid-container">
+        <div class="editor-grid-container" id="gridScrollContainer">
             <div id="editorGrid" class="grid"></div>
         </div>
 
@@ -580,6 +613,7 @@
             <button class="id-btn" data-id="2" style="background:#3498db">2</button>
             <button class="id-btn" data-id="3" style="background:#2ecc71">3</button>
             <button class="id-btn" data-id="4" style="background:#e0a800">4</button>
+            <button class="id-btn" data-id="5" style="background:#9b59b6">5</button>
         </div>
         <button class="btn" id="idModalClose" style="padding:0.6rem 1.2rem;font-size:1rem;">Cerrar</button>
     </div>
@@ -606,7 +640,8 @@
     /* =====================================================
        CONSTANTES
     ===================================================== */
-    const ID_COL = { 1: '#e74c3c', 2: '#3498db', 3: '#2ecc71', 4: '#e0a800' };
+    const ID_COL = { 1: '#e74c3c', 2: '#3498db', 3: '#2ecc71', 4: '#e0a800', 5: '#9b59b6' };
+    const SPIKE_COL = { 1: '#e74c3c', 2: '#3498db', 3: '#2ecc71', 4: '#e0a800', 5: '#9b59b6' };
     const ICONS = {
         wall: '🧱', coin: '🪙', enemy: '👹', start: '🏁', exit: '🚪',
         key: '🔑', keydoor: '🔒', spikes: '🔺', btn: '🔘', bdoor: '🚧', block: '📦',
@@ -615,9 +650,9 @@
     const DIRS = { U: [0, -1], D: [0, 1], L: [-1, 0], R: [1, 0] };
     const OPP = { U: 'D', D: 'U', L: 'R', R: 'L' };
     const ARROW_DIR = { arrowU: 'U', arrowD: 'D', arrowL: 'L', arrowR: 'R' };
-    const SPIKE_PERIOD = 3000;   // ms
-    const SPIKE_WARN_AT = 1500;  // empieza el aviso
-    const SPIKE_UP_AT = 1800;    // salen los picos (1.2 s arriba)
+    const SPIKE_PERIOD = 5000;   // ms por ciclo completo (5 momentos)
+    const SPIKE_PHASE = 1000;    // duración de cada momento
+    const SPIKE_UP_MS = 1200;    // picos arriba durante este tiempo
 
     const base = t => String(t).split(':')[0];
     const tileId = t => parseInt(String(t).split(':')[1]) || 1;
@@ -630,6 +665,7 @@
     const mainScreen = $('mainScreen'), editorScreen = $('editorScreen'), listScreen = $('listScreen');
     const editorGrid = $('editorGrid'), gameStatus = $('gameStatus');
     const gridSizeSelect = $('gridSizeSelect');
+    const timeLimitInput = $('timeLimitInput');
     const playerSpeedInput = $('playerSpeed'), enemySpeedInput = $('enemySpeed'), enemyVisionInput = $('enemyVision');
     const playerSpeedVal = $('playerSpeedVal'), enemySpeedVal = $('enemySpeedVal'), enemyVisionVal = $('enemyVisionVal');
     const roomListContainer = $('roomListContainer'), noRoomsMsg = $('noRoomsMsg');
@@ -637,6 +673,7 @@
     const gameScreen = $('gameScreen'), canvas = $('gameCanvas'), ctx = canvas.getContext('2d');
     const hud = $('hud'), banner = $('gameBanner'), overlay = $('gameOverlay');
     const ovTitle = $('ovTitle'), ovButtons = $('ovButtons');
+    const gridScrollContainer = $('gridScrollContainer');
 
     /* =====================================================
        AUDIO
@@ -675,6 +712,7 @@
             case 'push': tone(150, 120, 0.12, 0.12, 'square'); break;
             case 'press': tone(400, 800, 0.2, 0.15, 'triangle'); break;
             case 'alert': tone(700, 950, 0.12, 0.08, 'square'); break;
+            case 'timeout': tone(300, 100, 0.5, 0.2, 'sawtooth'); break;
         }
     }
 
@@ -685,6 +723,7 @@
     let board = [];
     let selectedTool = 'floor';
     let playerSpeed = 5, enemySpeed = 3, enemyVision = 5;
+    let timeLimit = 60; // segundos
     let modalCell = null;
 
     function emptyBoard(n) { return Array.from({ length: n }, () => Array(n).fill('floor')); }
@@ -732,6 +771,14 @@
                     bd.style.background = ID_COL[id];
                     cell.appendChild(bd);
                 }
+                if (b === 'spikes') {
+                    const id = tileId(t);
+                    const bd = document.createElement('span');
+                    bd.className = 'badge';
+                    bd.textContent = id;
+                    bd.style.background = SPIKE_COL[id];
+                    cell.appendChild(bd);
+                }
                 cell.addEventListener('click', () => handleCellClick(x, y));
                 editorGrid.appendChild(cell);
             }
@@ -757,6 +804,13 @@
             openIdModal(x, y, tool);
             return;
         }
+        if (tool === 'spikes') {
+            if (curBase === 'spikes') { openIdModal(x, y, 'spikes'); return; }
+            board[y][x] = 'spikes:1';
+            renderGrid();
+            openIdModal(x, y, 'spikes');
+            return;
+        }
         if (tool === 'start' || tool === 'exit') removeUnique(tool);
         board[y][x] = tool;
         renderGrid();
@@ -765,7 +819,12 @@
     /* --- Modal de número --- */
     function openIdModal(x, y, tool) {
         modalCell = { x, y, tool };
-        $('idModalTitle').textContent = tool === 'btn' ? '🔘 Número del botón' : '🚧 Número de la puerta';
+        if (tool === 'btn') $('idModalTitle').textContent = '🔘 Número del botón';
+        else if (tool === 'bdoor') $('idModalTitle').textContent = '🚧 Número de la puerta';
+        else if (tool === 'spikes') $('idModalTitle').textContent = '🔺 Momento del pico';
+        $('idModalHint').textContent = tool === 'spikes'
+            ? 'Elige en qué momento (1-5) aparecerá este pico durante el ciclo de 5 segundos.'
+            : 'Una puerta con el número N se abre al pisar un botón con el número N.';
         refreshModalCurrent();
         idModal.classList.remove('hidden');
     }
@@ -793,7 +852,9 @@
             btn.classList.add('active');
             selectedTool = btn.dataset.tool;
             if (selectedTool === 'btn' || selectedTool === 'bdoor') {
-                setStatus('Coloca la pieza y elige su número (1-4). Toca una ya colocada para cambiarlo.', 3500);
+                setStatus('Coloca la pieza y elige su número (1-5). Toca una ya colocada para cambiarlo.', 3500);
+            } else if (selectedTool === 'spikes') {
+                setStatus('Coloca el pico y elige su momento (1-5). Toca uno ya colocado para cambiarlo.', 3500);
             }
         });
     });
@@ -825,6 +886,13 @@
         enemyVisionVal.textContent = enemyVision;
     });
 
+    timeLimitInput.addEventListener('change', e => {
+        let v = parseInt(e.target.value) || 60;
+        v = clamp(v, 10, 600);
+        timeLimit = v;
+        e.target.value = v;
+    });
+
     gridSizeSelect.addEventListener('change', e => {
         const n = parseInt(e.target.value);
         resizeBoard(n);
@@ -841,7 +909,8 @@
         return {
             board: JSON.parse(JSON.stringify(board)),
             gridSize: GRID_SIZE,
-            playerSpeed, enemySpeed, vision: enemyVision
+            playerSpeed, enemySpeed, vision: enemyVision,
+            timeLimit: timeLimit
         };
     }
 
@@ -938,7 +1007,7 @@
     /* =====================================================
        JUEGO
     ===================================================== */
-    let G = null;          // estado del cuarto en juego
+    let G = null;
     let S = { mode: null, rooms: [], index: 0, currentRoom: null, timer: null, toastT: null, overlayKind: null };
     let rafId = null, lastTs = 0;
     let cv = { w: 0, h: 0, dpr: 1, ts: 48 };
@@ -981,7 +1050,10 @@
             speedP: pSpeed,
             speedE: Math.max(1, Math.min(room.enemySpeed || 3, pSpeed - 1)),
             vision: room.vision || 5,
-            hudText: ''
+            hudText: '',
+            timeLimit: (room.timeLimit || 60) * 1000,
+            timeLeft: (room.timeLimit || 60) * 1000,
+            timeout: false
         };
         g.lose = g.vision + 4;
         for (let y = 0; y < n; y++) {
@@ -1005,11 +1077,23 @@
         const a = ARROW_DIR[base(G.grid[y][x])];
         return !(a && OPP[a] === dir);
     }
-    function spikeState() {
-        const p = G.time % SPIKE_PERIOD;
-        if (p >= SPIKE_UP_AT) return 'up';
-        if (p >= SPIKE_WARN_AT) return 'warn';
+    // Estado de los picos: 'up' | 'warn' | 'down'
+    // Cada pico tiene un "momento" (1-5). El ciclo dura 5 segundos, cada momento 1 segundo.
+    // El pico sale en su momento durante 1.2s (con aviso 0.4s antes).
+    function spikeState(tile, time) {
+        const id = tileId(tile); // 1..5
+        const phase = time % SPIKE_PERIOD; // 0..5000
+        const momentStart = (id - 1) * SPIKE_PHASE; // 0,1000,2000,3000,4000
+        const momentEnd = momentStart + SPIKE_UP_MS;
+        const warnStart = momentStart - 400;
+        if (phase >= momentStart && phase < momentEnd) return 'up';
+        if (phase >= warnStart && phase < momentStart) return 'warn';
         return 'down';
+    }
+    function spikeStateAt(x, y) {
+        const t = G.grid[y][x];
+        if (base(t) !== 'spikes') return 'down';
+        return spikeState(t, G.time);
     }
     function opaque(x, y) {
         const b = base(G.grid[y][x]);
@@ -1164,6 +1248,14 @@
         toast(msg || '💀 ¡Perdiste!', 0);
         S.timer = setTimeout(() => { if (G) restartRoom(); }, 900);
     }
+    function timeout() {
+        const g = G;
+        if (!g || g.over) return;
+        g.over = true;
+        playSound('timeout');
+        toast('⏰ ¡Tiempo agotado!', 0);
+        S.timer = setTimeout(() => { if (G) restartRoom(); }, 900);
+    }
     function win() {
         const g = G;
         if (!g || g.over) return;
@@ -1222,7 +1314,7 @@
         if (!arrowOK(b.x, b.y, dir) || !arrowOK(tx, ty, dir)) return false;
         const t = base(g.grid[ty][tx]);
         if (!['floor', 'btn', 'spikes', 'arrowU', 'arrowD', 'arrowL', 'arrowR'].includes(t)) return false;
-        if (t === 'spikes' && spikeState() === 'up') return false;
+        if (t === 'spikes' && spikeStateAt(tx, ty) === 'up') return false;
         if (blockAt(tx, ty) || enemyAt(tx, ty)) return false;
         if (g.player.x === tx && g.player.y === ty) return false;
         return true;
@@ -1235,7 +1327,7 @@
         if (!arrowOK(p.x, p.y, dir) || !arrowOK(nx, ny, dir)) return false;
         const t = base(g.grid[ny][nx]);
         if (t === 'wall' || t === 'bdoor') return false;
-        if (t === 'spikes' && spikeState() === 'up') return false;
+        if (t === 'spikes' && spikeStateAt(nx, ny) === 'up') return false;
         if (t === 'keydoor' && g.keys <= 0) {
             const now = performance.now();
             if (now - (S.lastKeyToast || 0) > 1500) { S.lastKeyToast = now; toast('🔒 Necesitas una llave', 1200); }
@@ -1285,6 +1377,10 @@
         g.time += dt * 1000;
         const now = g.time, p = g.player;
 
+        // Tiempo límite
+        g.timeLeft -= dt * 1000;
+        if (g.timeLeft <= 0) { timeout(); return; }
+
         // Jugador
         const dir = touchDir || heldKeys[heldKeys.length - 1] || null;
         if (dir && now >= g.nextPlayer) {
@@ -1292,8 +1388,8 @@
             if (g.over) return;
         }
 
-        // Picos
-        if (base(g.grid[p.y][p.x]) === 'spikes' && spikeState() === 'up') { die('☠️ ¡Te pincharon los picos!'); return; }
+        // Picos (muerte por picos)
+        if (base(g.grid[p.y][p.x]) === 'spikes' && spikeStateAt(p.x, p.y) === 'up') { die('☠️ ¡Te pincharon los picos!'); return; }
 
         // Enemigos
         const delayE = moveDelay(g.speedE);
@@ -1332,7 +1428,8 @@
 
     function updateHud() {
         const g = G;
-        let txt = `🪙 ${g.coins}/${g.totalCoins}  🔑 ${g.keys}  ${g.exitActive ? '🚪 Abierta' : '🔒 Cerrada'}`;
+        const secs = Math.max(0, Math.ceil(g.timeLeft / 1000));
+        let txt = `🪙 ${g.coins}/${g.totalCoins}  🔑 ${g.keys}  ${g.exitActive ? '🚪 Abierta' : '🔒 Cerrada'}  ⏱️ ${secs}s`;
         txt += S.mode === 'route' ? `  ·  Cuarto ${S.index + 1}/${S.rooms.length}` : '  ·  Prueba';
         if (txt !== g.hudText) { g.hudText = txt; hud.textContent = txt; }
     }
@@ -1363,16 +1460,18 @@
         ctx.closePath();
     }
 
-    function drawSpikes(px, py, state) {
+    function drawSpikes(px, py, state, id) {
         const ts = cv.ts;
         if (state === 'up') {
             ctx.fillStyle = 'rgba(200,40,40,0.18)';
+            ctx.fillRect(px, py, ts, ts);
+        } else if (state === 'warn') {
+            ctx.fillStyle = 'rgba(255,180,60,0.15)';
             ctx.fillRect(px, py, ts, ts);
         }
         for (let i = 0; i < 2; i++) for (let j = 0; j < 2; j++) {
             const cx = px + ts * (0.27 + 0.46 * i);
             const by = py + ts * (0.45 + 0.45 * j);
-            // agujero
             ctx.fillStyle = 'rgba(0,0,0,0.25)';
             ctx.beginPath();
             ctx.ellipse(cx, by - ts * 0.05, ts * 0.1, ts * 0.04, 0, 0, Math.PI * 2);
@@ -1388,6 +1487,18 @@
                 ctx.fill();
             }
         }
+        // Color del momento
+        const col = SPIKE_COL[id] || '#999';
+        ctx.fillStyle = col;
+        ctx.globalAlpha = 0.35;
+        ctx.beginPath();
+        ctx.arc(px + ts * 0.82, py + ts * 0.18, ts * 0.11, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = '#fff';
+        ctx.font = `bold ${ts * 0.18}px sans-serif`;
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(id, px + ts * 0.82, py + ts * 0.18);
     }
 
     function drawTile(x, y, sp) {
@@ -1435,9 +1546,11 @@
                     emoji('🚪', cx, cy, ts * 0.7);
                 }
                 break;
-            case 'spikes':
-                drawSpikes(px, py, sp);
+            case 'spikes': {
+                const id = tileId(tile);
+                drawSpikes(px, py, sp, id);
                 break;
+            }
             case 'btn': {
                 const id = tileId(tile), col = ID_COL[id] || '#999', pressed = g.pressed.has(id);
                 ctx.fillStyle = 'rgba(0,0,0,0.25)';
@@ -1498,14 +1611,15 @@
 
         const x0 = Math.max(0, Math.floor(camX / ts)), x1 = Math.min(n - 1, Math.floor((camX + w) / ts));
         const y0 = Math.max(0, Math.floor(camY / ts)), y1 = Math.min(n - 1, Math.floor((camY + h) / ts));
-        const sp = spikeState();
-        for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++) drawTile(x, y, sp);
+        for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++) {
+            const t = g.grid[y][x];
+            const st = base(t) === 'spikes' ? spikeState(t, g.time) : 'down';
+            drawTile(x, y, st);
+        }
 
-        // Marco del cuarto
         ctx.strokeStyle = colors.accent; ctx.lineWidth = 3;
         ctx.strokeRect(-1.5, -1.5, mw + 3, mh + 3);
 
-        // Bloques
         for (const b of g.blocks) {
             const px = b.rx * ts, py = b.ry * ts;
             ctx.fillStyle = '#9c6b3f';
@@ -1519,7 +1633,6 @@
             ctx.stroke();
         }
 
-        // Enemigos
         for (const e of g.enemies) {
             const cx = e.rx * ts + ts / 2, cy = e.ry * ts + ts / 2;
             ctx.fillStyle = 'rgba(0,0,0,0.18)';
@@ -1531,7 +1644,6 @@
             }
         }
 
-        // Jugador
         {
             const p = g.player, cx = p.rx * ts + ts / 2, cy = p.ry * ts + ts / 2;
             ctx.fillStyle = 'rgba(0,0,0,0.2)';
@@ -1539,7 +1651,6 @@
             emoji('🧑', cx, cy, ts * 0.72);
         }
 
-        // Efectos de destello
         g.effects = g.effects.filter(ef => (g.time - ef.t0) < 400);
         for (const ef of g.effects) {
             const a = (g.time - ef.t0) / 400;
@@ -1577,7 +1688,6 @@
     });
     window.addEventListener('blur', () => { heldKeys = []; touchDir = null; });
 
-    // Táctil: bordes = dirección, centro = menú
     function dirFromTouch(t) {
         const r = canvas.getBoundingClientRect();
         const nx = ((t.clientX - r.left) / r.width - 0.5) * 2;
