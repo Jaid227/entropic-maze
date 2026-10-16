@@ -166,47 +166,54 @@
         }
         .size-selector select:focus { border-color: var(--accent); }
 
-        .editor-grid-container { display: flex; justify-content: center; overflow-x: auto; padding: 0.8rem 0; }
+        /* REJILLA FLUIDA: siempre cabe en el ancho de la pantalla */
+        .editor-grid-container {
+            display: flex;
+            justify-content: center;
+            padding: 0.6rem 0.4rem;
+            width: 100%;
+        }
         .grid {
             display: grid;
-            gap: 3px;
+            gap: 2px;
             background: var(--bg-grid);
-            padding: 5px;
+            padding: 4px;
             border-radius: 12px;
-            width: fit-content;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 100%;
         }
         .cell {
-            width: 48px;
-            height: 48px;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1/1;
             background: var(--bg-cell);
-            border-radius: 8px;
-            border: 2px solid var(--border-cell);
+            border-radius: 6px;
+            border: 1px solid var(--border-cell);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
+            font-size: clamp(0.6rem, 2.2vw, 1.8rem);
             cursor: pointer;
             transition: 0.1s;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            aspect-ratio: 1/1;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
             position: relative;
+            overflow: hidden;
         }
         .cell:not(.wall) { background: var(--floor); }
         .cell.wall { background: var(--wall); border-color: #3a2e24; }
         .cell.hole { background: #1a1614; }
         .cell.pending { outline: 3px dashed var(--accent); outline-offset: 1px; animation: pend 0.8s infinite; }
         @keyframes pend { 50% { outline-color: transparent; } }
-        .cell .icon { font-size: 1.6rem; line-height: 1; pointer-events: none; }
-        .cell .icon.ammo { font-size: 2rem; font-weight: 700; color: #8b6b3e; }
+        .cell .icon { font-size: clamp(0.7rem, 2vw, 1.6rem); line-height: 1; pointer-events: none; }
+        .cell .icon.ammo { font-size: clamp(0.9rem, 2.6vw, 2rem); font-weight: 700; color: #8b6b3e; }
         .cell .badge {
             position: absolute;
             right: 1px;
             bottom: 1px;
-            min-width: 17px;
-            height: 17px;
-            border-radius: 9px;
-            font-size: 0.7rem;
+            min-width: 11px;
+            height: 11px;
+            border-radius: 6px;
+            font-size: clamp(0.45rem, 1vw, 0.7rem);
             font-weight: 700;
             display: flex;
             align-items: center;
@@ -335,7 +342,7 @@
         #gameCanvas { display: block; touch-action: none; }
         #hud {
             position: absolute;
-            top: 10px;
+            top: 70px;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(0,0,0,0.55);
@@ -345,8 +352,11 @@
             font-size: 0.85rem;
             pointer-events: none;
             text-align: center;
-            max-width: calc(100vw - 150px);
+            max-width: calc(100vw - 40px);
+            z-index: 5;
+            transition: opacity 0.5s;
         }
+        #hud.hud-hidden { opacity: 0; }
         #gameBanner {
             position: absolute;
             top: 16%;
@@ -422,20 +432,15 @@
 
         @media (max-width: 700px) {
             #app { padding: 1rem; margin-top: 2.5rem; }
-            .cell { width: 38px; height: 38px; font-size: 1.4rem; }
-            .cell .icon { font-size: 1.3rem; }
-            .cell .icon.ammo { font-size: 1.6rem; }
             .btn { padding: 0.7rem 1.2rem; font-size: 0.95rem; }
             .tool-btn { padding: 0.4rem 0.75rem; font-size: 0.82rem; }
             .slider-group { flex-direction: column; gap: 0.6rem; }
             input[type=range] { width: 100%; }
             .theme-toggle-fixed { width: 40px; height: 40px; font-size: 1.2rem; top: 8px; right: 8px; }
+            #hud { top: 62px; font-size: 0.78rem; padding: 0.3rem 0.7rem; }
         }
         @media (max-width: 450px) {
-            .cell { width: 32px; height: 32px; font-size: 1.2rem; border-width: 1px; }
-            .cell .icon { font-size: 1.1rem; }
-            .cell .icon.ammo { font-size: 1.4rem; }
-            .cell .badge { min-width: 14px; height: 14px; font-size: 0.6rem; }
+            .corner { width: 44px; height: 44px; font-size: 1.2rem; }
         }
     </style>
 </head>
@@ -593,7 +598,7 @@
 <!-- PANTALLA DE JUEGO -->
 <div id="gameScreen" class="hidden">
     <canvas id="gameCanvas"></canvas>
-    <div id="hud"></div>
+    <div id="hud" class="hud-hidden"></div>
     <div id="gameBanner" class="hidden"></div>
     <button class="corner" id="btnMenu" title="Menú">☰</button>
     <button class="corner" id="btnSword" title="Espada (1)">🗡️</button>
@@ -634,6 +639,7 @@
     const ENEMY_BLOCK = ['wall', 'keydoor', 'bdoor', 'ddoor', 'stone', 'hole', 'diamond', 'laser'];
     const PLAYER_SOLID = ['wall', 'bdoor', 'ddoor', 'stone', 'hole', 'diamond', 'laser'];
     const TERRITORY = 2;
+    const HUD_HOLD_MS = 2200;
 
     const base = t => String(t).split(':')[0];
     const tileId = t => parseInt(String(t).split(':')[1]) || 1;
@@ -717,7 +723,7 @@
     let selectedTool = 'floor';
     let playerSpeed = 5, enemyVision = 5;
     const brush = { speed: 3, hp: 1, laserDir: 'R' };
-    let pending = null; // {kind, id, x, y}
+    let pending = null;
 
     function emptyBoard(n) { return Array.from({ length: n }, () => Array(n).fill('floor')); }
     function initEmptyBoard() { board = emptyBoard(GRID_SIZE); pending = null; hidePending(); }
@@ -776,7 +782,6 @@
         for (let y = 0; y < GRID_SIZE; y++) for (let x = 0; x < GRID_SIZE; x++) if (base(board[y][x]) === type) board[y][x] = 'floor';
     }
 
-    // Quita puertas sin pareja y parejas sin puerta (ignora la que está pendiente)
     function cleanOrphans() {
         for (const dk of Object.keys(PAIRS)) {
             const pk = PAIRS[dk];
@@ -803,7 +808,6 @@
     }
     function afterEdit() { cleanOrphans(); renderGrid(); updateWarn(); }
 
-    /* --- Parejas puerta + botón / diamante --- */
     function freeId(kind) {
         const used = new Set();
         for (const row of board) for (const t of row) if (base(t) === kind) used.add(tileId(t));
@@ -874,7 +878,6 @@
         afterEdit();
     }
 
-    /* --- Herramientas --- */
     function updatePanels() {
         enemyPanel.classList.toggle('hidden', !(selectedTool === 'enemy' || selectedTool === 'enemy2'));
         laserPanel.classList.toggle('hidden', selectedTool !== 'laser');
@@ -931,7 +934,6 @@
         return { board: JSON.parse(JSON.stringify(board)), gridSize: GRID_SIZE, playerSpeed, vision: enemyVision };
     }
 
-    /* --- Guardar / lista --- */
     function loadRooms() {
         try { const r = JSON.parse(localStorage.getItem('entropicRooms') || '[]'); return Array.isArray(r) ? r : []; }
         catch (e) { return []; }
@@ -1005,7 +1007,7 @@
     });
 
     /* =====================================================
-       JUEGO: ESTADO
+       JUEGO
     ===================================================== */
     let G = null;
     let S = { mode: null, rooms: [], index: 0, currentRoom: null, timer: null, toastT: null, overlayKind: null };
@@ -1051,7 +1053,8 @@
             exitActive: false, pressed: new Set(),
             time: 0, nextPlayer: 0, nextAttack: 0, invuln: 0,
             over: false, paused: false, effects: [],
-            speedP: pSpeed, vision: room.vision || 5, hudKey: '', hudText: ''
+            speedP: pSpeed, vision: room.vision || 5, hudKey: '', hudText: '',
+            hudShowUntil: 0
         };
         g.lose = g.vision + 4;
         for (let y = 0; y < n; y++) {
@@ -1077,7 +1080,6 @@
         computeBeams();
     }
 
-    /* --- Reglas base --- */
     const inb = (x, y) => x >= 0 && y >= 0 && x < G.n && y < G.n;
     const blockAt = (x, y) => G.blocks.find(b => b.x === x && b.y === y) || null;
     const enemyAt = (x, y) => G.enemies.find(e => e.x === x && e.y === y) || null;
@@ -1153,7 +1155,6 @@
         return { x: cur % n, y: (cur - (cur % n)) / n };
     }
 
-    // Enemigo 2: avanza hacia el jugador pero sólo dentro de su territorio
     function territoryStep(e, p) {
         const n = G.n, total = n * n;
         const start = e.y * n + e.x;
@@ -1187,7 +1188,6 @@
         return { x: f % n, y: (f - (f % n)) / n };
     }
 
-    /* --- Avisos / overlay --- */
     function toast(text, ms) {
         banner.textContent = text;
         banner.classList.remove('hidden');
@@ -1338,7 +1338,6 @@
         } else die(msg);
     }
 
-    /* --- Combate --- */
     function damageEnemy(e, dmg) {
         const g = G;
         e.hp -= dmg;
@@ -1438,7 +1437,6 @@
         g.hudKey = '';
     }
 
-    /* --- Mecánicas --- */
     function press(id) {
         const g = G;
         if (g.pressed.has(id)) return;
@@ -1528,10 +1526,11 @@
         g.time += dt * 1000;
         const now = g.time, p = g.player;
 
-        // Jugador
+        // Movimiento del jugador (y mostrar HUD)
         const dir = touchDir || heldKeys[heldKeys.length - 1] || null;
         if (dir) {
             p.facing = dir;
+            g.hudShowUntil = now + HUD_HOLD_MS;
             if (now >= g.nextPlayer) {
                 if (tryPlayerMove(dir)) g.nextPlayer = now + moveDelay(g.speedP);
                 if (g.over) return;
@@ -1572,6 +1571,7 @@
             if (step) {
                 if (!enemyAt(step.x, step.y) && !blockAt(step.x, step.y)) {
                     e.x = step.x; e.y = step.y;
+                    g.hudShowUntil = now + HUD_HOLD_MS;
                     if (e.x === p.x && e.y === p.y) { hurtPlayer('💀 ¡Atrapado por un enemigo!', e); if (g.over) return; }
                 }
                 e.next = now + moveDelay(e.speed);
@@ -1608,6 +1608,12 @@
             btnBomb.classList.toggle('off', g.bombCount <= 0);
             btnBow.innerHTML = '🏹' + (g.hasBow ? `<span class="cnt">${g.ammo}</span>` : '');
             btnBomb.innerHTML = '💣' + `<span class="cnt">${g.bombCount}</span>`;
+        }
+        // HUD se desvanece cuando no hay movimiento reciente
+        if (g.time < g.hudShowUntil) {
+            hud.classList.remove('hud-hidden');
+        } else {
+            hud.classList.add('hud-hidden');
         }
     }
 
@@ -1872,7 +1878,6 @@
         ctx.strokeStyle = colors.accent; ctx.lineWidth = 3;
         ctx.strokeRect(-1.5, -1.5, mw + 3, mh + 3);
 
-        // Bombas
         for (const b of g.bombs) {
             const age = g.time - b.t0, cx = b.x * ts + ts / 2, cy = b.y * ts + ts / 2;
             if (age > 1000) {
@@ -1887,7 +1892,6 @@
             }
         }
 
-        // Bloques
         for (const b of g.blocks) {
             const px = b.rx * ts, py = b.ry * ts;
             ctx.fillStyle = '#9c6b3f'; ctx.fillRect(px + 3, py + 3, ts - 6, ts - 6);
@@ -1899,13 +1903,11 @@
             ctx.stroke();
         }
 
-        // Flechas en vuelo
         for (const a of g.arrows) {
             const ang = Math.atan2(DIRS[a.dir][1], DIRS[a.dir][0]);
             drawArrowShape(a.rx * ts + ts / 2, a.ry * ts + ts / 2, ang, ts * 0.6);
         }
 
-        // Enemigos
         for (const e of g.enemies) {
             const cx = e.rx * ts + ts / 2, cy = e.ry * ts + ts / 2;
             ctx.fillStyle = 'rgba(0,0,0,0.18)';
@@ -1924,7 +1926,6 @@
             if (g.time < e.stun && g.time >= e.flash) emoji('💫', cx, cy - ts * 0.6, ts * 0.3);
         }
 
-        // Jugador
         {
             const p = g.player, cx = p.rx * ts + ts / 2, cy = p.ry * ts + ts / 2;
             const blink = g.time < g.invuln && Math.floor(g.time / 80) % 2 === 0;
@@ -1944,7 +1945,6 @@
             }
         }
 
-        // Efectos
         g.effects = g.effects.filter(ef => (g.time - ef.t0) < (ef.dur || 400));
         for (const ef of g.effects) {
             const a = (g.time - ef.t0) / (ef.dur || 400);
@@ -2016,7 +2016,6 @@
     btnBow.addEventListener('click', () => toggleWeapon('bow'));
     btnBomb.addEventListener('click', () => toggleWeapon('bomb'));
 
-    // Táctil: bordes = mover, centro = usar arma (deslizar o tocar)
     function zoneOf(t) {
         const r = canvas.getBoundingClientRect();
         const nx = ((t.clientX - r.left) / r.width - 0.5) * 2;
