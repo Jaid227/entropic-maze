@@ -166,29 +166,16 @@
         }
         .size-selector select:focus { border-color: var(--accent); }
 
-        .editor-grid-container {
-    display: flex;
-    justify-content: center;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: 0.8rem 1.5rem;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: var(--accent) var(--bg-grid);
-}
-.editor-grid-container::-webkit-scrollbar { height: 10px; }
-.editor-grid-container::-webkit-scrollbar-track { background: var(--bg-grid); border-radius: 10px; }
-.editor-grid-container::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
-.grid {
-    display: grid;
-    gap: 3px;
-    background: var(--bg-grid);
-    padding: 5px;
-    border-radius: 12px;
-    width: fit-content;
-    margin: 0 auto;
-    flex-shrink: 0;
-}
+        .editor-grid-container { display: flex; justify-content: center; overflow-x: auto; padding: 0.8rem 0; }
+        .grid {
+            display: grid;
+            gap: 3px;
+            background: var(--bg-grid);
+            padding: 5px;
+            border-radius: 12px;
+            width: fit-content;
+            margin: 0 auto;
+        }
         .cell {
             width: 48px;
             height: 48px;
@@ -347,20 +334,19 @@
         }
         #gameCanvas { display: block; touch-action: none; }
         #hud {
-    position: absolute;
-    top: 70px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0,0,0,0.55);
-    color: #fff;
-    padding: 0.35rem 0.9rem;
-    border-radius: 1.2rem;
-    font-size: 0.85rem;
-    pointer-events: none;
-    text-align: center;
-    max-width: calc(100vw - 40px);
-    z-index: 5;
-}
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.55);
+            color: #fff;
+            padding: 0.35rem 0.9rem;
+            border-radius: 1.2rem;
+            font-size: 0.85rem;
+            pointer-events: none;
+            text-align: center;
+            max-width: calc(100vw - 150px);
+        }
         #gameBanner {
             position: absolute;
             top: 16%;
@@ -642,7 +628,7 @@
     const ARROW_DIR = { arrowU: 'U', arrowD: 'D', arrowL: 'L', arrowR: 'R' };
     const SPIKE_PERIOD = 3000, SPIKE_WARN_AT = 1500, SPIKE_UP_AT = 1800;
     const BOMB_FUSE = 1500;
-    const DMG = { sword: 8, arrow: 7, bomb: 20 };
+    const DMG = { sword: 4, arrow: 3, bomb: 8 };
     const PAIRS = { bdoor: 'btn', ddoor: 'diamond' };
     const BEAM_STOP = ['wall', 'keydoor', 'bdoor', 'ddoor', 'stone', 'laser'];
     const ENEMY_BLOCK = ['wall', 'keydoor', 'bdoor', 'ddoor', 'stone', 'hole', 'diamond', 'laser'];
