@@ -2314,8 +2314,8 @@
             btnBow.innerHTML = '🏹' + (g.hasBow ? `<span class="cnt">${g.ammo}</span>` : '');
             btnBomb.innerHTML = '💣' + `<span class="cnt">${g.bombCount}</span>`;
         }
-        if (g.time < g.hudShowUntil) hud.classList.remove('hud-hidden');
-        else hud.classList.add('hud-hidden');
+        if (g.time < g.hudShowUntil) hud.classList.add('hud-hidden');
+        else hud.classList.remove('hud-hidden');
     }
 
     function frame(ts) {
