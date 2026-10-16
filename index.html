@@ -166,54 +166,63 @@
         }
         .size-selector select:focus { border-color: var(--accent); }
 
-        /* REJILLA FLUIDA: siempre cabe en el ancho de la pantalla */
+        /* === REJILLA CON SCROLL: el padding lateral evita que se corte el borde izquierdo === */
         .editor-grid-container {
-            display: flex;
-            justify-content: center;
-            padding: 0.6rem 0.4rem;
             width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 0.8rem 1.2rem;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) var(--bg-grid);
+            border-radius: 12px;
+            display: flex;
+            justify-content: flex-start;
         }
+        .editor-grid-container::-webkit-scrollbar { height: 10px; }
+        .editor-grid-container::-webkit-scrollbar-track { background: var(--bg-grid); border-radius: 10px; }
+        .editor-grid-container::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
         .grid {
             display: grid;
-            gap: 2px;
+            gap: 3px;
             background: var(--bg-grid);
-            padding: 4px;
+            padding: 5px;
             border-radius: 12px;
-            width: 100%;
-            max-width: 100%;
+            width: fit-content;
+            margin: 0;
+            flex-shrink: 0;
         }
         .cell {
-            width: 100%;
-            height: auto;
-            aspect-ratio: 1/1;
+            width: 48px;
+            height: 48px;
             background: var(--bg-cell);
-            border-radius: 6px;
-            border: 1px solid var(--border-cell);
+            border-radius: 8px;
+            border: 2px solid var(--border-cell);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: clamp(0.6rem, 2.2vw, 1.8rem);
+            font-size: 1.8rem;
             cursor: pointer;
             transition: 0.1s;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            aspect-ratio: 1/1;
             position: relative;
-            overflow: hidden;
         }
         .cell:not(.wall) { background: var(--floor); }
         .cell.wall { background: var(--wall); border-color: #3a2e24; }
         .cell.hole { background: #1a1614; }
         .cell.pending { outline: 3px dashed var(--accent); outline-offset: 1px; animation: pend 0.8s infinite; }
         @keyframes pend { 50% { outline-color: transparent; } }
-        .cell .icon { font-size: clamp(0.7rem, 2vw, 1.6rem); line-height: 1; pointer-events: none; }
-        .cell .icon.ammo { font-size: clamp(0.9rem, 2.6vw, 2rem); font-weight: 700; color: #8b6b3e; }
+        .cell .icon { font-size: 1.6rem; line-height: 1; pointer-events: none; }
+        .cell .icon.ammo { font-size: 2rem; font-weight: 700; color: #8b6b3e; }
         .cell .badge {
             position: absolute;
             right: 1px;
             bottom: 1px;
-            min-width: 11px;
-            height: 11px;
-            border-radius: 6px;
-            font-size: clamp(0.45rem, 1vw, 0.7rem);
+            min-width: 17px;
+            height: 17px;
+            border-radius: 9px;
+            font-size: 0.7rem;
             font-weight: 700;
             display: flex;
             align-items: center;
@@ -432,14 +441,23 @@
 
         @media (max-width: 700px) {
             #app { padding: 1rem; margin-top: 2.5rem; }
+            .cell { width: 40px; height: 40px; font-size: 1.4rem; }
+            .cell .icon { font-size: 1.3rem; }
+            .cell .icon.ammo { font-size: 1.6rem; }
             .btn { padding: 0.7rem 1.2rem; font-size: 0.95rem; }
             .tool-btn { padding: 0.4rem 0.75rem; font-size: 0.82rem; }
             .slider-group { flex-direction: column; gap: 0.6rem; }
             input[type=range] { width: 100%; }
             .theme-toggle-fixed { width: 40px; height: 40px; font-size: 1.2rem; top: 8px; right: 8px; }
+            .editor-grid-container { padding: 0.6rem 0.8rem; }
             #hud { top: 62px; font-size: 0.78rem; padding: 0.3rem 0.7rem; }
         }
         @media (max-width: 450px) {
+            .cell { width: 34px; height: 34px; font-size: 1.2rem; border-width: 1px; }
+            .cell .icon { font-size: 1.1rem; }
+            .cell .icon.ammo { font-size: 1.4rem; }
+            .cell .badge { min-width: 14px; height: 14px; font-size: 0.6rem; }
+            .editor-grid-container { padding: 0.5rem 0.5rem; }
             .corner { width: 44px; height: 44px; font-size: 1.2rem; }
         }
     </style>
@@ -448,7 +466,6 @@
     <button class="theme-toggle-fixed" id="themeToggleFixed" title="Cambiar tema">🌙</button>
 
 <div id="app">
-    <!-- PANTALLA PRINCIPAL -->
     <div id="mainScreen" class="screen">
         <h1>🧩 Laberinto Entrópico</h1>
         <p style="text-align:center; color: var(--text-secondary); margin-bottom: 1rem;">Crea, ordena y recorre tu propia ruta de cuartos</p>
@@ -458,7 +475,6 @@
         </div>
     </div>
 
-    <!-- PANTALLA EDITOR -->
     <div id="editorScreen" class="screen hidden">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
             <h2 style="color: var(--accent);">🛠️ Editor de cuarto</h2>
@@ -520,7 +536,6 @@
             </div>
         </div>
 
-        <!-- Panel enemigos -->
         <div id="enemyPanel" class="tool-panel hidden">
             <div class="slider-item">
                 <span>⚡ Velocidad</span>
@@ -534,7 +549,6 @@
             </div>
             <div class="note">Cada enemigo que pongas usa estos valores (azul = velocidad, rojo = vida). Toca uno ya puesto para reemplazarlo con los valores actuales. Espada quita 4, flecha 3 y bomba 8.</div>
         </div>
-        <!-- Panel láser -->
         <div id="laserPanel" class="tool-panel hidden">
             <span>Dirección del láser:</span>
             <button class="tool-btn active" data-dir="R">➡️</button>
@@ -543,7 +557,6 @@
             <button class="tool-btn" data-dir="D">⬇️</button>
             <div class="note">El rayo avanza desde el emisor hasta chocar con pared, caja, puerta u otro emisor. Toca un láser ya puesto para cambiarle la dirección.</div>
         </div>
-        <!-- Barra de pareja pendiente -->
         <div id="pendingBar" class="tool-panel hidden">
             <span id="pendingText"></span>
             <button class="tool-btn" id="pendingCancel">❌ Cancelar (quita la puerta)</button>
@@ -576,7 +589,6 @@
         <div id="gameStatus" style="text-align: center; font-weight: 500; min-height: 2rem; color: var(--accent);"></div>
     </div>
 
-    <!-- PANTALLA LISTA DE CUARTOS -->
     <div id="listScreen" class="screen hidden">
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <h2 style="color: var(--accent);">📋 Ruta de cuartos</h2>
@@ -595,7 +607,6 @@
     </div>
 </div>
 
-<!-- PANTALLA DE JUEGO -->
 <div id="gameScreen" class="hidden">
     <canvas id="gameCanvas"></canvas>
     <div id="hud" class="hud-hidden"></div>
@@ -616,9 +627,6 @@
 (function(){
     'use strict';
 
-    /* =====================================================
-       CONSTANTES
-    ===================================================== */
     const ID_COL = { 1: '#e74c3c', 2: '#3498db', 3: '#2ecc71', 4: '#e0a800' };
     const ICONS = {
         wall: '🧱', coin: '🪙', enemy: '👹', enemy2: '👺', start: '🏁', exit: '🚪',
@@ -654,9 +662,6 @@
     const $ = id => document.getElementById(id);
     const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
-    /* =====================================================
-       DOM
-    ===================================================== */
     const mainScreen = $('mainScreen'), editorScreen = $('editorScreen'), listScreen = $('listScreen');
     const editorGrid = $('editorGrid'), gameStatus = $('gameStatus'), gridSizeSelect = $('gridSizeSelect');
     const playerSpeedInput = $('playerSpeed'), playerSpeedVal = $('playerSpeedVal');
@@ -671,9 +676,6 @@
     const ovTitle = $('ovTitle'), ovButtons = $('ovButtons');
     const btnMenu = $('btnMenu'), btnSword = $('btnSword'), btnBow = $('btnBow'), btnBomb = $('btnBomb');
 
-    /* =====================================================
-       AUDIO
-    ===================================================== */
     let audioCtx = null;
     function initAudio() {
         try {
@@ -715,9 +717,6 @@
         }
     }
 
-    /* =====================================================
-       EDITOR
-    ===================================================== */
     let GRID_SIZE = 12;
     let board = [];
     let selectedTool = 'floor';
@@ -748,7 +747,7 @@
     }
 
     function renderGrid() {
-        editorGrid.style.gridTemplateColumns = `repeat(${GRID_SIZE}, 1fr)`;
+        editorGrid.style.gridTemplateColumns = `repeat(${GRID_SIZE}, 48px)`;
         editorGrid.innerHTML = '';
         for (let y = 0; y < GRID_SIZE; y++) {
             for (let x = 0; x < GRID_SIZE; x++) {
@@ -776,6 +775,13 @@
                 editorGrid.appendChild(cell);
             }
         }
+        // Ajustar tamaño de celda según ancho de pantalla
+        const isSmall = window.innerWidth <= 700;
+        const isTiny = window.innerWidth <= 450;
+        const cs = isTiny ? 34 : (isSmall ? 40 : 48);
+        document.documentElement.style.setProperty('--cell-size', cs + 'px');
+        editorGrid.style.gridTemplateColumns = `repeat(${GRID_SIZE}, ${cs}px)`;
+        document.querySelectorAll('.cell').forEach(c => { c.style.width = cs + 'px'; c.style.height = cs + 'px'; });
     }
 
     function removeUnique(type) {
@@ -1006,9 +1012,6 @@
         $('themeToggleFixed').textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
     });
 
-    /* =====================================================
-       JUEGO
-    ===================================================== */
     let G = null;
     let S = { mode: null, rooms: [], index: 0, currentRoom: null, timer: null, toastT: null, overlayKind: null };
     let rafId = null, lastTs = 0;
@@ -1526,7 +1529,6 @@
         g.time += dt * 1000;
         const now = g.time, p = g.player;
 
-        // Movimiento del jugador (y mostrar HUD)
         const dir = touchDir || heldKeys[heldKeys.length - 1] || null;
         if (dir) {
             p.facing = dir;
@@ -1537,21 +1539,17 @@
             }
         }
 
-        // Peligros
         computeBeams();
         if (base(g.grid[p.y][p.x]) === 'spikes' && spikeState() === 'up') { die('☠️ ¡Te pincharon los picos!'); return; }
         if (g.beamSet.has(p.y * g.n + p.x)) { hurtPlayer('☠️ ¡Te alcanzó el láser!'); if (g.over) return; }
 
-        // Bombas
         for (let i = g.bombs.length - 1; i >= 0; i--) {
             const b = g.bombs[i];
             if (now - b.t0 >= BOMB_FUSE) { g.bombs.splice(i, 1); explode(b); }
         }
-        // Flechas
         updateArrows(now);
         computeBeams();
 
-        // Enemigos
         for (const e of g.enemies.slice()) {
             if (!g.enemies.includes(e)) continue;
             const dist = Math.hypot(p.x - e.x, p.y - e.y);
@@ -1577,7 +1575,6 @@
                 e.next = now + moveDelay(e.speed);
             }
         }
-        // Contacto continuo
         for (const e of g.enemies) {
             if (e.x === p.x && e.y === p.y) { hurtPlayer('💀 ¡Atrapado por un enemigo!', e); if (g.over) return; }
         }
@@ -1609,7 +1606,6 @@
             btnBow.innerHTML = '🏹' + (g.hasBow ? `<span class="cnt">${g.ammo}</span>` : '');
             btnBomb.innerHTML = '💣' + `<span class="cnt">${g.bombCount}</span>`;
         }
-        // HUD se desvanece cuando no hay movimiento reciente
         if (g.time < g.hudShowUntil) {
             hud.classList.remove('hud-hidden');
         } else {
@@ -1626,9 +1622,6 @@
         rafId = requestAnimationFrame(frame);
     }
 
-    /* =====================================================
-       DIBUJO
-    ===================================================== */
     function emoji(ch, cx, cy, size) {
         ctx.font = `${size}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`;
         ctx.textAlign = 'center';
@@ -1979,9 +1972,6 @@
         ctx.restore();
     }
 
-    /* =====================================================
-       CONTROLES
-    ===================================================== */
     const KEYMAP = { arrowup: 'U', arrowdown: 'D', arrowleft: 'L', arrowright: 'R', w: 'U', s: 'D', a: 'L', d: 'R' };
     window.addEventListener('keydown', e => {
         if (!G) return;
@@ -2072,13 +2062,11 @@
     canvas.addEventListener('touchend', touchEnd, { passive: false });
     canvas.addEventListener('touchcancel', touchEnd, { passive: false });
 
-    /* =====================================================
-       INICIO
-    ===================================================== */
     initEmptyBoard();
     renderGrid();
     updateBrushMax();
     updateWarn();
+    window.addEventListener('resize', () => { if (!G) renderGrid(); });
 })();
 </script>
 </body>
