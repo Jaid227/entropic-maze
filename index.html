@@ -166,7 +166,6 @@
         }
         .size-selector select:focus { border-color: var(--accent); }
 
-        /* === REJILLA CON SCROLL: el padding lateral evita que se corte el borde izquierdo === */
         .editor-grid-container {
             width: 100%;
             overflow-x: auto;
@@ -215,6 +214,7 @@
         @keyframes pend { 50% { outline-color: transparent; } }
         .cell .icon { font-size: 1.6rem; line-height: 1; pointer-events: none; }
         .cell .icon.ammo { font-size: 2rem; font-weight: 700; color: #8b6b3e; }
+        .cell .icon.txt { font-size: 1.8rem; font-weight: 700; color: var(--text-primary); }
         .cell .badge {
             position: absolute;
             right: 1px;
@@ -232,8 +232,11 @@
             line-height: 1;
             pointer-events: none;
             padding: 0 2px;
+            background: #555;
         }
         .cell .badge.tl { right: auto; bottom: auto; left: 1px; top: 1px; background: #2b6cb0; }
+        .cell .badge.tr { right: 1px; bottom: auto; top: 1px; background: #8a6d00; }
+        .cell .badge.bl { right: auto; bottom: 1px; left: 1px; background: #6b2fa0; }
         .cell .badge.hp { background: #c0392b; }
 
         .toolbar-wrap { display: flex; flex-direction: column; gap: 0.5rem; margin: 0.3rem 0; }
@@ -262,6 +265,7 @@
         }
         .tool-btn.active { border-color: var(--accent); background: var(--accent); color: white; }
         .tool-btn:hover { background: var(--accent-hover); color: white; }
+        .tool-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
         .tool-panel {
             display: flex;
@@ -276,6 +280,8 @@
             border: 1px dashed var(--border-cell);
         }
         .tool-panel .note { width: 100%; text-align: center; font-size: 0.8rem; color: var(--text-secondary); }
+        .tool-panel .tool-btn { padding: 0.35rem 0.7rem; }
+        .tool-panel label { display: flex; align-items: center; gap: 0.4rem; }
         #editorWarn { text-align: center; color: #c47a00; font-weight: 500; min-height: 1.2rem; font-size: 0.92rem; }
 
         .slider-group {
@@ -338,6 +344,35 @@
         }
         .footer a { color: var(--accent); text-decoration: none; font-weight: 500; transition: 0.1s; }
         .footer a:hover { text-decoration: underline; }
+
+        /* Modal de aparición */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: 9000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .modal-box {
+            background: var(--bg-panel);
+            color: var(--text-primary);
+            border-radius: 1.6rem;
+            padding: 1.2rem;
+            width: min(520px, 100%);
+            max-height: 90vh;
+            overflow-y: auto;
+            text-align: center;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+            border: 1px solid var(--border-cell);
+        }
+        .palette { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; }
+        .palette .tool-btn { font-size: 0.82rem; padding: 0.4rem 0.7rem; }
 
         /* JUEGO */
         #gameScreen {
@@ -472,6 +507,7 @@
         <div class="btn-group" style="flex-direction: column;">
             <button class="btn btn-primary" id="goCreateBtn">✏️ Crear cuarto</button>
             <button class="btn" id="goListBtn">📂 Cuartos creados</button>
+            <button class="btn" id="goDraftsBtn">🚧 Cuartos en construcción</button>
         </div>
     </div>
 
@@ -506,6 +542,7 @@
                 <span class="tool-label">Enemigos</span>
                 <button class="tool-btn" data-tool="enemy">👹 Enemigo</button>
                 <button class="tool-btn" data-tool="enemy2">👺 Enemigo 2 (territorial)</button>
+                <button class="tool-btn" data-tool="boss">👁️ Jefe Ojo</button>
                 <button class="tool-btn" data-tool="laser">🔴 Láser</button>
             </div>
             <div class="toolbar">
@@ -514,17 +551,28 @@
                 <button class="tool-btn" data-tool="keydoor">🔒 Puerta con llave</button>
                 <button class="tool-btn" data-tool="spikes">🔺 Picos</button>
                 <button class="tool-btn" data-tool="bdoor">🚧 Puerta + botón</button>
-                <button class="tool-btn" data-tool="ddoor">💠 Puerta + diamante</button>
-                <button class="tool-btn" data-tool="block">📦 Bloque</button>
+                <button class="tool-btn" data-tool="hbtn">⏺️ Botón sostenido</button>
+                <button class="tool-btn" data-tool="ddoor">💠 Puerta + diamante azul</button>
+                <button class="tool-btn" data-tool="rdoor">🟥 Puerta-láser + diamante rojo</button>
+                <button class="tool-btn" data-tool="mwall">🔳 Pared movible + botón</button>
+                <button class="tool-btn" data-tool="wdiamond">◇ Diamantes blancos</button>
                 <button class="tool-btn" data-tool="stone">🪨 Puerta de piedra</button>
                 <button class="tool-btn" data-tool="hole">🕳️ Hoyo</button>
+            </div>
+            <div class="toolbar">
+                <span class="tool-label">Cajas y espejos</span>
+                <button class="tool-btn" data-tool="block">📦 Caja</button>
+                <button class="tool-btn" data-tool="mirrorNE">🪞↗ Espejo NE</button>
+                <button class="tool-btn" data-tool="mirrorNW">🪞↖ Espejo NO</button>
+                <button class="tool-btn" data-tool="mirrorSE">🪞↘ Espejo SE</button>
+                <button class="tool-btn" data-tool="mirrorSW">🪞↙ Espejo SO</button>
             </div>
             <div class="toolbar">
                 <span class="tool-label">Objetos</span>
                 <button class="tool-btn" data-tool="sword">🗡️ Espada</button>
                 <button class="tool-btn" data-tool="bow">🏹 Arco</button>
-                <button class="tool-btn" data-tool="ammo">➶ Flecha</button>
-                <button class="tool-btn" data-tool="bomb">💣 Bomba</button>
+                <button class="tool-btn" data-tool="ammo">➶ Flechas</button>
+                <button class="tool-btn" data-tool="bomb">💣 Bombas</button>
                 <button class="tool-btn" data-tool="shield">🛡️ Escudo</button>
             </div>
             <div class="toolbar">
@@ -536,30 +584,10 @@
             </div>
         </div>
 
-        <div id="enemyPanel" class="tool-panel hidden">
-            <div class="slider-item">
-                <span>⚡ Velocidad</span>
-                <input type="range" id="brushSpeed" min="1" max="4" value="3">
-                <span id="brushSpeedVal">3</span>
-            </div>
-            <div class="slider-item">
-                <span>❤️ Vida</span>
-                <input type="range" id="brushHp" min="1" max="30" value="1">
-                <span id="brushHpVal">1</span>
-            </div>
-            <div class="note">Cada enemigo que pongas usa estos valores (azul = velocidad, rojo = vida). Toca uno ya puesto para reemplazarlo con los valores actuales. Espada quita 4, flecha 3 y bomba 8.</div>
-        </div>
-        <div id="laserPanel" class="tool-panel hidden">
-            <span>Dirección del láser:</span>
-            <button class="tool-btn active" data-dir="R">➡️</button>
-            <button class="tool-btn" data-dir="L">⬅️</button>
-            <button class="tool-btn" data-dir="U">⬆️</button>
-            <button class="tool-btn" data-dir="D">⬇️</button>
-            <div class="note">El rayo avanza desde el emisor hasta chocar con pared, caja, puerta u otro emisor. Toca un láser ya puesto para cambiarle la dirección.</div>
-        </div>
+        <div id="brushPanel" class="tool-panel hidden"></div>
         <div id="pendingBar" class="tool-panel hidden">
             <span id="pendingText"></span>
-            <button class="tool-btn" id="pendingCancel">❌ Cancelar (quita la puerta)</button>
+            <button class="tool-btn" id="pendingCancel">❌ Cancelar</button>
         </div>
 
         <div class="slider-group">
@@ -567,11 +595,6 @@
                 <span>🏃 Velocidad personaje</span>
                 <input type="range" id="playerSpeed" min="2" max="10" value="5">
                 <span id="playerSpeedVal">5</span>
-            </div>
-            <div class="slider-item">
-                <span>👁️ Visión enemigos</span>
-                <input type="range" id="enemyVision" min="2" max="8" value="5">
-                <span id="enemyVisionVal">5</span>
             </div>
         </div>
 
@@ -583,6 +606,7 @@
         <div class="btn-group">
             <button class="btn btn-primary" id="startGameBtn">▶️ Probar cuarto</button>
             <button class="btn" id="saveRoomBtn">💾 Terminar y guardar</button>
+            <button class="btn" id="saveDraftBtn">🛠️ Guardar para editar luego</button>
             <button class="btn" id="clearGridBtn">🧹 Limpiar</button>
         </div>
 
@@ -602,8 +626,32 @@
         <p id="noRoomsMsg" style="text-align:center; color: var(--text-secondary);">No hay cuartos guardados todavía.</p>
     </div>
 
+    <div id="draftScreen" class="screen hidden">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2 style="color: var(--accent);">🚧 Cuartos en construcción</h2>
+            <button class="btn" id="backToMainFromDrafts" style="padding: 0.5rem 1rem;">← Menú</button>
+        </div>
+        <p class="route-hint">Estos cuartos todavía no están en la ruta. Edítalos y, cuando estén listos, usa "Terminar y guardar".</p>
+        <div id="draftListContainer" class="room-list"></div>
+        <p id="noDraftsMsg" style="text-align:center; color: var(--text-secondary);">No tienes cuartos en construcción.</p>
+    </div>
+
     <div class="footer">
         <a href="https://jaid227.github.io/EntropiaDigital/" target="_blank" rel="noopener">→ © 2026 Mandrágora Entrópica | Desarrollo Web Estratégico ←</a>
+    </div>
+</div>
+
+<!-- MODAL: qué aparece al romper los diamantes blancos -->
+<div id="spawnModal" class="modal hidden">
+    <div class="modal-box">
+        <h3>✴️ ¿Qué aparecerá?</h3>
+        <p style="font-size:0.85rem;color:var(--text-secondary);">Elige el objeto y sus valores. Aparecerá cuando el personaje golpee todos los diamantes blancos.</p>
+        <div id="spawnPalette" class="palette"></div>
+        <div id="spawnParams" class="tool-panel hidden"></div>
+        <div class="btn-group">
+            <button class="btn btn-primary" id="spawnOk" style="padding:0.6rem 1.2rem;font-size:1rem;">✅ Aceptar</button>
+            <button class="btn" id="spawnCancel" style="padding:0.6rem 1.2rem;font-size:1rem;">❌ Cancelar</button>
+        </div>
     </div>
 </div>
 
@@ -627,55 +675,87 @@
 (function(){
     'use strict';
 
+    /* =====================================================
+       CONSTANTES
+    ===================================================== */
     const ID_COL = { 1: '#e74c3c', 2: '#3498db', 3: '#2ecc71', 4: '#e0a800' };
     const ICONS = {
-        wall: '🧱', coin: '🪙', enemy: '👹', enemy2: '👺', start: '🏁', exit: '🚪',
-        key: '🔑', keydoor: '🔒', spikes: '🔺', btn: '🔘', bdoor: '🚧', block: '📦',
+        wall: '🧱', coin: '🪙', enemy: '👹', enemy2: '👺', boss: '👁️', start: '🏁', exit: '🚪',
+        key: '🔑', keydoor: '🔒', spikes: '🔺', btn: '🔘', bdoor: '🚧', hbtn: '⏺️',
+        ddoor: '💠', diamond: '💎', rdoor: '🟥', rdiamond: '♦️', mwall: '🔳', mwbtn: '🟦',
+        wd: '◇', wspawn: '✴️', block: '📦', mirror: '🪞',
         arrowU: '⬆️', arrowD: '⬇️', arrowL: '⬅️', arrowR: '➡️',
-        stone: '🪨', hole: '', sword: '🗡️', bow: '🏹', ammo: '➶', bomb: '💣', shield: '🛡️',
-        ddoor: '💠', diamond: '💎', laser: '🔴'
+        stone: '🪨', hole: '🕳️', sword: '🗡️', bow: '🏹', ammo: '➶', bomb: '💣', shield: '🛡️', laser: '🔴'
     };
     const DIR_CHAR = { U: '↑', D: '↓', L: '←', R: '→' };
+    const DIR_EMO = { U: '⬆️', D: '⬇️', L: '⬅️', R: '➡️' };
+    const MIRROR_CHAR = { NE: '↗', NW: '↖', SE: '↘', SW: '↙' };
+    // Espejos de una cara: la cara reflectante mira a la esquina indicada
+    const MIRROR_REFLECT = { NE: { D: 'R', L: 'U' }, NW: { D: 'L', R: 'U' }, SE: { U: 'R', L: 'D' }, SW: { U: 'L', R: 'D' } };
     const DIRS = { U: [0, -1], D: [0, 1], L: [-1, 0], R: [1, 0] };
     const OPP = { U: 'D', D: 'U', L: 'R', R: 'L' };
     const ARROW_DIR = { arrowU: 'U', arrowD: 'D', arrowL: 'L', arrowR: 'R' };
+    const DIR_IDX = { U: 0, D: 1, L: 2, R: 3 };
     const SPIKE_PERIOD = 3000, SPIKE_WARN_AT = 1500, SPIKE_UP_AT = 1800;
     const BOMB_FUSE = 1500;
-    const DMG = { sword: 4, arrow: 3, bomb: 8 };
-    const PAIRS = { bdoor: 'btn', ddoor: 'diamond' };
-    const BEAM_STOP = ['wall', 'keydoor', 'bdoor', 'ddoor', 'stone', 'laser'];
-    const ENEMY_BLOCK = ['wall', 'keydoor', 'bdoor', 'ddoor', 'stone', 'hole', 'diamond', 'laser'];
-    const PLAYER_SOLID = ['wall', 'bdoor', 'ddoor', 'stone', 'hole', 'diamond', 'laser'];
+    const DMG = { sword: 8, arrow: 7, bomb: 20 };
+    const PAIRS = { bdoor: 'btn', ddoor: 'diamond', rdoor: 'rdiamond', mwall: 'mwbtn' };
+    const PARTNER_LABEL = {
+        btn: '🔘 el botón', diamond: '💎 el diamante azul',
+        rdiamond: '♦️ el diamante rojo', mwbtn: '🟦 el botón de la pared'
+    };
+    const DOOR_NAME = { bdoor: 'puerta-botón', ddoor: 'puerta-diamante', rdoor: 'puerta-láser', mwall: 'pared movible' };
+    const SOLID = ['wall', 'bdoor', 'ddoor', 'rdoor', 'stone', 'hole', 'diamond', 'rdiamond', 'wd', 'laser'];
+    const ENEMY_BLOCK = SOLID.concat(['keydoor']);
+    const BEAM_STOP = ['wall', 'keydoor', 'bdoor', 'ddoor', 'rdoor', 'stone', 'laser'];
+    const ARROW_STOP = BEAM_STOP.concat(['rdiamond']);
+    const BLOCK_OK = ['floor', 'btn', 'mwbtn', 'hbtn', 'spikes', 'diamondY', 'wdY', 'arrowU', 'arrowD', 'arrowL', 'arrowR'];
+    const WALL_OK = ['floor', 'diamondY', 'wdY', 'arrowU', 'arrowD', 'arrowL', 'arrowR'];
     const TERRITORY = 2;
     const HUD_HOLD_MS = 2200;
+    const BOSS_OPEN_MS = 4000;
 
-    const base = t => String(t).split(':')[0];
-    const tileId = t => parseInt(String(t).split(':')[1]) || 1;
-    const laserDir = t => String(t).split(':')[1] || 'R';
+    const part = (t, i) => String(t).split(':')[i];
+    const base = t => part(t, 0);
+    const tileId = t => parseInt(part(t, 1)) || 1;
+    const dirOf = t => part(t, 1) || 'R';
+    const mwDir = t => part(t, 2) || 'R';
     function enemyProps(t, room) {
         const p = String(t).split(':');
-        let sp = parseInt(p[1]), hp = parseInt(p[2]);
-        if (!sp) sp = (room && room.enemySpeed) || 3;
-        if (!hp) hp = 1;
-        return { sp, hp };
+        return {
+            sp: parseInt(p[1]) || ((room && room.enemySpeed) || 3),
+            hp: parseInt(p[2]) || 1,
+            vis: parseInt(p[3]) || ((room && room.vision) || 5),
+            key: p[4] === '1'
+        };
+    }
+    function bossProps(t) {
+        const p = String(t).split(':');
+        return { sp: parseInt(p[1]) || 3, hp: parseInt(p[2]) || 10, minis: parseInt(p[3]) || 3, key: p[4] === '1' };
     }
     const $ = id => document.getElementById(id);
     const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    const clone = o => JSON.parse(JSON.stringify(o));
 
-    const mainScreen = $('mainScreen'), editorScreen = $('editorScreen'), listScreen = $('listScreen');
+    /* =====================================================
+       DOM
+    ===================================================== */
+    const mainScreen = $('mainScreen'), editorScreen = $('editorScreen'), listScreen = $('listScreen'), draftScreen = $('draftScreen');
     const editorGrid = $('editorGrid'), gameStatus = $('gameStatus'), gridSizeSelect = $('gridSizeSelect');
     const playerSpeedInput = $('playerSpeed'), playerSpeedVal = $('playerSpeedVal');
-    const enemyVisionInput = $('enemyVision'), enemyVisionVal = $('enemyVisionVal');
-    const brushSpeedInput = $('brushSpeed'), brushSpeedVal = $('brushSpeedVal');
-    const brushHpInput = $('brushHp'), brushHpVal = $('brushHpVal');
-    const enemyPanel = $('enemyPanel'), laserPanel = $('laserPanel');
+    const brushPanel = $('brushPanel');
     const pendingBar = $('pendingBar'), pendingText = $('pendingText');
     const roomListContainer = $('roomListContainer'), noRoomsMsg = $('noRoomsMsg');
+    const draftListContainer = $('draftListContainer'), noDraftsMsg = $('noDraftsMsg');
+    const spawnModal = $('spawnModal'), spawnPalette = $('spawnPalette'), spawnParams = $('spawnParams');
     const gameScreen = $('gameScreen'), canvas = $('gameCanvas'), ctx = canvas.getContext('2d');
     const hud = $('hud'), banner = $('gameBanner'), overlay = $('gameOverlay');
     const ovTitle = $('ovTitle'), ovButtons = $('ovButtons');
     const btnMenu = $('btnMenu'), btnSword = $('btnSword'), btnBow = $('btnBow'), btnBomb = $('btnBomb');
 
+    /* =====================================================
+       AUDIO
+    ===================================================== */
     let audioCtx = null;
     function initAudio() {
         try {
@@ -713,19 +793,27 @@
             case 'slash': tone(700, 200, 0.12, 0.12, 'triangle'); break;
             case 'shoot': tone(500, 1000, 0.12, 0.1, 'triangle'); break;
             case 'boom': tone(140, 40, 0.5, 0.3, 'sawtooth'); break;
-            case 'tick': tone(900, 900, 0.04, 0.05, 'square'); break;
+            case 'clang': tone(1200, 900, 0.1, 0.1, 'square'); break;
         }
     }
 
+    /* =====================================================
+       EDITOR: ESTADO
+    ===================================================== */
     let GRID_SIZE = 12;
     let board = [];
+    let groups = {};                 // diamantes blancos: gid -> {count, obj}
     let selectedTool = 'floor';
-    let playerSpeed = 5, enemyVision = 5;
-    const brush = { speed: 3, hp: 1, laserDir: 'R' };
-    let pending = null;
+    let playerSpeed = 5;
+    let currentDraftId = null;
+    const brush = { speed: 3, hp: 1, vision: 5, key: false, minis: 3, qty: 1, dir: 'R', count: 3, hid: 1 };
+    let pending = null;              // {type:'pair'|'wgroup', ...}
+    let spawnTool = null, spawnStore = null;
+    const TOOL_LABELS = {};
+    document.querySelectorAll('#toolbar .tool-btn').forEach(b => { TOOL_LABELS[b.dataset.tool] = b.textContent.trim(); });
 
     function emptyBoard(n) { return Array.from({ length: n }, () => Array(n).fill('floor')); }
-    function initEmptyBoard() { board = emptyBoard(GRID_SIZE); pending = null; hidePending(); }
+    function initEmptyBoard() { board = emptyBoard(GRID_SIZE); groups = {}; pending = null; hidePending(); closeSpawnModal(); }
     function countTile(type) {
         let c = 0;
         for (const row of board) for (const t of row) if (base(t) === type) c++;
@@ -738,6 +826,123 @@
         if (ms) statusTimer = setTimeout(() => gameStatus.textContent = '', ms);
     }
 
+    /* =====================================================
+       EDITOR: PANEL DE VALORES
+    ===================================================== */
+    const PSPEC = {
+        speed:  { t: 'range', label: '⚡ Velocidad', min: 1, max: 'spd' },
+        hp:     { t: 'range', label: '❤️ Vida', min: 1, max: 30 },
+        hpBoss: { t: 'range', label: '❤️ Vida', min: 1, max: 50, field: 'hp' },
+        vision: { t: 'range', label: '👁️ Visión', min: 2, max: 10 },
+        minis:  { t: 'range', label: '👁️ Mini ojos', min: 1, max: 8 },
+        qty:    { t: 'range', label: '📦 Cantidad', min: 1, max: 20 },
+        count:  { t: 'range', label: '◇ Diamantes blancos', min: 1, max: 5 },
+        key:    { t: 'check', label: '🔑 Suelta una llave al morir' },
+        dir:    { t: 'dir', label: 'Dirección:' },
+        hid:    { t: 'doorid', label: 'Abre la puerta-botón número:' }
+    };
+    const TOOL_PARAMS = {
+        enemy: ['speed', 'hp', 'vision', 'key'],
+        enemy2: ['speed', 'hp', 'vision', 'key'],
+        boss: ['speed', 'hpBoss', 'minis', 'key'],
+        ammo: ['qty'], bomb: ['qty'],
+        laser: ['dir'], mwall: ['dir'],
+        hbtn: ['hid'], wdiamond: ['count']
+    };
+    const TOOL_NOTES = {
+        enemy: 'Cada enemigo usa estos valores (azul = velocidad, rojo = vida, 🔑 = suelta llave). Toca uno ya puesto para reemplazarlo. Espada quita 8, flecha 7 y bomba 20.',
+        enemy2: 'Territorial: solo te sigue un poco, sin salir de su área. Toca uno ya puesto para reemplazarlo.',
+        boss: 'El jefe saca sus mini ojos uno por uno. Al matar a todos abre el ojo unos segundos para que lo ataques; si no muere, repite.',
+        ammo: 'Es una bolsa: al recogerla das esa cantidad de flechas. Toca una ya puesta para cambiar su cantidad.',
+        bomb: 'Es una bolsa: al recogerla das esa cantidad de bombas. Toca una ya puesta para cambiar su cantidad.',
+        laser: 'El rayo avanza hasta chocar con pared, caja, puerta o emisor. Los espejos lo desvían. Toca un láser ya puesto para cambiarlo.',
+        mwall: 'Elige hacia dónde se desliza la pared al pisar su botón. Al colocarla te pedirá dónde va el botón.',
+        hbtn: 'Botón sostenido: la puerta-botón elegida solo está abierta mientras algo (una caja o el personaje) lo pisa.',
+        wdiamond: 'Elige cuántos diamantes (1-5), coloca cada uno, luego la casilla donde aparecerá algo y por último qué aparecerá.'
+    };
+
+    function doorExists(id) {
+        for (const row of board) for (const t of row) if (base(t) === 'bdoor' && tileId(t) === id) return true;
+        for (const k in groups) if (groups[k].obj && base(groups[k].obj) === 'bdoor' && tileId(groups[k].obj) === id) return true;
+        return false;
+    }
+
+    function buildControls(box, names, st) {
+        box.innerHTML = '';
+        names.forEach(nm => {
+            const sp = PSPEC[nm], f = sp.field || nm;
+            const row = document.createElement('div');
+            row.className = 'slider-item';
+            const lab = document.createElement('span');
+            lab.textContent = sp.label;
+            row.appendChild(lab);
+            if (sp.t === 'range') {
+                const max = sp.max === 'spd' ? Math.max(1, playerSpeed - 1) : sp.max;
+                if (st[f] > max) st[f] = max;
+                const inp = document.createElement('input');
+                inp.type = 'range'; inp.min = sp.min; inp.max = max; inp.value = st[f];
+                const val = document.createElement('span');
+                val.textContent = st[f];
+                inp.addEventListener('input', () => { st[f] = parseInt(inp.value); val.textContent = st[f]; });
+                row.append(inp, val);
+            } else if (sp.t === 'check') {
+                const cb = document.createElement('input');
+                cb.type = 'checkbox'; cb.checked = !!st[f];
+                cb.addEventListener('change', () => { st[f] = cb.checked; });
+                row.appendChild(cb);
+            } else if (sp.t === 'dir') {
+                ['L', 'U', 'D', 'R'].forEach(d => {
+                    const b = document.createElement('button');
+                    b.className = 'tool-btn' + (st.dir === d ? ' active' : '');
+                    b.textContent = DIR_EMO[d];
+                    b.addEventListener('click', () => {
+                        st.dir = d;
+                        row.querySelectorAll('.tool-btn').forEach(x => x.classList.remove('active'));
+                        b.classList.add('active');
+                    });
+                    row.appendChild(b);
+                });
+            } else if (sp.t === 'doorid') {
+                for (let i = 1; i <= 4; i++) {
+                    const b = document.createElement('button');
+                    b.className = 'tool-btn' + (st.hid === i ? ' active' : '');
+                    b.textContent = i;
+                    b.style.borderColor = ID_COL[i];
+                    b.disabled = !doorExists(i);
+                    b.addEventListener('click', () => {
+                        st.hid = i;
+                        row.querySelectorAll('.tool-btn').forEach(x => x.classList.remove('active'));
+                        b.classList.add('active');
+                    });
+                    row.appendChild(b);
+                }
+            }
+            box.appendChild(row);
+        });
+    }
+    function renderBrushPanel() {
+        const names = TOOL_PARAMS[selectedTool];
+        if (!names) { brushPanel.classList.add('hidden'); return; }
+        buildControls(brushPanel, names, brush);
+        const note = document.createElement('div');
+        note.className = 'note';
+        note.textContent = TOOL_NOTES[selectedTool] || '';
+        brushPanel.appendChild(note);
+        brushPanel.classList.remove('hidden');
+    }
+
+    function tileFromTool(tool, st) {
+        if (tool === 'enemy' || tool === 'enemy2') return `${tool}:${st.speed}:${st.hp}:${st.vision}:${st.key ? 1 : 0}`;
+        if (tool === 'boss') return `boss:${st.speed}:${st.hp}:${st.minis}:${st.key ? 1 : 0}`;
+        if (tool === 'laser') return `laser:${st.dir}`;
+        if (tool === 'ammo' || tool === 'bomb') return `${tool}:${st.qty}`;
+        if (tool.indexOf('mirror') === 0) return 'mirror:' + tool.slice(6);
+        return tool;
+    }
+
+    /* =====================================================
+       EDITOR: RENDER
+    ===================================================== */
     function addBadge(cell, text, bg, cls) {
         const bd = document.createElement('span');
         bd.className = 'badge' + (cls ? ' ' + cls : '');
@@ -754,28 +959,51 @@
                 const t = board[y][x], b = base(t);
                 const cell = document.createElement('div');
                 cell.className = 'cell ' + b;
-                if (pending && pending.x === x && pending.y === y) cell.classList.add('pending');
+                if (pending && pending.type === 'pair' && pending.x === x && pending.y === y) cell.classList.add('pending');
                 if (ICONS[b]) {
                     const span = document.createElement('span');
-                    span.className = 'icon' + (b === 'ammo' ? ' ammo' : '');
+                    span.className = 'icon' + (b === 'ammo' ? ' ammo' : (b === 'wd' ? ' txt' : ''));
                     span.textContent = ICONS[b];
                     cell.appendChild(span);
                 }
-                if (b === 'btn' || b === 'bdoor' || b === 'ddoor' || b === 'diamond') {
+                if (b === 'btn' || b === 'bdoor' || b === 'ddoor' || b === 'diamond' || b === 'rdoor' || b === 'rdiamond' || b === 'mwbtn' || b === 'hbtn') {
                     const id = tileId(t);
                     addBadge(cell, id, ID_COL[id]);
+                } else if (b === 'mwall') {
+                    const id = tileId(t);
+                    addBadge(cell, id, ID_COL[id]);
+                    addBadge(cell, DIR_CHAR[mwDir(t)], '#444', 'tl');
                 } else if (b === 'enemy' || b === 'enemy2') {
                     const pr = enemyProps(t, null);
                     addBadge(cell, pr.sp, null, 'tl');
                     addBadge(cell, pr.hp, null, 'hp');
+                    if (pr.key) addBadge(cell, '🔑', null, 'tr');
+                    cell.title = `Velocidad ${pr.sp} · Vida ${pr.hp} · Visión ${pr.vis}` + (pr.key ? ' · Suelta llave' : '');
+                } else if (b === 'boss') {
+                    const pr = bossProps(t);
+                    addBadge(cell, pr.sp, null, 'tl');
+                    addBadge(cell, pr.hp, null, 'hp');
+                    addBadge(cell, pr.minis, null, 'bl');
+                    if (pr.key) addBadge(cell, '🔑', null, 'tr');
+                    cell.title = `Jefe · Velocidad ${pr.sp} · Vida ${pr.hp} · Mini ojos ${pr.minis}` + (pr.key ? ' · Suelta llave' : '');
                 } else if (b === 'laser') {
-                    addBadge(cell, DIR_CHAR[laserDir(t)], '#c0392b');
+                    addBadge(cell, DIR_CHAR[dirOf(t)], '#c0392b');
+                } else if (b === 'mirror') {
+                    addBadge(cell, MIRROR_CHAR[part(t, 1)] || '↗', '#4a6a8a');
+                } else if (b === 'ammo' || b === 'bomb') {
+                    const q = tileId(t);
+                    if (q > 1) addBadge(cell, 'x' + q, '#444');
+                } else if (b === 'wd') {
+                    addBadge(cell, tileId(t), '#6b7280');
+                } else if (b === 'wspawn') {
+                    const gr = groups[tileId(t)];
+                    addBadge(cell, gr && gr.obj ? (ICONS[base(gr.obj)] || '?') : '?', '#555');
+                    addBadge(cell, tileId(t), '#6b7280', 'tl');
                 }
                 cell.addEventListener('click', () => handleCellClick(x, y));
                 editorGrid.appendChild(cell);
             }
         }
-        // Ajustar tamaño de celda según ancho de pantalla
         const isSmall = window.innerWidth <= 700;
         const isTiny = window.innerWidth <= 450;
         const cs = isTiny ? 34 : (isSmall ? 40 : 48);
@@ -787,7 +1015,46 @@
     function removeUnique(type) {
         for (let y = 0; y < GRID_SIZE; y++) for (let x = 0; x < GRID_SIZE; x++) if (base(board[y][x]) === type) board[y][x] = 'floor';
     }
+    function hasTile(type, id) {
+        for (const row of board) for (const t of row) if (base(t) === type && tileId(t) === id) return true;
+        return false;
+    }
+    function removeById(type, id) {
+        for (let y = 0; y < GRID_SIZE; y++) for (let x = 0; x < GRID_SIZE; x++) {
+            if (base(board[y][x]) === type && tileId(board[y][x]) === id) board[y][x] = 'floor';
+        }
+    }
+    function removeGroup(gid) {
+        for (let y = 0; y < GRID_SIZE; y++) for (let x = 0; x < GRID_SIZE; x++) {
+            const t = board[y][x], b = base(t);
+            if ((b === 'wd' || b === 'wspawn') && tileId(t) === gid) board[y][x] = 'floor';
+        }
+        delete groups[gid];
+    }
 
+    /* Limpieza: grupos blancos incompletos, puertas sin pareja, parejas sin puerta */
+    function cleanGroups() {
+        const pg = pending && pending.type !== undefined && pending.gid !== undefined ? pending.gid : null;
+        Object.keys(groups).forEach(k => {
+            const gid = parseInt(k);
+            if (gid === pg) return;
+            const gr = groups[k];
+            let diam = 0, spawn = 0;
+            for (const row of board) for (const t of row) {
+                if (base(t) === 'wd' && tileId(t) === gid) diam++;
+                if (base(t) === 'wspawn' && tileId(t) === gid) spawn++;
+            }
+            let ok = gr.obj && diam === gr.count && spawn === 1;
+            if (ok && PAIRS[base(gr.obj)]) ok = hasTile(PAIRS[base(gr.obj)], tileId(gr.obj));
+            if (!ok) removeGroup(gid);
+        });
+        // marcas sueltas sin grupo
+        const pgid = pg;
+        for (let y = 0; y < GRID_SIZE; y++) for (let x = 0; x < GRID_SIZE; x++) {
+            const t = board[y][x], b = base(t);
+            if ((b === 'wd' || b === 'wspawn') && !groups[tileId(t)] && tileId(t) !== pgid) board[y][x] = 'floor';
+        }
+    }
     function cleanOrphans() {
         for (const dk of Object.keys(PAIRS)) {
             const pk = PAIRS[dk];
@@ -796,133 +1063,238 @@
                 if (base(t) === dk) doorIds.add(tileId(t));
                 if (base(t) === pk) partIds.add(tileId(t));
             }
+            for (const k in groups) if (groups[k].obj && base(groups[k].obj) === dk) doorIds.add(tileId(groups[k].obj));
             for (let y = 0; y < GRID_SIZE; y++) for (let x = 0; x < GRID_SIZE; x++) {
                 const t = board[y][x], b = base(t), id = tileId(t);
-                if (b === dk && !partIds.has(id) && !(pending && pending.kind === dk && pending.id === id)) board[y][x] = 'floor';
+                const pend = pending && pending.type === 'pair' && pending.kind === dk && pending.id === id;
+                if (b === dk && !partIds.has(id) && !pend) board[y][x] = 'floor';
                 else if (b === pk && !doorIds.has(id)) board[y][x] = 'floor';
             }
+        }
+        // botones sostenidos: necesitan su puerta-botón
+        for (let y = 0; y < GRID_SIZE; y++) for (let x = 0; x < GRID_SIZE; x++) {
+            if (base(board[y][x]) === 'hbtn' && !doorExists(tileId(board[y][x]))) board[y][x] = 'floor';
         }
     }
 
     function updateWarn() {
         const bow = countTile('bow'), ammo = countTile('ammo');
         let msg = '';
-        if (bow && !ammo) msg = '⚠️ El arco no sirve sin flechas: coloca al menos una.';
+        if (bow && !ammo) msg = '⚠️ El arco no sirve sin flechas: coloca al menos una bolsa de flechas.';
         else if (!bow && ammo) msg = '⚠️ Las flechas no sirven sin arco.';
-        else if (countTile('diamond') && !countTile('sword') && !(bow && ammo)) msg = '⚠️ Para activar el diamante necesitas espada o arco con flechas.';
+        else if ((countTile('diamond') || Object.keys(groups).length) && !countTile('sword') && !(bow && ammo)) msg = '⚠️ Para activar los diamantes necesitas espada o arco con flechas.';
         $('editorWarn').textContent = msg;
     }
-    function afterEdit() { cleanOrphans(); renderGrid(); updateWarn(); }
+    function afterEdit() {
+        cleanGroups(); cleanOrphans();
+        renderGrid(); updateWarn();
+        if (selectedTool === 'hbtn') renderBrushPanel();
+    }
 
+    /* =====================================================
+       EDITOR: PAREJAS Y GRUPOS (flujo guiado)
+    ===================================================== */
     function freeId(kind) {
         const used = new Set();
         for (const row of board) for (const t of row) if (base(t) === kind) used.add(tileId(t));
+        for (const k in groups) if (groups[k].obj && base(groups[k].obj) === kind) used.add(tileId(groups[k].obj));
         for (let i = 1; i <= 4; i++) if (!used.has(i)) return i;
         return 0;
     }
-    function removeById(type, id) {
-        for (let y = 0; y < GRID_SIZE; y++) for (let x = 0; x < GRID_SIZE; x++) {
-            if (base(board[y][x]) === type && tileId(board[y][x]) === id) board[y][x] = 'floor';
+    function freeGid() {
+        for (let i = 1; i <= 9; i++) {
+            if (groups[i]) continue;
+            let used = false;
+            for (const row of board) for (const t of row) if ((base(t) === 'wd' || base(t) === 'wspawn') && tileId(t) === i) used = true;
+            if (!used) return i;
         }
+        return 0;
     }
     function showPending() {
-        const label = pending.kind === 'bdoor' ? '🔘 el botón' : '💎 el diamante';
-        pendingText.textContent = `Puerta número ${pending.id} lista: toca la casilla donde irá ${label}. (Si tocas la puerta o cancelas, se quita.)`;
+        if (!pending) return;
+        let txt = '';
+        if (pending.type === 'pair') {
+            txt = `${DOOR_NAME[pending.kind][0].toUpperCase() + DOOR_NAME[pending.kind].slice(1)} número ${pending.id} lista: toca la casilla donde irá ${PARTNER_LABEL[PAIRS[pending.kind]]}.`;
+            if (!pending.virtual) txt += ' (Si tocas la puerta o cancelas, se quita.)';
+        } else if (pending.step === 'diamonds') {
+            txt = `◇ Grupo ${pending.gid}: coloca ${pending.remaining} diamante(s) blanco(s) más.`;
+        } else if (pending.step === 'spawn') {
+            txt = '✴️ Ahora toca la casilla donde aparecerá el objeto.';
+        } else {
+            txt = '✴️ Elige qué aparecerá…';
+        }
+        pendingText.textContent = txt;
         pendingBar.classList.remove('hidden');
     }
     function hidePending() { pendingBar.classList.add('hidden'); }
+    function cancelPending() {
+        if (!pending) return;
+        const p = pending;
+        pending = null;
+        hidePending();
+        closeSpawnModal();
+        if (p.type === 'pair') {
+            if (p.virtual) removeGroup(p.gid);
+            else if (base(board[p.y][p.x]) === p.kind) board[p.y][p.x] = 'floor';
+        } else removeGroup(p.gid);
+        afterEdit();
+    }
+    $('pendingCancel').addEventListener('click', cancelPending);
+
     function startPair(kind, x, y) {
         if (base(board[y][x]) === kind) {
             const id = tileId(board[y][x]);
             removeById(PAIRS[kind], id);
-            pending = { kind, id, x, y };
+            pending = { type: 'pair', kind, id, x, y };
         } else {
             const id = freeId(kind);
             if (!id) { setStatus('Ya usaste los 4 números de este tipo de puerta.', 2500); return; }
-            board[y][x] = `${kind}:${id}`;
-            pending = { kind, id, x, y };
+            board[y][x] = kind === 'mwall' ? `mwall:${id}:${brush.dir}` : `${kind}:${id}`;
+            pending = { type: 'pair', kind, id, x, y };
         }
-        cleanOrphans(); renderGrid(); showPending(); updateWarn();
+        cleanGroups(); cleanOrphans(); renderGrid(); showPending(); updateWarn();
     }
-    function cancelPending() {
-        if (!pending) return;
-        const p = pending;
-        if (base(board[p.y][p.x]) === p.kind) board[p.y][p.x] = 'floor';
-        pending = null;
-        hidePending();
-        afterEdit();
+    function startGroup(x, y) {
+        const gid = freeGid();
+        if (!gid) { setStatus('Máximo 9 grupos de diamantes blancos por cuarto.', 2500); return; }
+        const count = brush.count;
+        board[y][x] = `wd:${gid}`;
+        groups[gid] = { count, obj: null };
+        pending = { type: 'wgroup', gid, remaining: count - 1, step: count - 1 > 0 ? 'diamonds' : 'spawn' };
+        cleanOrphans(); renderGrid(); showPending();
     }
     function resolvePending(x, y) {
-        if (x === pending.x && y === pending.y) { cancelPending(); return; }
-        board[y][x] = `${PAIRS[pending.kind]}:${pending.id}`;
-        pending = null;
-        hidePending();
-        afterEdit();
-        setStatus('✅ Conectados: ya funcionan juntos.', 1800);
+        const p = pending;
+        if (p.type === 'pair') {
+            if (!p.virtual && x === p.x && y === p.y) { cancelPending(); return; }
+            board[y][x] = `${PAIRS[p.kind]}:${p.id}`;
+            pending = null;
+            hidePending();
+            afterEdit();
+            setStatus('✅ Conectados: ya funcionan juntos.', 1800);
+            return;
+        }
+        // grupo de diamantes blancos
+        const cur = board[y][x], cb = base(cur);
+        if ((cb === 'wd' || cb === 'wspawn') && tileId(cur) === p.gid) { setStatus('Esa casilla ya es parte del grupo.', 1500); return; }
+        if (p.step === 'diamonds') {
+            board[y][x] = `wd:${p.gid}`;
+            p.remaining--;
+            if (p.remaining <= 0) p.step = 'spawn';
+        } else if (p.step === 'spawn') {
+            board[y][x] = `wspawn:${p.gid}`;
+            p.step = 'object';
+            cleanOrphans(); renderGrid(); showPending();
+            openSpawnModal();
+            return;
+        } else return;
+        cleanOrphans(); renderGrid(); showPending();
     }
-    $('pendingCancel').addEventListener('click', cancelPending);
+
+    function placeHold(x, y) {
+        if (!doorExists(brush.hid)) { setStatus(`Primero coloca la puerta-botón número ${brush.hid}.`, 2500); return; }
+        board[y][x] = `hbtn:${brush.hid}`;
+        afterEdit();
+    }
 
     function handleCellClick(x, y) {
         if (pending) { resolvePending(x, y); return; }
         const tool = selectedTool;
         if (tool === 'erase' || tool === 'floor') { board[y][x] = 'floor'; afterEdit(); return; }
-        if (tool === 'bdoor' || tool === 'ddoor') { startPair(tool, x, y); return; }
+        if (PAIRS[tool]) { startPair(tool, x, y); return; }
+        if (tool === 'wdiamond') { startGroup(x, y); return; }
+        if (tool === 'hbtn') { placeHold(x, y); return; }
         if (tool === 'start' || tool === 'exit' || tool === 'bow' || tool === 'sword') removeUnique(tool);
-        if (tool === 'enemy' || tool === 'enemy2') board[y][x] = `${tool}:${brush.speed}:${brush.hp}`;
-        else if (tool === 'laser') board[y][x] = `laser:${brush.laserDir}`;
-        else board[y][x] = tool;
+        board[y][x] = tileFromTool(tool, brush);
         afterEdit();
     }
 
+    /* --- Modal: qué aparece --- */
+    function buildPalette() {
+        const skip = ['floor', 'erase', 'start', 'exit', 'wdiamond', 'hbtn'];
+        spawnPalette.innerHTML = '';
+        Object.keys(TOOL_LABELS).forEach(tool => {
+            if (skip.indexOf(tool) >= 0) return;
+            const b = document.createElement('button');
+            b.className = 'tool-btn';
+            b.dataset.tool = tool;
+            b.textContent = TOOL_LABELS[tool];
+            b.addEventListener('click', () => {
+                spawnTool = tool;
+                spawnPalette.querySelectorAll('.tool-btn').forEach(x => x.classList.remove('active'));
+                b.classList.add('active');
+                const names = TOOL_PARAMS[tool];
+                if (names && tool !== 'wdiamond' && tool !== 'hbtn') {
+                    buildControls(spawnParams, names, spawnStore);
+                    spawnParams.classList.remove('hidden');
+                } else spawnParams.classList.add('hidden');
+            });
+            spawnPalette.appendChild(b);
+        });
+    }
+    function openSpawnModal() {
+        spawnTool = null;
+        spawnStore = Object.assign({}, brush);
+        spawnParams.classList.add('hidden');
+        spawnPalette.querySelectorAll('.tool-btn').forEach(x => x.classList.remove('active'));
+        spawnModal.classList.remove('hidden');
+    }
+    function closeSpawnModal() { spawnModal.classList.add('hidden'); }
+    $('spawnCancel').addEventListener('click', cancelPending);
+    $('spawnOk').addEventListener('click', () => {
+        const p = pending;
+        if (!p || p.type !== 'wgroup') return;
+        if (!spawnTool) { setStatus('Elige qué objeto aparecerá.', 1800); return; }
+        const tool = spawnTool, st = spawnStore;
+        if (PAIRS[tool]) {
+            const id = freeId(tool);
+            if (!id) { setStatus('Ya usaste los 4 números de ese tipo de puerta.', 2500); return; }
+            groups[p.gid].obj = tool === 'mwall' ? `mwall:${id}:${st.dir}` : `${tool}:${id}`;
+            closeSpawnModal();
+            pending = { type: 'pair', kind: tool, id, x: -1, y: -1, virtual: true, gid: p.gid };
+            renderGrid(); showPending();
+            return;
+        }
+        groups[p.gid].obj = tileFromTool(tool, st);
+        pending = null;
+        hidePending();
+        closeSpawnModal();
+        afterEdit();
+        setStatus('✅ Grupo de diamantes blancos listo.', 2000);
+    });
+
     function resizeBoard(newSize) {
+        if (pending) cancelPending();
         const nb = emptyBoard(newSize);
         const c = Math.min(GRID_SIZE, newSize);
         for (let y = 0; y < c; y++) for (let x = 0; x < c; x++) nb[y][x] = board[y][x];
         GRID_SIZE = newSize;
         board = nb;
-        if (pending && (pending.x >= newSize || pending.y >= newSize)) { pending = null; hidePending(); }
         afterEdit();
     }
 
-    function updatePanels() {
-        enemyPanel.classList.toggle('hidden', !(selectedTool === 'enemy' || selectedTool === 'enemy2'));
-        laserPanel.classList.toggle('hidden', selectedTool !== 'laser');
-    }
+    /* --- Herramientas --- */
     document.querySelectorAll('#toolbar .tool-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             if (pending) cancelPending();
             document.querySelectorAll('#toolbar .tool-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             selectedTool = btn.dataset.tool;
-            updatePanels();
-            if (selectedTool === 'bdoor') setStatus('Coloca la puerta: te pedirá enseguida dónde va su botón.', 3000);
-            if (selectedTool === 'ddoor') setStatus('Coloca la puerta: te pedirá enseguida dónde va su diamante.', 3000);
+            renderBrushPanel();
+            const hints = {
+                bdoor: 'Coloca la puerta: te pedirá enseguida dónde va su botón.',
+                ddoor: 'Coloca la puerta: te pedirá enseguida dónde va su diamante azul.',
+                rdoor: 'Coloca la puerta-láser: después coloca su diamante rojo (debe tocarlo un láser).',
+                mwall: 'Elige la dirección y coloca la pared: te pedirá dónde va su botón.'
+            };
+            if (hints[selectedTool]) setStatus(hints[selectedTool], 3500);
         });
     });
-    laserPanel.querySelectorAll('[data-dir]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            laserPanel.querySelectorAll('[data-dir]').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            brush.laserDir = btn.dataset.dir;
-        });
-    });
-
-    function updateBrushMax() {
-        const maxE = Math.max(1, playerSpeed - 1);
-        brushSpeedInput.max = maxE;
-        if (brush.speed > maxE) { brush.speed = maxE; brushSpeedInput.value = maxE; }
-        brushSpeedVal.textContent = brush.speed;
-    }
-    brushSpeedInput.addEventListener('input', e => { brush.speed = parseInt(e.target.value); brushSpeedVal.textContent = brush.speed; });
-    brushHpInput.addEventListener('input', e => { brush.hp = parseInt(e.target.value); brushHpVal.textContent = brush.hp; });
     playerSpeedInput.addEventListener('input', e => {
         playerSpeed = parseInt(e.target.value);
         playerSpeedVal.textContent = playerSpeed;
-        updateBrushMax();
-    });
-    enemyVisionInput.addEventListener('input', e => {
-        enemyVision = parseInt(e.target.value);
-        enemyVisionVal.textContent = enemyVision;
+        if (brush.speed > Math.max(1, playerSpeed - 1)) brush.speed = Math.max(1, playerSpeed - 1);
+        renderBrushPanel();
     });
     gridSizeSelect.addEventListener('change', e => {
         const n = parseInt(e.target.value);
@@ -937,14 +1309,23 @@
         setStatus('🧹 Tablero limpiado.', 1500);
     }
     function currentRoomData() {
-        return { board: JSON.parse(JSON.stringify(board)), gridSize: GRID_SIZE, playerSpeed, vision: enemyVision };
+        cleanGroups();
+        return { board: clone(board), gridSize: GRID_SIZE, playerSpeed, vision: 5, groups: clone(groups) };
     }
 
+    /* =====================================================
+       ALMACENAMIENTO: RUTA Y BORRADORES
+    ===================================================== */
     function loadRooms() {
         try { const r = JSON.parse(localStorage.getItem('entropicRooms') || '[]'); return Array.isArray(r) ? r : []; }
         catch (e) { return []; }
     }
     function saveRooms(rooms) { localStorage.setItem('entropicRooms', JSON.stringify(rooms)); }
+    function loadDrafts() {
+        try { const r = JSON.parse(localStorage.getItem('entropicDrafts') || '[]'); return Array.isArray(r) ? r : []; }
+        catch (e) { return []; }
+    }
+    function saveDrafts(d) { localStorage.setItem('entropicDrafts', JSON.stringify(d)); }
 
     function saveCurrentRoom() {
         if (pending) cancelPending();
@@ -958,10 +1339,47 @@
         const rooms = loadRooms();
         rooms.push(data);
         saveRooms(rooms);
+        if (currentDraftId) {
+            saveDrafts(loadDrafts().filter(d => d.id !== currentDraftId));
+            currentDraftId = null;
+        }
         loadRoomList();
         showScreen('list');
     }
+    function saveDraft() {
+        if (pending) cancelPending();
+        const data = currentRoomData();
+        data.id = currentDraftId || ('d' + Date.now());
+        data.timestamp = Date.now();
+        data.name = `Borrador ${GRID_SIZE}×${GRID_SIZE} - ${new Date().toLocaleString()}`;
+        const drafts = loadDrafts();
+        const i = drafts.findIndex(d => d.id === data.id);
+        if (i >= 0) drafts[i] = data; else drafts.push(data);
+        saveDrafts(drafts);
+        currentDraftId = data.id;
+        setStatus('🛠️ Guardado en "Cuartos en construcción". Aún no está en la ruta.', 3000);
+    }
+    function openDraft(d) {
+        pending = null; hidePending(); closeSpawnModal();
+        GRID_SIZE = d.gridSize || d.board.length;
+        gridSizeSelect.value = String(GRID_SIZE);
+        board = clone(d.board);
+        groups = clone(d.groups || {});
+        playerSpeed = d.playerSpeed || 5;
+        playerSpeedInput.value = playerSpeed;
+        playerSpeedVal.textContent = playerSpeed;
+        currentDraftId = d.id;
+        renderGrid(); renderBrushPanel(); updateWarn();
+        showScreen('editor');
+    }
 
+    function makeActionButton(txt, title, fn, dis, cls) {
+        const b = document.createElement('button');
+        b.textContent = txt; b.title = title; b.disabled = !!dis;
+        if (cls) b.className = cls;
+        b.addEventListener('click', fn);
+        return b;
+    }
     function loadRoomList() {
         const rooms = loadRooms();
         roomListContainer.innerHTML = '';
@@ -976,21 +1394,35 @@
             name.textContent = `${i + 1}. ${room.name || 'Cuarto'}`;
             const acts = document.createElement('div');
             acts.className = 'room-actions';
-            const mk = (txt, title, fn, dis, cls) => {
-                const b = document.createElement('button');
-                b.textContent = txt; b.title = title; b.disabled = !!dis;
-                if (cls) b.className = cls;
-                b.addEventListener('click', fn);
-                return b;
-            };
             acts.append(
-                mk('⬆️', 'Subir en la ruta', () => { const r = loadRooms(); [r[i - 1], r[i]] = [r[i], r[i - 1]]; saveRooms(r); loadRoomList(); }, i === 0),
-                mk('⬇️', 'Bajar en la ruta', () => { const r = loadRooms(); [r[i + 1], r[i]] = [r[i], r[i + 1]]; saveRooms(r); loadRoomList(); }, i === rooms.length - 1),
-                mk('▶️', 'Jugar la ruta desde este cuarto', () => startRoute(i)),
-                mk('🗑️', 'Borrar', () => { if (confirm('¿Borrar este cuarto?')) { const r = loadRooms(); r.splice(i, 1); saveRooms(r); loadRoomList(); } }, false, 'danger')
+                makeActionButton('⬆️', 'Subir en la ruta', () => { const r = loadRooms(); [r[i - 1], r[i]] = [r[i], r[i - 1]]; saveRooms(r); loadRoomList(); }, i === 0),
+                makeActionButton('⬇️', 'Bajar en la ruta', () => { const r = loadRooms(); [r[i + 1], r[i]] = [r[i], r[i + 1]]; saveRooms(r); loadRoomList(); }, i === rooms.length - 1),
+                makeActionButton('▶️', 'Jugar la ruta desde este cuarto', () => startRoute(i)),
+                makeActionButton('🗑️', 'Borrar', () => { if (confirm('¿Borrar este cuarto?')) { const r = loadRooms(); r.splice(i, 1); saveRooms(r); loadRoomList(); } }, false, 'danger')
             );
             div.append(name, acts);
             roomListContainer.appendChild(div);
+        });
+    }
+    function loadDraftList() {
+        const drafts = loadDrafts();
+        draftListContainer.innerHTML = '';
+        if (!drafts.length) { noDraftsMsg.style.display = 'block'; return; }
+        noDraftsMsg.style.display = 'none';
+        drafts.forEach(d => {
+            const div = document.createElement('div');
+            div.className = 'room-item';
+            const name = document.createElement('span');
+            name.className = 'room-name';
+            name.textContent = d.name || 'Borrador';
+            const acts = document.createElement('div');
+            acts.className = 'room-actions';
+            acts.append(
+                makeActionButton('✏️', 'Seguir editando', () => openDraft(d)),
+                makeActionButton('🗑️', 'Borrar', () => { if (confirm('¿Borrar este borrador?')) { saveDrafts(loadDrafts().filter(x => x.id !== d.id)); loadDraftList(); } }, false, 'danger')
+            );
+            div.append(name, acts);
+            draftListContainer.appendChild(div);
         });
     }
 
@@ -998,13 +1430,17 @@
         mainScreen.classList.toggle('hidden', s !== 'main');
         editorScreen.classList.toggle('hidden', s !== 'editor');
         listScreen.classList.toggle('hidden', s !== 'list');
+        draftScreen.classList.toggle('hidden', s !== 'drafts');
     }
-    $('goCreateBtn').addEventListener('click', () => { initEmptyBoard(); renderGrid(); updateWarn(); showScreen('editor'); });
+    $('goCreateBtn').addEventListener('click', () => { currentDraftId = null; initEmptyBoard(); renderGrid(); renderBrushPanel(); updateWarn(); showScreen('editor'); });
     $('goListBtn').addEventListener('click', () => { loadRoomList(); showScreen('list'); });
+    $('goDraftsBtn').addEventListener('click', () => { loadDraftList(); showScreen('drafts'); });
     $('backToMainFromEditor').addEventListener('click', () => { if (pending) cancelPending(); showScreen('main'); });
     $('backToMainFromList').addEventListener('click', () => showScreen('main'));
+    $('backToMainFromDrafts').addEventListener('click', () => showScreen('main'));
     $('playRouteBtn').addEventListener('click', () => startRoute(0));
     $('saveRoomBtn').addEventListener('click', saveCurrentRoom);
+    $('saveDraftBtn').addEventListener('click', saveDraft);
     $('clearGridBtn').addEventListener('click', clearGrid);
     $('startGameBtn').addEventListener('click', startTest);
     $('themeToggleFixed').addEventListener('click', () => {
@@ -1012,6 +1448,9 @@
         $('themeToggleFixed').textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
     });
 
+    /* =====================================================
+       JUEGO: ESTADO
+    ===================================================== */
     let G = null;
     let S = { mode: null, rooms: [], index: 0, currentRoom: null, timer: null, toastT: null, overlayKind: null };
     let rafId = null, lastTs = 0;
@@ -1040,52 +1479,98 @@
 
     const moveDelay = s => Math.round(330 - s * 28);
 
+    /* --- Preparar cuarto --- */
     function setupRoom(room) {
         clearTimeout(S.timer);
         const n = room.gridSize || room.board.length;
         const grid = room.board.map(r => r.slice());
         const pSpeed = room.playerSpeed || 5;
-        const maxE = Math.max(1, pSpeed - 1);
         const g = {
-            n, grid,
+            n, grid, room,
             player: { x: 0, y: 0, rx: 0, ry: 0, facing: 'D' },
-            enemies: [], blocks: [], bombs: [], arrows: [], lasers: [],
-            beamCells: [], beamSet: new Set(),
+            enemies: [], blocks: [], mwalls: [], bombs: [], arrows: [], lasers: [], rdias: [], hbtns: [],
+            beamCells: [], beamSet: new Set(), litIds: new Set(), holdIds: new Set(),
+            permOpen: new Set(), pressed: new Set(), mwDone: new Set(), wgroups: {},
             totalCoins: 0, coins: 0, keys: 0, shields: 0, ammo: 0, bombCount: 0,
             hasBow: false, hasSword: false, weapon: null,
-            exitActive: false, pressed: new Set(),
+            exitActive: false,
             time: 0, nextPlayer: 0, nextAttack: 0, invuln: 0,
             over: false, paused: false, effects: [],
-            speedP: pSpeed, vision: room.vision || 5, hudKey: '', hudText: '',
-            hudShowUntil: 0
+            speedP: pSpeed, maxE: Math.max(1, pSpeed - 1), hudKey: '', hudText: '', hudShowUntil: 0
         };
-        g.lose = g.vision + 4;
-        for (let y = 0; y < n; y++) {
-            for (let x = 0; x < n; x++) {
-                const t = grid[y][x], b = base(t);
-                if (b === 'start') { g.player.x = g.player.rx = x; g.player.y = g.player.ry = y; grid[y][x] = 'floor'; }
-                else if (b === 'enemy' || b === 'enemy2') {
-                    const pr = enemyProps(t, room);
-                    g.enemies.push({
-                        x, y, hx: x, hy: y, rx: x, ry: y, kind: b === 'enemy2' ? 2 : 1,
-                        state: 'idle', next: 0, stun: 0, flash: 0,
-                        hp: pr.hp, maxHp: pr.hp, speed: Math.min(pr.sp, maxE)
-                    });
-                    grid[y][x] = 'floor';
-                }
-                else if (b === 'block') { g.blocks.push({ x, y, rx: x, ry: y }); grid[y][x] = 'floor'; }
-                else if (b === 'coin') g.totalCoins++;
-                else if (b === 'laser') g.lasers.push({ x, y, dir: laserDir(t) });
-            }
-        }
-        g.exitActive = g.totalCoins === 0;
         G = g;
+        for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) initTile(g, x, y, true);
+        g.exitActive = g.totalCoins === 0;
         computeBeams();
     }
 
+    function initTile(g, x, y, initial) {
+        const t = g.grid[y][x], b = base(t);
+        switch (b) {
+            case 'start':
+                if (initial) { g.player.x = g.player.rx = x; g.player.y = g.player.ry = y; }
+                g.grid[y][x] = 'floor';
+                break;
+            case 'enemy': case 'enemy2': case 'boss':
+                makeEnemy(g, x, y, t);
+                g.grid[y][x] = 'floor';
+                break;
+            case 'block':
+                g.blocks.push({ x, y, rx: x, ry: y, kind: 'block' });
+                g.grid[y][x] = 'floor';
+                break;
+            case 'mirror':
+                g.blocks.push({ x, y, rx: x, ry: y, kind: 'mirror', face: part(t, 1) || 'NE' });
+                g.grid[y][x] = 'floor';
+                break;
+            case 'mwall':
+                g.mwalls.push({ x, y, rx: x, ry: y, id: tileId(t), dir: mwDir(t) });
+                g.grid[y][x] = 'floor';
+                break;
+            case 'coin': g.totalCoins++; break;
+            case 'laser': g.lasers.push({ x, y, dir: dirOf(t) }); break;
+            case 'rdiamond': g.rdias.push({ x, y, id: tileId(t) }); break;
+            case 'hbtn': g.hbtns.push({ x, y, id: tileId(t) }); break;
+            case 'wspawn': {
+                if (initial) {
+                    const gr = g.room.groups && g.room.groups[tileId(t)];
+                    if (gr && gr.obj) g.wgroups[tileId(t)] = { count: gr.count, hit: 0, obj: gr.obj, sx: x, sy: y, done: false };
+                }
+                g.grid[y][x] = 'floor';
+                break;
+            }
+        }
+    }
+    function makeEnemy(g, x, y, t) {
+        const b = base(t);
+        const common = { x, y, hx: x, hy: y, rx: x, ry: y, state: 'idle', next: 0, stun: 0, flash: 0, dir: 'D' };
+        if (b === 'boss') {
+            const pr = bossProps(t);
+            g.enemies.push(Object.assign(common, {
+                kind: 3, hp: pr.hp, maxHp: pr.hp, speed: Math.min(pr.sp, g.maxE), hasKey: pr.key,
+                bossState: 'summon', minisTotal: pr.minis, toSpawn: pr.minis, spawnNext: 800, openUntil: 0, vision: 0
+            }));
+        } else {
+            const pr = enemyProps(t, g.room);
+            g.enemies.push(Object.assign(common, {
+                kind: b === 'enemy2' ? 2 : 1, hp: pr.hp, maxHp: pr.hp,
+                speed: Math.min(pr.sp, g.maxE), vision: pr.vis, hasKey: pr.key
+            }));
+        }
+    }
+
+    /* --- Reglas base --- */
     const inb = (x, y) => x >= 0 && y >= 0 && x < G.n && y < G.n;
     const blockAt = (x, y) => G.blocks.find(b => b.x === x && b.y === y) || null;
     const enemyAt = (x, y) => G.enemies.find(e => e.x === x && e.y === y) || null;
+    const mwallAt = (x, y) => G.mwalls.find(w => w.x === x && w.y === y) || null;
+    // Tipo efectivo de la casilla (las puertas abiertas cuentan como piso)
+    function bt(x, y) {
+        const t = G.grid[y][x], b = base(t);
+        if (b === 'bdoor') return (G.permOpen.has(tileId(t)) || G.holdIds.has(tileId(t))) ? 'floor' : 'bdoor';
+        if (b === 'rdoor') return G.litIds.has(tileId(t)) ? 'floor' : 'rdoor';
+        return b;
+    }
     function arrowOK(x, y, dir) {
         const a = ARROW_DIR[base(G.grid[y][x])];
         return !(a && OPP[a] === dir);
@@ -1095,8 +1580,8 @@
         return p >= SPIKE_UP_AT ? 'up' : (p >= SPIKE_WARN_AT ? 'warn' : 'down');
     }
     function opaque(x, y) {
-        const b = base(G.grid[y][x]);
-        return b === 'wall' || b === 'keydoor' || b === 'bdoor' || b === 'ddoor' || b === 'stone' || !!blockAt(x, y);
+        const b = bt(x, y);
+        return b === 'wall' || b === 'keydoor' || b === 'bdoor' || b === 'ddoor' || b === 'rdoor' || b === 'stone' || !!blockAt(x, y) || !!mwallAt(x, y);
     }
     function hasLOS(x0, y0, x1, y1) {
         const dx = Math.abs(x1 - x0), dy = Math.abs(y1 - y0);
@@ -1110,22 +1595,55 @@
         }
         return true;
     }
-    function computeBeams() {
+
+    /* --- Láser: trazado con espejos y diamantes rojos --- */
+    function traceBeams() {
         const g = G;
         g.beamCells = []; g.beamSet = new Set();
         for (const L of g.lasers) {
-            const [dx, dy] = DIRS[L.dir];
-            let x = L.x + dx, y = L.y + dy;
-            while (inb(x, y)) {
-                if (BEAM_STOP.includes(base(g.grid[y][x])) || blockAt(x, y)) break;
-                g.beamCells.push({ x, y, dir: L.dir });
+            let x = L.x, y = L.y, d = L.dir, steps = 0;
+            const seen = new Set();
+            while (steps++ < 400) {
+                x += DIRS[d][0]; y += DIRS[d][1];
+                if (!inb(x, y)) break;
+                const key = (y * g.n + x) * 4 + DIR_IDX[d];
+                if (seen.has(key)) break;
+                seen.add(key);
+                if (BEAM_STOP.includes(bt(x, y)) || mwallAt(x, y)) break;
+                const blk = blockAt(x, y);
+                if (blk) {
+                    if (blk.kind !== 'mirror') break;
+                    const out = MIRROR_REFLECT[blk.face] && MIRROR_REFLECT[blk.face][d];
+                    if (!out) break;
+                    g.beamCells.push({ x, y, inD: d, outD: out });
+                    g.beamSet.add(y * g.n + x);
+                    d = out;
+                    continue;
+                }
+                g.beamCells.push({ x, y, inD: d, outD: d });
                 g.beamSet.add(y * g.n + x);
-                x += dx; y += dy;
             }
         }
     }
+    function computeBeams() {
+        const g = G;
+        for (let it = 0; it < 4; it++) {
+            traceBeams();
+            const nl = new Set();
+            for (const r of g.rdias) if (g.beamSet.has(r.y * g.n + r.x)) nl.add(r.id);
+            let same = nl.size === g.litIds.size;
+            if (same) for (const i of nl) if (!g.litIds.has(i)) { same = false; break; }
+            if (same) break;
+            g.litIds = nl;
+            if (it === 0 || true) playSound('door');
+        }
+    }
     function enemyCanEnter(x, y) {
-        return !ENEMY_BLOCK.includes(base(G.grid[y][x])) && !G.beamSet.has(y * G.n + x);
+        return !ENEMY_BLOCK.includes(bt(x, y)) && !G.beamSet.has(y * G.n + x) && !mwallAt(x, y);
+    }
+    function canEnemyStep(e, d) {
+        const nx = e.x + DIRS[d][0], ny = e.y + DIRS[d][1];
+        return inb(nx, ny) && enemyCanEnter(nx, ny) && !blockAt(nx, ny) && !enemyAt(nx, ny) && arrowOK(e.x, e.y, d) && arrowOK(nx, ny, d);
     }
 
     function bfsNext(sx, sy, tx, ty) {
@@ -1191,6 +1709,7 @@
         return { x: f % n, y: (f - (f % n)) / n };
     }
 
+    /* --- Avisos / overlay --- */
     function toast(text, ms) {
         banner.textContent = text;
         banner.classList.remove('hidden');
@@ -1338,32 +1857,102 @@
             g.effects.push({ kind: 'pop', x: g.player.x, y: g.player.y, t0: g.time, dur: 450, ch: '🛡️' });
             if (e) e.stun = g.time + 1000;
             toast('🛡️ ¡El escudo te protegió!', 900);
+            g.hudShowUntil = g.time + HUD_HOLD_MS;
         } else die(msg);
     }
 
-    function damageEnemy(e, dmg) {
+    /* =====================================================
+       COMBATE
+    ===================================================== */
+    function dropKey(x, y) {
         const g = G;
-        e.hp -= dmg;
-        e.flash = g.time + 180;
-        e.stun = Math.max(e.stun, g.time + 250);
-        playSound('hit');
-        if (e.hp <= 0) {
-            g.enemies = g.enemies.filter(o => o !== e);
-            g.effects.push({ kind: 'pop', x: e.x, y: e.y, t0: g.time, dur: 450, ch: '💥' });
-        }
-    }
-    function hitDiamond(x, y) {
-        const g = G, id = tileId(g.grid[y][x]);
-        g.grid[y][x] = 'diamondY:' + id;
-        for (let yy = 0; yy < g.n; yy++) for (let xx = 0; xx < g.n; xx++) {
-            if (base(g.grid[yy][xx]) === 'ddoor' && tileId(g.grid[yy][xx]) === id) {
-                g.grid[yy][xx] = 'floor';
-                g.effects.push({ kind: 'pop', x: xx, y: yy, t0: g.time, dur: 450, ch: '✨' });
+        const cand = [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, 1], [1, -1], [-1, -1], [2, 0], [-2, 0], [0, 2], [0, -2]];
+        for (const [dx, dy] of cand) {
+            const tx = x + dx, ty = y + dy;
+            if (inb(tx, ty) && base(g.grid[ty][tx]) === 'floor' && !blockAt(tx, ty) && !mwallAt(tx, ty)) {
+                g.grid[ty][tx] = 'key';
+                g.effects.push({ kind: 'pop', x: tx, y: ty, t0: g.time, dur: 600, ch: '🔑' });
+                return;
             }
         }
-        g.effects.push({ kind: 'pop', x, y, t0: g.time, dur: 450, ch: '✨' });
-        playSound('door');
+    }
+    function killEnemy(e) {
+        const g = G;
+        g.enemies = g.enemies.filter(o => o !== e);
+        g.effects.push({ kind: 'pop', x: e.x, y: e.y, t0: g.time, dur: 450, ch: '💥' });
+        if (e.kind === 3) {
+            g.enemies.filter(m => m.owner === e).forEach(m => {
+                g.effects.push({ kind: 'pop', x: m.x, y: m.y, t0: g.time, dur: 450, ch: '💥' });
+            });
+            g.enemies = g.enemies.filter(m => m.owner !== e);
+            toast('👁️ ¡Derrotaste al jefe!', 1800);
+        }
+        if (e.hasKey) { dropKey(e.x, e.y); toast('🔑 ¡Soltó una llave!', 1400); }
+    }
+    function knock(e, dir) {
+        const g = G;
+        if (!dir || e.kind === 3) return;
+        const nx = e.x + DIRS[dir][0], ny = e.y + DIRS[dir][1];
+        if (!inb(nx, ny) || !enemyCanEnter(nx, ny)) return;
+        if (blockAt(nx, ny) || enemyAt(nx, ny)) return;
+        if (!arrowOK(e.x, e.y, dir) || !arrowOK(nx, ny, dir)) return;
+        if (g.player.x === nx && g.player.y === ny) return;
+        e.x = nx; e.y = ny;
+    }
+    // devuelve true si el enemigo sigue vivo
+    function damageEnemy(e, dmg, kdir) {
+        const g = G;
+        if (e.kind === 3 && e.bossState !== 'open') {
+            g.effects.push({ kind: 'pop', x: e.x, y: e.y, t0: g.time, dur: 350, ch: '🛡️' });
+            playSound('clang');
+            return true;
+        }
+        e.hp -= dmg;
+        e.flash = g.time + 180;
+        e.stun = Math.max(e.stun, g.time + 350);
+        playSound('hit');
+        if (e.hp <= 0) { killEnemy(e); return false; }
+        knock(e, kdir);
+        return true;
+    }
+
+    function spawnObject(tile, x, y) {
+        const g = G, b = base(tile);
+        g.effects.push({ kind: 'pop', x, y, t0: g.time, dur: 700, ch: '✨' });
+        playSound('exit');
+        g.grid[y][x] = tile;
+        if (b === 'bdoor') g.permOpen.delete(tileId(tile));
+        initTile(g, x, y, false);
+        if (b === 'coin' && g.exitActive) g.exitActive = false;
         computeBeams();
+    }
+    function hitDiamondAt(x, y) {
+        const g = G, t = g.grid[y][x], b = base(t), id = tileId(t);
+        if (b === 'diamond') {
+            g.grid[y][x] = 'diamondY:' + id;
+            for (let yy = 0; yy < g.n; yy++) for (let xx = 0; xx < g.n; xx++) {
+                if (base(g.grid[yy][xx]) === 'ddoor' && tileId(g.grid[yy][xx]) === id) {
+                    g.grid[yy][xx] = 'floor';
+                    g.effects.push({ kind: 'pop', x: xx, y: yy, t0: g.time, dur: 450, ch: '✨' });
+                }
+            }
+            g.effects.push({ kind: 'pop', x, y, t0: g.time, dur: 450, ch: '✨' });
+            playSound('door');
+            computeBeams();
+        } else if (b === 'wd') {
+            g.grid[y][x] = 'wdY:' + id;
+            g.effects.push({ kind: 'pop', x, y, t0: g.time, dur: 450, ch: '✨' });
+            playSound('key');
+            const wg = g.wgroups[id];
+            if (wg && !wg.done) {
+                wg.hit++;
+                if (wg.hit >= wg.count) {
+                    wg.done = true;
+                    toast('✨ ¡Apareció algo!', 1200);
+                    spawnObject(wg.obj, wg.sx, wg.sy);
+                } else toast(`◇ ${wg.hit}/${wg.count}`, 900);
+            }
+        }
     }
     function explode(b) {
         const g = G;
@@ -1373,9 +1962,19 @@
             const tx = b.x + dx, ty = b.y + dy;
             if (inb(tx, ty) && base(g.grid[ty][tx]) === 'stone') g.grid[ty][tx] = 'floor';
         }
+        // las cajas se destruyen (los espejos no)
+        g.blocks = g.blocks.filter(bl => {
+            if (bl.kind === 'block' && Math.abs(bl.x - b.x) <= 1 && Math.abs(bl.y - b.y) <= 1) {
+                g.effects.push({ kind: 'pop', x: bl.x, y: bl.y, t0: g.time, dur: 450, ch: '💥' });
+                return false;
+            }
+            return true;
+        });
         for (const e of g.enemies.slice()) {
             if (Math.abs(e.x - b.x) <= 1 && Math.abs(e.y - b.y) <= 1) damageEnemy(e, DMG.bomb);
         }
+        const p = g.player;
+        if (Math.abs(p.x - b.x) <= 1 && Math.abs(p.y - b.y) <= 1) hurtPlayer('💥 ¡La bomba te alcanzó!');
         computeBeams();
     }
     function updateArrows(now) {
@@ -1385,10 +1984,10 @@
                 const nx = a.x + DIRS[a.dir][0], ny = a.y + DIRS[a.dir][1];
                 if (!inb(nx, ny)) { a.dead = true; break; }
                 const e = enemyAt(nx, ny);
-                if (e) { damageEnemy(e, DMG.arrow); a.dead = true; break; }
-                const t = base(g.grid[ny][nx]);
-                if (t === 'diamond') { hitDiamond(nx, ny); a.dead = true; break; }
-                if (BEAM_STOP.includes(t) || blockAt(nx, ny)) { a.dead = true; break; }
+                if (e) { damageEnemy(e, DMG.arrow, a.dir); a.dead = true; break; }
+                const t = bt(nx, ny);
+                if (t === 'diamond' || t === 'wd') { hitDiamondAt(nx, ny); a.dead = true; break; }
+                if (ARROW_STOP.includes(t) || blockAt(nx, ny) || mwallAt(nx, ny)) { a.dead = true; break; }
                 a.x = nx; a.y = ny; a.next += 55;
             }
         }
@@ -1417,8 +2016,12 @@
             g.effects.push({ kind: 'slash', x: p.x, y: p.y, dir, t0: now, dur: 240 });
             playSound('slash');
             const targets = [enemyAt(p.x + dx, p.y + dy), enemyAt(p.x, p.y)];
-            targets.forEach(e => { if (e && g.enemies.includes(e)) damageEnemy(e, DMG.sword); });
-            if (inb(p.x + dx, p.y + dy) && base(g.grid[p.y + dy][p.x + dx]) === 'diamond') hitDiamond(p.x + dx, p.y + dy);
+            targets.forEach(e => { if (e && g.enemies.includes(e)) damageEnemy(e, DMG.sword, dir); });
+            const tx = p.x + dx, ty = p.y + dy;
+            if (inb(tx, ty)) {
+                const tb = base(g.grid[ty][tx]);
+                if (tb === 'diamond' || tb === 'wd') hitDiamondAt(tx, ty);
+            }
             g.nextAttack = now + 320;
         } else if (g.weapon === 'bow') {
             if (!dir) return;
@@ -1432,7 +2035,7 @@
             if (g.bombCount <= 0) return;
             if (g.bombs.some(b => b.x === p.x && b.y === p.y)) return;
             g.bombCount--;
-            g.bombs.push({ x: p.x, y: p.y, t0: now, lastTick: 0 });
+            g.bombs.push({ x: p.x, y: p.y, t0: now });
             playSound('press');
             g.nextAttack = now + 300;
             if (g.bombCount <= 0) g.weapon = null;
@@ -1440,27 +2043,61 @@
         g.hudKey = '';
     }
 
+    /* =====================================================
+       MECÁNICAS
+    ===================================================== */
     function press(id) {
         const g = G;
         if (g.pressed.has(id)) return;
         g.pressed.add(id);
-        let opened = false;
-        for (let y = 0; y < g.n; y++) for (let x = 0; x < g.n; x++) {
-            if (base(g.grid[y][x]) === 'bdoor' && tileId(g.grid[y][x]) === id) { g.grid[y][x] = 'floor'; opened = true; }
-        }
+        g.permOpen.add(id);
         playSound('press');
-        if (opened) playSound('door');
+        playSound('door');
         computeBeams();
     }
+    function activateMW(id) {
+        const g = G;
+        if (g.mwDone.has(id)) return;
+        g.mwDone.add(id);
+        playSound('press');
+        for (const w of g.mwalls) {
+            if (w.id !== id) continue;
+            const [dx, dy] = DIRS[w.dir];
+            let moved = 0;
+            while (true) {
+                const nx = w.x + dx, ny = w.y + dy;
+                if (!inb(nx, ny)) break;
+                if (!WALL_OK.includes(bt(nx, ny))) break;
+                if (blockAt(nx, ny) || enemyAt(nx, ny) || mwallAt(nx, ny)) break;
+                if (g.player.x === nx && g.player.y === ny) break;
+                w.x = nx; w.y = ny; moved++;
+            }
+            if (moved) playSound('push');
+        }
+        computeBeams();
+    }
+    function stepOnButton(x, y) {
+        const t = G.grid[y][x], b = base(t);
+        if (b === 'btn') press(tileId(t));
+        else if (b === 'mwbtn') activateMW(tileId(t));
+    }
+    function computeHolds() {
+        const g = G, s = new Set();
+        for (const h of g.hbtns) if ((g.player.x === h.x && g.player.y === h.y) || blockAt(h.x, h.y)) s.add(h.id);
+        let changed = s.size !== g.holdIds.size;
+        if (!changed) for (const i of s) if (!g.holdIds.has(i)) { changed = true; break; }
+        if (changed) { g.holdIds = s; playSound('press'); playSound('door'); }
+    }
+
     function canBlockMove(b, dir) {
         const g = G;
         const tx = b.x + DIRS[dir][0], ty = b.y + DIRS[dir][1];
         if (!inb(tx, ty)) return false;
         if (!arrowOK(b.x, b.y, dir) || !arrowOK(tx, ty, dir)) return false;
-        const t = base(g.grid[ty][tx]);
-        if (!['floor', 'btn', 'spikes', 'diamondY', 'arrowU', 'arrowD', 'arrowL', 'arrowR'].includes(t)) return false;
+        const t = bt(tx, ty);
+        if (!BLOCK_OK.includes(t)) return false;
         if (t === 'spikes' && spikeState() === 'up') return false;
-        if (blockAt(tx, ty) || enemyAt(tx, ty)) return false;
+        if (blockAt(tx, ty) || enemyAt(tx, ty) || mwallAt(tx, ty)) return false;
         if (g.player.x === tx && g.player.y === ty) return false;
         return true;
     }
@@ -1469,8 +2106,8 @@
         const nx = p.x + DIRS[dir][0], ny = p.y + DIRS[dir][1];
         if (!inb(nx, ny)) return false;
         if (!arrowOK(p.x, p.y, dir) || !arrowOK(nx, ny, dir)) return false;
-        const t = base(g.grid[ny][nx]);
-        if (PLAYER_SOLID.includes(t)) return false;
+        const t = bt(nx, ny);
+        if (SOLID.includes(t) || mwallAt(nx, ny)) return false;
         if (t === 'spikes' && spikeState() === 'up') return false;
         if (t === 'keydoor' && g.keys <= 0) {
             const now = performance.now();
@@ -1482,7 +2119,7 @@
             if (!canBlockMove(b, dir)) return false;
             b.x += DIRS[dir][0]; b.y += DIRS[dir][1];
             playSound('push');
-            if (base(g.grid[b.y][b.x]) === 'btn') press(tileId(g.grid[b.y][b.x]));
+            stepOnButton(b.x, b.y);
         }
         if (t === 'keydoor') {
             g.keys--;
@@ -1501,6 +2138,7 @@
         playSound('key');
         if (msg) toast(msg, 1100);
         g.hudKey = '';
+        g.hudShowUntil = g.time + HUD_HOLD_MS;
     }
     function afterPlayerMove() {
         const g = G, p = g.player;
@@ -1510,20 +2148,79 @@
             g.coins++;
             g.effects.push({ kind: 'pop', x: p.x, y: p.y, t0: g.time, dur: 400, ch: '🪙' });
             playSound('coin');
-            if (g.coins === g.totalCoins) { g.exitActive = true; playSound('exit'); toast('🚪 ¡La salida se abrió!', 1400); }
+            g.hudShowUntil = g.time + HUD_HOLD_MS;
+            if (g.coins >= g.totalCoins) { g.exitActive = true; playSound('exit'); toast('🚪 ¡La salida se abrió!', 1400); }
         } else if (t === 'key') { g.keys++; pickup('🔑'); }
         else if (t === 'sword') { g.hasSword = true; pickup('🗡️', '🗡️ ¡Conseguiste la espada! (esquina superior derecha)'); }
         else if (t === 'bow') { g.hasBow = true; pickup('🏹', '🏹 ¡Conseguiste el arco! (esquina inferior izquierda)'); }
-        else if (t === 'ammo') { g.ammo++; pickup('➶'); }
-        else if (t === 'bomb') { g.bombCount++; pickup('💣', '💣 Bomba (esquina inferior derecha)'); }
+        else if (t === 'ammo') { const q = tileId(tile); g.ammo += q; pickup('➶', `➶ +${q} flecha(s)`); }
+        else if (t === 'bomb') { const q = tileId(tile); g.bombCount += q; pickup('💣', `💣 +${q} bomba(s) (esquina inferior derecha)`); }
         else if (t === 'shield') { g.shields++; pickup('🛡️'); }
-        else if (t === 'btn') press(tileId(tile));
+        else if (t === 'btn' || t === 'mwbtn') stepOnButton(p.x, p.y);
 
         const e = enemyAt(p.x, p.y);
         if (e) { hurtPlayer('💀 ¡Atrapado por un enemigo!', e); if (g.over) return; }
         if (t === 'exit' && g.exitActive) win();
     }
 
+    /* --- Jefe ojo y movimiento errante --- */
+    function roamStep(e) {
+        const valid = ['U', 'D', 'L', 'R'].filter(d => canEnemyStep(e, d));
+        if (!valid.length) return;
+        let d;
+        if (e.dir && valid.includes(e.dir) && Math.random() < 0.7) d = e.dir;
+        else {
+            const nr = valid.filter(x => x !== OPP[e.dir]);
+            const pool = nr.length ? nr : valid;
+            d = pool[Math.floor(Math.random() * pool.length)];
+        }
+        e.dir = d;
+        e.x += DIRS[d][0]; e.y += DIRS[d][1];
+    }
+    function spawnMini(boss) {
+        const g = G;
+        const cand = [[1, 0], [-1, 0], [0, 1], [0, -1], [0, 0]];
+        for (const [dx, dy] of cand) {
+            const nx = boss.x + dx, ny = boss.y + dy;
+            if (!inb(nx, ny) || !enemyCanEnter(nx, ny) || blockAt(nx, ny)) continue;
+            if (enemyAt(nx, ny) && !(dx === 0 && dy === 0)) continue;
+            g.enemies.push({
+                x: nx, y: ny, hx: nx, hy: ny, rx: boss.x, ry: boss.y, kind: 4, state: 'roam', next: g.time + 400, stun: 0, flash: 0,
+                dir: ['U', 'D', 'L', 'R'][Math.floor(Math.random() * 4)], hp: 1, maxHp: 1, speed: boss.speed, vision: 0,
+                hasKey: false, owner: boss
+            });
+            g.effects.push({ kind: 'pop', x: nx, y: ny, t0: g.time, dur: 400, ch: '👁️' });
+            return true;
+        }
+        return false;
+    }
+    function bossLogic(e, now) {
+        const g = G;
+        if (e.bossState === 'summon') {
+            if (now >= e.spawnNext) {
+                if (e.toSpawn > 0) { if (spawnMini(e)) e.toSpawn--; e.spawnNext = now + 900; }
+                else e.bossState = 'roam';
+            }
+        } else if (e.bossState === 'roam') {
+            if (!g.enemies.some(m => m.owner === e)) {
+                e.bossState = 'open';
+                e.openUntil = now + BOSS_OPEN_MS;
+                playSound('alert');
+                toast('👁️ ¡El jefe abrió el ojo! ¡Ataca!', 1500);
+            }
+        } else if (e.bossState === 'open') {
+            if (now >= e.openUntil) {
+                e.bossState = 'summon';
+                e.toSpawn = e.minisTotal;
+                e.spawnNext = now + 600;
+                toast('👁️ El jefe cerró el ojo…', 1000);
+            }
+        }
+    }
+
+    /* =====================================================
+       ACTUALIZACIÓN
+    ===================================================== */
     function update(dt) {
         const g = G;
         g.time += dt * 1000;
@@ -1539,39 +2236,48 @@
             }
         }
 
+        computeHolds();
         computeBeams();
         if (base(g.grid[p.y][p.x]) === 'spikes' && spikeState() === 'up') { die('☠️ ¡Te pincharon los picos!'); return; }
         if (g.beamSet.has(p.y * g.n + p.x)) { hurtPlayer('☠️ ¡Te alcanzó el láser!'); if (g.over) return; }
 
         for (let i = g.bombs.length - 1; i >= 0; i--) {
             const b = g.bombs[i];
-            if (now - b.t0 >= BOMB_FUSE) { g.bombs.splice(i, 1); explode(b); }
+            if (now - b.t0 >= BOMB_FUSE) { g.bombs.splice(i, 1); explode(b); if (g.over) return; }
         }
         updateArrows(now);
+        computeHolds();
         computeBeams();
 
         for (const e of g.enemies.slice()) {
             if (!g.enemies.includes(e)) continue;
-            const dist = Math.hypot(p.x - e.x, p.y - e.y);
-            const sees = dist <= g.vision && hasLOS(e.x, e.y, p.x, p.y);
-            if (sees) {
-                if (e.state !== 'chase') { e.state = 'chase'; e.next = Math.max(e.next, now + 250); playSound('alert'); }
-            } else if (e.state === 'chase' && dist > g.lose) {
-                e.state = 'return';
+            if (e.kind === 3) bossLogic(e, now);
+            if (e.kind === 1 || e.kind === 2) {
+                const dist = Math.hypot(p.x - e.x, p.y - e.y);
+                const sees = dist <= e.vision && hasLOS(e.x, e.y, p.x, p.y);
+                if (sees) {
+                    if (e.state !== 'chase') { e.state = 'chase'; e.next = Math.max(e.next, now + 250); playSound('alert'); }
+                } else if (e.state === 'chase' && dist > e.vision + 4) {
+                    e.state = 'return';
+                }
             }
             if (now < e.stun || now < e.next) continue;
-            let step = null;
-            if (e.state === 'chase') step = e.kind === 2 ? territoryStep(e, p) : bfsNext(e.x, e.y, p.x, p.y);
-            else if (e.state === 'return') {
-                if (e.x === e.hx && e.y === e.hy) e.state = 'idle';
-                else step = bfsNext(e.x, e.y, e.hx, e.hy);
-            }
-            if (step) {
-                if (!enemyAt(step.x, step.y) && !blockAt(step.x, step.y)) {
-                    e.x = step.x; e.y = step.y;
-                    g.hudShowUntil = now + HUD_HOLD_MS;
-                    if (e.x === p.x && e.y === p.y) { hurtPlayer('💀 ¡Atrapado por un enemigo!', e); if (g.over) return; }
+            if (e.kind === 1 || e.kind === 2) {
+                let step = null;
+                if (e.state === 'chase') step = e.kind === 2 ? territoryStep(e, p) : bfsNext(e.x, e.y, p.x, p.y);
+                else if (e.state === 'return') {
+                    if (e.x === e.hx && e.y === e.hy) e.state = 'idle';
+                    else step = bfsNext(e.x, e.y, e.hx, e.hy);
                 }
+                if (step) {
+                    if (!enemyAt(step.x, step.y) && !blockAt(step.x, step.y)) {
+                        e.x = step.x; e.y = step.y;
+                        g.hudShowUntil = now + HUD_HOLD_MS;
+                    }
+                    e.next = now + moveDelay(e.speed);
+                }
+            } else if (e.kind === 4 || (e.kind === 3 && e.bossState !== 'open')) {
+                roamStep(e);
                 e.next = now + moveDelay(e.speed);
             }
         }
@@ -1581,11 +2287,12 @@
     }
 
     function lerpAll(dt) {
-        const g = G, k = 1 - Math.exp(-dt / 0.045), k2 = 1 - Math.exp(-dt / 0.02);
+        const g = G, k = 1 - Math.exp(-dt / 0.045), k2 = 1 - Math.exp(-dt / 0.02), k3 = 1 - Math.exp(-dt / 0.09);
         const f = (o, kk) => { o.rx += (o.x - o.rx) * kk; o.ry += (o.y - o.ry) * kk; };
         f(g.player, k);
         g.enemies.forEach(e => f(e, k));
         g.blocks.forEach(b => f(b, k));
+        g.mwalls.forEach(w => f(w, k3));
         g.arrows.forEach(a => f(a, k2));
     }
 
@@ -1606,11 +2313,8 @@
             btnBow.innerHTML = '🏹' + (g.hasBow ? `<span class="cnt">${g.ammo}</span>` : '');
             btnBomb.innerHTML = '💣' + `<span class="cnt">${g.bombCount}</span>`;
         }
-        if (g.time < g.hudShowUntil) {
-            hud.classList.remove('hud-hidden');
-        } else {
-            hud.classList.add('hud-hidden');
-        }
+        if (g.time < g.hudShowUntil) hud.classList.remove('hud-hidden');
+        else hud.classList.add('hud-hidden');
     }
 
     function frame(ts) {
@@ -1622,6 +2326,9 @@
         rafId = requestAnimationFrame(frame);
     }
 
+    /* =====================================================
+       DIBUJO
+    ===================================================== */
     function emoji(ch, cx, cy, size) {
         ctx.font = `${size}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`;
         ctx.textAlign = 'center';
@@ -1669,8 +2376,8 @@
         ctx.moveTo(cx - r, cy - r * 0.15); ctx.lineTo(cx + r, cy - r * 0.15);
         ctx.stroke();
     }
-    function numTag(cx, cy, id, size) {
-        ctx.fillStyle = ID_COL[id] || '#999';
+    function numTag(cx, cy, id, size, col) {
+        ctx.fillStyle = col || ID_COL[id] || '#999';
         ctx.strokeStyle = 'rgba(0,0,0,0.6)'; ctx.lineWidth = 1.5;
         ctx.beginPath(); ctx.arc(cx, cy, size, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
         ctx.fillStyle = '#fff'; ctx.font = `bold ${size * 1.3}px sans-serif`;
@@ -1696,9 +2403,54 @@
         }
     }
 
+    function drawMirror(px, py, face) {
+        const ts = cv.ts, m = 4, a = px + m, b = px + ts - m, c = py + m, d = py + ts - m;
+        ctx.fillStyle = '#35404d'; ctx.fillRect(a, c, b - a, d - c);
+        ctx.strokeStyle = '#1b222b'; ctx.lineWidth = 3; ctx.strokeRect(a, c, b - a, d - c);
+        // zona reflectante (lado de la cara) y línea diagonal
+        ctx.fillStyle = 'rgba(190,232,255,0.85)';
+        ctx.beginPath();
+        if (face === 'NE') { ctx.moveTo(a, c); ctx.lineTo(b, c); ctx.lineTo(b, d); }
+        else if (face === 'NW') { ctx.moveTo(a, c); ctx.lineTo(b, c); ctx.lineTo(a, d); }
+        else if (face === 'SE') { ctx.moveTo(b, d); ctx.lineTo(b, c); ctx.lineTo(a, d); }
+        else { ctx.moveTo(a, d); ctx.lineTo(a, c); ctx.lineTo(b, d); }
+        ctx.closePath(); ctx.fill();
+        ctx.strokeStyle = '#fff'; ctx.lineWidth = 3;
+        ctx.beginPath();
+        if (face === 'NE' || face === 'SW') { ctx.moveTo(a, c); ctx.lineTo(b, d); }
+        else { ctx.moveTo(b, c); ctx.lineTo(a, d); }
+        ctx.stroke();
+    }
+
+    function drawEye(cx, cy, r, open, time, big) {
+        ctx.fillStyle = big ? '#4b1f6e' : '#7a3a8e';
+        ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = '#1d0a2b'; ctx.lineWidth = 3; ctx.stroke();
+        if (open) {
+            ctx.fillStyle = '#fff';
+            ctx.beginPath(); ctx.ellipse(cx, cy, r * 0.78, r * 0.58, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#d4202c';
+            ctx.beginPath(); ctx.arc(cx, cy, r * 0.36, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#000';
+            ctx.beginPath(); ctx.arc(cx, cy, r * 0.17, 0, Math.PI * 2); ctx.fill();
+            if (big) {
+                ctx.strokeStyle = `rgba(255,230,80,${0.5 + 0.4 * Math.sin(time / 90)})`;
+                ctx.lineWidth = 4;
+                ctx.beginPath(); ctx.arc(cx, cy, r * 1.12, 0, Math.PI * 2); ctx.stroke();
+            }
+        } else {
+            ctx.strokeStyle = '#e8d6ff'; ctx.lineWidth = Math.max(2, r * 0.12); ctx.lineCap = 'round';
+            ctx.beginPath(); ctx.moveTo(cx - r * 0.7, cy); ctx.quadraticCurveTo(cx, cy + r * 0.38, cx + r * 0.7, cy); ctx.stroke();
+            for (let i = -1; i <= 1; i++) {
+                ctx.beginPath(); ctx.moveTo(cx + i * r * 0.35, cy + r * 0.2); ctx.lineTo(cx + i * r * 0.42, cy + r * 0.45); ctx.stroke();
+            }
+            ctx.lineCap = 'butt';
+        }
+    }
+
     function drawTile(x, y, sp) {
         const g = G, ts = cv.ts, px = x * ts, py = y * ts;
-        const tile = g.grid[y][x], b = base(tile);
+        const tile = g.grid[y][x], b = bt(x, y);
         const cx = px + ts / 2, cy = py + ts / 2;
         if (b === 'wall') {
             ctx.fillStyle = colors.wall;
@@ -1719,9 +2471,17 @@
             case 'key': emoji('🔑', cx, cy + Math.sin(g.time / 300 + x * 2 + y) * ts * 0.05, ts * 0.6); break;
             case 'sword': emoji('🗡️', cx, cy + Math.sin(g.time / 300 + x * 2 + y * 2) * ts * 0.05, ts * 0.62); break;
             case 'bow': emoji('🏹', cx, cy + Math.sin(g.time / 300 + x + y * 2) * ts * 0.05, ts * 0.62); break;
-            case 'bomb': emoji('💣', cx, cy + Math.sin(g.time / 280 + x * 3 + y) * ts * 0.05, ts * 0.58); break;
+            case 'bomb': {
+                emoji('💣', cx, cy + Math.sin(g.time / 280 + x * 3 + y) * ts * 0.05, ts * 0.58);
+                const q = tileId(tile); if (q > 1) numTag(px + ts * 0.8, py + ts * 0.8, 'x' + q, ts * 0.14, '#333');
+                break;
+            }
             case 'shield': emoji('🛡️', cx, cy + Math.sin(g.time / 320 + x + y) * ts * 0.05, ts * 0.6); break;
-            case 'ammo': drawArrowShape(cx, cy + Math.sin(g.time / 300 + x + y) * ts * 0.04, -Math.PI / 4, ts * 0.55); break;
+            case 'ammo': {
+                drawArrowShape(cx, cy + Math.sin(g.time / 300 + x + y) * ts * 0.04, -Math.PI / 4, ts * 0.55);
+                const q = tileId(tile); if (q > 1) numTag(px + ts * 0.8, py + ts * 0.8, 'x' + q, ts * 0.14, '#333');
+                break;
+            }
             case 'keydoor':
                 ctx.fillStyle = '#7a5a1e'; ctx.fillRect(px + 3, py + 3, ts - 6, ts - 6);
                 ctx.strokeStyle = '#3d2c0c'; ctx.lineWidth = 3; ctx.strokeRect(px + 3, py + 3, ts - 6, ts - 6);
@@ -1757,21 +2517,40 @@
                 }
                 break;
             case 'spikes': drawSpikes(px, py, sp); break;
-            case 'btn': {
-                const id = tileId(tile), col = ID_COL[id] || '#999', pressed = g.pressed.has(id);
+            case 'btn': case 'mwbtn': {
+                const id = tileId(tile), col = ID_COL[id] || '#999';
+                const pressed = b === 'btn' ? g.pressed.has(id) : g.mwDone.has(id);
                 ctx.fillStyle = 'rgba(0,0,0,0.25)';
-                ctx.beginPath(); ctx.arc(cx, cy, ts * 0.33, 0, Math.PI * 2); ctx.fill();
+                if (b === 'btn') { ctx.beginPath(); ctx.arc(cx, cy, ts * 0.33, 0, Math.PI * 2); ctx.fill(); }
+                else ctx.fillRect(px + ts * 0.14, py + ts * 0.14, ts * 0.72, ts * 0.72);
                 ctx.fillStyle = col; ctx.globalAlpha = pressed ? 0.45 : 1;
-                ctx.beginPath(); ctx.arc(cx, cy + (pressed ? ts * 0.02 : -ts * 0.02), ts * (pressed ? 0.24 : 0.28), 0, Math.PI * 2); ctx.fill();
+                if (b === 'btn') { ctx.beginPath(); ctx.arc(cx, cy + (pressed ? ts * 0.02 : -ts * 0.02), ts * (pressed ? 0.24 : 0.28), 0, Math.PI * 2); ctx.fill(); }
+                else ctx.fillRect(px + ts * 0.2, py + ts * 0.2, ts * 0.6, ts * 0.6);
                 ctx.globalAlpha = 1;
-                ctx.strokeStyle = 'rgba(0,0,0,0.5)'; ctx.lineWidth = 2; ctx.stroke();
+                ctx.strokeStyle = 'rgba(0,0,0,0.5)'; ctx.lineWidth = 2;
+                if (b === 'btn') ctx.stroke(); else ctx.strokeRect(px + ts * 0.2, py + ts * 0.2, ts * 0.6, ts * 0.6);
                 ctx.fillStyle = '#fff'; ctx.font = `bold ${ts * 0.28}px sans-serif`;
                 ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
                 ctx.fillText(id, cx, cy);
                 break;
             }
-            case 'bdoor': case 'ddoor': {
-                const id = tileId(tile), col = ID_COL[id] || '#999';
+            case 'hbtn': {
+                const id = tileId(tile), col = ID_COL[id] || '#999', on = g.holdIds.has(id);
+                ctx.fillStyle = 'rgba(0,0,0,0.3)';
+                ctx.beginPath(); ctx.arc(cx, cy, ts * 0.36, 0, Math.PI * 2); ctx.fill();
+                ctx.strokeStyle = col; ctx.lineWidth = 4;
+                ctx.beginPath(); ctx.arc(cx, cy, ts * 0.33, 0, Math.PI * 2); ctx.stroke();
+                ctx.fillStyle = on ? col : 'rgba(255,255,255,0.35)';
+                ctx.beginPath(); ctx.arc(cx, cy, ts * (on ? 0.2 : 0.26), 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#fff'; ctx.font = `bold ${ts * 0.24}px sans-serif`;
+                ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                ctx.strokeStyle = 'rgba(0,0,0,0.7)'; ctx.lineWidth = 3;
+                ctx.strokeText(id, cx, cy); ctx.fillText(id, cx, cy);
+                break;
+            }
+            case 'bdoor': case 'ddoor': case 'rdoor': {
+                const id = tileId(tile);
+                const col = b === 'rdoor' ? '#b3202c' : (ID_COL[id] || '#999');
                 ctx.fillStyle = col; ctx.fillRect(px + 3, py + 3, ts - 6, ts - 6);
                 ctx.strokeStyle = 'rgba(0,0,0,0.55)'; ctx.lineWidth = 3; ctx.strokeRect(px + 3, py + 3, ts - 6, ts - 6);
                 ctx.lineWidth = 2;
@@ -1781,6 +2560,7 @@
                     ctx.stroke();
                 }
                 if (b === 'ddoor') gem(cx, cy, ts * 0.17, '#3aa7ff', '#10508f');
+                else if (b === 'rdoor') { gem(cx, cy, ts * 0.17, '#ff4a55', '#600'); numTag(px + ts * 0.8, py + ts * 0.8, id, ts * 0.1); }
                 else {
                     ctx.fillStyle = '#fff'; ctx.font = `bold ${ts * 0.32}px sans-serif`;
                     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -1798,11 +2578,30 @@
                 numTag(px + ts * 0.8, py + ts * 0.8, id, ts * 0.1);
                 break;
             }
-            case 'diamondY':
-                gem(cx, cy, ts * 0.28, '#ffd23a', '#9a7300');
+            case 'diamondY': gem(cx, cy, ts * 0.28, '#ffd23a', '#9a7300'); break;
+            case 'rdiamond': {
+                const id = tileId(tile), lit = g.litIds.has(id);
+                const blink = lit && Math.floor(g.time / 110) % 2 === 0;
+                if (lit) {
+                    ctx.fillStyle = `rgba(255,40,40,${blink ? 0.5 : 0.25})`;
+                    ctx.beginPath(); ctx.arc(cx, cy, ts * 0.48, 0, Math.PI * 2); ctx.fill();
+                }
+                gem(cx, cy - ts * 0.02, ts * 0.3 * (lit ? 1.08 : 1), lit ? (blink ? '#ff6a6a' : '#ff1a1a') : '#8e1a22', lit ? '#fff' : '#400');
+                numTag(px + ts * 0.8, py + ts * 0.8, id, ts * 0.1);
                 break;
+            }
+            case 'wd': {
+                const id = tileId(tile), wg = g.wgroups[id];
+                const pulse = 1 + 0.06 * Math.sin(g.time / 220 + id);
+                ctx.fillStyle = 'rgba(255,255,255,0.35)';
+                ctx.beginPath(); ctx.arc(cx, cy, ts * 0.42, 0, Math.PI * 2); ctx.fill();
+                gem(cx, cy - ts * 0.02, ts * 0.3 * pulse, '#f4f8ff', '#7a8499');
+                if (wg) numTag(px + ts * 0.8, py + ts * 0.8, `${wg.hit}/${wg.count}`, ts * 0.15, '#6b7280');
+                break;
+            }
+            case 'wdY': gem(cx, cy, ts * 0.24, '#b9bfcc', '#6b7280'); break;
             case 'laser': {
-                const [dx, dy] = DIRS[laserDir(tile)];
+                const [dx, dy] = DIRS[dirOf(tile)];
                 ctx.fillStyle = '#2a2a2f'; ctx.fillRect(px + 3, py + 3, ts - 6, ts - 6);
                 ctx.strokeStyle = '#000'; ctx.lineWidth = 2; ctx.strokeRect(px + 3, py + 3, ts - 6, ts - 6);
                 ctx.fillStyle = '#ff3b4a';
@@ -1832,20 +2631,17 @@
         const pulse = 0.5 + 0.5 * Math.sin(g.time / 90);
         for (const c of g.beamCells) {
             const px = c.x * ts, py = c.y * ts, cx = px + ts / 2, cy = py + ts / 2;
-            const horiz = c.dir === 'L' || c.dir === 'R';
             ctx.fillStyle = `rgba(255,40,60,${flash ? 0.35 : 0.14})`;
             ctx.fillRect(px, py, ts, ts);
-            ctx.lineCap = 'butt';
+            const ix = cx - DIRS[c.inD][0] * ts / 2, iy = cy - DIRS[c.inD][1] * ts / 2;
+            const ox = cx + DIRS[c.outD][0] * ts / 2, oy = cy + DIRS[c.outD][1] * ts / 2;
+            ctx.lineCap = 'butt'; ctx.lineJoin = 'miter';
             ctx.strokeStyle = flash ? '#fff' : `rgba(255,70,90,${0.6 + 0.3 * pulse})`;
             ctx.lineWidth = ts * (flash ? 0.24 : 0.13);
-            ctx.beginPath();
-            if (horiz) { ctx.moveTo(px, cy); ctx.lineTo(px + ts, cy); } else { ctx.moveTo(cx, py); ctx.lineTo(cx, py + ts); }
-            ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(ix, iy); ctx.lineTo(cx, cy); ctx.lineTo(ox, oy); ctx.stroke();
             ctx.strokeStyle = flash ? '#ff3b4a' : 'rgba(255,255,255,0.85)';
             ctx.lineWidth = ts * 0.05;
-            ctx.beginPath();
-            if (horiz) { ctx.moveTo(px, cy); ctx.lineTo(px + ts, cy); } else { ctx.moveTo(cx, py); ctx.lineTo(cx, py + ts); }
-            ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(ix, iy); ctx.lineTo(cx, cy); ctx.lineTo(ox, oy); ctx.stroke();
         }
     }
 
@@ -1885,8 +2681,10 @@
             }
         }
 
+        // Cajas y espejos
         for (const b of g.blocks) {
             const px = b.rx * ts, py = b.ry * ts;
+            if (b.kind === 'mirror') { drawMirror(px, py, b.face); continue; }
             ctx.fillStyle = '#9c6b3f'; ctx.fillRect(px + 3, py + 3, ts - 6, ts - 6);
             ctx.strokeStyle = '#5b3a1e'; ctx.lineWidth = 3; ctx.strokeRect(px + 3, py + 3, ts - 6, ts - 6);
             ctx.lineWidth = 2;
@@ -1896,27 +2694,46 @@
             ctx.stroke();
         }
 
+        // Paredes movibles
+        for (const wl of g.mwalls) {
+            const px = wl.rx * ts, py = wl.ry * ts, col = ID_COL[wl.id] || '#999';
+            ctx.fillStyle = '#7b6a5a'; ctx.fillRect(px + 1, py + 1, ts - 2, ts - 2);
+            ctx.strokeStyle = col; ctx.lineWidth = 4; ctx.strokeRect(px + 3, py + 3, ts - 6, ts - 6);
+            ctx.fillStyle = 'rgba(255,255,255,0.12)'; ctx.fillRect(px + 5, py + 5, ts - 10, ts * 0.16);
+            ctx.save();
+            ctx.translate(px + ts / 2, py + ts / 2);
+            ctx.rotate(Math.atan2(DIRS[wl.dir][1], DIRS[wl.dir][0]));
+            ctx.fillStyle = col;
+            ctx.beginPath(); ctx.moveTo(ts * 0.26, 0); ctx.lineTo(0, -ts * 0.2); ctx.lineTo(0, ts * 0.2); ctx.closePath(); ctx.fill();
+            ctx.restore();
+            numTag(px + ts * 0.8, py + ts * 0.2, wl.id, ts * 0.11);
+        }
+
         for (const a of g.arrows) {
             const ang = Math.atan2(DIRS[a.dir][1], DIRS[a.dir][0]);
             drawArrowShape(a.rx * ts + ts / 2, a.ry * ts + ts / 2, ang, ts * 0.6);
         }
 
+        // Enemigos
         for (const e of g.enemies) {
             const cx = e.rx * ts + ts / 2, cy = e.ry * ts + ts / 2;
             ctx.fillStyle = 'rgba(0,0,0,0.18)';
             ctx.beginPath(); ctx.ellipse(cx, cy + ts * 0.32, ts * 0.25, ts * 0.08, 0, 0, Math.PI * 2); ctx.fill();
-            emoji(e.kind === 2 ? '👺' : '👹', cx, cy, ts * 0.72);
+            if (e.kind === 3) drawEye(cx, cy, ts * 0.52, e.bossState === 'open', g.time, true);
+            else if (e.kind === 4) drawEye(cx, cy, ts * 0.27, true, g.time, false);
+            else emoji(e.kind === 2 ? '👺' : '👹', cx, cy, ts * 0.72);
             if (g.time < e.flash) {
                 ctx.fillStyle = 'rgba(255,255,255,0.55)';
                 ctx.beginPath(); ctx.arc(cx, cy, ts * 0.34, 0, Math.PI * 2); ctx.fill();
             }
-            if (e.maxHp > 1) {
-                const bw = ts * 0.6, bx = cx - bw / 2, by = cy - ts * 0.52;
+            if (e.kind !== 4 && (e.maxHp > 1 || e.kind === 3)) {
+                const bw = ts * (e.kind === 3 ? 0.9 : 0.6), bx = cx - bw / 2, by = cy - ts * (e.kind === 3 ? 0.72 : 0.52);
                 ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(bx - 1, by - 1, bw + 2, 7);
                 ctx.fillStyle = '#e04040'; ctx.fillRect(bx, by, bw * Math.max(0, e.hp) / e.maxHp, 5);
             }
+            if (e.hasKey) emoji('🔑', cx + ts * 0.32, cy - ts * 0.36, ts * 0.3);
             if (e.state === 'chase') emoji('❗', cx, cy - ts * 0.78 + Math.sin(g.time / 120) * 2, ts * 0.4);
-            if (g.time < e.stun && g.time >= e.flash) emoji('💫', cx, cy - ts * 0.6, ts * 0.3);
+            if (g.time < e.stun && g.time >= e.flash && e.kind !== 3) emoji('💫', cx, cy - ts * 0.6, ts * 0.3);
         }
 
         {
@@ -1972,6 +2789,9 @@
         ctx.restore();
     }
 
+    /* =====================================================
+       CONTROLES
+    ===================================================== */
     const KEYMAP = { arrowup: 'U', arrowdown: 'D', arrowleft: 'L', arrowright: 'R', w: 'U', s: 'D', a: 'L', d: 'R' };
     window.addEventListener('keydown', e => {
         if (!G) return;
@@ -2062,9 +2882,13 @@
     canvas.addEventListener('touchend', touchEnd, { passive: false });
     canvas.addEventListener('touchcancel', touchEnd, { passive: false });
 
+    /* =====================================================
+       INICIO
+    ===================================================== */
+    buildPalette();
     initEmptyBoard();
     renderGrid();
-    updateBrushMax();
+    renderBrushPanel();
     updateWarn();
     window.addEventListener('resize', () => { if (!G) renderGrid(); });
 })();
