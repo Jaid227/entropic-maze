@@ -371,6 +371,18 @@
             gap: 0.9rem;
             border: 1px solid var(--border-cell);
         }
+        #spawnModal .btn-group {
+            position: sticky;
+            bottom: -1.2rem;
+            background: var(--bg-panel);
+            padding: 0.8rem 0;
+            margin: 0;
+            border-top: 1px solid var(--border-cell);
+            z-index: 1;
+        }
+        #spawnModal .modal-box { gap: 0.7rem; }
+        #spawnSelection { min-height: 1.4rem; font-weight: 600; color: var(--accent); }
+        #pendingBar { position: sticky; top: 0; z-index: 20; background: var(--bg-panel); }
         .palette { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; }
         .palette .tool-btn { font-size: 0.82rem; padding: 0.4rem 0.7rem; }
 
@@ -542,6 +554,10 @@
                 <span class="tool-label">Enemigos</span>
                 <button class="tool-btn" data-tool="enemy">👹 Enemigo</button>
                 <button class="tool-btn" data-tool="enemy2">👺 Enemigo 2 (territorial)</button>
+                <button class="tool-btn" data-tool="arena">🏭 Creador de enemigos</button>
+                <button class="tool-btn" data-tool="snake">🐍 Jefe serpiente</button>
+                <button class="tool-btn" data-tool="worm">🪱 Jefe gusano infinito</button>
+                <button class="tool-btn" data-tool="doubleDoor">🚦 Puerta-botón-doble</button>
                 <button class="tool-btn" data-tool="boss">👁️ Jefe Ojo</button>
                 <button class="tool-btn" data-tool="laser">🔴 Láser</button>
             </div>
@@ -558,6 +574,8 @@
                 <button class="tool-btn" data-tool="wdiamond">◇ Diamantes blancos</button>
                 <button class="tool-btn" data-tool="stone">🪨 Puerta de piedra</button>
                 <button class="tool-btn" data-tool="hole">🕳️ Hoyo</button>
+                <button class="tool-btn" data-tool="portal">🌀 Portal doble</button>
+                <button class="tool-btn" data-tool="cbtn">🎁 Botón-creador</button>
             </div>
             <div class="toolbar">
                 <span class="tool-label">Cajas y espejos</span>
@@ -641,11 +659,12 @@
     </div>
 </div>
 
-<!-- MODAL: qué aparece al romper los diamantes blancos -->
+<!-- MODAL: qué aparece al romper los diamantes blancos / pulsar el botón-creador -->
 <div id="spawnModal" class="modal hidden">
     <div class="modal-box">
         <h3>✴️ ¿Qué aparecerá?</h3>
-        <p style="font-size:0.85rem;color:var(--text-secondary);">Elige el objeto y sus valores. Aparecerá cuando el personaje golpee todos los diamantes blancos.</p>
+        <p style="font-size:0.85rem;color:var(--text-secondary);">Elige el objeto y sus valores. Aparecerá cuando se cumpla la condición (golpear todos los diamantes blancos o pisar el botón-creador).</p>
+        <div id="spawnSelection" role="status" aria-live="polite">Elige un objeto.</div>
         <div id="spawnPalette" class="palette"></div>
         <div id="spawnParams" class="tool-panel hidden"></div>
         <div class="btn-group">
@@ -680,10 +699,10 @@
     ===================================================== */
     const ID_COL = { 1: '#e74c3c', 2: '#3498db', 3: '#2ecc71', 4: '#e0a800' };
     const ICONS = {
-        wall: '🧱', coin: '🪙', enemy: '👹', enemy2: '👺', boss: '👁️', start: '🏁', exit: '🚪',
+        arena: '🏭', boxPath: '🪵', doubleDoor: '🚦', closeBtn: '🔴', openBtn: '🟢', snake: '🐍', worm: '🪱', wall: '🧱', coin: '🪙', enemy: '👹', enemy2: '👺', boss: '👁️', start: '🏁', exit: '🚪',
         key: '🔑', keydoor: '🔒', spikes: '🔺', btn: '🔘', bdoor: '🚧', hbtn: '⏺️',
         ddoor: '💠', diamond: '💎', rdoor: '🟥', rdiamond: '♦️', mwall: '🔳', mwbtn: '🟦',
-        wd: '◇', wspawn: '✴️', block: '📦', mirror: '🪞',
+        wd: '◇', wspawn: '✴️', block: '📦', mirror: '🪞', portal: '🌀', portal2: '🌀', cbtn: '🎁', cspawn: '✨',
         arrowU: '⬆️', arrowD: '⬇️', arrowL: '⬅️', arrowR: '➡️',
         stone: '🪨', hole: '🕳️', sword: '🗡️', bow: '🏹', ammo: '➶', bomb: '💣', shield: '🛡️', laser: '🔴'
     };
@@ -699,18 +718,19 @@
     const SPIKE_PERIOD = 3000, SPIKE_WARN_AT = 1500, SPIKE_UP_AT = 1800;
     const BOMB_FUSE = 1500;
     const DMG = { sword: 8, arrow: 7, bomb: 20 };
-    const PAIRS = { bdoor: 'btn', ddoor: 'diamond', rdoor: 'rdiamond', mwall: 'mwbtn' };
+    const PAIRS = { bdoor: 'btn', ddoor: 'diamond', rdoor: 'rdiamond', mwall: 'mwbtn', portal: 'portal2' };
     const PARTNER_LABEL = {
-        btn: '🔘 el botón', diamond: '💎 el diamante azul',
+        btn: '🔘 el botón', diamond: '💎 el diamante azul', portal2: '🌀 el segundo portal',
         rdiamond: '♦️ el diamante rojo', mwbtn: '🟦 el botón de la pared'
     };
-    const DOOR_NAME = { bdoor: 'puerta-botón', ddoor: 'puerta-diamante', rdoor: 'puerta-láser', mwall: 'pared movible' };
+    // FIX: faltaba 'portal' aquí y showPending() lanzaba un TypeError al colocar un portal
+    const DOOR_NAME = { bdoor: 'puerta-botón', ddoor: 'puerta-diamante', rdoor: 'puerta-láser', mwall: 'pared movible', portal: 'portal' };
     const SOLID = ['wall', 'bdoor', 'ddoor', 'rdoor', 'stone', 'hole', 'diamond', 'rdiamond', 'wd', 'laser'];
     const ENEMY_BLOCK = SOLID.concat(['keydoor']);
     const BEAM_STOP = ['wall', 'keydoor', 'bdoor', 'ddoor', 'rdoor', 'stone', 'laser'];
     const ARROW_STOP = BEAM_STOP.concat(['rdiamond']);
-    const BLOCK_OK = ['floor', 'btn', 'mwbtn', 'hbtn', 'spikes', 'diamondY', 'wdY', 'arrowU', 'arrowD', 'arrowL', 'arrowR'];
-    const WALL_OK = ['floor', 'diamondY', 'wdY', 'arrowU', 'arrowD', 'arrowL', 'arrowR'];
+    const BLOCK_OK = ['floor', 'btn', 'mwbtn', 'hbtn', 'spikes', 'diamondY', 'wdY', 'arrowU', 'arrowD', 'arrowL', 'arrowR', 'portal', 'portal2', 'cbtn', 'cspawn'];
+    const WALL_OK = ['floor', 'diamondY', 'wdY', 'arrowU', 'arrowD', 'arrowL', 'arrowR', 'cbtn', 'cspawn'];
     const TERRITORY = 2;
     const HUD_HOLD_MS = 2200;
     const BOSS_OPEN_MS = 4000;
@@ -803,17 +823,18 @@
     let GRID_SIZE = 12;
     let board = [];
     let groups = {};                 // diamantes blancos: gid -> {count, obj}
+    let creatorGroup = {};           // botones-creadores: gid -> {obj}
     let selectedTool = 'floor';
     let playerSpeed = 5;
     let currentDraftId = null;
-    const brush = { speed: 3, hp: 1, vision: 5, key: false, minis: 3, qty: 1, dir: 'R', count: 3, hid: 1 };
-    let pending = null;              // {type:'pair'|'wgroup', ...}
+    const brush = { waveCount: 2, length: 3, speed: 3, hp: 1, vision: 5, key: false, minis: 3, qty: 1, dir: 'R', count: 3, hid: 1 };
+    let pending = null;              // {type:'pair'|'wgroup'|'creator', ...}
     let spawnTool = null, spawnStore = null;
     const TOOL_LABELS = {};
     document.querySelectorAll('#toolbar .tool-btn').forEach(b => { TOOL_LABELS[b.dataset.tool] = b.textContent.trim(); });
 
     function emptyBoard(n) { return Array.from({ length: n }, () => Array(n).fill('floor')); }
-    function initEmptyBoard() { board = emptyBoard(GRID_SIZE); groups = {}; pending = null; hidePending(); closeSpawnModal(); }
+    function initEmptyBoard() { board = emptyBoard(GRID_SIZE); groups = {}; creatorGroup = {}; pending = null; hidePending(); closeSpawnModal(); }
     function countTile(type) {
         let c = 0;
         for (const row of board) for (const t of row) if (base(t) === type) c++;
@@ -830,6 +851,8 @@
        EDITOR: PANEL DE VALORES
     ===================================================== */
     const PSPEC = {
+        waveCount: {t:"range", label:"Enemigos o jefes",min:2,max:8},
+        length: { t: 'range', label: '🐍 Largo (casillas)', min: 3, max: 10 },
         speed:  { t: 'range', label: '⚡ Velocidad', min: 1, max: 'spd' },
         hp:     { t: 'range', label: '❤️ Vida', min: 1, max: 30 },
         hpBoss: { t: 'range', label: '❤️ Vida', min: 1, max: 50, field: 'hp' },
@@ -842,6 +865,8 @@
         hid:    { t: 'doorid', label: 'Abre la puerta-botón número:' }
     };
     const TOOL_PARAMS = {
+        arena: ["waveCount"],
+        snake: ['speed', 'hpBoss', 'length', 'key'], worm: ['speed', 'hpBoss', 'key'],
         enemy: ['speed', 'hp', 'vision', 'key'],
         enemy2: ['speed', 'hp', 'vision', 'key'],
         boss: ['speed', 'hpBoss', 'minis', 'key'],
@@ -850,6 +875,10 @@
         hbtn: ['hid'], wdiamond: ['count']
     };
     const TOOL_NOTES = {
+        arena: "Elige de 2 a 8 integrantes, iguales o variados, uno por uno. Salen del creador de uno en uno; al derrotarlos todos aparece la recompensa elegida en su casilla.",
+        snake: 'Largo total de 3 a 10 casillas. Recorre los caminos disponibles; solo su cola dorada recibe daño. Deja espacio para su cuerpo.',
+        worm: 'Coloca la cola creadora. La cabeza crece formando un camino continuo sin cruzarse. Cortar el cuerpo destruye progresivamente la parte desconectada; solo agotar la vida de la cola derrota al jefe.',
+        doubleDoor: 'Coloca primero la puerta, después el botón rojo para cerrar y finalmente el verde para abrir. Comienza cerrada; puedes usar ambos botones repetidamente.',
         enemy: 'Cada enemigo usa estos valores (azul = velocidad, rojo = vida, 🔑 = suelta llave). Toca uno ya puesto para reemplazarlo. Espada quita 8, flecha 7 y bomba 20.',
         enemy2: 'Territorial: solo te sigue un poco, sin salir de su área. Toca uno ya puesto para reemplazarlo.',
         boss: 'El jefe saca sus mini ojos uno por uno. Al matar a todos abre el ojo unos segundos para que lo ataques; si no muere, repite.',
@@ -933,6 +962,7 @@
 
     function tileFromTool(tool, st) {
         if (tool === 'enemy' || tool === 'enemy2') return `${tool}:${st.speed}:${st.hp}:${st.vision}:${st.key ? 1 : 0}`;
+        if (tool === 'snake' || tool === 'worm') return `${tool}:${st.speed}:${st.hp}:${st.length || 3}:${st.key ? 1 : 0}`;
         if (tool === 'boss') return `boss:${st.speed}:${st.hp}:${st.minis}:${st.key ? 1 : 0}`;
         if (tool === 'laser') return `laser:${st.dir}`;
         if (tool === 'ammo' || tool === 'bomb') return `${tool}:${st.qty}`;
@@ -966,7 +996,10 @@
                     span.textContent = ICONS[b];
                     cell.appendChild(span);
                 }
-                if (b === 'btn' || b === 'bdoor' || b === 'ddoor' || b === 'diamond' || b === 'rdoor' || b === 'rdiamond' || b === 'mwbtn' || b === 'hbtn') {
+                if (b === 'portal' || b === 'portal2') {
+                    const id = tileId(t);
+                    addBadge(cell, id, ID_COL[id] || '#9b59b6');
+                } else if (b === 'btn' || b === 'bdoor' || b === 'ddoor' || b === 'diamond' || b === 'rdoor' || b === 'rdiamond' || b === 'mwbtn' || b === 'hbtn') {
                     const id = tileId(t);
                     addBadge(cell, id, ID_COL[id]);
                 } else if (b === 'mwall') {
@@ -979,6 +1012,12 @@
                     addBadge(cell, pr.hp, null, 'hp');
                     if (pr.key) addBadge(cell, '🔑', null, 'tr');
                     cell.title = `Velocidad ${pr.sp} · Vida ${pr.hp} · Visión ${pr.vis}` + (pr.key ? ' · Suelta llave' : '');
+                } else if (b === 'snake' || b === 'worm') {
+                    addBadge(cell, part(t, 2), null, 'hp');
+                    if (b === 'snake') addBadge(cell, part(t, 3), '#427c40', 'bl');
+                    cell.title = b === 'snake' ? 'Serpiente: cola vulnerable · Largo ' + part(t, 3) : 'Gusano: cola creadora vulnerable';
+                } else if (['doubleDoor','closeBtn','openBtn'].includes(b)) {
+                    addBadge(cell, tileId(t), '#7354a1');
                 } else if (b === 'boss') {
                     const pr = bossProps(t);
                     addBadge(cell, pr.sp, null, 'tl');
@@ -998,7 +1037,15 @@
                 } else if (b === 'wspawn') {
                     const gr = groups[tileId(t)];
                     addBadge(cell, gr && gr.obj ? (ICONS[base(gr.obj)] || '?') : '?', '#555');
+                    cell.title = gr && gr.obj ? 'Aquí aparecerá: ' + (TOOL_LABELS[base(gr.obj)] || base(gr.obj)) : 'Casilla de aparición: elige qué objeto crear';
                     addBadge(cell, tileId(t), '#6b7280', 'tl');
+                } else if (b === 'cbtn') {
+                    addBadge(cell, tileId(t), '#d35400');
+                } else if (b === 'cspawn') {
+                    const gr = creatorGroup[tileId(t)];
+                    addBadge(cell, gr && gr.obj ? (ICONS[base(gr.obj)] || '?') : '?', '#555');
+                    cell.title = gr && gr.obj ? 'Aquí aparecerá: ' + (TOOL_LABELS[base(gr.obj)] || base(gr.obj)) : 'Casilla de aparición: elige qué objeto crear';
+                    addBadge(cell, tileId(t), '#d35400', 'tl');
                 }
                 cell.addEventListener('click', () => handleCellClick(x, y));
                 editorGrid.appendChild(cell);
@@ -1031,10 +1078,19 @@
         }
         delete groups[gid];
     }
+    // FIX: cancelar un botón-creador antes borraba un grupo de diamantes blancos (o nada)
+    function removeCreator(gid) {
+        for (let y = 0; y < GRID_SIZE; y++) for (let x = 0; x < GRID_SIZE; x++) {
+            const t = board[y][x], b = base(t);
+            if ((b === 'cbtn' || b === 'cspawn') && tileId(t) === gid) board[y][x] = 'floor';
+        }
+        delete creatorGroup[gid];
+    }
 
     /* Limpieza: grupos blancos incompletos, puertas sin pareja, parejas sin puerta */
     function cleanGroups() {
-        const pg = pending && pending.type !== undefined && pending.gid !== undefined ? pending.gid : null;
+        const pg = pending && pending.parentGid ? pending.parentGid : pending && pending.type === 'wgroup' ? pending.gid
+                 : (pending && ['pair','double'].includes(pending.type) && pending.virtual ? pending.gid : null);
         Object.keys(groups).forEach(k => {
             const gid = parseInt(k);
             if (gid === pg) return;
@@ -1046,16 +1102,23 @@
             }
             let ok = gr.obj && diam === gr.count && spawn === 1;
             if (ok && PAIRS[base(gr.obj)]) ok = hasTile(PAIRS[base(gr.obj)], tileId(gr.obj));
+            if(ok && base(gr.obj)==='doubleDoor') ok=['closeBtn','openBtn'].every(k=>hasTile(k,tileId(gr.obj)));
             if (!ok) removeGroup(gid);
         });
         // marcas sueltas sin grupo
-        const pgid = pg;
         for (let y = 0; y < GRID_SIZE; y++) for (let x = 0; x < GRID_SIZE; x++) {
             const t = board[y][x], b = base(t);
-            if ((b === 'wd' || b === 'wspawn') && !groups[tileId(t)] && tileId(t) !== pgid) board[y][x] = 'floor';
+            if ((b === 'wd' || b === 'wspawn') && !groups[tileId(t)] && tileId(t) !== pg) board[y][x] = 'floor';
         }
     }
     function cleanOrphans() {
+        for (const row of board) for (const t of row) {
+            if (!['doubleDoor','closeBtn','openBtn'].includes(base(t))) continue;
+            const id = tileId(t);
+            if (pending && pending.type === 'double' && pending.id === id) continue;
+            if (!['doubleDoor','closeBtn','openBtn'].every(k => hasTile(k,id) || (k==='doubleDoor' && Object.values(groups).some(gr=>base(gr.obj)==='doubleDoor'&&tileId(gr.obj)===id))))
+                ['doubleDoor','closeBtn','openBtn'].forEach(k => removeById(k,id));
+        }
         for (const dk of Object.keys(PAIRS)) {
             const pk = PAIRS[dk];
             const doorIds = new Set(), partIds = new Set();
@@ -1075,6 +1138,29 @@
         for (let y = 0; y < GRID_SIZE; y++) for (let x = 0; x < GRID_SIZE; x++) {
             if (base(board[y][x]) === 'hbtn' && !doorExists(tileId(board[y][x]))) board[y][x] = 'floor';
         }
+        // botones-creadores y sus casillas de aparición
+        for (let y = 0; y < GRID_SIZE; y++) for (let x = 0; x < GRID_SIZE; x++) {
+            const t = board[y][x], b = base(t), id = tileId(t);
+            if (b === 'cbtn') {
+                let hasSpawn = false;
+                for (const row of board) for (const tt of row) {
+                    if (base(tt) === 'cspawn' && tileId(tt) === id) hasSpawn = true;
+                }
+                if (!hasSpawn && !(pending && pending.type === 'creator' && pending.gid === id)) board[y][x] = 'floor';
+            }
+            if (b === 'cspawn') {
+                let hasBtn = false;
+                for (const row of board) for (const tt of row) {
+                    if (base(tt) === 'cbtn' && tileId(tt) === id) hasBtn = true;
+                }
+                if (!hasBtn) board[y][x] = 'floor';
+            }
+        }
+        // limpiar datos de creadores que ya no existen en el tablero
+        Object.keys(creatorGroup).forEach(k => {
+            const gid = parseInt(k);
+            if (!hasTile('cbtn', gid) && !(pending && pending.type === 'creator' && pending.gid === gid)) delete creatorGroup[k];
+        });
     }
 
     function updateWarn() {
@@ -1098,7 +1184,12 @@
         const used = new Set();
         for (const row of board) for (const t of row) if (base(t) === kind) used.add(tileId(t));
         for (const k in groups) if (groups[k].obj && base(groups[k].obj) === kind) used.add(tileId(groups[k].obj));
-        for (let i = 1; i <= 4; i++) if (!used.has(i)) return i;
+        for(const gr of Object.values(groups)) if(base(gr.obj)===kind) used.add(tileId(gr.obj));
+        for(const row of board) for(const t of row) if(base(t)==='arena') {
+            try {const cfg=JSON.parse(decodeURIComponent(part(t,1)));if(base(cfg.reward)===kind)used.add(tileId(cfg.reward));}catch(err){}
+        }
+        const maxId = kind === 'portal' ? 5 : 4;
+        for (let i = 1; i <= maxId; i++) if (!used.has(i)) return i;
         return 0;
     }
     function freeGid() {
@@ -1110,11 +1201,28 @@
         }
         return 0;
     }
+    // FIX: antes el botón-creador reutilizaba freeGid() y dos creadores recibían el mismo número
+    function freeCreatorId() {
+        for (let i = 1; i <= 9; i++) {
+            if (creatorGroup[i]) continue;
+            let used = false;
+            for (const row of board) for (const t of row) if ((base(t) === 'cbtn' || base(t) === 'cspawn') && tileId(t) === i) used = true;
+            if (!used) return i;
+        }
+        return 0;
+    }
     function showPending() {
         if (!pending) return;
         let txt = '';
-        if (pending.type === 'pair') {
-            txt = `${DOOR_NAME[pending.kind][0].toUpperCase() + DOOR_NAME[pending.kind].slice(1)} número ${pending.id} lista: toca la casilla donde irá ${PARTNER_LABEL[PAIRS[pending.kind]]}.`;
+        if (pending.type === 'arena') {
+            txt = pending.step==='enemy' ? `Elige integrante ${pending.enemies.length+1} de ${pending.total} y confirma.` : pending.step==='spawn' ? 'Coloca la casilla de la recompensa.' : pending.step==='partner' ? 'Coloca la pareja del objeto recompensa.' : 'Elige la recompensa y confirma.';
+        } else if (pending.type === 'double') {
+            txt = `Puerta doble ${pending.id}: coloca el botón ${pending.step === 'close' ? 'ROJO para CERRAR' : 'VERDE para ABRIR'} en otra casilla vacía.`;
+        } else if (pending.type === 'pair') {
+            const nm = DOOR_NAME[pending.kind] || pending.kind;
+            txt = pending.virtual
+                ? `Paso final: ${nm} ${pending.id} aparecerá en la casilla ✴️. Ahora toca una casilla vacía para colocar ${PARTNER_LABEL[PAIRS[pending.kind]]}.`
+                : `${nm[0].toUpperCase() + nm.slice(1)} número ${pending.id} lista: toca la casilla donde irá ${PARTNER_LABEL[PAIRS[pending.kind]]}.`;
             if (!pending.virtual) txt += ' (Si tocas la puerta o cancelas, se quita.)';
         } else if (pending.step === 'diamonds') {
             txt = `◇ Grupo ${pending.gid}: coloca ${pending.remaining} diamante(s) blanco(s) más.`;
@@ -1133,10 +1241,20 @@
         pending = null;
         hidePending();
         closeSpawnModal();
-        if (p.type === 'pair') {
+        if (p.type === 'arena') {
+            // No se escribe en el tablero hasta completar la configuración.
+            if(p.parentGid) removeGroup(p.parentGid);
+        } else if (p.type === 'double') {
+            ['doubleDoor','closeBtn','openBtn'].forEach(k => removeById(k,p.id));
+            if(p.virtual) removeGroup(p.gid);
+        } else if (p.type === 'pair') {
             if (p.virtual) removeGroup(p.gid);
             else if (base(board[p.y][p.x]) === p.kind) board[p.y][p.x] = 'floor';
-        } else removeGroup(p.gid);
+        } else if (p.type === 'creator') {
+            removeCreator(p.gid);
+        } else {
+            removeGroup(p.gid);
+        }
         afterEdit();
     }
     $('pendingCancel').addEventListener('click', cancelPending);
@@ -1148,8 +1266,9 @@
             pending = { type: 'pair', kind, id, x, y };
         } else {
             const id = freeId(kind);
-            if (!id) { setStatus('Ya usaste los 4 números de este tipo de puerta.', 2500); return; }
-            board[y][x] = kind === 'mwall' ? `mwall:${id}:${brush.dir}` : `${kind}:${id}`;
+            if (!id) { setStatus('Ya usaste todos los números de este tipo.', 2500); return; }
+            if (kind === 'mwall') board[y][x] = `mwall:${id}:${brush.dir}`;
+            else board[y][x] = `${kind}:${id}`;
             pending = { type: 'pair', kind, id, x, y };
         }
         cleanGroups(); cleanOrphans(); renderGrid(); showPending(); updateWarn();
@@ -1163,10 +1282,51 @@
         pending = { type: 'wgroup', gid, remaining: count - 1, step: count - 1 > 0 ? 'diamonds' : 'spawn' };
         cleanOrphans(); renderGrid(); showPending();
     }
+    function startCreator(x, y) {
+        const gid = freeCreatorId();
+        if (!gid) { setStatus('Máximo 9 botones-creadores por cuarto.', 2500); return; }
+        board[y][x] = `cbtn:${gid}`;
+        creatorGroup[gid] = { obj: null };
+        pending = { type: 'creator', gid, step: 'spawn', x, y };
+        cleanOrphans(); renderGrid(); showPending();
+    }
     function resolvePending(x, y) {
         const p = pending;
-        if (p.type === 'pair') {
+        if(p.type==='arena') {
+            if(p.step==='enemy'||p.step==='reward') return;
+            if(base(board[y][x])!=='floor'||(p.x===x&&p.y===y)) {setStatus('Elige otra casilla vacía.',1800);return;}
+            if(p.step==='spawn') {p.config.rx=x;p.config.ry=y;p.step='reward';showPending();openSpawnModal();return;}
+            if(p.step==='partner') {
+                if(x===p.config.rx&&y===p.config.ry){setStatus('Elige otra casilla.',1500);return;}
+                p.config.partner={x,y,tile:p.partnerTile}; finishArena(); return;
+            }
+        }
+        if (p.type === 'double') {
+            if (base(board[y][x]) !== 'floor') { setStatus('Elige una casilla vacía distinta.',1800); return; }
+            board[y][x] = `${p.step === 'close' ? 'closeBtn' : 'openBtn'}:${p.id}`;
+            if (p.step === 'close') { p.step = 'open'; renderGrid(); showPending(); }
+            else { pending = null; hidePending(); afterEdit(); setStatus('✅ Puerta y sus dos botones conectados.',2200); }
+            return;
+        }
+        if (p.type === 'creator') {
+            if (p.step === 'spawn') {
+                if (x === p.x && y === p.y) { setStatus('Elige otra casilla distinta al botón.', 1800); return; }
+                board[y][x] = `cspawn:${p.gid}`;
+                p.step = 'object';
+                cleanOrphans(); renderGrid(); showPending();
+                openSpawnModal();
+            }
+            return;
+        }
+        if (p.type === 'arena') {
+            // No se escribe en el tablero hasta completar la configuración.
+            if(p.parentGid) removeGroup(p.parentGid);
+        } else if (p.type === 'double') {
+            ['doubleDoor','closeBtn','openBtn'].forEach(k => removeById(k,p.id));
+            if(p.virtual) removeGroup(p.gid);
+        } else if (p.type === 'pair') {
             if (!p.virtual && x === p.x && y === p.y) { cancelPending(); return; }
+            if(base(board[y][x])!=='floor') {setStatus('Coloca la pieza en una casilla vacía distinta a la aparición y los diamantes.',2200);return;}
             board[y][x] = `${PAIRS[p.kind]}:${p.id}`;
             pending = null;
             hidePending();
@@ -1198,9 +1358,27 @@
     }
 
     function handleCellClick(x, y) {
-        if (pending) { resolvePending(x, y); return; }
+        if (pending) {
+            // con el modal abierto (paso "object") no se coloca nada en el tablero
+            if (pending.step === 'object') return;
+            resolvePending(x, y);
+            return;
+        }
         const tool = selectedTool;
         if (tool === 'erase' || tool === 'floor') { board[y][x] = 'floor'; afterEdit(); return; }
+        if (tool === 'arena') {
+            if(base(board[y][x])!=='floor') {setStatus('Elige una casilla vacía.',1800);return;}
+            pending={type:'arena',step:'enemy',x,y,total:clamp(brush.waveCount||2,2,8),enemies:[],config:{}};
+            showPending(); openSpawnModal(); return;
+        }
+        if (tool === 'doubleDoor') {
+            const id = freeId('doubleDoor');
+            if (!id) { setStatus('Máximo cuatro puertas dobles.',2000); return; }
+            if (base(board[y][x]) !== 'floor') { setStatus('Coloca la puerta en una casilla vacía.',2000); return; }
+            board[y][x] = `doubleDoor:${id}`;
+            pending = {type:'double',id,step:'close'}; renderGrid(); showPending(); return;
+        }
+        if (tool === 'cbtn') { startCreator(x, y); return; }
         if (PAIRS[tool]) { startPair(tool, x, y); return; }
         if (tool === 'wdiamond') { startGroup(x, y); return; }
         if (tool === 'hbtn') { placeHold(x, y); return; }
@@ -1211,7 +1389,7 @@
 
     /* --- Modal: qué aparece --- */
     function buildPalette() {
-        const skip = ['floor', 'erase', 'start', 'exit', 'wdiamond', 'hbtn'];
+        const skip = ['floor', 'erase', 'start', 'wdiamond', 'cbtn', 'portal', 'bdoor', 'ddoor', 'rdoor', 'mwall', 'doubleDoor', 'arena', 'hbtn'];
         spawnPalette.innerHTML = '';
         Object.keys(TOOL_LABELS).forEach(tool => {
             if (skip.indexOf(tool) >= 0) return;
@@ -1224,38 +1402,114 @@
                 spawnPalette.querySelectorAll('.tool-btn').forEach(x => x.classList.remove('active'));
                 b.classList.add('active');
                 const names = TOOL_PARAMS[tool];
-                if (names && tool !== 'wdiamond' && tool !== 'hbtn') {
+                if (names && tool !== 'wdiamond') {
                     buildControls(spawnParams, names, spawnStore);
                     spawnParams.classList.remove('hidden');
                 } else spawnParams.classList.add('hidden');
+                $('spawnSelection').textContent = 'Seleccionado: ' + TOOL_LABELS[tool];
+                $('spawnOk').disabled = false;
+                $('spawnOk').textContent = (tool === 'mwall' ? '➡️ Continuar: colocar su botón' : '➡️ Continuar');
+                // Los objetos sin ajustes avanzan al tocarlos: no requieren un segundo clic oculto.
+                if (!names || !names.length) $('spawnOk').click();
             });
             spawnPalette.appendChild(b);
         });
     }
     function openSpawnModal() {
+        const enemyStep=pending&&pending.type==='arena'&&pending.step==='enemy';
+        spawnModal.querySelector('h3').textContent=enemyStep?`🏭 Integrante ${pending.enemies.length+1} de ${pending.total}`:'✴️ ¿Qué aparecerá?';
+        spawnModal.querySelector('p').textContent=enemyStep?'Elige un enemigo o jefe y sus valores. Puedes repetirlo o combinar varios tipos.':pending&&pending.type==='arena'?'Elige la recompensa que aparecerá al derrotar a todos los integrantes.':'Elige el objeto y sus valores. Aparecerá cuando se cumpla la condición del grupo o botón.';
         spawnTool = null;
+        $('spawnSelection').textContent = 'Elige un objeto. Los que no tienen ajustes avanzan al tocarlos.';
+        $('spawnOk').disabled = true;
+        $('spawnOk').textContent = '➡️ Continuar';
         spawnStore = Object.assign({}, brush);
         spawnParams.classList.add('hidden');
-        spawnPalette.querySelectorAll('.tool-btn').forEach(x => x.classList.remove('active'));
+        spawnPalette.querySelectorAll('.tool-btn').forEach(x => {
+            x.classList.remove('active');
+            const tool=x.dataset.tool;
+            const onlyEnemies=pending&&pending.type==='arena'&&pending.step==='enemy';
+            const white=pending&&pending.type==='wgroup';
+            x.classList.toggle('hidden',onlyEnemies?!['enemy','enemy2','boss','snake','worm'].includes(tool):!white&&['arena','doubleDoor','hbtn','exit'].includes(tool));
+        });
         spawnModal.classList.remove('hidden');
+    }
+    function finishArena() {
+        const p=pending;
+        p.config.enemies=p.enemies;
+        const tile='arena:'+encodeURIComponent(JSON.stringify(p.config));
+        if(p.parentGid) groups[p.parentGid].obj=tile; else board[p.y][p.x]=tile;
+        pending=null;hidePending();closeSpawnModal();afterEdit();setStatus('✅ Creador de enemigos listo.',2000);
     }
     function closeSpawnModal() { spawnModal.classList.add('hidden'); }
     $('spawnCancel').addEventListener('click', cancelPending);
     $('spawnOk').addEventListener('click', () => {
         const p = pending;
-        if (!p || p.type !== 'wgroup') return;
+        if (!p) return;
         if (!spawnTool) { setStatus('Elige qué objeto aparecerá.', 1800); return; }
         const tool = spawnTool, st = spawnStore;
+
+        if(p.type==='arena') {
+            if(p.step==='enemy') {
+                if(!['enemy','enemy2','boss','snake','worm'].includes(tool)) return;
+                p.enemies.push(tileFromTool(tool,st)); closeSpawnModal();
+                if(p.enemies.length<p.total) {showPending();openSpawnModal();}
+                else {p.step='spawn';showPending();} return;
+            }
+            if(p.step==='reward') {
+                if(PAIRS[tool]) {
+                    const id=freeId(tool); if(!id){setStatus('No hay números disponibles.',1800);return;}
+                    p.config.reward=tool==='mwall'?`mwall:${id}:${st.dir}`:`${tool}:${id}`;
+                    p.partnerTile=`${PAIRS[tool]}:${id}`;p.step='partner';closeSpawnModal();showPending();return;
+                }
+                p.config.reward=tileFromTool(tool,st);finishArena();return;
+            }
+        }
+        // Caso botón-creador
+        if (p.type === 'creator') {
+            if (PAIRS[tool]) {
+                setStatus('Ese objeto necesita pareja, no se puede crear con el botón.', 2500);
+                return;
+            }
+            creatorGroup[p.gid].obj = tileFromTool(tool, st);
+            pending = null;
+            hidePending();
+            closeSpawnModal();
+            afterEdit();
+            setStatus('✅ Botón-creador listo.', 2000);
+            return;
+        }
+
+        if (p.type !== 'wgroup') return;
+        if(tool==='arena') {
+            let pos=null;
+            for(let y=0;y<GRID_SIZE;y++)for(let x=0;x<GRID_SIZE;x++)if(board[y][x]===`wspawn:${p.gid}`)pos={x,y};
+            if(!pos)return;
+            pending={type:'arena',parentGid:p.gid,...pos,step:'enemy',total:clamp(st.waveCount||2,2,8),enemies:[],config:{}};
+            closeSpawnModal();showPending();openSpawnModal();return;
+        }
+        if(tool==='doubleDoor') {
+            const id=freeId(tool);if(!id){setStatus('Máximo cuatro puertas dobles.',1800);return;}
+            groups[p.gid].obj=`doubleDoor:${id}`;
+            pending={type:'double',id,gid:p.gid,virtual:true,step:'close'};
+            closeSpawnModal();renderGrid();showPending();return;
+        }
+        if(tool==='hbtn') {
+            if(!doorExists(st.hid)){setStatus('Primero coloca la puerta-botón seleccionada.',2000);return;}
+            groups[p.gid].obj=`hbtn:${st.hid}`;
+        }
         if (PAIRS[tool]) {
             const id = freeId(tool);
-            if (!id) { setStatus('Ya usaste los 4 números de ese tipo de puerta.', 2500); return; }
+            if (!id) { setStatus('Ya usaste todos los números de ese tipo.', 2500); return; }
             groups[p.gid].obj = tool === 'mwall' ? `mwall:${id}:${st.dir}` : `${tool}:${id}`;
             closeSpawnModal();
-            pending = { type: 'pair', kind: tool, id, x: -1, y: -1, virtual: true, gid: p.gid };
+            let origin=null;
+            for(let yy=0;yy<GRID_SIZE;yy++)for(let xx=0;xx<GRID_SIZE;xx++)if(board[yy][xx]===`wspawn:${p.gid}`)origin={x:xx,y:yy};
+            pending = { type: 'pair', kind: tool, id, x: origin?origin.x:-1, y: origin?origin.y:-1, virtual: true, gid: p.gid };
             renderGrid(); showPending();
             return;
         }
-        groups[p.gid].obj = tileFromTool(tool, st);
+        groups[p.gid].obj = tool==='hbtn'?`hbtn:${st.hid}`:tileFromTool(tool, st);
         pending = null;
         hidePending();
         closeSpawnModal();
@@ -1285,7 +1539,9 @@
                 bdoor: 'Coloca la puerta: te pedirá enseguida dónde va su botón.',
                 ddoor: 'Coloca la puerta: te pedirá enseguida dónde va su diamante azul.',
                 rdoor: 'Coloca la puerta-láser: después coloca su diamante rojo (debe tocarlo un láser).',
-                mwall: 'Elige la dirección y coloca la pared: te pedirá dónde va su botón.'
+                mwall: 'Elige la dirección y coloca la pared: te pedirá dónde va su botón.',
+                portal: 'Coloca el primer portal: te pedirá enseguida dónde va el segundo.',
+                cbtn: 'Coloca el botón: luego toca la casilla donde aparecerá el objeto y elige cuál.'
             };
             if (hints[selectedTool]) setStatus(hints[selectedTool], 3500);
         });
@@ -1303,6 +1559,7 @@
     });
 
     function clearGrid() {
+        if (!confirm('¿Seguro que quieres limpiar todo el cuarto? Se borrará todo el contenido.')) return;
         initEmptyBoard();
         renderGrid();
         updateWarn();
@@ -1310,7 +1567,7 @@
     }
     function currentRoomData() {
         cleanGroups();
-        return { board: clone(board), gridSize: GRID_SIZE, playerSpeed, vision: 5, groups: clone(groups) };
+        return { board: clone(board), gridSize: GRID_SIZE, playerSpeed, vision: 5, groups: clone(groups), creators: clone(creatorGroup) };
     }
 
     /* =====================================================
@@ -1365,6 +1622,7 @@
         gridSizeSelect.value = String(GRID_SIZE);
         board = clone(d.board);
         groups = clone(d.groups || {});
+        creatorGroup = clone(d.creators || {});
         playerSpeed = d.playerSpeed || 5;
         playerSpeedInput.value = playerSpeed;
         playerSpeedVal.textContent = playerSpeed;
@@ -1481,6 +1739,11 @@
     const moveDelayBoss = s => Math.round(2200 - s * 200);
 
     /* --- Preparar cuarto --- */
+    function futureCoins(tile) {
+        if(base(tile)==='coin')return 1;
+        if(base(tile)==='arena') {try{return futureCoins(JSON.parse(decodeURIComponent(part(tile,1))).reward);}catch(err){return 0;}}
+        return 0;
+    }
     function setupRoom(room) {
         clearTimeout(S.timer);
         const n = room.gridSize || room.board.length;
@@ -1489,9 +1752,9 @@
         const g = {
             n, grid, room,
             player: { x: 0, y: 0, rx: 0, ry: 0, facing: 'D' },
-            enemies: [], blocks: [], mwalls: [], bombs: [], arrows: [], lasers: [], rdias: [], hbtns: [],
+            arenas: [], chains: [], doubleOpen: new Set(), enemies: [], blocks: [], mwalls: [], bombs: [], arrows: [], lasers: [], rdias: [], hbtns: [],
             beamCells: [], beamSet: new Set(), litIds: new Set(), holdIds: new Set(),
-            permOpen: new Set(), pressed: new Set(), mwDone: new Set(), wgroups: {},
+            permOpen: new Set(), pressed: new Set(), mwDone: new Set(), pressedCreators: new Set(), wgroups: {},
             totalCoins: 0, coins: 0, keys: 0, shields: 0, ammo: 0, bombCount: 0,
             hasBow: false, hasSword: false, weapon: null,
             exitActive: false,
@@ -1501,6 +1764,35 @@
         };
         G = g;
         for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) initTile(g, x, y, true);
+        // Contar monedas que aparecerán desde grupos de diamantes blancos
+        for (const gid in g.wgroups) {
+            const wg = g.wgroups[gid];
+            if (wg && wg.obj) g.totalCoins+=futureCoins(wg.obj);
+        }
+        // Contar monedas que aparecerán desde botones-creadores
+        if (room.creators) {
+            for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
+                const t = g.grid[y][x];
+                if (base(t) === 'cspawn') {
+                    const cr = room.creators[tileId(t)];
+                    if (cr && cr.obj && base(cr.obj) === 'coin') g.totalCoins++;
+                }
+            }
+        }
+        // Desplegar el largo inicial de cada serpiente sin atravesar objetos.
+        for (const c of g.chains.filter(c => c.kind === 'snake')) {
+            const extend = () => {
+                if(c.cells.length >= c.length) return true;
+                const h=c.cells[c.cells.length-1];
+                for(const [d,[dx,dy]] of Object.entries(DIRS)) {
+                    const x=h.x+dx,y=h.y+dy;
+                    if(!inb(x,y)||base(g.grid[y][x])!=='floor'||blockAt(x,y)||mwallAt(x,y)||enemyAt(x,y)||(g.player.x===x&&g.player.y===y)) continue;
+                    c.cells.push({x,y}); if(extend()) return true; c.cells.pop();
+                }
+                return false;
+            };
+            extend(); // Si no cabe, se desplegará al avanzar hacia espacio disponible.
+        }
         g.exitActive = g.totalCoins === 0;
         computeBeams();
     }
@@ -1512,6 +1804,12 @@
                 if (initial) { g.player.x = g.player.rx = x; g.player.y = g.player.ry = y; }
                 g.grid[y][x] = 'floor';
                 break;
+            case 'arena': {
+                try {const config=JSON.parse(decodeURIComponent(part(t,1)));g.arenas.push({x,y,...config,index:0,active:null,done:false,next:0});if(initial && base(config.reward)==='coin')g.totalCoins++;}catch(err){console.error('Creador inválido',err);}
+                break;
+            }
+            case 'snake': case 'worm':
+                makeChain(g,x,y,t); g.grid[y][x] = 'floor'; break;
             case 'enemy': case 'enemy2': case 'boss':
                 makeEnemy(g, x, y, t);
                 g.grid[y][x] = 'floor';
@@ -1528,7 +1826,7 @@
                 g.mwalls.push({ x, y, rx: x, ry: y, id: tileId(t), dir: mwDir(t) });
                 g.grid[y][x] = 'floor';
                 break;
-            case 'coin': g.totalCoins++; break;
+            case 'coin': if (initial) g.totalCoins++; break;
             case 'laser': g.lasers.push({ x, y, dir: dirOf(t) }); break;
             case 'rdiamond': g.rdias.push({ x, y, id: tileId(t) }); break;
             case 'hbtn': g.hbtns.push({ x, y, id: tileId(t) }); break;
@@ -1560,14 +1858,117 @@
         }
     }
 
+    // Cadenas ordenadas desde la cola vulnerable hasta la cabeza.
+    function makeChain(g,x,y,t) {
+        const c = {kind:base(t),hp:+part(t,2)||1,maxHp:+part(t,2)||1,
+            speed:Math.min(+part(t,1)||3,g.maxE),length:clamp(+part(t,3)||3,3,10),
+            key:part(t,4)==='1',cells:[{x,y}],next:600,flash:0,decay:[]};
+        g.chains.push(c);
+    }
+    function updateArenas(now) {
+        const g=G;
+        for(const a of g.arenas) {
+            if(a.done) continue;
+            if(a.active) {
+                if(g.enemies.includes(a.active)||g.chains.includes(a.active)) continue;
+                a.active=null; a.next=now+500;
+                if(a.index>=a.enemies.length) {
+                    // Esperar a que la casilla de recompensa quede libre.
+                    a.cleared=true;
+                }
+            }
+            if(a.cleared) {
+                if(blockAt(a.rx,a.ry)||enemyAt(a.rx,a.ry)||mwallAt(a.rx,a.ry)) continue;
+                if(a.partner&&(blockAt(a.partner.x,a.partner.y)||enemyAt(a.partner.x,a.partner.y)||mwallAt(a.partner.x,a.partner.y))) continue;
+                a.done=true;
+                if(a.partner) spawnObject(a.partner.tile,a.partner.x,a.partner.y);
+                spawnObject(a.reward,a.rx,a.ry);toast('🎁 ¡Derrotaste a todos! Recompensa desbloqueada.',2200);continue;
+            }
+            if(a.active||now<a.next||blockAt(a.x,a.y)||enemyAt(a.x,a.y)||mwallAt(a.x,a.y)||(g.player.x===a.x&&g.player.y===a.y)) continue;
+            const t=a.enemies[a.index++];
+            if(['snake','worm'].includes(base(t))) {makeChain(g,a.x,a.y,t);a.active=g.chains[g.chains.length-1];}
+            else {makeEnemy(g,a.x,a.y,t);a.active=g.enemies[g.enemies.length-1];}
+            a.active.next=now+600;
+        }
+    }
+    function chainAt(x,y) {
+        for (const c of G.chains) {
+            const segment=c.cells.find(v=>v.x===x&&v.y===y);
+            if(segment) return {x,y,chain:c,segment};
+        }
+        return null;
+    }
+    function damageChain(e,dmg) {
+        const c=e.chain, i=c.cells.indexOf(e.segment), g=G;
+        if(i<0 || !g.chains.includes(c)) return false;
+        if(i===0) {
+            if(g.time<c.flash) return true;
+            c.hp-=dmg; c.flash=g.time+180; playSound('hit');
+            if(c.hp<=0) {
+                g.chains=g.chains.filter(v=>v!==c);
+                for(const v of c.cells) g.effects.push({kind:'pop',...v,t0:g.time,dur:450,ch:'💥'});
+                if(c.key) dropKey(e.x,e.y);
+                toast('¡Jefe derrotado!',1600); return false;
+            }
+        } else if(c.kind==='worm') {
+            // El extremo desconectado se desintegra desde el corte hacia su cabeza.
+            c.decay.push(...c.cells.splice(i).map((v,j)=>({...v,until:g.time+(j+1)*90})));
+            playSound('hit');
+        } else playSound('clang');
+        return true;
+    }
+    function updateChains(now) {
+        const g=G,p=g.player;
+        for(const c of g.chains) {
+            c.decay=c.decay.filter(v=>v.until>now);
+            if(now>=c.next) {
+                c.next=now+moveDelayBoss(c.speed);
+                const head=c.cells[c.cells.length-1];
+                let choices=Object.entries(DIRS).filter(([d,[dx,dy]])=>{
+                    const x=head.x+dx,y=head.y+dy;
+                    if(!inb(x,y)||!enemyCanEnter(x,y)||blockAt(x,y)||mwallAt(x,y)) return false;
+                    if(!arrowOK(head.x,head.y,d)||!arrowOK(x,y,d)) return false;
+                    const occupant=enemyAt(x,y);
+                    return !occupant || (c.kind==='snake' && c.cells.length>=c.length && occupant.chain===c && occupant.segment===c.cells[0]);
+                });
+                if(choices.length) {
+                    const [d,[dx,dy]]=choices[Math.floor(Math.random()*choices.length)];
+                    if(c.kind==='snake'&&c.cells.length>=c.length) c.cells.shift();
+                    c.cells.push({x:head.x+dx,y:head.y+dy});
+                }
+            }
+            if(c.cells.some(v=>v.x===p.x&&v.y===p.y)) {
+                hurtPlayer('¡Te alcanzó el jefe!'); if(g.over) return;
+            }
+        }
+    }
+    function drawChains() {
+        const g=G,ts=cv.ts;
+        for(const c of g.chains) {
+            ctx.strokeStyle=c.kind==='snake'?'#337b47':'#954bb8';
+            ctx.lineWidth=ts*0.45; ctx.lineJoin='round'; ctx.lineCap='round';
+            ctx.beginPath(); c.cells.forEach((v,i)=>{const x=(v.x+.5)*ts,y=(v.y+.5)*ts; if(i)ctx.lineTo(x,y);else ctx.moveTo(x,y);});ctx.stroke();
+            c.cells.forEach((v,i)=>{
+                const x=(v.x+.5)*ts,y=(v.y+.5)*ts;
+                ctx.fillStyle=i===0?'#ffd34d':c.kind==='snake'?'#50a765':'#bc74d2';
+                ctx.beginPath();ctx.arc(x,y,ts*.30,0,Math.PI*2);ctx.fill();
+                if(i===0) {emoji('🎯',x,y,ts*.36);numTag(x,y-ts*.36,`${c.hp}/${c.maxHp}`,ts*.14);}
+                else if(i===c.cells.length-1) emoji(c.kind==='snake'?'🐍':'🪱',x,y,ts*.65);
+            });
+            c.decay.forEach(v=>{ctx.globalAlpha=.45;emoji('💥',(v.x+.5)*ts,(v.y+.5)*ts,ts*.6);ctx.globalAlpha=1;});
+        }
+        ctx.lineCap='butt';
+    }
+
     /* --- Reglas base --- */
     const inb = (x, y) => x >= 0 && y >= 0 && x < G.n && y < G.n;
     const blockAt = (x, y) => G.blocks.find(b => b.x === x && b.y === y) || null;
-    const enemyAt = (x, y) => G.enemies.find(e => e.x === x && e.y === y) || null;
+    const enemyAt = (x, y) => G.enemies.find(e => e.x === x && e.y === y) || chainAt(x,y);
     const mwallAt = (x, y) => G.mwalls.find(w => w.x === x && w.y === y) || null;
     // Tipo efectivo de la casilla (las puertas abiertas cuentan como piso)
     function bt(x, y) {
         const t = G.grid[y][x], b = base(t);
+        if (b === 'doubleDoor') return G.doubleOpen.has(tileId(t)) ? 'floor' : 'bdoor';
         if (b === 'bdoor') return (G.permOpen.has(tileId(t)) || G.holdIds.has(tileId(t))) ? 'floor' : 'bdoor';
         if (b === 'rdoor') return G.litIds.has(tileId(t)) ? 'floor' : 'rdoor';
         return b;
@@ -1636,7 +2037,7 @@
             if (same) for (const i of nl) if (!g.litIds.has(i)) { same = false; break; }
             if (same) break;
             g.litIds = nl;
-            if (it === 0 || true) playSound('door');
+            playSound('door');
         }
     }
     function enemyCanEnter(x, y) {
@@ -1645,6 +2046,19 @@
     function canEnemyStep(e, d) {
         const nx = e.x + DIRS[d][0], ny = e.y + DIRS[d][1];
         return inb(nx, ny) && enemyCanEnter(nx, ny) && !blockAt(nx, ny) && !enemyAt(nx, ny) && arrowOK(e.x, e.y, d) && arrowOK(nx, ny, d);
+    }
+
+    function findPortalPair(x, y) {
+        const g = G;
+        const t = g.grid[y][x];
+        const b = base(t);
+        if (b !== 'portal' && b !== 'portal2') return null;
+        const id = tileId(t);
+        const other = b === 'portal' ? 'portal2' : 'portal';
+        for (let yy = 0; yy < g.n; yy++) for (let xx = 0; xx < g.n; xx++) {
+            if (base(g.grid[yy][xx]) === other && tileId(g.grid[yy][xx]) === id) return { x: xx, y: yy };
+        }
+        return null;
     }
 
     function bfsNext(sx, sy, tx, ty) {
@@ -1903,6 +2317,7 @@
     // devuelve true si el enemigo sigue vivo
     function damageEnemy(e, dmg, kdir) {
         const g = G;
+        if (e.chain) return damageChain(e,dmg);
         if (e.kind === 3 && e.bossState !== 'open') {
             g.effects.push({ kind: 'pop', x: e.x, y: e.y, t0: g.time, dur: 350, ch: '🛡️' });
             playSound('clang');
@@ -1961,7 +2376,13 @@
         playSound('boom');
         for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
             const tx = b.x + dx, ty = b.y + dy;
-            if (inb(tx, ty) && base(g.grid[ty][tx]) === 'stone') g.grid[ty][tx] = 'floor';
+            if (inb(tx, ty)) {
+                if(base(g.grid[ty][tx])==='stone') g.grid[ty][tx]='floor';
+                else if(base(g.grid[ty][tx])==='boxPath') {
+                    g.grid[ty][tx]='hole';
+                    g.blocks=g.blocks.filter(bl=>!(bl.x===tx&&bl.y===ty));
+                }
+            }
         }
         // las cajas se destruyen (los espejos no)
         g.blocks = g.blocks.filter(bl => {
@@ -1973,6 +2394,11 @@
         });
         for (const e of g.enemies.slice()) {
             if (Math.abs(e.x - b.x) <= 1 && Math.abs(e.y - b.y) <= 1) damageEnemy(e, DMG.bomb);
+        }
+        for (const c of g.chains.slice()) {
+            const hits = c.cells.filter(v => Math.abs(v.x-b.x)<=1 && Math.abs(v.y-b.y)<=1);
+            if (hits.includes(c.cells[0])) damageChain({chain:c,segment:c.cells[0]},DMG.bomb);
+            else if (hits.length) damageChain({chain:c,segment:hits[0]},DMG.bomb);
         }
         const p = g.player;
         if (Math.abs(p.x - b.x) <= 1 && Math.abs(p.y - b.y) <= 1) hurtPlayer('💥 ¡La bomba te alcanzó!');
@@ -1990,6 +2416,17 @@
                 if (t === 'diamond' || t === 'wd') { hitDiamondAt(nx, ny); a.dead = true; break; }
                 if (ARROW_STOP.includes(t) || blockAt(nx, ny) || mwallAt(nx, ny)) { a.dead = true; break; }
                 a.x = nx; a.y = ny; a.next += 55;
+                // Portal para flechas
+                const tb = base(g.grid[a.y][a.x]);
+                if (tb === 'portal' || tb === 'portal2') {
+                    const par = findPortalPair(a.x, a.y);
+                    if (par) {
+                        g.effects.push({ kind: 'pop', x: a.x, y: a.y, t0: g.time, dur: 400, ch: '🌀' });
+                        a.x = par.x; a.y = par.y;
+                        a.rx = par.x; a.ry = par.y;
+                        g.effects.push({ kind: 'pop', x: par.x, y: par.y, t0: g.time, dur: 400, ch: '🌀' });
+                    }
+                }
             }
         }
         g.arrows = g.arrows.filter(a => !a.dead);
@@ -2016,12 +2453,27 @@
             const [dx, dy] = DIRS[dir];
             g.effects.push({ kind: 'slash', x: p.x, y: p.y, dir, t0: now, dur: 240 });
             playSound('slash');
-            const targets = [enemyAt(p.x + dx, p.y + dy), enemyAt(p.x, p.y)];
-            targets.forEach(e => { if (e && g.enemies.includes(e)) damageEnemy(e, DMG.sword, dir); });
-            const tx = p.x + dx, ty = p.y + dy;
-            if (inb(tx, ty)) {
-                const tb = base(g.grid[ty][tx]);
-                if (tb === 'diamond' || tb === 'wd') hitDiamondAt(tx, ty);
+            // Perpendicular para abrir el abanico a los lados
+            const [perX, perY] = DIRS[dir === 'U' || dir === 'D' ? 'L' : 'U'];
+            // Ataca 5 casillas: 3 al frente y las 2 laterales del jugador
+            const attackCells = [
+                { x: p.x + dx - perX, y: p.y + dy - perY },
+                { x: p.x + dx,        y: p.y + dy },
+                { x: p.x + dx + perX, y: p.y + dy + perY },
+                { x: p.x + perX,      y: p.y + perY },
+                { x: p.x - perX,      y: p.y - perY }
+            ];
+            // Dañar enemigos
+            for (const cell of attackCells) {
+                if (!inb(cell.x, cell.y)) continue;
+                const e = enemyAt(cell.x, cell.y);
+                if (e && (e.chain || g.enemies.includes(e))) damageEnemy(e, DMG.sword, dir);
+            }
+            // Activar diamantes (azul o blanco)
+            for (const cell of attackCells) {
+                if (!inb(cell.x, cell.y)) continue;
+                const tb = base(g.grid[cell.y][cell.x]);
+                if (tb === 'diamond' || tb === 'wd') hitDiamondAt(cell.x, cell.y);
             }
             g.nextAttack = now + 320;
         } else if (g.weapon === 'bow') {
@@ -2079,8 +2531,29 @@
     }
     function stepOnButton(x, y) {
         const t = G.grid[y][x], b = base(t);
-        if (b === 'btn') press(tileId(t));
+        if (b === 'openBtn' || b === 'closeBtn') {
+            if (b === 'openBtn') G.doubleOpen.add(tileId(t)); else G.doubleOpen.delete(tileId(t));
+            playSound('press'); playSound('door');
+        }
+        else if (b === 'btn') press(tileId(t));
         else if (b === 'mwbtn') activateMW(tileId(t));
+        else if (b === 'cbtn') activateCreator(tileId(t));
+    }
+
+    function activateCreator(id) {
+        const g = G;
+        if (g.pressedCreators.has(id)) return;
+        g.pressedCreators.add(id);
+        playSound('press');
+        const gr = (g.room.creators && g.room.creators[id]) || null;
+        if (!gr || !gr.obj) return;
+        for (let yy = 0; yy < g.n; yy++) for (let xx = 0; xx < g.n; xx++) {
+            if (base(g.grid[yy][xx]) === 'cspawn' && tileId(g.grid[yy][xx]) === id) {
+                spawnObject(gr.obj, xx, yy);
+                toast('🎁 ¡Apareció algo!', 1200);
+                return;
+            }
+        }
     }
     function computeHolds() {
         const g = G, s = new Set();
@@ -2096,7 +2569,7 @@
         if (!inb(tx, ty)) return false;
         if (!arrowOK(b.x, b.y, dir) || !arrowOK(tx, ty, dir)) return false;
         const t = bt(tx, ty);
-        if (!BLOCK_OK.includes(t)) return false;
+        if (!BLOCK_OK.includes(t) && t!=='boxPath' && !(t==='hole' && b.kind==='block')) return false;
         if (t === 'spikes' && spikeState() === 'up') return false;
         if (blockAt(tx, ty) || enemyAt(tx, ty) || mwallAt(tx, ty)) return false;
         if (g.player.x === tx && g.player.y === ty) return false;
@@ -2116,11 +2589,59 @@
             return false;
         }
         const b = blockAt(nx, ny);
+        let teleported = false;
         if (b) {
             if (!canBlockMove(b, dir)) return false;
             b.x += DIRS[dir][0]; b.y += DIRS[dir][1];
             playSound('push');
+            if(bt(b.x,b.y)==='hole' && b.kind==='block') {
+                g.grid[b.y][b.x]='boxPath';g.blocks=g.blocks.filter(v=>v!==b);
+                g.effects.push({kind:'pop',x:b.x,y:b.y,t0:g.time,dur:400,ch:'🪵'});
+            }
             stepOnButton(b.x, b.y);
+            // Portal para cajas (y el personaje la sigue a través del portal)
+            const tb = base(g.grid[b.y][b.x]);
+            if (tb === 'portal' || tb === 'portal2') {
+                const par = findPortalPair(b.x, b.y);
+                if (par) {
+                    // La caja sale una casilla MÁS ALLÁ del segundo portal, en la dirección del empuje.
+                    const bx2 = par.x + DIRS[dir][0];
+                    const by2 = par.y + DIRS[dir][1];
+                    const tDestino = inb(bx2, by2) ? bt(bx2, by2) : null;
+                    const destinoOk = tDestino &&
+                        !SOLID.includes(tDestino) &&
+                        !blockAt(bx2, by2) &&
+                        !mwallAt(bx2, by2) &&
+                        !enemyAt(bx2, by2) &&
+                        !(g.player.x === bx2 && g.player.y === by2);
+                    const portalDestinoOk = !blockAt(par.x, par.y) &&
+                        !mwallAt(par.x, par.y) &&
+                        !enemyAt(par.x, par.y) &&
+                        !(g.player.x === par.x && g.player.y === par.y);
+                    if (destinoOk && portalDestinoOk) {
+                        g.effects.push({ kind: 'pop', x: b.x, y: b.y, t0: g.time, dur: 400, ch: '🌀' });
+                        b.x = bx2; b.y = by2;
+                        b.rx = bx2; b.ry = by2;
+                        g.effects.push({ kind: 'pop', x: par.x, y: par.y, t0: g.time, dur: 400, ch: '🌀' });
+                        g.effects.push({ kind: 'pop', x: bx2, y: by2, t0: g.time, dur: 400, ch: '🌀' });
+                        stepOnButton(b.x, b.y);
+                        // El jugador aparece en el segundo portal
+                        g.effects.push({ kind: 'pop', x: p.x, y: p.y, t0: g.time, dur: 400, ch: '🌀' });
+                        p.x = par.x; p.y = par.y;
+                        p.rx = par.x; p.ry = par.y;
+                        g.effects.push({ kind: 'pop', x: par.x, y: par.y, t0: g.time, dur: 400, ch: '🌀' });
+                        playSound('exit');
+                        teleported = true;
+                    }
+                    // Si no hay espacio, la caja se queda sobre el portal de entrada
+                }
+            }
+        }
+        // FIX: antes, tras teletransportar al jugador, el código seguía y lo devolvía a (nx, ny)
+        if (teleported) {
+            playSound('move');
+            afterPlayerArrive();
+            return true;
         }
         if (t === 'keydoor') {
             g.keys--;
@@ -2143,6 +2664,23 @@
     }
     function afterPlayerMove() {
         const g = G, p = g.player;
+        const t = base(g.grid[p.y][p.x]);
+        // Portal: teletransporta al otro lado (si la salida no está bloqueada)
+        if (t === 'portal' || t === 'portal2') {
+            const par = findPortalPair(p.x, p.y);
+            if (par && !blockAt(par.x, par.y) && !mwallAt(par.x, par.y)) {
+                playSound('exit');
+                g.effects.push({ kind: 'pop', x: p.x, y: p.y, t0: g.time, dur: 400, ch: '🌀' });
+                p.x = par.x; p.y = par.y;
+                p.rx = par.x; p.ry = par.y;
+                g.effects.push({ kind: 'pop', x: par.x, y: par.y, t0: g.time, dur: 400, ch: '🌀' });
+            }
+        }
+        afterPlayerArrive();
+    }
+
+    function afterPlayerArrive() {
+        const g = G, p = g.player;
         const tile = g.grid[p.y][p.x], t = base(tile);
         if (t === 'coin') {
             g.grid[p.y][p.x] = 'floor';
@@ -2157,7 +2695,8 @@
         else if (t === 'ammo') { const q = tileId(tile); g.ammo += q; pickup('➶', `➶ +${q} flecha(s)`); }
         else if (t === 'bomb') { const q = tileId(tile); g.bombCount += q; pickup('💣', `💣 +${q} bomba(s) (esquina inferior derecha)`); }
         else if (t === 'shield') { g.shields++; pickup('🛡️'); }
-        else if (t === 'btn' || t === 'mwbtn') stepOnButton(p.x, p.y);
+        // FIX: faltaba 'cbtn' — el personaje al pisar el botón-creador no lo activaba
+        else if (t === 'btn' || t === 'mwbtn' || t === 'cbtn') stepOnButton(p.x, p.y);
 
         const e = enemyAt(p.x, p.y);
         if (e) { hurtPlayer('💀 ¡Atrapado por un enemigo!', e); if (g.over) return; }
@@ -2239,6 +2778,7 @@
 
         computeHolds();
         computeBeams();
+        if (base(g.grid[p.y][p.x]) === 'hole') {die('¡El camino de caja se rompió y caíste al hoyo!');return;}
         if (base(g.grid[p.y][p.x]) === 'spikes' && spikeState() === 'up') { die('☠️ ¡Te pincharon los picos!'); return; }
         if (g.beamSet.has(p.y * g.n + p.x)) { hurtPlayer('☠️ ¡Te alcanzó el láser!'); if (g.over) return; }
 
@@ -2247,6 +2787,9 @@
             if (now - b.t0 >= BOMB_FUSE) { g.bombs.splice(i, 1); explode(b); if (g.over) return; }
         }
         updateArrows(now);
+        updateChains(now);
+        updateArenas(now);
+        if (g.over) return;
         computeHolds();
         computeBeams();
 
@@ -2278,9 +2821,9 @@
                     e.next = now + moveDelay(e.speed);
                 }
             } else if (e.kind === 4 || (e.kind === 3 && e.bossState !== 'open')) {
-    roamStep(e);
-    e.next = now + moveDelayBoss(e.speed);
-}
+                roamStep(e);
+                e.next = now + moveDelayBoss(e.speed);
+            }
         }
         for (const e of g.enemies) {
             if (e.x === p.x && e.y === p.y) { hurtPlayer('💀 ¡Atrapado por un enemigo!', e); if (g.over) return; }
@@ -2314,6 +2857,7 @@
             btnBow.innerHTML = '🏹' + (g.hasBow ? `<span class="cnt">${g.ammo}</span>` : '');
             btnBomb.innerHTML = '💣' + `<span class="cnt">${g.bombCount}</span>`;
         }
+        // El HUD se oculta mientras hay actividad y reaparece en reposo
         if (g.time < g.hudShowUntil) hud.classList.add('hud-hidden');
         else hud.classList.remove('hud-hidden');
     }
@@ -2502,14 +3046,46 @@
                 ctx.stroke();
                 break;
             }
-            case 'hole':
-                ctx.fillStyle = '#14110f';
-                ctx.beginPath(); ctx.ellipse(cx, cy, ts * 0.42, ts * 0.38, 0, 0, Math.PI * 2); ctx.fill();
-                ctx.fillStyle = '#000';
-                ctx.beginPath(); ctx.ellipse(cx, cy + ts * 0.03, ts * 0.3, ts * 0.26, 0, 0, Math.PI * 2); ctx.fill();
-                ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.lineWidth = 2;
-                ctx.beginPath(); ctx.ellipse(cx, cy, ts * 0.42, ts * 0.38, 0, 0, Math.PI * 2); ctx.stroke();
+            case 'arena': {
+                emoji('🏭',cx,cy,ts*.65);
+                const a=g.arenas.find(a=>a.x===x&&a.y===y);
+                if(a) numTag(cx,cy+ts*.3,`${a.cleared||a.done?a.enemies.length:Math.max(0,a.index-(a.active?1:0))}/${a.enemies.length}`,ts*.14);
                 break;
+            }
+            case 'boxPath':
+                ctx.fillStyle='#98673c';ctx.fillRect(px+1,py+1,ts-2,ts-2);
+                ctx.strokeStyle='#d4a974';ctx.lineWidth=2;
+                for(let i=1;i<4;i++){ctx.beginPath();ctx.moveTo(px+2,py+ts*i/4);ctx.lineTo(px+ts-2,py+ts*i/4);ctx.stroke();}break;
+            case 'hole': {
+                const esHoyo = (xx, yy) => inb(xx, yy) && base(g.grid[yy][xx]) === 'hole';
+                const arriba = esHoyo(x, y - 1);
+                const abajo  = esHoyo(x, y + 1);
+                const izq    = esHoyo(x - 1, y);
+                const der    = esHoyo(x + 1, y);
+
+                // Relleno base del hoyo, sin bordes
+                ctx.fillStyle = '#14110f';
+                ctx.fillRect(px, py, ts, ts);
+
+                // Sombra interior solo en los lados que no tocan otro hoyo
+                const m = ts * 0.16;
+                ctx.fillStyle = 'rgba(0,0,0,0.55)';
+                if (!arriba) ctx.fillRect(px, py, ts, m);
+                if (!abajo) ctx.fillRect(px, py + ts - m, ts, m);
+                if (!izq) ctx.fillRect(px, py, m, ts);
+                if (!der) ctx.fillRect(px + ts - m, py, m, ts);
+
+                // Contorno fino solo donde termina el hoyo
+                ctx.strokeStyle = 'rgba(255,255,255,0.14)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                if (!arriba) { ctx.moveTo(px, py); ctx.lineTo(px + ts, py); }
+                if (!abajo)  { ctx.moveTo(px, py + ts); ctx.lineTo(px + ts, py + ts); }
+                if (!izq)    { ctx.moveTo(px, py); ctx.lineTo(px, py + ts); }
+                if (!der)    { ctx.moveTo(px + ts, py); ctx.lineTo(px + ts, py + ts); }
+                ctx.stroke();
+                break;
+            }
             case 'exit':
                 if (g.exitActive) {
                     ctx.fillStyle = 'rgba(100,150,255,' + (0.18 + 0.1 * Math.sin(g.time / 200)) + ')';
@@ -2549,7 +3125,7 @@
                 ctx.strokeText(id, cx, cy); ctx.fillText(id, cx, cy);
                 break;
             }
-            case 'bdoor': case 'ddoor': case 'rdoor': {
+            case 'doubleDoor': case 'bdoor': case 'ddoor': case 'rdoor': {
                 const id = tileId(tile);
                 const col = b === 'rdoor' ? '#b3202c' : (ID_COL[id] || '#999');
                 ctx.fillStyle = col; ctx.fillRect(px + 3, py + 3, ts - 6, ts - 6);
@@ -2623,6 +3199,59 @@
                 ctx.fillText(sym, cx, cy);
                 break;
             }
+            case 'portal':
+            case 'portal2': {
+                const id = tileId(tile);
+                const pulse = 1 + 0.08 * Math.sin(g.time / 200 + id * 2);
+                const col = ['#9b59b6', '#3498db', '#e67e22', '#1abc9c', '#e74c3c'][(id - 1) % 5];
+                // aura
+                ctx.fillStyle = col;
+                ctx.globalAlpha = 0.25;
+                ctx.beginPath();
+                ctx.arc(cx, cy, ts * 0.42 * pulse, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalAlpha = 1;
+                // anillo giratorio
+                ctx.strokeStyle = col;
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.arc(cx, cy, ts * 0.32, g.time / 300, g.time / 300 + Math.PI * 1.6);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.arc(cx, cy, ts * 0.32, g.time / 300 + Math.PI, g.time / 300 + Math.PI * 2.6);
+                ctx.stroke();
+                // núcleo
+                ctx.fillStyle = '#fff';
+                ctx.globalAlpha = 0.7;
+                ctx.beginPath();
+                ctx.arc(cx, cy, ts * 0.1 * pulse, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalAlpha = 1;
+                // número
+                numTag(px + ts * 0.8, py + ts * 0.8, id, ts * 0.1, col);
+                break;
+            }
+            case 'openBtn': case 'closeBtn':
+                emoji(b === 'openBtn' ? '🟢' : '🔴',cx,cy,ts*0.55);
+                numTag(cx,cy+ts*0.3,tileId(tile),ts*0.12); break;
+            case 'cbtn': {
+                const id = tileId(tile);
+                const pressed = g.pressedCreators.has(id);
+                ctx.fillStyle = 'rgba(0,0,0,0.25)';
+                ctx.beginPath(); ctx.arc(cx, cy, ts * 0.33, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#d35400';
+                ctx.globalAlpha = pressed ? 0.45 : 1;
+                ctx.beginPath();
+                ctx.arc(cx, cy + (pressed ? ts * 0.02 : -ts * 0.02), ts * (pressed ? 0.24 : 0.28), 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalAlpha = 1;
+                ctx.strokeStyle = 'rgba(0,0,0,0.5)'; ctx.lineWidth = 2; ctx.stroke();
+                emoji('🎁', cx, cy, ts * 0.3);
+                numTag(px + ts * 0.8, py + ts * 0.8, id, ts * 0.1, '#d35400');
+                break;
+            }
+            case 'cspawn':
+                break;
         }
     }
 
@@ -2715,6 +3344,7 @@
             drawArrowShape(a.rx * ts + ts / 2, a.ry * ts + ts / 2, ang, ts * 0.6);
         }
 
+        drawChains();
         // Enemigos
         for (const e of g.enemies) {
             const cx = e.rx * ts + ts / 2, cy = e.ry * ts + ts / 2;
@@ -2860,39 +3490,3 @@
         e.preventDefault();
         if (!G) return;
         for (const t of e.changedTouches) {
-            if (centerTouch && t.identifier === centerTouch.id && !centerTouch.fired) {
-                const dx = t.clientX - centerTouch.sx, dy = t.clientY - centerTouch.sy;
-                if (Math.hypot(dx, dy) > 30) {
-                    centerTouch.fired = true;
-                    if (G.weapon === 'sword' || G.weapon === 'bow') {
-                        const d = Math.abs(dx) > Math.abs(dy) ? (dx < 0 ? 'L' : 'R') : (dy < 0 ? 'U' : 'D');
-                        useWeapon(d);
-                    }
-                }
-            }
-        }
-        recomputeTouchDir(e.touches);
-    }, { passive: false });
-    const touchEnd = e => {
-        e.preventDefault();
-        for (const t of e.changedTouches) {
-            if (centerTouch && t.identifier === centerTouch.id) centerTouch = null;
-        }
-        recomputeTouchDir(e.touches);
-    };
-    canvas.addEventListener('touchend', touchEnd, { passive: false });
-    canvas.addEventListener('touchcancel', touchEnd, { passive: false });
-
-    /* =====================================================
-       INICIO
-    ===================================================== */
-    buildPalette();
-    initEmptyBoard();
-    renderGrid();
-    renderBrushPanel();
-    updateWarn();
-    window.addEventListener('resize', () => { if (!G) renderGrid(); });
-})();
-</script>
-</body>
-</html>
