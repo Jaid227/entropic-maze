@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Laberinto Entrópico · Editor de Cuartos</title>
+    <title>ENTROPÍA · Estudio de laberintos</title>
     <style>
         :root {
             --bg-body: #f5f0e7;
@@ -507,7 +507,19 @@
             .editor-grid-container { padding: 0.5rem 0.5rem; }
             .corner { width: 44px; height: 44px; font-size: 1.2rem; }
         }
-    </style>
+    
+/* Estudio 2.0 */
+:root {--bg-body:#edf1f7;--bg-panel:#fff;--bg-grid:#d5dfec;--bg-cell:#f4f7fc;--border-cell:#b3c2d5;--accent:#5960d9;--accent-hover:#7278ee;--button-bg:#e8ecf8;--floor:#edf2fa;--wall:#39455d;--shadow:0 16px 60px #24356812}
+body.dark {--bg-body:#101523;--bg-panel:#1a2234;--bg-grid:#111a2a;--bg-cell:#202d43;--border-cell:#3c4d68;--accent:#aaa5ff;--accent-hover:#7f79ec;--button-bg:#29344d;--floor:#26334a;--wall:#101728;--text-primary:#edf1ff;--text-secondary:#aab8d2}
+body{justify-content:flex-start;padding:24px;background-image:radial-gradient(ellipse at 10% 0%,#7971ed18,transparent 60%)}
+#app{max-width:1480px;border-radius:24px;padding:28px}h1{font-weight:800;letter-spacing:-1px}.btn{border-radius:12px;padding:12px 18px;font-size:14px;box-shadow:none}.tool-btn{border-radius:10px;box-shadow:none}.screen{gap:18px}
+.studio-workspace{display:grid;grid-template-columns:245px minmax(0,1fr);gap:22px;align-items:start}.studio-sidebar{position:sticky;top:20px;background:var(--bg-body);border:1px solid var(--border-cell);border-radius:18px;padding:14px;max-height:82vh;overflow:auto}.studio-sidebar h3{font-weight:750;margin-bottom:12px;font-size:15px}.studio-sidebar input{width:100%;padding:12px;border-radius:10px;border:1px solid var(--border-cell);background:var(--bg-panel);color:var(--text-primary);margin-bottom:12px;user-select:text}.toolbar-wrap{gap:16px}.toolbar{display:flex;flex-direction:column;align-items:stretch;gap:5px}.tool-label{text-align:left;padding:6px;font-size:10px}.toolbar .tool-btn{justify-content:flex-start;text-align:left;font-size:12px;padding:10px}.tool-btn.active{box-shadow:0 3px 14px #625bd933}.studio-board{min-width:0}.editor-grid-container{padding:16px;background:var(--bg-body);border-radius:18px;max-height:75vh;overflow:auto}.grid{gap:2px;border-radius:12px}.cell{width:44px;height:44px;border-width:1px;border-radius:6px}.cell:hover{outline:2px solid var(--accent);z-index:1}.cell.future{border-style:dashed;background:#7971ed26!important}.cell.future:after{content:'✦';position:absolute;top:1px;left:2px;font-size:10px;color:var(--accent)}.studio-actions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}.studio-help{color:var(--text-secondary);font-size:12px;line-height:1.6;margin:12px 0}.tool-panel{border-radius:12px}#pendingBar{border:1px solid var(--accent);padding:14px}#pendingText{line-height:1.6}.palette{display:grid;grid-template-columns:1fr 1fr;max-height:44vh;overflow:auto;justify-content:stretch}.palette .tool-btn{text-align:left;justify-content:flex-start}.modal-box{width:min(640px,100%);border-radius:20px}.size-selector{border-radius:12px}.footer{font-size:12px}
+@media(max-width:800px){body{padding:8px}#app{padding:14px}.studio-workspace{grid-template-columns:175px minmax(0,1fr);gap:10px}.studio-sidebar{padding:9px}.toolbar .tool-btn{padding:9px 5px;font-size:11px}.cell{width:36px;height:36px}}@media(max-width:530px){.studio-workspace{grid-template-columns:1fr}.studio-sidebar{position:static;max-height:230px}.toolbar-wrap{display:grid;grid-template-columns:1fr 1fr}.editor-grid-container{max-height:60vh}.palette{grid-template-columns:1fr 1fr}}
+
+.catalog-flat{display:flex!important;flex-direction:column!important;gap:5px!important}.catalog-flat>.tool-btn{justify-content:flex-start;text-align:left;font-size:12px;padding:10px}.catalog-mini-controls{display:flex;gap:6px;margin:-2px 0 12px}.catalog-mini-controls button{border:1px solid var(--border-cell);border-radius:8px;background:var(--bg-panel);color:var(--text-primary);width:32px;height:30px;cursor:pointer;font-size:17px}.catalog-mini-controls button:disabled{opacity:.3;cursor:default}.catalog-mini-controls .editing,.tool-btn.order-selected{outline:2px solid var(--accent);background:var(--button-bg);color:var(--text-primary)}.tool-panel select{padding:8px;border:1px solid var(--border-cell);background:var(--bg-panel);color:var(--text-primary);border-radius:8px}
+#gameOverlay{z-index:30}.corner{z-index:6}#mobileArrows{display:none;position:absolute;inset:0;pointer-events:none;z-index:4}#mobileArrows button{position:absolute;width:68px;height:64px;pointer-events:auto;touch-action:none;background:transparent;border:0;color:transparent;opacity:0}#moveLeft{left:7px;bottom:83px}#moveUp{left:calc(50% - 34px);bottom:83px}#moveRight{right:7px;bottom:83px}#moveDown{left:calc(50% - 34px);bottom:8px}
+@media(pointer:coarse),(hover:none){#mobileArrows{display:block}}
+</style>
 </head>
 <body>
     <button class="theme-toggle-fixed" id="themeToggleFixed" title="Cambiar tema">🌙</button>
@@ -525,7 +537,7 @@
 
     <div id="editorScreen" class="screen hidden">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
-            <h2 style="color: var(--accent);">🛠️ Editor de cuarto</h2>
+            <h2 style="color: var(--accent);">✦ Estudio de cuartos</h2>
             <button class="btn" id="backToMainFromEditor" style="padding: 0.5rem 1rem;">← Menú</button>
         </div>
 
@@ -571,6 +583,7 @@
                 <button class="tool-btn" data-tool="ddoor">💠 Puerta + diamante azul</button>
                 <button class="tool-btn" data-tool="rdoor">🟥 Puerta-láser + diamante rojo</button>
                 <button class="tool-btn" data-tool="mwall">🔳 Pared movible + botón</button>
+                <button class="tool-btn" data-tool="mwbtn">🔘 Botón de pared movible</button>
                 <button class="tool-btn" data-tool="wdiamond">◇ Diamantes blancos</button>
                 <button class="tool-btn" data-tool="stone">🪨 Puerta de piedra</button>
                 <button class="tool-btn" data-tool="hole">🕳️ Hoyo</button>
@@ -697,7 +710,7 @@
     /* =====================================================
        CONSTANTES
     ===================================================== */
-    const ID_COL = { 1: '#e74c3c', 2: '#3498db', 3: '#2ecc71', 4: '#e0a800' };
+    const ID_COL = { 1: '#e74c3c', 2: '#3498db', 3: '#2ecc71', 4: '#e0a800',5:'#9b59b6',6:'#00a6a6',7:'#e67e22',8:'#d64c8c',9:'#607d8b',10:'#6d7f31' };
     const ICONS = {
         arena: '🏭', boxPath: '🪵', doubleDoor: '🚦', closeBtn: '🔴', openBtn: '🟢', snake: '🐍', worm: '🪱', wall: '🧱', coin: '🪙', enemy: '👹', enemy2: '👺', boss: '👁️', start: '🏁', exit: '🚪',
         key: '🔑', keydoor: '🔒', spikes: '🔺', btn: '🔘', bdoor: '🚧', hbtn: '⏺️',
@@ -746,12 +759,12 @@
             sp: parseInt(p[1]) || ((room && room.enemySpeed) || 3),
             hp: parseInt(p[2]) || 1,
             vis: parseInt(p[3]) || ((room && room.vision) || 5),
-            key: p[4] === '1'
+            key: p[4] === '1', coin:p[5]==='1'
         };
     }
     function bossProps(t) {
         const p = String(t).split(':');
-        return { sp: parseInt(p[1]) || 3, hp: parseInt(p[2]) || 1, minis: parseInt(p[3]) || 3, key: p[4] === '1' };
+        return { sp: parseInt(p[1]) || 3, hp: parseInt(p[2]) || 1, minis: parseInt(p[3]) || 3, key: p[4] === '1', coin:p[5]==='1' };
     }
     const $ = id => document.getElementById(id);
     const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -827,14 +840,15 @@
     let selectedTool = 'floor';
     let playerSpeed = 5;
     let currentDraftId = null;
-    const brush = { waveCount: 2, length: 3, speed: 3, hp: 1, vision: 5, key: false, minis: 3, qty: 1, dir: 'R', count: 3, hid: 1 };
+    let roomTimeLimit=0;
+    const brush = { channel:1, coin:false, waveCount: 2, length: 3, speed: 3, hp: 1, vision: 5, key: false, minis: 3, qty: 1, dir: 'R', count: 3, hid: 1 };
     let pending = null;              // {type:'pair'|'wgroup'|'creator', ...}
     let spawnTool = null, spawnStore = null;
     const TOOL_LABELS = {};
     document.querySelectorAll('#toolbar .tool-btn').forEach(b => { TOOL_LABELS[b.dataset.tool] = b.textContent.trim(); });
 
     function emptyBoard(n) { return Array.from({ length: n }, () => Array(n).fill('floor')); }
-    function initEmptyBoard() { board = emptyBoard(GRID_SIZE); groups = {}; creatorGroup = {}; pending = null; hidePending(); closeSpawnModal(); }
+    function initEmptyBoard() { roomTimeLimit=0;syncRoomTimer();board = emptyBoard(GRID_SIZE); groups = {}; creatorGroup = {}; pending = null; hidePending(); closeSpawnModal(); }
     function countTile(type) {
         let c = 0;
         for (const row of board) for (const t of row) if (base(t) === type) c++;
@@ -860,18 +874,20 @@
         minis:  { t: 'range', label: '👁️ Mini ojos', min: 1, max: 8 },
         qty:    { t: 'range', label: '📦 Cantidad', min: 1, max: 20 },
         count:  { t: 'range', label: '◇ Diamantes blancos', min: 1, max: 5 },
+        coin: {t:'check',label:'🪙 Suelta una moneda al morir'},
+        channel:{t:'channel',label:'Canal de conexión (1–10)'},
         key:    { t: 'check', label: '🔑 Suelta una llave al morir' },
         dir:    { t: 'dir', label: 'Dirección:' },
         hid:    { t: 'doorid', label: 'Abre la puerta-botón número:' }
     };
     const TOOL_PARAMS = {
         arena: ["waveCount"],
-        snake: ['speed', 'hpBoss', 'length', 'key'], worm: ['speed', 'hpBoss', 'key'],
-        enemy: ['speed', 'hp', 'vision', 'key'],
-        enemy2: ['speed', 'hp', 'vision', 'key'],
-        boss: ['speed', 'hpBoss', 'minis', 'key'],
+        snake: ['speed', 'hpBoss', 'length', 'key','coin'], worm: ['speed', 'hpBoss', 'key','coin'],
+        enemy: ['speed', 'hp', 'vision', 'key','coin'],
+        enemy2: ['speed', 'hp', 'vision', 'key','coin'],
+        boss: ['speed', 'hpBoss', 'minis', 'key','coin'],
         ammo: ['qty'], bomb: ['qty'],
-        laser: ['dir'], mwall: ['dir'],
+        laser: ['dir'], mwall: ['channel','dir'], mwbtn:['channel'],
         hbtn: ['hid'], wdiamond: ['count']
     };
     const TOOL_NOTES = {
@@ -885,12 +901,14 @@
         ammo: 'Es una bolsa: al recogerla das esa cantidad de flechas. Toca una ya puesta para cambiar su cantidad.',
         bomb: 'Es una bolsa: al recogerla das esa cantidad de bombas. Toca una ya puesta para cambiar su cantidad.',
         laser: 'El rayo avanza hasta chocar con pared, caja, puerta o emisor. Los espejos lo desvían. Toca un láser ya puesto para cambiarlo.',
-        mwall: 'Elige hacia dónde se desliza la pared al pisar su botón. Al colocarla te pedirá dónde va el botón.',
+        mwall: 'Elige canal 1–10 y dirección. Varias paredes pueden compartir botón. Cada nueva pisada mueve una casilla; puedes volver a pisarlo.' , mwbtn:'Comparte canal con las paredes que quieras mover. Cada nueva pisada las desplaza un cuadro.',
         hbtn: 'Botón sostenido: la puerta-botón elegida solo está abierta mientras algo (una caja o el personaje) lo pisa.',
         wdiamond: 'Elige cuántos diamantes (1-5), coloca cada uno, luego la casilla donde aparecerá algo y por último qué aparecerá.'
     };
 
+    function availableDoorIds(){const ids=new Set([1,2,3,4]);walkRewards(t=>{if(base(t)==='bdoor')ids.add(tileId(t));});return [...ids].sort((a,b)=>a-b);}
     function doorExists(id) {
+        let found=false;walkRewards(t=>{if(base(t)==='bdoor'&&tileId(t)===id)found=true;});if(found)return true;
         for (const row of board) for (const t of row) if (base(t) === 'bdoor' && tileId(t) === id) return true;
         for (const k in groups) if (groups[k].obj && base(groups[k].obj) === 'bdoor' && tileId(groups[k].obj) === id) return true;
         return false;
@@ -931,8 +949,11 @@
                     });
                     row.appendChild(b);
                 });
+            } else if(sp.t==='channel') {
+                const select=document.createElement('select'); select.setAttribute('aria-label',sp.label);
+                for(let id=1;id<=10;id++){const op=document.createElement('option');op.value=id;op.textContent='Canal '+id;select.appendChild(op);}select.value=st.channel||1;select.addEventListener('change',()=>st.channel=+select.value);row.appendChild(select);
             } else if (sp.t === 'doorid') {
-                for (let i = 1; i <= 4; i++) {
+                for (const i of availableDoorIds()) {
                     const b = document.createElement('button');
                     b.className = 'tool-btn' + (st.hid === i ? ' active' : '');
                     b.textContent = i;
@@ -961,9 +982,10 @@
     }
 
     function tileFromTool(tool, st) {
-        if (tool === 'enemy' || tool === 'enemy2') return `${tool}:${st.speed}:${st.hp}:${st.vision}:${st.key ? 1 : 0}`;
-        if (tool === 'snake' || tool === 'worm') return `${tool}:${st.speed}:${st.hp}:${st.length || 3}:${st.key ? 1 : 0}`;
-        if (tool === 'boss') return `boss:${st.speed}:${st.hp}:${st.minis}:${st.key ? 1 : 0}`;
+        if (tool === 'enemy' || tool === 'enemy2') return `${tool}:${st.speed}:${st.hp}:${st.vision}:${st.key ? 1 : 0}:${st.coin ? 1 : 0}`;
+        if (tool === 'snake' || tool === 'worm') return `${tool}:${st.speed}:${st.hp}:${st.length || 3}:${st.key ? 1 : 0}:${st.coin ? 1 : 0}`;
+        if (tool === 'boss') return `boss:${st.speed}:${st.hp}:${st.minis}:${st.key ? 1 : 0}:${st.coin ? 1 : 0}`;
+        if(tool==='mwbtn')return `mwbtn:${clamp(st.channel||1,1,10)}`;
         if (tool === 'laser') return `laser:${st.dir}`;
         if (tool === 'ammo' || tool === 'bomb') return `${tool}:${st.qty}`;
         if (tool.indexOf('mirror') === 0) return 'mirror:' + tool.slice(6);
@@ -982,6 +1004,9 @@
     }
 
     function renderGrid() {
+        drawEditorGrid(); paintFuture();
+    }
+    function drawEditorGrid() {
         editorGrid.style.gridTemplateColumns = `repeat(${GRID_SIZE}, 48px)`;
         editorGrid.innerHTML = '';
         for (let y = 0; y < GRID_SIZE; y++) {
@@ -1010,10 +1035,11 @@
                     const pr = enemyProps(t, null);
                     addBadge(cell, pr.sp, null, 'tl');
                     addBadge(cell, pr.hp, null, 'hp');
-                    if (pr.key) addBadge(cell, '🔑', null, 'tr');
+                    if (pr.key) addBadge(cell, '🔑', null, 'tr');if(pr.coin)addBadge(cell,'🪙',null,'bl');
                     cell.title = `Velocidad ${pr.sp} · Vida ${pr.hp} · Visión ${pr.vis}` + (pr.key ? ' · Suelta llave' : '');
                 } else if (b === 'snake' || b === 'worm') {
                     addBadge(cell, part(t, 2), null, 'hp');
+                    if(part(t,5)==='1')addBadge(cell,'🪙',null,'tr');
                     if (b === 'snake') addBadge(cell, part(t, 3), '#427c40', 'bl');
                     cell.title = b === 'snake' ? 'Serpiente: cola vulnerable · Largo ' + part(t, 3) : 'Gusano: cola creadora vulnerable';
                 } else if (['doubleDoor','closeBtn','openBtn'].includes(b)) {
@@ -1023,7 +1049,7 @@
                     addBadge(cell, pr.sp, null, 'tl');
                     addBadge(cell, pr.hp, null, 'hp');
                     addBadge(cell, pr.minis, null, 'bl');
-                    if (pr.key) addBadge(cell, '🔑', null, 'tr');
+                    if (pr.key) addBadge(cell, '🔑', null, 'tr');if(pr.coin)addBadge(cell,'🪙',null,'bl');
                     cell.title = `Jefe · Velocidad ${pr.sp} · Vida ${pr.hp} · Mini ojos ${pr.minis}` + (pr.key ? ' · Suelta llave' : '');
                 } else if (b === 'laser') {
                     addBadge(cell, DIR_CHAR[dirOf(t)], '#c0392b');
@@ -1036,15 +1062,15 @@
                     addBadge(cell, tileId(t), '#6b7280');
                 } else if (b === 'wspawn') {
                     const gr = groups[tileId(t)];
-                    addBadge(cell, gr && gr.obj ? (ICONS[base(gr.obj)] || '?') : '?', '#555');
-                    cell.title = gr && gr.obj ? 'Aquí aparecerá: ' + (TOOL_LABELS[base(gr.obj)] || base(gr.obj)) : 'Casilla de aparición: elige qué objeto crear';
+                    addBadge(cell, gr && gr.obj ? (ICONS[base(visibleReward(gr.obj))] || '?') : '?', '#555');
+                    cell.title = gr && gr.obj ? 'Aquí aparecerá: ' + (TOOL_LABELS[base(visibleReward(gr.obj))] || base(visibleReward(gr.obj))) : 'Casilla de aparición: elige qué objeto crear';
                     addBadge(cell, tileId(t), '#6b7280', 'tl');
                 } else if (b === 'cbtn') {
                     addBadge(cell, tileId(t), '#d35400');
                 } else if (b === 'cspawn') {
                     const gr = creatorGroup[tileId(t)];
-                    addBadge(cell, gr && gr.obj ? (ICONS[base(gr.obj)] || '?') : '?', '#555');
-                    cell.title = gr && gr.obj ? 'Aquí aparecerá: ' + (TOOL_LABELS[base(gr.obj)] || base(gr.obj)) : 'Casilla de aparición: elige qué objeto crear';
+                    addBadge(cell, gr && gr.obj ? (ICONS[base(visibleReward(gr.obj))] || '?') : '?', '#555');
+                    cell.title = gr && gr.obj ? 'Aquí aparecerá: ' + (TOOL_LABELS[base(visibleReward(gr.obj))] || base(visibleReward(gr.obj))) : 'Casilla de aparición: elige qué objeto crear';
                     addBadge(cell, tileId(t), '#d35400', 'tl');
                 }
                 cell.addEventListener('click', () => handleCellClick(x, y));
@@ -1120,6 +1146,7 @@
                 ['doubleDoor','closeBtn','openBtn'].forEach(k => removeById(k,id));
         }
         for (const dk of Object.keys(PAIRS)) {
+            if(dk==='mwall')continue;
             const pk = PAIRS[dk];
             const doorIds = new Set(), partIds = new Set();
             for (const row of board) for (const t of row) {
@@ -1174,6 +1201,7 @@
     function afterEdit() {
         cleanGroups(); cleanOrphans();
         renderGrid(); updateWarn();
+        recordHistory(); paintFuture();
         if (selectedTool === 'hbtn') renderBrushPanel();
     }
 
@@ -1182,17 +1210,22 @@
     ===================================================== */
     function freeId(kind) {
         const used = new Set();
+        walkRewards(t=>{if(base(t)===kind)used.add(tileId(t));});
         for (const row of board) for (const t of row) if (base(t) === kind) used.add(tileId(t));
         for (const k in groups) if (groups[k].obj && base(groups[k].obj) === kind) used.add(tileId(groups[k].obj));
         for(const gr of Object.values(groups)) if(base(gr.obj)===kind) used.add(tileId(gr.obj));
         for(const row of board) for(const t of row) if(base(t)==='arena') {
             try {const cfg=JSON.parse(decodeURIComponent(part(t,1)));if(base(cfg.reward)===kind)used.add(tileId(cfg.reward));}catch(err){}
         }
-        const maxId = kind === 'portal' ? 5 : 4;
+        const maxId = 99;
         for (let i = 1; i <= maxId; i++) if (!used.has(i)) return i;
         return 0;
     }
     function freeGid() {
+        const used=new Set();walkRewards(t=>{if(base(t)==='wd')used.add(tileId(t));});
+        for(let id=1;id<100;id++)if(!used.has(id)&&!groups[id])return id;return 0;
+    }
+    function legacyFreeGid() {
         for (let i = 1; i <= 9; i++) {
             if (groups[i]) continue;
             let used = false;
@@ -1203,6 +1236,11 @@
     }
     // FIX: antes el botón-creador reutilizaba freeGid() y dos creadores recibían el mismo número
     function freeCreatorId() {
+        const reserved=new Set();walkRewards(t=>{if(base(t)==='cbtn')reserved.add(tileId(t));});
+        for(let id=1;id<100;id++)if(!reserved.has(id)&&!hasTile('cbtn',id)&&!creatorGroup[id])return id;
+        return 0;
+    }
+    function legacyFreeCreatorId() {
         for (let i = 1; i <= 9; i++) {
             if (creatorGroup[i]) continue;
             let used = false;
@@ -1212,6 +1250,7 @@
         return 0;
     }
     function showPending() {
+        if(wizard) { wizardHint(); return; }
         if (!pending) return;
         let txt = '';
         if (pending.type === 'arena') {
@@ -1236,6 +1275,7 @@
     }
     function hidePending() { pendingBar.classList.add('hidden'); }
     function cancelPending() {
+        if(wizard) { abortWizard(); return; }
         if (!pending) return;
         const p = pending;
         pending = null;
@@ -1260,6 +1300,11 @@
     $('pendingCancel').addEventListener('click', cancelPending);
 
     function startPair(kind, x, y) {
+        if(kind==='mwall'){
+            const id=clamp(brush.channel||1,1,10);board[y][x]=`mwall:${id}:${brush.dir}`;
+            if(hasTile('mwbtn',id)){afterEdit();setStatus(`Pared conectada al canal ${id}.`,1800);return;}
+            pending={type:'pair',kind,id,x,y};renderGrid();showPending();return;
+        }
         if (base(board[y][x]) === kind) {
             const id = tileId(board[y][x]);
             removeById(PAIRS[kind], id);
@@ -1292,6 +1337,7 @@
     }
     function resolvePending(x, y) {
         const p = pending;
+        if(futureReservations().some(q=>q.x===x&&q.y===y)){setStatus('Esta casilla está reservada para una aparición.',2000);return;}
         if(p.type==='arena') {
             if(p.step==='enemy'||p.step==='reward') return;
             if(base(board[y][x])!=='floor'||(p.x===x&&p.y===y)) {setStatus('Elige otra casilla vacía.',1800);return;}
@@ -1310,7 +1356,7 @@
         }
         if (p.type === 'creator') {
             if (p.step === 'spawn') {
-                if (x === p.x && y === p.y) { setStatus('Elige otra casilla distinta al botón.', 1800); return; }
+                if (base(board[y][x])!=='floor') { setStatus('Elige una casilla de piso libre.', 1800); return; }
                 board[y][x] = `cspawn:${p.gid}`;
                 p.step = 'object';
                 cleanOrphans(); renderGrid(); showPending();
@@ -1358,6 +1404,8 @@
     }
 
     function handleCellClick(x, y) {
+        if(!pending && futureReservations().some(q=>q.x===x&&q.y===y) && base(board[y][x])==='floor'){setStatus('Casilla reservada. Borra el botón o grupo de origen para liberar su mecanismo.',3500);return;}
+        if (wizard) { wizardPlace(x,y); return; }
         if (pending) {
             // con el modal abierto (paso "object") no se coloca nada en el tablero
             if (pending.step === 'object') return;
@@ -1389,7 +1437,7 @@
 
     /* --- Modal: qué aparece --- */
     function buildPalette() {
-        const skip = ['floor', 'erase', 'start', 'wdiamond', 'cbtn', 'portal', 'bdoor', 'ddoor', 'rdoor', 'mwall', 'doubleDoor', 'arena', 'hbtn'];
+        const skip = ['floor', 'erase', 'start'];
         spawnPalette.innerHTML = '';
         Object.keys(TOOL_LABELS).forEach(tool => {
             if (skip.indexOf(tool) >= 0) return;
@@ -1410,7 +1458,7 @@
                 $('spawnOk').disabled = false;
                 $('spawnOk').textContent = (tool === 'mwall' ? '➡️ Continuar: colocar su botón' : '➡️ Continuar');
                 // Los objetos sin ajustes avanzan al tocarlos: no requieren un segundo clic oculto.
-                if (!names || !names.length) $('spawnOk').click();
+                // Confirmación explícita para evitar selecciones accidentales.
             });
             spawnPalette.appendChild(b);
         });
@@ -1420,7 +1468,7 @@
         spawnModal.querySelector('h3').textContent=enemyStep?`🏭 Integrante ${pending.enemies.length+1} de ${pending.total}`:'✴️ ¿Qué aparecerá?';
         spawnModal.querySelector('p').textContent=enemyStep?'Elige un enemigo o jefe y sus valores. Puedes repetirlo o combinar varios tipos.':pending&&pending.type==='arena'?'Elige la recompensa que aparecerá al derrotar a todos los integrantes.':'Elige el objeto y sus valores. Aparecerá cuando se cumpla la condición del grupo o botón.';
         spawnTool = null;
-        $('spawnSelection').textContent = 'Elige un objeto. Los que no tienen ajustes avanzan al tocarlos.';
+        $('spawnSelection').textContent = 'Elige un objeto, ajusta sus valores y pulsa Continuar.';
         $('spawnOk').disabled = true;
         $('spawnOk').textContent = '➡️ Continuar';
         spawnStore = Object.assign({}, brush);
@@ -1428,9 +1476,9 @@
         spawnPalette.querySelectorAll('.tool-btn').forEach(x => {
             x.classList.remove('active');
             const tool=x.dataset.tool;
-            const onlyEnemies=pending&&pending.type==='arena'&&pending.step==='enemy';
+            const onlyEnemies=(wizard&&wizard.tasks[0]?.enemy)||(pending&&pending.type==='arena'&&pending.step==='enemy');
             const white=pending&&pending.type==='wgroup';
-            x.classList.toggle('hidden',onlyEnemies?!['enemy','enemy2','boss','snake','worm'].includes(tool):!white&&['arena','doubleDoor','hbtn','exit'].includes(tool));
+            x.classList.toggle('hidden',onlyEnemies?!['enemy','enemy2','boss','snake','worm'].includes(tool):false);
         });
         spawnModal.classList.remove('hidden');
     }
@@ -1448,6 +1496,8 @@
         if (!p) return;
         if (!spawnTool) { setStatus('Elige qué objeto aparecerá.', 1800); return; }
         const tool = spawnTool, st = spawnStore;
+        if (wizard) { wizardSelect(tool,st); return; }
+        if (p.type === 'creator' || p.type === 'wgroup' || (p.type === 'arena' && p.step === 'reward')) { beginWizard(p,tool,st); return; }
 
         if(p.type==='arena') {
             if(p.step==='enemy') {
@@ -1518,6 +1568,7 @@
     });
 
     function resizeBoard(newSize) {
+        if(futureReservations().some(q=>q.x>=newSize||q.y>=newSize)){gridSizeSelect.value=GRID_SIZE;setStatus("El mecanismo tiene piezas fuera del nuevo tamaño. Retira primero su origen.",3500);return;}
         if (pending) cancelPending();
         const nb = emptyBoard(newSize);
         const c = Math.min(GRID_SIZE, newSize);
@@ -1567,7 +1618,7 @@
     }
     function currentRoomData() {
         cleanGroups();
-        return { board: clone(board), gridSize: GRID_SIZE, playerSpeed, vision: 5, groups: clone(groups), creators: clone(creatorGroup) };
+        return { timeLimit:roomTimeLimit,board: clone(board), gridSize: GRID_SIZE, playerSpeed, vision: 5, groups: clone(groups), creators: clone(creatorGroup) };
     }
 
     /* =====================================================
@@ -1585,7 +1636,7 @@
     function saveDrafts(d) { localStorage.setItem('entropicDrafts', JSON.stringify(d)); }
 
     function saveCurrentRoom() {
-        if (pending) cancelPending();
+        if (pending) {setStatus('Completa o cancela la configuración antes de guardar.',2500);return;}
         if (!countTile('start') || !countTile('exit')) {
             setStatus('❌ Debes colocar inicio y salida antes de guardar.', 2200);
             return;
@@ -1604,7 +1655,7 @@
         showScreen('list');
     }
     function saveDraft() {
-        if (pending) cancelPending();
+        if (pending) {setStatus('Completa o cancela la configuración antes de guardar.',2500);return;}
         const data = currentRoomData();
         data.id = currentDraftId || ('d' + Date.now());
         data.timestamp = Date.now();
@@ -1626,7 +1677,9 @@
         playerSpeed = d.playerSpeed || 5;
         playerSpeedInput.value = playerSpeed;
         playerSpeedVal.textContent = playerSpeed;
+        roomTimeLimit=Number(d.timeLimit)||0;syncRoomTimer();
         currentDraftId = d.id;
+        history=[snap()];historyIndex=0;refreshHistory();
         renderGrid(); renderBrushPanel(); updateWarn();
         showScreen('editor');
     }
@@ -1690,7 +1743,7 @@
         listScreen.classList.toggle('hidden', s !== 'list');
         draftScreen.classList.toggle('hidden', s !== 'drafts');
     }
-    $('goCreateBtn').addEventListener('click', () => { currentDraftId = null; initEmptyBoard(); renderGrid(); renderBrushPanel(); updateWarn(); showScreen('editor'); });
+    $('goCreateBtn').addEventListener('click', () => { currentDraftId = null; initEmptyBoard(); history=[snap()];historyIndex=0;refreshHistory(); renderGrid(); renderBrushPanel(); updateWarn(); showScreen('editor'); });
     $('goListBtn').addEventListener('click', () => { loadRoomList(); showScreen('list'); });
     $('goDraftsBtn').addEventListener('click', () => { loadDraftList(); showScreen('drafts'); });
     $('backToMainFromEditor').addEventListener('click', () => { if (pending) cancelPending(); showScreen('main'); });
@@ -1740,8 +1793,10 @@
 
     /* --- Preparar cuarto --- */
     function futureCoins(tile) {
+        if(['enemy','enemy2','boss','snake','worm'].includes(base(tile)))return part(tile,5)==='1'?1:0;
+        if(base(tile)==='bundle'){const c=unpackBundle(tile);return futureCoins(c.tile)+(c.extras||[]).reduce((n,e)=>n+futureCoins(e.tile),0)+Object.values(c.creators||{}).reduce((n,e)=>n+futureCoins(e.obj),0)+Object.values(c.wgroups||{}).reduce((n,e)=>n+futureCoins(e.obj),0);}
         if(base(tile)==='coin')return 1;
-        if(base(tile)==='arena') {try{return futureCoins(JSON.parse(decodeURIComponent(part(tile,1))).reward);}catch(err){return 0;}}
+        if(base(tile)==='arena') {try{const a=JSON.parse(decodeURIComponent(part(tile,1)));return futureCoins(a.reward)+(a.enemies||[]).reduce((n,t)=>n+futureCoins(t),0);}catch(err){return 0;}}
         return 0;
     }
     function setupRoom(room) {
@@ -1752,7 +1807,7 @@
         const g = {
             n, grid, room,
             player: { x: 0, y: 0, rx: 0, ry: 0, facing: 'D' },
-            arenas: [], chains: [], doubleOpen: new Set(), enemies: [], blocks: [], mwalls: [], bombs: [], arrows: [], lasers: [], rdias: [], hbtns: [],
+            pendingClosing:new Set(),pendingLoot:[],arenas: [], chains: [], doubleOpen: new Set(), enemies: [], blocks: [], mwalls: [], bombs: [], arrows: [], lasers: [], rdias: [], hbtns: [],
             beamCells: [], beamSet: new Set(), litIds: new Set(), holdIds: new Set(),
             permOpen: new Set(), pressed: new Set(), mwDone: new Set(), pressedCreators: new Set(), wgroups: {},
             totalCoins: 0, coins: 0, keys: 0, shields: 0, ammo: 0, bombCount: 0,
@@ -1775,7 +1830,7 @@
                 const t = g.grid[y][x];
                 if (base(t) === 'cspawn') {
                     const cr = room.creators[tileId(t)];
-                    if (cr && cr.obj && base(cr.obj) === 'coin') g.totalCoins++;
+                    if (cr && cr.obj) g.totalCoins+=futureCoins(cr.obj);
                 }
             }
         }
@@ -1805,13 +1860,13 @@
                 g.grid[y][x] = 'floor';
                 break;
             case 'arena': {
-                try {const config=JSON.parse(decodeURIComponent(part(t,1)));g.arenas.push({x,y,...config,index:0,active:null,done:false,next:0});if(initial && base(config.reward)==='coin')g.totalCoins++;}catch(err){console.error('Creador inválido',err);}
+                try {const config=JSON.parse(decodeURIComponent(part(t,1)));g.arenas.push({x,y,...config,index:0,active:null,done:false,next:0});if(initial)g.totalCoins+=futureCoins(t);}catch(err){console.error('Creador inválido',err);}
                 break;
             }
             case 'snake': case 'worm':
-                makeChain(g,x,y,t); g.grid[y][x] = 'floor'; break;
+                makeChain(g,x,y,t);if(initial)g.totalCoins+=futureCoins(t); g.grid[y][x] = 'floor'; break;
             case 'enemy': case 'enemy2': case 'boss':
-                makeEnemy(g, x, y, t);
+                makeEnemy(g, x, y, t);if(initial)g.totalCoins+=futureCoins(t);
                 g.grid[y][x] = 'floor';
                 break;
             case 'block':
@@ -1846,14 +1901,14 @@
         if (b === 'boss') {
             const pr = bossProps(t);
             g.enemies.push(Object.assign(common, {
-                kind: 3, hp: pr.hp, maxHp: pr.hp, speed: Math.min(pr.sp, g.maxE), hasKey: pr.key,
+                kind: 3, hp: pr.hp, maxHp: pr.hp, speed: Math.min(pr.sp, g.maxE), hasKey: pr.key,hasCoin:pr.coin,
                 bossState: 'summon', minisTotal: pr.minis, toSpawn: pr.minis, spawnNext: 800, openUntil: 0, vision: 0
             }));
         } else {
             const pr = enemyProps(t, g.room);
             g.enemies.push(Object.assign(common, {
                 kind: b === 'enemy2' ? 2 : 1, hp: pr.hp, maxHp: pr.hp,
-                speed: Math.min(pr.sp, g.maxE), vision: pr.vis, hasKey: pr.key
+                speed: Math.min(pr.sp, g.maxE), vision: pr.vis, hasKey: pr.key,hasCoin:pr.coin
             }));
         }
     }
@@ -1862,7 +1917,7 @@
     function makeChain(g,x,y,t) {
         const c = {kind:base(t),hp:+part(t,2)||1,maxHp:+part(t,2)||1,
             speed:Math.min(+part(t,1)||3,g.maxE),length:clamp(+part(t,3)||3,3,10),
-            key:part(t,4)==='1',cells:[{x,y}],next:600,flash:0,decay:[]};
+            key:part(t,4)==='1',coin:part(t,5)==='1',cells:[{x,y}],next:600,flash:0,decay:[]};
         g.chains.push(c);
     }
     function updateArenas(now) {
@@ -1907,7 +1962,7 @@
             if(c.hp<=0) {
                 g.chains=g.chains.filter(v=>v!==c);
                 for(const v of c.cells) g.effects.push({kind:'pop',...v,t0:g.time,dur:450,ch:'💥'});
-                if(c.key) dropKey(e.x,e.y);
+                if(c.key) dropKey(e.x,e.y);if(c.coin)dropLoot('coin',e.x,e.y);
                 toast('¡Jefe derrotado!',1600); return false;
             }
         } else if(c.kind==='worm') {
@@ -1921,7 +1976,9 @@
         const g=G,p=g.player;
         for(const c of g.chains) {
             c.decay=c.decay.filter(v=>v.until>now);
-            if(now>=c.next) {
+            const headNow=c.cells[c.cells.length-1];
+            const waiting=waitBeforeEnemyAttack(c,p,now,headNow);
+            if(now>=c.next&&!waiting) {
                 c.next=now+moveDelayBoss(c.speed);
                 const head=c.cells[c.cells.length-1];
                 let choices=Object.entries(DIRS).filter(([d,[dx,dy]])=>{
@@ -2184,7 +2241,7 @@
         cancelAnimationFrame(rafId);
         rafId = requestAnimationFrame(frame);
         if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
-            toast('👆 Bordes: moverte · Centro: usar arma (desliza o toca)', 3800);
+            toast('👆 Flechas invisibles abajo: ← ↑ → / ↓ · Toca o desliza el tablero para atacar', 4500);
         }
     }
     function exitGame(dest) {
@@ -2196,12 +2253,12 @@
         banner.classList.add('hidden');
         gameScreen.classList.add('hidden');
         document.body.style.overflow = '';
-        if (dest === 'editor') showScreen('editor');
+        if (dest === 'editor') {showScreen('editor');renderGrid();}
         else if (dest === 'list') { loadRoomList(); showScreen('list'); }
         else showScreen('main');
     }
     function startTest() {
-        if (pending) cancelPending();
+        if (pending) {setStatus('Completa o cancela la configuración antes de probar.',2500);return;}
         if (!countTile('start') || !countTile('exit')) {
             setStatus('❌ Necesitas una casilla de inicio y una de salida.', 2200);
             return;
@@ -2279,18 +2336,7 @@
     /* =====================================================
        COMBATE
     ===================================================== */
-    function dropKey(x, y) {
-        const g = G;
-        const cand = [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, 1], [1, -1], [-1, -1], [2, 0], [-2, 0], [0, 2], [0, -2]];
-        for (const [dx, dy] of cand) {
-            const tx = x + dx, ty = y + dy;
-            if (inb(tx, ty) && base(g.grid[ty][tx]) === 'floor' && !blockAt(tx, ty) && !mwallAt(tx, ty)) {
-                g.grid[ty][tx] = 'key';
-                g.effects.push({ kind: 'pop', x: tx, y: ty, t0: g.time, dur: 600, ch: '🔑' });
-                return;
-            }
-        }
-    }
+    function dropKey(x,y){dropLoot('key',x,y);}
     function killEnemy(e) {
         const g = G;
         g.enemies = g.enemies.filter(o => o !== e);
@@ -2303,6 +2349,7 @@
             toast('👁️ ¡Derrotaste al jefe!', 1800);
         }
         if (e.hasKey) { dropKey(e.x, e.y); toast('🔑 ¡Soltó una llave!', 1400); }
+        if(e.hasCoin){dropLoot('coin',e.x,e.y);toast('🪙 ¡Soltó una moneda!',1400);}
     }
     function knock(e, dir) {
         const g = G;
@@ -2333,6 +2380,13 @@
     }
 
     function spawnObject(tile, x, y) {
+        if(base(tile)==='bundle') {
+            const cfg=unpackBundle(tile);
+            Object.assign(G.room.creators || (G.room.creators={}),cfg.creators||{});
+            Object.assign(G.wgroups,cfg.wgroups||{});
+            for(const e of cfg.extras||[]) spawnObject(e.tile,e.x,e.y);
+            spawnObject(cfg.tile,x,y); return;
+        }
         const g = G, b = base(tile);
         g.effects.push({ kind: 'pop', x, y, t0: g.time, dur: 700, ch: '✨' });
         playSound('exit');
@@ -2509,30 +2563,18 @@
         computeBeams();
     }
     function activateMW(id) {
-        const g = G;
-        if (g.mwDone.has(id)) return;
-        g.mwDone.add(id);
-        playSound('press');
-        for (const w of g.mwalls) {
-            if (w.id !== id) continue;
-            const [dx, dy] = DIRS[w.dir];
-            let moved = 0;
-            while (true) {
-                const nx = w.x + dx, ny = w.y + dy;
-                if (!inb(nx, ny)) break;
-                if (!WALL_OK.includes(bt(nx, ny))) break;
-                if (blockAt(nx, ny) || enemyAt(nx, ny) || mwallAt(nx, ny)) break;
-                if (g.player.x === nx && g.player.y === ny) break;
-                w.x = nx; w.y = ny; moved++;
-            }
-            if (moved) playSound('push');
-        }
-        computeBeams();
+        const g=G;playSound('press');
+        const candidates=g.mwalls.filter(w=>w.id===id).map(w=>({w,x:w.x+DIRS[w.dir][0],y:w.y+DIRS[w.dir][1]}));
+        let possible=candidates.filter(q=>inb(q.x,q.y)&&WALL_OK.includes(bt(q.x,q.y))&&!blockAt(q.x,q.y)&&!enemyAt(q.x,q.y)&&!(g.player.x===q.x&&g.player.y===q.y));
+        // Simultaneous motion: a row can advance together, but no overlaps or swaps.
+        possible=possible.filter(q=>candidates.filter(r=>r.x===q.x&&r.y===q.y).length===1);
+        let changed=true;while(changed){const old=possible.length;possible=possible.filter(q=>{const other=mwallAt(q.x,q.y);return !other||possible.some(r=>r.w===other&&!(r.x===q.w.x&&r.y===q.w.y));});changed=old!==possible.length;}
+        possible.forEach(q=>{q.w.x=q.x;q.w.y=q.y;});if(possible.length)playSound('push');computeBeams();
     }
     function stepOnButton(x, y) {
         const t = G.grid[y][x], b = base(t);
         if (b === 'openBtn' || b === 'closeBtn') {
-            if (b === 'openBtn') G.doubleOpen.add(tileId(t)); else G.doubleOpen.delete(tileId(t));
+            if (b === 'openBtn') {G.doubleOpen.add(tileId(t));G.pendingClosing.delete(tileId(t));} else {G.pendingClosing.add(tileId(t));updateDoubleDoors();}
             playSound('press'); playSound('door');
         }
         else if (b === 'btn') press(tileId(t));
@@ -2547,6 +2589,7 @@
         playSound('press');
         const gr = (g.room.creators && g.room.creators[id]) || null;
         if (!gr || !gr.obj) return;
+        if(Number.isInteger(gr.rx)&&Number.isInteger(gr.ry)){spawnObject(gr.obj,gr.rx,gr.ry);toast('🎁 Siguiente eslabón desbloqueado',1500);return;}
         for (let yy = 0; yy < g.n; yy++) for (let xx = 0; xx < g.n; xx++) {
             if (base(g.grid[yy][xx]) === 'cspawn' && tileId(g.grid[yy][xx]) === id) {
                 spawnObject(gr.obj, xx, yy);
@@ -2696,7 +2739,7 @@
         else if (t === 'bomb') { const q = tileId(tile); g.bombCount += q; pickup('💣', `💣 +${q} bomba(s) (esquina inferior derecha)`); }
         else if (t === 'shield') { g.shields++; pickup('🛡️'); }
         // FIX: faltaba 'cbtn' — el personaje al pisar el botón-creador no lo activaba
-        else if (t === 'btn' || t === 'mwbtn' || t === 'cbtn') stepOnButton(p.x, p.y);
+        else if (t === 'btn' || t === 'mwbtn' || t === 'cbtn' || t==='openBtn' || t==='closeBtn') stepOnButton(p.x, p.y);
 
         const e = enemyAt(p.x, p.y);
         if (e) { hurtPlayer('💀 ¡Atrapado por un enemigo!', e); if (g.over) return; }
@@ -2764,6 +2807,8 @@
     function update(dt) {
         const g = G;
         g.time += dt * 1000;
+        if(g.room.timeLimit>0&&g.time>=g.room.timeLimit*1000){die('⌛ ¡Se acabó el tiempo del cuarto!');return;}
+        updateDoubleDoors();retryLoot();
         const now = g.time, p = g.player;
 
         const dir = touchDir || heldKeys[heldKeys.length - 1] || null;
@@ -2806,6 +2851,7 @@
                 }
             }
             if (now < e.stun || now < e.next) continue;
+            if(waitBeforeEnemyAttack(e,p,now))continue;
             if (e.kind === 1 || e.kind === 2) {
                 let step = null;
                 if (e.state === 'chase') step = e.kind === 2 ? territoryStep(e, p) : bfsNext(e.x, e.y, p.x, p.y);
@@ -2843,6 +2889,7 @@
     function updateHud() {
         const g = G;
         let txt = `🪙 ${g.coins}/${g.totalCoins}  🔑 ${g.keys}  🛡️ ${g.shields}  ${g.exitActive ? '🚪' : '🔒'}`;
+        if(g.room.timeLimit>0){const left=Math.max(0,Math.ceil(g.room.timeLimit-g.time/1000));txt+=`  ⏳ ${Math.floor(left/60)}:${String(left%60).padStart(2,'0')}`;}
         txt += S.mode === 'route' ? `  ·  Cuarto ${S.index + 1}/${S.rooms.length}` : '  ·  Prueba';
         if (txt !== g.hudText) { g.hudText = txt; hud.textContent = txt; }
         const key = `${g.weapon}|${g.hasSword}|${g.hasBow}|${g.ammo}|${g.bombCount}`;
@@ -2858,7 +2905,7 @@
             btnBomb.innerHTML = '💣' + `<span class="cnt">${g.bombCount}</span>`;
         }
         // El HUD se oculta mientras hay actividad y reaparece en reposo
-        if (g.time < g.hudShowUntil) hud.classList.add('hud-hidden');
+        if (g.time < g.hudShowUntil && !(g.room.timeLimit>0)) hud.classList.add('hud-hidden');
         else hud.classList.remove('hud-hidden');
     }
 
@@ -2997,15 +3044,7 @@
         const g = G, ts = cv.ts, px = x * ts, py = y * ts;
         const tile = g.grid[y][x], b = bt(x, y);
         const cx = px + ts / 2, cy = py + ts / 2;
-        if (b === 'wall') {
-            ctx.fillStyle = colors.wall;
-            ctx.fillRect(px, py, ts, ts);
-            ctx.strokeStyle = 'rgba(0,0,0,0.35)'; ctx.lineWidth = 2;
-            ctx.strokeRect(px + 1, py + 1, ts - 2, ts - 2);
-            ctx.fillStyle = 'rgba(255,255,255,0.08)';
-            ctx.fillRect(px + 3, py + 3, ts - 6, ts * 0.18);
-            return;
-        }
+        if(b==='wall'){drawWallTexture(px,py,ts);return;}
         ctx.fillStyle = colors.floor;
         ctx.fillRect(px, py, ts, ts);
         ctx.strokeStyle = 'rgba(0,0,0,0.08)'; ctx.lineWidth = 1;
@@ -3096,7 +3135,7 @@
             case 'spikes': drawSpikes(px, py, sp); break;
             case 'btn': case 'mwbtn': {
                 const id = tileId(tile), col = ID_COL[id] || '#999';
-                const pressed = b === 'btn' ? g.pressed.has(id) : g.mwDone.has(id);
+                const pressed = b === 'btn' ? g.pressed.has(id) : ((g.player.x===x&&g.player.y===y)||!!blockAt(x,y));
                 ctx.fillStyle = 'rgba(0,0,0,0.25)';
                 if (b === 'btn') { ctx.beginPath(); ctx.arc(cx, cy, ts * 0.33, 0, Math.PI * 2); ctx.fill(); }
                 else ctx.fillRect(px + ts * 0.14, py + ts * 0.14, ts * 0.72, ts * 0.72);
@@ -3324,20 +3363,8 @@
             ctx.stroke();
         }
 
-        // Paredes movibles
-        for (const wl of g.mwalls) {
-            const px = wl.rx * ts, py = wl.ry * ts, col = ID_COL[wl.id] || '#999';
-            ctx.fillStyle = '#7b6a5a'; ctx.fillRect(px + 1, py + 1, ts - 2, ts - 2);
-            ctx.strokeStyle = col; ctx.lineWidth = 4; ctx.strokeRect(px + 3, py + 3, ts - 6, ts - 6);
-            ctx.fillStyle = 'rgba(255,255,255,0.12)'; ctx.fillRect(px + 5, py + 5, ts - 10, ts * 0.16);
-            ctx.save();
-            ctx.translate(px + ts / 2, py + ts / 2);
-            ctx.rotate(Math.atan2(DIRS[wl.dir][1], DIRS[wl.dir][0]));
-            ctx.fillStyle = col;
-            ctx.beginPath(); ctx.moveTo(ts * 0.26, 0); ctx.lineTo(0, -ts * 0.2); ctx.lineTo(0, ts * 0.2); ctx.closePath(); ctx.fill();
-            ctx.restore();
-            numTag(px + ts * 0.8, py + ts * 0.2, wl.id, ts * 0.11);
-        }
+        // La misma textura que las paredes fijas; sin flechas ni canal en juego.
+        for(const wl of g.mwalls)drawWallTexture(wl.rx*ts,wl.ry*ts,ts);
 
         for (const a of g.arrows) {
             const ang = Math.atan2(DIRS[a.dir][1], DIRS[a.dir][0]);
@@ -3457,14 +3484,7 @@
     btnBow.addEventListener('click', () => toggleWeapon('bow'));
     btnBomb.addEventListener('click', () => toggleWeapon('bomb'));
 
-    function zoneOf(t) {
-        const r = canvas.getBoundingClientRect();
-        const nx = ((t.clientX - r.left) / r.width - 0.5) * 2;
-        const ny = ((t.clientY - r.top) / r.height - 0.5) * 2;
-        if (Math.abs(nx) < 0.4 && Math.abs(ny) < 0.4) return 'C';
-        if (Math.abs(nx) > Math.abs(ny)) return nx < 0 ? 'L' : 'R';
-        return ny < 0 ? 'U' : 'D';
-    }
+    function zoneOf(t) {return 'C';}
     function recomputeTouchDir(touches) {
         let d = null;
         for (const t of touches) {
@@ -3472,7 +3492,7 @@
             const z = zoneOf(t);
             if (z !== 'C') d = z;
         }
-        touchDir = d;
+        if(d)touchDir = d;
     }
     canvas.addEventListener('touchstart', e => {
         e.preventDefault();
@@ -3516,11 +3536,142 @@
     /* =====================================================
        INICIO
     ===================================================== */
+let wizard=null, history=[], historyIndex=-1, restoring=false;
+function visibleReward(t){return base(t)==='bundle'?unpackBundle(t).tile:t;}
+function unpackBundle(t){return JSON.parse(decodeURIComponent(t.slice(7)));}
+function packBundle(c){return 'bundle:'+encodeURIComponent(JSON.stringify(c));}
+function walkRewards(fn){
+ const visit=t=>{if(!t)return;fn(t);if(base(t)==='bundle'){const c=unpackBundle(t);visit(c.tile);(c.extras||[]).forEach(e=>visit(e.tile));Object.values(c.creators||{}).forEach(e=>visit(e.obj));Object.values(c.wgroups||{}).forEach(e=>visit(e.obj));}if(base(t)==='arena'){try{visit(JSON.parse(decodeURIComponent(part(t,1))).reward);}catch(e){}}};
+ board.flat().forEach(visit);Object.values(groups).forEach(g=>visit(g.obj));Object.values(creatorGroup).forEach(g=>visit(g.obj));
+}
+function rewardOrigin(p){if(p.type==='arena')return{x:p.config.rx,y:p.config.ry};const kind=p.type==='creator'?'cspawn':'wspawn';for(let y=0;y<GRID_SIZE;y++)for(let x=0;x<GRID_SIZE;x++)if(board[y][x]===`${kind}:${p.gid}`)return{x,y};}
+function beginWizard(p,tool,st){
+ const origin=rewardOrigin(p);if(!origin)return;
+ wizard={parent:p,origin,root:null,tasks:[],used:new Set([`${origin.x},${origin.y}`]),ids:{},marks:[]};
+ wizardBuild(tool,st,origin,t=>wizard.root=t);wizardNext();
+}
+function wizardId(kind){const used=new Set(wizard.ids[kind]||[]);walkRewards(t=>{if(base(t)===kind)used.add(tileId(t));});let id=1;while(used.has(id))id++;wizard.ids[kind]=[...used,id];return id;}
+function wizardBuild(tool,st,pos,done){
+ const cfg={tile:tileFromTool(tool,st),extras:[],creators:{},wgroups:{}};
+ const finish=()=>done(packBundle(cfg));
+ if(PAIRS[tool]){const id=tool==='mwall'?clamp(st.channel||1,1,10):wizardId(tool);cfg.tile=tool==='mwall'?`mwall:${id}:${st.dir}`:`${tool}:${id}`;if(tool==='mwall'&&hasTile('mwbtn',id)){finish();return;}wizard.tasks.push({label:`Coloca ${PARTNER_LABEL[PAIRS[tool]]} del ${TOOL_LABELS[tool]}. Ambas piezas aparecerán juntas.`,run:q=>{cfg.extras.push({...q,tile:`${PAIRS[tool]}:${id}`});finish();}});}
+ else if(tool==='doubleDoor'){const id=wizardId(tool);cfg.tile=`doubleDoor:${id}`;wizard.tasks.push({label:'Coloca el botón rojo para cerrar la puerta.',run:q=>cfg.extras.push({...q,tile:`closeBtn:${id}`})},{label:'Coloca el botón verde para abrir la puerta.',run:q=>{cfg.extras.push({...q,tile:`openBtn:${id}`});finish();}});}
+ else if(tool==='cbtn'){const id=wizardId('cbtn');cfg.tile=`cbtn:${id}`;wizard.tasks.push({label:'Regalo encadenado: coloca dónde aparecerá su siguiente objeto.',run:q=>{wizard.tasks.unshift({select:true,label:'Elige qué creará este nuevo regalo.',run:(t,values)=>wizardBuild(t,values,q,child=>{cfg.creators[id]={obj:child,rx:q.x,ry:q.y};finish();})});}});}
+ else if(tool==='wdiamond'){
+ const id=wizardId('wd'),count=clamp(st.count||1,1,5);cfg.tile=`wd:${id}`;
+ for(let i=1;i<count;i++)wizard.tasks.push({label:`Coloca el diamante blanco ${i+1} de ${count}.`,run:q=>cfg.extras.push({...q,tile:`wd:${id}`})});
+ wizard.tasks.push({label:'Coloca la aparición de este grupo de diamantes blancos.',run:q=>wizard.tasks.unshift({select:true,label:'Elige la recompensa de los diamantes blancos.',run:(t,values)=>wizardBuild(t,values,q,child=>{cfg.wgroups[id]={count,obj:child,sx:q.x,sy:q.y,hit:0,done:false};finish();})})});
+ }
+ else if(tool==='arena'){
+ const arena={enemies:[]};const count=clamp(st.waveCount||2,2,8);
+ for(let i=0;i<count;i++)wizard.tasks.push({select:true,enemy:true,label:`Creador: elige el enemigo ${i+1} de ${count}.`,run:(t,values)=>{if(!['enemy','enemy2','boss','snake','worm'].includes(t))throw Error('Tipo de enemigo inválido');arena.enemies.push(tileFromTool(t,values));}});
+ wizard.tasks.push({label:'Coloca dónde aparecerá la recompensa al derrotar a todos.',run:q=>{arena.rx=q.x;arena.ry=q.y;wizard.tasks.unshift({select:true,label:'Elige la recompensa del creador de enemigos.',run:(t,values)=>wizardBuild(t,values,q,child=>{arena.reward=child;cfg.tile='arena:'+encodeURIComponent(JSON.stringify(arena));finish();})});}});
+ }
+ else if(tool==='hbtn'){if(!doorExists(st.hid)){setStatus('Primero coloca la puerta-botón de ese número.',2500);abortWizard();return;}cfg.tile=`hbtn:${st.hid}`;finish();}
+ else finish();
+}
+function wizardSelect(tool,st){const task=wizard.tasks.shift();if(!task||!task.select)return;task.run(tool,st);wizardNext();}
+function wizardPlace(x,y){const t=wizard.tasks[0];if(!t||t.select)return;if(base(board[y][x])!=='floor'||wizard.used.has(`${x},${y}`)||futureReservations().some(q=>q.x===x&&q.y===y)){setStatus('Esta casilla está ocupada o reservada. Elige otro piso libre.',2400);return;}wizard.used.add(`${x},${y}`);wizard.marks.push({x,y});wizard.tasks.shift();t.run({x,y});wizardNext();}
+function wizardNext(){if(!wizard)return;closeSpawnModal();if(wizard.tasks.length){wizardHint();paintFuture();if(wizard.tasks[0].select){openSpawnModal();wizardHint();}return;}if(!wizard.root)return;const w=wizard,p=w.parent;wizard=null;
+ if(p.type==='creator')creatorGroup[p.gid].obj=w.root;
+ else if(p.type==='wgroup')groups[p.gid].obj=w.root;
+ else {p.config.reward=w.root;finishArena();paintFuture();return;}
+ pending=null;hidePending();afterEdit();setStatus('✦ Mecanismo completo. Pulsa Probar para activarlo.',3000);
+}
+function wizardHint(){if(!wizard)return;pendingBar.classList.remove('hidden');pendingText.textContent='✦ Configuración guiada · '+(wizard.tasks[0]?.label||'Completando…');}
+function abortWizard(){const p=wizard.parent;wizard=null;pending=p;cancelPending();paintFuture();setStatus('Configuración cancelada.',1800);}
+function futureReservations(){const out=[];const visit=(t,pos)=>{if(base(t)==='arena'){const a=JSON.parse(decodeURIComponent(part(t,1)));visit(a.reward,{x:a.rx,y:a.ry});return;}if(base(t)!=='bundle')return;const c=unpackBundle(t);out.push({...pos,tile:c.tile});if(base(c.tile)==='arena')visit(c.tile,pos);for(const e of c.extras||[])visit(packBundle({tile:e.tile}),e);for(const cr of Object.values(c.creators||{}))visit(cr.obj,{x:cr.rx,y:cr.ry});for(const wg of Object.values(c.wgroups||{}))visit(wg.obj,{x:wg.sx,y:wg.sy});};
+ for(let y=0;y<GRID_SIZE;y++)for(let x=0;x<GRID_SIZE;x++){const t=board[y][x],b=base(t);if(b==='cspawn')visit(creatorGroup[tileId(t)]?.obj,{x,y});if(b==='wspawn')visit(groups[tileId(t)]?.obj,{x,y});if(b==='arena'){try{const c=JSON.parse(decodeURIComponent(part(t,1)));visit(c.reward,{x:c.rx,y:c.ry});}catch(e){}}}return out;}
+function paintFuture(){for(const q of [...futureReservations(),...(wizard?.marks||[])]){const el=$('editorGrid').children[q.y*GRID_SIZE+q.x];if(el){el.classList.add('future');el.title=`Aparición reservada (${q.x+1}, ${q.y+1}) · ${q.tile?base(q.tile):'pieza en configuración'}`;if(q.tile&&base(board[q.y][q.x])==='floor'){el.textContent=ICONS[base(q.tile)]||'✦';}}}}
+function snap(){return JSON.stringify({board,groups,creatorGroup,GRID_SIZE,playerSpeed,roomTimeLimit});}
+function recordHistory(){if(restoring||pending||wizard)return;const v=snap();if(history[historyIndex]===v)return;history=history.slice(0,historyIndex+1);history.push(v);if(history.length>80)history.shift();historyIndex=history.length-1;try{localStorage.setItem('entropiaStudioAutosave',v);}catch(e){setStatus('No hay espacio para autoguardar. Exporta un respaldo.',3000);}refreshHistory();}
+function refreshHistory(){if($('undoStudio')){$('undoStudio').disabled=historyIndex<=0;$('redoStudio').disabled=historyIndex>=history.length-1;}}
+function restoreSnap(v){const c=JSON.parse(v);restoring=true;board=c.board;groups=c.groups||{};creatorGroup=c.creatorGroup||{};GRID_SIZE=c.GRID_SIZE;playerSpeed=c.playerSpeed||5;roomTimeLimit=Number(c.roomTimeLimit)||0;syncRoomTimer();gridSizeSelect.value=GRID_SIZE;playerSpeedInput.value=playerSpeed;playerSpeedVal.textContent=playerSpeed;afterEdit();restoring=false;refreshHistory();}
+function undoStudio(d){if(wizard||pending)cancelPending();const i=historyIndex+d;if(i<0||i>=history.length)return;historyIndex=i;restoreSnap(history[i]);}
+function setupStudio(){
+ const workspace=document.createElement('div');workspace.className='studio-workspace';const side=document.createElement('aside');side.className='studio-sidebar';side.innerHTML='<h3>◈ Catálogo de objetos</h3><input id="toolSearch" type="search" placeholder="Buscar objeto…" aria-label="Buscar objeto"><div class="studio-help">Elige un objeto y toca el tablero. Los mecanismos te guían paso a paso.</div>';
+ const stage=document.createElement('div');stage.className='studio-board';const grid=document.querySelector('.editor-grid-container');grid.before(workspace);workspace.append(side,stage);side.append($('toolbar'));stage.append($('brushPanel'),$('pendingBar'),grid);
+ const bar=document.createElement('div');bar.className='studio-actions';bar.innerHTML='<button class="tool-btn" id="undoStudio">↶ Deshacer</button><button class="tool-btn" id="redoStudio">↷ Rehacer</button><button class="tool-btn" id="exportStudio">↓ Exportar respaldo</button><button class="tool-btn" id="importStudio">↑ Importar</button><button class="tool-btn" id="recoverStudio">⏱ Recuperar autoguardado</button><button class="tool-btn" id="demoStudio">✦ Cuarto de ejemplo</button><button class="tool-btn" id="helpStudio">? Guía</button>';stage.prepend(bar);
+ $('toolSearch').oninput=e=>side.querySelectorAll('.toolbar').forEach(g=>{let count=0;g.querySelectorAll('.tool-btn').forEach(b=>{const show=b.textContent.toLocaleLowerCase().includes(e.target.value.toLocaleLowerCase());b.hidden=!show;b.style.display=show?'':'none';if(show)count++;});g.style.display=count?'':'none';});
+ $('demoStudio').onclick=()=>{if(!confirm('¿Cargar el cuarto de ejemplo en el editor? Puedes deshacer este cambio.'))return;if(pending)cancelPending();GRID_SIZE=12;gridSizeSelect.value='12';board=emptyBoard(12);groups={};creatorGroup={};for(let i=0;i<12;i++)board[0][i]=board[11][i]=board[i][0]=board[i][11]='wall';board[1][1]='start';board[10][10]='exit';board[1][2]='cbtn:1';board[1][4]='cspawn:1';creatorGroup[1]={obj:packBundle({tile:'cbtn:2',creators:{2:{rx:6,ry:1,obj:packBundle({tile:'portal:1',extras:[{x:8,y:8,tile:'portal2:1'}]})}}})};board[9][9]='coin';board[3][2]='sword';board[4][2]='shield';board[5][5]=tileFromTool('enemy',{...brush,speed:1,hp:8});for(let x=3;x<9;x++)board[6][x]='wall';afterEdit();setStatus('Demo: pisa el regalo → pisa el nuevo regalo → descubre los dos portales. Recoge la moneda y llega a la salida.',6500);};
+ $('undoStudio').onclick=()=>undoStudio(-1);$('redoStudio').onclick=()=>undoStudio(1);
+ $('exportStudio').onclick=()=>{if(pending||wizard){setStatus('Completa o cancela el mecanismo antes de exportar.',2500);return;}const data={format:'entropia-studio',version:2,current:JSON.parse(snap()),rooms:loadRooms(),drafts:loadDrafts()};const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download='Entropia-respaldo.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);};
+ const file=document.createElement('input');file.type='file';file.accept='.json';file.hidden=true;document.body.append(file);$('importStudio').onclick=()=>file.click();file.onchange=async()=>{try{const c=JSON.parse(await file.files[0].text());if(c.format!=='entropia-studio'||!validSnapshot(c.current))throw Error();if(pending)cancelPending();if(!Array.isArray(c.rooms)||!Array.isArray(c.drafts)||![...c.rooms,...c.drafts].every(r=>validSnapshot({...r,GRID_SIZE:r.gridSize||r.board?.length})))throw Error();if(!confirm('¿Restaurar este respaldo? Se sustituirán las listas locales de cuartos y borradores. Puedes exportar antes tu respaldo actual.'))return;saveRooms(c.rooms);saveDrafts(c.drafts);restoreSnap(JSON.stringify(c.current));recordHistory();setStatus('Respaldo completo restaurado: cuarto, ruta y borradores.',4000);}catch(e){setStatus('Archivo inválido: importa un respaldo de ENTROPÍA.',3500);}file.value='';};
+ $('recoverStudio').onclick=()=>{const v=localStorage.getItem('entropiaStudioAutosave');if(!v){setStatus('Todavía no hay autoguardado.',2000);return;}try{if(!validSnapshot(JSON.parse(v)))throw Error();if(pending)cancelPending();restoreSnap(v);recordHistory();}catch(e){setStatus('No se pudo recuperar el autoguardado.',2500);}};
+ $('helpStudio').onclick=()=>alert('ESTUDIO ENTROPÍA\n\n1. Busca y selecciona un objeto en el catálogo lateral.\n2. Coloca inicio, salida y tus desafíos.\n3. Regalo: coloca botón → aparición → objeto → sus piezas.\n4. Para una cadena, elige otro botón regalo y repite.\n5. Los portales y sus parejas aparecen juntos al activar el regalo.\n6. Las casillas con ✦ están reservadas para futuras apariciones.\n7. Canales 1–10: cada pisada del botón mueve sus paredes un cuadro.\n8. Botón verde: abrir; rojo: cerrar.\n9. Tiempo del cuarto: 0 significa sin límite.\n10. ✎ selecciona un objeto y usa ↑ ↓ para ordenar tu catálogo.\n11. En celular: ← ↑ → en fila inferior; ↓ debajo de ↑. Toca o desliza el tablero para atacar.\n12. Prueba el cuarto, guarda y exporta un respaldo.\n\nCtrl/Cmd+Z: deshacer · Ctrl/Cmd+Shift+Z: rehacer · Escape: cancelar configuración.');
+ document.addEventListener('keydown',e=>{if(!G&&!/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)){if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();undoStudio(e.shiftKey?1:-1);}if(e.key==='Escape'&&pending)cancelPending();}});
+ refreshHistory();
+}
+function validSnapshot(c){return c&&[8,10,12,16,20].includes(c.GRID_SIZE)&&Array.isArray(c.board)&&c.board.length===c.GRID_SIZE&&c.board.every(r=>Array.isArray(r)&&r.length===c.GRID_SIZE&&r.every(t=>typeof t==='string'&&t.length<1000000));}
+function drawWallTexture(px,py,ts){
+ ctx.fillStyle=colors.wall;ctx.fillRect(px,py,ts,ts);ctx.strokeStyle='rgba(0,0,0,0.35)';ctx.lineWidth=2;ctx.strokeRect(px+1,py+1,ts-2,ts-2);ctx.fillStyle='rgba(255,255,255,0.08)';ctx.fillRect(px+3,py+3,ts-6,ts*.18);
+}
+function updateDoubleDoors(){
+ if(!G)return;const g=G;
+ for(const id of g.pendingClosing){let occupied=false;
+  for(let y=0;y<g.n;y++)for(let x=0;x<g.n;x++)if(base(g.grid[y][x])==='doubleDoor'&&tileId(g.grid[y][x])===id){if((g.player.x===x&&g.player.y===y)||blockAt(x,y)||enemyAt(x,y)||mwallAt(x,y))occupied=true;}
+  if(!occupied){g.doubleOpen.delete(id);g.pendingClosing.delete(id);}
+ }
+}
+function waitBeforeEnemyAttack(e,p,now,pos=e){
+ const adjacent=Math.abs(p.x-pos.x)+Math.abs(p.y-pos.y)===1;
+ if(!adjacent){e.attackTarget=null;e.attackReady=0;return false;}
+ const target=`${p.x},${p.y}`;
+ if(e.attackTarget!==target){e.attackTarget=target;e.attackReady=now+650;}
+ return now<e.attackReady;
+}
+function dropLoot(kind,x,y,queue=true){
+ const g=G,cells=[];
+ for(let yy=0;yy<g.n;yy++)for(let xx=0;xx<g.n;xx++)cells.push({x:xx,y:yy,d:Math.abs(xx-x)+Math.abs(yy-y)});
+ cells.sort((a,b)=>a.d-b.d);
+ const p=cells.find(q=>base(g.grid[q.y][q.x])==='floor'&&!blockAt(q.x,q.y)&&!mwallAt(q.x,q.y)&&!enemyAt(q.x,q.y));
+ if(!p){if(queue)g.pendingLoot.push({kind,x,y});return false;}
+ g.grid[p.y][p.x]=kind;g.effects.push({kind:'pop',x:p.x,y:p.y,t0:g.time,dur:600,ch:kind==='coin'?'🪙':'🔑'});
+ if(p.x===g.player.x&&p.y===g.player.y)afterPlayerArrive();return true;
+}
+function retryLoot(){if(!G.pendingLoot.length)return;G.pendingLoot=G.pendingLoot.filter(q=>!dropLoot(q.kind,q.x,q.y,false));}
+function syncRoomTimer(){const input=$('roomTimeInput');if(input)input.value=roomTimeLimit;}
+function setupNewFeatures(){
+ const timer=document.createElement('div');timer.className='size-selector';timer.innerHTML='<label for="roomTimeInput">⏳ Tiempo del cuarto (segundos)</label><input id="roomTimeInput" type="number" min="0" max="86400" step="1" value="0" style="width:110px;padding:9px;border-radius:8px;border:1px solid var(--border-cell);background:var(--bg-panel);color:var(--text-primary)"><span style="font-size:12px;color:var(--text-secondary)">0 = sin límite · se pausa con el menú</span>';
+ document.querySelector('#editorScreen .size-selector').after(timer);$('roomTimeInput').addEventListener('change',e=>{roomTimeLimit=clamp(Math.floor(Number(e.target.value)||0),0,86400);syncRoomTimer();recordHistory();});
+ setupCatalogOrder();setupMobileArrows();
+}
+function setupCatalogOrder(){
+ const toolbar=$('toolbar'),buttons=[...toolbar.querySelectorAll('.tool-btn')];
+ const initial=buttons.map(b=>b.dataset.tool);let order=[];try{order=JSON.parse(localStorage.getItem('entropiaCatalogOrder')||'[]');}catch(e){}if(!Array.isArray(order))order=[];
+ const keys=[...new Set([...order.filter(k=>initial.includes(k)),...initial])];const byKey=new Map(buttons.map(b=>[b.dataset.tool,b]));
+ toolbar.innerHTML='';toolbar.classList.add('catalog-flat');keys.forEach(k=>toolbar.appendChild(byKey.get(k)));
+ const controls=document.createElement('div');controls.className='catalog-mini-controls';controls.innerHTML='<button type="button" id="catalogEdit" title="Editar posición" aria-label="Editar posición">✎</button><button type="button" id="catalogUp" title="Subir objeto" aria-label="Subir objeto" disabled>↑</button><button type="button" id="catalogDown" title="Bajar objeto" aria-label="Bajar objeto" disabled>↓</button>';
+ $('toolSearch').before(controls);
+ const note=document.createElement('div');note.id='catalogOrderHint';note.className='studio-help';controls.after(note);
+ let editing=false,chosen=null;
+ const current=()=>[...toolbar.querySelectorAll('.tool-btn')];
+ const filter=()=>{const q=$('toolSearch').value.toLocaleLowerCase();current().forEach(b=>{const show=b.textContent.toLocaleLowerCase().includes(q);b.hidden=!show;b.style.display=show?'':'none';});};
+ $('toolSearch').oninput=filter;
+ const refresh=()=>{const a=current(),i=a.indexOf(chosen);$('catalogUp').disabled=!editing||i<=0;$('catalogDown').disabled=!editing||i<0||i>=a.length-1;$('catalogEdit').classList.toggle('editing',editing);$('catalogEdit').setAttribute('aria-pressed',String(editing));note.textContent=editing?(chosen?'Ordenando: '+chosen.textContent+'. Usa ↑ o ↓.':'Selecciona un objeto y usa ↑ o ↓ para moverlo.'):'✎ Personaliza el orden de tus objetos.';a.forEach(b=>b.classList.toggle('order-selected',editing&&b===chosen));};
+ $('catalogEdit').onclick=()=>{editing=!editing;chosen=null;$('toolSearch').value='';filter();refresh();};
+ // Capture the click before the placement-tool handlers: ordering never switches the brush.
+ toolbar.addEventListener('click',e=>{if(!editing)return;const b=e.target.closest('.tool-btn');if(!b)return;e.preventDefault();e.stopImmediatePropagation();chosen=b;refresh();},true);
+ const move=delta=>{const a=current(),i=a.indexOf(chosen),j=i+delta;if(i<0||j<0||j>=a.length)return;if(delta<0)toolbar.insertBefore(chosen,a[j]);else toolbar.insertBefore(a[j],chosen);try{localStorage.setItem('entropiaCatalogOrder',JSON.stringify(current().map(b=>b.dataset.tool)));}catch(e){setStatus('El orden se mantiene durante esta sesión; no se pudo guardar.',2500);}chosen.scrollIntoView({block:'nearest'});refresh();};
+ $('catalogUp').onclick=()=>move(-1);$('catalogDown').onclick=()=>move(1);refresh();
+}
+function setupMobileArrows(){
+ const pad=document.createElement('div');pad.id='mobileArrows';pad.innerHTML='<button id="moveLeft" data-direction="L" aria-label="Mover a la izquierda">←</button><button id="moveUp" data-direction="U" aria-label="Mover hacia arriba">↑</button><button id="moveRight" data-direction="R" aria-label="Mover a la derecha">→</button><button id="moveDown" data-direction="D" aria-label="Mover hacia abajo">↓</button>';
+ $('gameScreen').appendChild(pad);const pointers=new Map();
+ const release=e=>{pointers.delete(e.pointerId);touchDir=[...pointers.values()].at(-1)||null;};
+ pad.querySelectorAll('button').forEach(b=>{b.addEventListener('pointerdown',e=>{e.preventDefault();if(!G||G.over||G.paused)return;initAudio();b.setPointerCapture(e.pointerId);pointers.set(e.pointerId,b.dataset.direction);touchDir=b.dataset.direction;});b.addEventListener('pointerup',release);b.addEventListener('pointercancel',release);b.addEventListener('lostpointercapture',release);});
+ window.addEventListener('blur',()=>{pointers.clear();touchDir=null;});
+}
+
+setupStudio();
+setupNewFeatures();
+
     buildPalette();
     initEmptyBoard();
     renderGrid();
     renderBrushPanel();
     updateWarn();
+    history=[snap()];historyIndex=0;refreshHistory();
     window.addEventListener('resize', () => { if (!G) renderGrid(); });
 })();
 </script>
