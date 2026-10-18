@@ -519,6 +519,11 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
 .catalog-flat{display:flex!important;flex-direction:column!important;gap:5px!important}.catalog-flat>.tool-btn{justify-content:flex-start;text-align:left;font-size:12px;padding:10px}.catalog-mini-controls{display:flex;gap:6px;margin:-2px 0 12px}.catalog-mini-controls button{border:1px solid var(--border-cell);border-radius:8px;background:var(--bg-panel);color:var(--text-primary);width:32px;height:30px;cursor:pointer;font-size:17px}.catalog-mini-controls button:disabled{opacity:.3;cursor:default}.catalog-mini-controls .editing,.tool-btn.order-selected{outline:2px solid var(--accent);background:var(--button-bg);color:var(--text-primary)}.tool-panel select{padding:8px;border:1px solid var(--border-cell);background:var(--bg-panel);color:var(--text-primary);border-radius:8px}
 #gameOverlay{z-index:30}.corner{z-index:6}#mobileArrows{display:none;position:absolute;inset:0;pointer-events:none;z-index:4}#mobileArrows button{position:absolute;width:68px;height:64px;pointer-events:auto;touch-action:none;background:transparent;border:0;color:transparent;opacity:0}#moveLeft{left:7px;bottom:83px}#moveUp{left:calc(50% - 34px);bottom:83px}#moveRight{right:7px;bottom:83px}#moveDown{left:calc(50% - 34px);bottom:8px}
 @media(pointer:coarse),(hover:none){#mobileArrows{display:block}}
+
+#moveDown{left:74px;right:74px;bottom:0;width:auto!important;height:78px!important}#moveLeft{left:0;top:74px;bottom:78px;width:74px!important;height:auto!important}#moveRight{right:0;top:74px;bottom:78px;width:74px!important;height:auto!important}#moveUp{left:74px;right:74px;top:0;bottom:auto;width:auto!important;height:96px!important}
+.dark-zone-cell{box-shadow:inset 0 0 0 100px #14173366!important;border-color:#555180!important}.dark-zone-cell:before{content:'☾';position:absolute;left:2px;top:0;font-size:10px;color:#dad3ff;pointer-events:none}.cell.ice{background:#bfeaf5!important;border-color:#7fc7dc}.room-setup-card{width:min(520px,100%);margin:25px auto;padding:28px;background:var(--bg-body);border:1px solid var(--border-cell);border-radius:22px;display:flex;flex-direction:column;gap:14px}.room-setup-card h2{font-size:28px;font-weight:750}.room-setup-card p,.room-setup-card small{color:var(--text-secondary);line-height:1.6}.room-setup-card input,.room-setup-card select{padding:13px;border:1px solid var(--border-cell);border-radius:10px;background:var(--bg-panel);color:var(--text-primary);font-size:16px}.setup-eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--accent)}
+body.studio-editing{min-height:0;height:100dvh;overflow:hidden;padding:8px;justify-content:flex-start}body.studio-editing #app{height:calc(100dvh - 16px);margin:0;max-width:none;padding:12px;border-radius:16px;overflow:hidden}body.studio-editing #app>h1{display:none}body.studio-editing .footer{display:none}body.studio-editing #editorScreen{height:100%;min-height:0;overflow:hidden;gap:8px}body.studio-editing #editorScreen>div:first-child{flex-shrink:0}body.studio-editing #backToMainFromEditor{margin-right:48px}body.studio-editing #editorScreen h2{font-size:16px}body.studio-editing .studio-actions{flex:none;margin:0;gap:5px}body.studio-editing .studio-actions button{font-size:11px;padding:8px 9px;min-height:32px;border-radius:8px}body.studio-editing .studio-workspace{flex:1;min-height:0;align-items:stretch;grid-template-rows:minmax(0,1fr);gap:12px}body.studio-editing .studio-sidebar{position:static;max-height:none;min-height:0;display:flex;flex-direction:column;overflow:hidden;padding:12px}body.studio-editing .studio-sidebar h3{font-size:13px;margin-bottom:8px}body.studio-editing .studio-sidebar .studio-help{margin:5px 0;font-size:11px}body.studio-editing .studio-sidebar>.studio-help:not(#catalogOrderHint){display:none}body.studio-editing #toolSearch{margin-bottom:6px;padding:9px}body.studio-editing .catalog-mini-controls{margin-bottom:5px;flex-shrink:0}body.studio-editing #toolbar{overflow-y:auto;overflow-anchor:none;flex:1;min-height:0;scroll-behavior:auto;padding-right:3px}body.studio-editing .studio-board{min-height:0;display:flex;flex-direction:column;gap:6px;overflow:hidden}body.studio-editing .editor-grid-container{min-height:0;max-height:none;flex:1;margin:0;align-items:flex-start}body.studio-editing .tool-panel{flex-shrink:0;padding:8px;gap:8px;font-size:12px;max-height:24vh;overflow:auto}body.studio-editing #pendingBar{position:static}body.studio-editing #gameStatus,body.studio-editing #editorWarn{font-size:11px;min-height:0;margin:0;flex-shrink:0}body.studio-editing #editorScreen>.route-hint{display:none}
+@media(max-width:800px){body.studio-editing .studio-workspace{grid-template-columns:175px minmax(0,1fr)}}@media(max-width:530px){body.studio-editing .studio-workspace{grid-template-columns:135px minmax(0,1fr);gap:7px}body.studio-editing .studio-sidebar{padding:7px}body.studio-editing .catalog-flat>.tool-btn{font-size:10px;padding:8px 4px}body.studio-editing .studio-actions button{padding:6px;font-size:10px}body.studio-editing #app{padding:8px}body.studio-editing #editorScreen>div:first-child .btn{font-size:11px;padding:6px}}
 </style>
 </head>
 <body>
@@ -587,6 +592,10 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
                 <button class="tool-btn" data-tool="wdiamond">◇ Diamantes blancos</button>
                 <button class="tool-btn" data-tool="stone">🪨 Puerta de piedra</button>
                 <button class="tool-btn" data-tool="hole">🕳️ Hoyo</button>
+                <button class="tool-btn" data-tool="darkzone">🌑 Zona oscura</button>
+                <button class="tool-btn" data-tool="torch">🔥 Antorcha portátil</button>
+                <button class="tool-btn" data-tool="ftorch">🕯️ Grupo de antorchas fijas</button>
+                <button class="tool-btn" data-tool="ice">🧊 Pared de hielo</button>
                 <button class="tool-btn" data-tool="portal">🌀 Portal doble</button>
                 <button class="tool-btn" data-tool="cbtn">🎁 Botón-creador</button>
             </div>
@@ -711,7 +720,7 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
        CONSTANTES
     ===================================================== */
     const ID_COL = { 1: '#e74c3c', 2: '#3498db', 3: '#2ecc71', 4: '#e0a800',5:'#9b59b6',6:'#00a6a6',7:'#e67e22',8:'#d64c8c',9:'#607d8b',10:'#6d7f31' };
-    const ICONS = {
+    const ICONS = {darkzone:'🌑',torch:'🔥',ftorch:'🕯️',ice:'🧊',
         arena: '🏭', boxPath: '🪵', doubleDoor: '🚦', closeBtn: '🔴', openBtn: '🟢', snake: '🐍', worm: '🪱', wall: '🧱', coin: '🪙', enemy: '👹', enemy2: '👺', boss: '👁️', start: '🏁', exit: '🚪',
         key: '🔑', keydoor: '🔒', spikes: '🔺', btn: '🔘', bdoor: '🚧', hbtn: '⏺️',
         ddoor: '💠', diamond: '💎', rdoor: '🟥', rdiamond: '♦️', mwall: '🔳', mwbtn: '🟦',
@@ -738,9 +747,9 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
     };
     // FIX: faltaba 'portal' aquí y showPending() lanzaba un TypeError al colocar un portal
     const DOOR_NAME = { bdoor: 'puerta-botón', ddoor: 'puerta-diamante', rdoor: 'puerta-láser', mwall: 'pared movible', portal: 'portal' };
-    const SOLID = ['wall', 'bdoor', 'ddoor', 'rdoor', 'stone', 'hole', 'diamond', 'rdiamond', 'wd', 'laser'];
+    const SOLID = ['ice','wall', 'bdoor', 'ddoor', 'rdoor', 'stone', 'hole', 'diamond', 'rdiamond', 'wd', 'laser'];
     const ENEMY_BLOCK = SOLID.concat(['keydoor']);
-    const BEAM_STOP = ['wall', 'keydoor', 'bdoor', 'ddoor', 'rdoor', 'stone', 'laser'];
+    const BEAM_STOP = ['ice','wall', 'keydoor', 'bdoor', 'ddoor', 'rdoor', 'stone', 'laser'];
     const ARROW_STOP = BEAM_STOP.concat(['rdiamond']);
     const BLOCK_OK = ['floor', 'btn', 'mwbtn', 'hbtn', 'spikes', 'diamondY', 'wdY', 'arrowU', 'arrowD', 'arrowL', 'arrowR', 'portal', 'portal2', 'cbtn', 'cspawn'];
     const WALL_OK = ['floor', 'diamondY', 'wdY', 'arrowU', 'arrowD', 'arrowL', 'arrowR', 'cbtn', 'cspawn'];
@@ -840,15 +849,15 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
     let selectedTool = 'floor';
     let playerSpeed = 5;
     let currentDraftId = null;
-    let roomTimeLimit=0;
-    const brush = { channel:1, coin:false, waveCount: 2, length: 3, speed: 3, hp: 1, vision: 5, key: false, minis: 3, qty: 1, dir: 'R', count: 3, hid: 1 };
+    let roomTimeLimit=0,darkZones=[];
+    const brush = { width:4,height:4,shape:'rect',startSpeed:5,channel:1, coin:false, waveCount: 2, length: 3, speed: 3, hp: 1, vision: 5, key: false, minis: 3, qty: 1, dir: 'R', count: 3, hid: 1 };
     let pending = null;              // {type:'pair'|'wgroup'|'creator', ...}
     let spawnTool = null, spawnStore = null;
     const TOOL_LABELS = {};
     document.querySelectorAll('#toolbar .tool-btn').forEach(b => { TOOL_LABELS[b.dataset.tool] = b.textContent.trim(); });
 
     function emptyBoard(n) { return Array.from({ length: n }, () => Array(n).fill('floor')); }
-    function initEmptyBoard() { roomTimeLimit=0;syncRoomTimer();board = emptyBoard(GRID_SIZE); groups = {}; creatorGroup = {}; pending = null; hidePending(); closeSpawnModal(); }
+    function initEmptyBoard() { wizard=null;darkZones=[];roomTimeLimit=0;syncRoomTimer();board = emptyBoard(GRID_SIZE); groups = {}; creatorGroup = {}; pending = null; hidePending(); closeSpawnModal(); }
     function countTile(type) {
         let c = 0;
         for (const row of board) for (const t of row) if (base(t) === type) c++;
@@ -865,6 +874,8 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
        EDITOR: PANEL DE VALORES
     ===================================================== */
     const PSPEC = {
+        startSpeed:{t:'range',label:'🏃 Velocidad del personaje',min:2,max:10},
+        width:{t:'range',label:'↔ Ancho',min:1,max:20},height:{t:'range',label:'↕ Largo',min:1,max:20},shape:{t:'shape',label:'Forma'},
         waveCount: {t:"range", label:"Enemigos o jefes",min:2,max:8},
         length: { t: 'range', label: '🐍 Largo (casillas)', min: 3, max: 10 },
         speed:  { t: 'range', label: '⚡ Velocidad', min: 1, max: 'spd' },
@@ -880,7 +891,7 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
         dir:    { t: 'dir', label: 'Dirección:' },
         hid:    { t: 'doorid', label: 'Abre la puerta-botón número:' }
     };
-    const TOOL_PARAMS = {
+    const TOOL_PARAMS = {start:['startSpeed'],darkzone:['shape','width','height'],ftorch:['count'],
         arena: ["waveCount"],
         snake: ['speed', 'hpBoss', 'length', 'key','coin'], worm: ['speed', 'hpBoss', 'key','coin'],
         enemy: ['speed', 'hp', 'vision', 'key','coin'],
@@ -890,7 +901,7 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
         laser: ['dir'], mwall: ['channel','dir'], mwbtn:['channel'],
         hbtn: ['hid'], wdiamond: ['count']
     };
-    const TOOL_NOTES = {
+    const TOOL_NOTES = {start:'Elige aquí la velocidad y coloca el inicio. Puedes volver a colocarlo para cambiarla.',darkzone:'La casilla elegida es la esquina superior izquierda del área. Forma y medidas se ven en el tablero. Usa Borrar sobre piso oscuro para quitar esa zona.',torch:'Al recogerla, la llevas durante todo el cuarto. Ilumina la oscuridad y derrite hielo cercano.',ftorch:'Elige una cantidad, coloca cada antorcha y configura la recompensa. Se encienden al pasar a su lado y permanecen encendidas.',ice:'Bloquea el paso. Se derrite al acercarte con una antorcha o con una antorcha fija encendida al lado.',
         arena: "Elige de 2 a 8 integrantes, iguales o variados, uno por uno. Salen del creador de uno en uno; al derrotarlos todos aparece la recompensa elegida en su casilla.",
         snake: 'Largo total de 3 a 10 casillas. Recorre los caminos disponibles; solo su cola dorada recibe daño. Deja espacio para su cuerpo.',
         worm: 'Coloca la cola creadora. La cabeza crece formando un camino continuo sin cruzarse. Cortar el cuerpo destruye progresivamente la parte desconectada; solo agotar la vida de la cola derrota al jefe.',
@@ -949,6 +960,8 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
                     });
                     row.appendChild(b);
                 });
+            } else if(sp.t==='shape'){
+                const select=document.createElement('select');select.setAttribute('aria-label','Forma de la zona oscura');for(const [value,name]of [['rect','Rectángulo'],['ellipse','Óvalo'],['diamond','Rombo']]){const op=document.createElement('option');op.value=value;op.textContent=name;select.appendChild(op);}select.value=st.shape||'rect';select.addEventListener('change',()=>st.shape=select.value);row.appendChild(select);
             } else if(sp.t==='channel') {
                 const select=document.createElement('select'); select.setAttribute('aria-label',sp.label);
                 for(let id=1;id<=10;id++){const op=document.createElement('option');op.value=id;op.textContent='Canal '+id;select.appendChild(op);}select.value=st.channel||1;select.addEventListener('change',()=>st.channel=+select.value);row.appendChild(select);
@@ -971,6 +984,7 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
         });
     }
     function renderBrushPanel() {
+        if(selectedTool==='start')brush.startSpeed=playerSpeed;
         const names = TOOL_PARAMS[selectedTool];
         if (!names) { brushPanel.classList.add('hidden'); return; }
         buildControls(brushPanel, names, brush);
@@ -982,6 +996,7 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
     }
 
     function tileFromTool(tool, st) {
+        if(tool==='darkzone')return 'darkzone:'+encodeURIComponent(JSON.stringify({width:st.width||4,height:st.height||4,shape:st.shape||'rect'}));
         if (tool === 'enemy' || tool === 'enemy2') return `${tool}:${st.speed}:${st.hp}:${st.vision}:${st.key ? 1 : 0}:${st.coin ? 1 : 0}`;
         if (tool === 'snake' || tool === 'worm') return `${tool}:${st.speed}:${st.hp}:${st.length || 3}:${st.key ? 1 : 0}:${st.coin ? 1 : 0}`;
         if (tool === 'boss') return `boss:${st.speed}:${st.hp}:${st.minis}:${st.key ? 1 : 0}:${st.coin ? 1 : 0}`;
@@ -1004,7 +1019,7 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
     }
 
     function renderGrid() {
-        drawEditorGrid(); paintFuture();
+        drawEditorGrid(); paintFuture();paintDarkZones();
     }
     function drawEditorGrid() {
         editorGrid.style.gridTemplateColumns = `repeat(${GRID_SIZE}, 48px)`;
@@ -1058,7 +1073,7 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
                 } else if (b === 'ammo' || b === 'bomb') {
                     const q = tileId(t);
                     if (q > 1) addBadge(cell, 'x' + q, '#444');
-                } else if (b === 'wd') {
+                } else if (b === 'wd'||b==='ftorch') {
                     addBadge(cell, tileId(t), '#6b7280');
                 } else if (b === 'wspawn') {
                     const gr = groups[tileId(t)];
@@ -1100,7 +1115,7 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
     function removeGroup(gid) {
         for (let y = 0; y < GRID_SIZE; y++) for (let x = 0; x < GRID_SIZE; x++) {
             const t = board[y][x], b = base(t);
-            if ((b === 'wd' || b === 'wspawn') && tileId(t) === gid) board[y][x] = 'floor';
+            if ((b === 'wd' || b === 'ftorch' || b === 'wspawn') && tileId(t) === gid) board[y][x] = 'floor';
         }
         delete groups[gid];
     }
@@ -1123,7 +1138,7 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
             const gr = groups[k];
             let diam = 0, spawn = 0;
             for (const row of board) for (const t of row) {
-                if (base(t) === 'wd' && tileId(t) === gid) diam++;
+                if (base(t) === (gr.kind==='torch'?'ftorch':'wd') && tileId(t) === gid) diam++;
                 if (base(t) === 'wspawn' && tileId(t) === gid) spawn++;
             }
             let ok = gr.obj && diam === gr.count && spawn === 1;
@@ -1134,7 +1149,7 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
         // marcas sueltas sin grupo
         for (let y = 0; y < GRID_SIZE; y++) for (let x = 0; x < GRID_SIZE; x++) {
             const t = board[y][x], b = base(t);
-            if ((b === 'wd' || b === 'wspawn') && !groups[tileId(t)] && tileId(t) !== pg) board[y][x] = 'floor';
+            if ((b === 'wd' || b === 'ftorch' || b === 'wspawn') && !groups[tileId(t)] && tileId(t) !== pg) board[y][x] = 'floor';
         }
     }
     function cleanOrphans() {
@@ -1222,7 +1237,7 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
         return 0;
     }
     function freeGid() {
-        const used=new Set();walkRewards(t=>{if(base(t)==='wd')used.add(tileId(t));});
+        const used=new Set();walkRewards(t=>{if(['wd','ftorch'].includes(base(t)))used.add(tileId(t));});
         for(let id=1;id<100;id++)if(!used.has(id)&&!groups[id])return id;return 0;
     }
     function legacyFreeGid() {
@@ -1264,7 +1279,7 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
                 : `${nm[0].toUpperCase() + nm.slice(1)} número ${pending.id} lista: toca la casilla donde irá ${PARTNER_LABEL[PAIRS[pending.kind]]}.`;
             if (!pending.virtual) txt += ' (Si tocas la puerta o cancelas, se quita.)';
         } else if (pending.step === 'diamonds') {
-            txt = `◇ Grupo ${pending.gid}: coloca ${pending.remaining} diamante(s) blanco(s) más.`;
+            txt = groups[pending.gid]?.kind==='torch'?`🕯️ Grupo ${pending.gid}: coloca ${pending.remaining} antorcha(s) fija(s) más.`:`◇ Grupo ${pending.gid}: coloca ${pending.remaining} diamante(s) blanco(s) más.`;
         } else if (pending.step === 'spawn') {
             txt = '✴️ Ahora toca la casilla donde aparecerá el objeto.';
         } else {
@@ -1380,11 +1395,12 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
             setStatus('✅ Conectados: ya funcionan juntos.', 1800);
             return;
         }
-        // grupo de diamantes blancos
+        // Grupos: diamantes o antorchas fijas.
+        if(base(board[y][x])!=='floor'){setStatus('Elige una casilla de piso libre.',1800);return;}
         const cur = board[y][x], cb = base(cur);
-        if ((cb === 'wd' || cb === 'wspawn') && tileId(cur) === p.gid) { setStatus('Esa casilla ya es parte del grupo.', 1500); return; }
+        if ((cb === 'wd' || cb === 'ftorch' || cb === 'wspawn') && tileId(cur) === p.gid) { setStatus('Esa casilla ya es parte del grupo.', 1500); return; }
         if (p.step === 'diamonds') {
-            board[y][x] = `wd:${p.gid}`;
+            board[y][x] = `${groups[p.gid]?.kind==='torch'?'ftorch':'wd'}:${p.gid}`;
             p.remaining--;
             if (p.remaining <= 0) p.step = 'spawn';
         } else if (p.step === 'spawn') {
@@ -1404,6 +1420,11 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
     }
 
     function handleCellClick(x, y) {
+        if(!pending&&selectedTool==='darkzone'){placeDarkZone(x,y);return;}
+        if(!pending&&selectedTool==='erase'&&base(board[y][x])==='floor'&&darkZones.some(z=>zoneCells(z,GRID_SIZE).some(c=>c.x===x&&c.y===y))){darkZones=darkZones.filter(z=>!zoneCells(z,GRID_SIZE).some(c=>c.x===x&&c.y===y));afterEdit();return;}
+        if(!pending&&selectedTool==='ftorch'){startFixedTorches(x,y);return;}
+        if(!pending&&selectedTool==='start'){playerSpeed=clamp(brush.startSpeed||5,2,10);playerSpeedInput.value=playerSpeed;playerSpeedVal.textContent=playerSpeed;}
+
         if(!pending && futureReservations().some(q=>q.x===x&&q.y===y) && base(board[y][x])==='floor'){setStatus('Casilla reservada. Borra el botón o grupo de origen para liberar su mecanismo.',3500);return;}
         if (wizard) { wizardPlace(x,y); return; }
         if (pending) {
@@ -1611,14 +1632,14 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
 
     function clearGrid() {
         if (!confirm('¿Seguro que quieres limpiar todo el cuarto? Se borrará todo el contenido.')) return;
-        initEmptyBoard();
-        renderGrid();
-        updateWarn();
+        if(pending)cancelPending();const keepTime=roomTimeLimit;
+        initEmptyBoard();roomTimeLimit=keepTime;syncRoomTimer();
+        afterEdit();
         setStatus('🧹 Tablero limpiado.', 1500);
     }
     function currentRoomData() {
         cleanGroups();
-        return { timeLimit:roomTimeLimit,board: clone(board), gridSize: GRID_SIZE, playerSpeed, vision: 5, groups: clone(groups), creators: clone(creatorGroup) };
+        return { darkZones:clone(darkZones),timeLimit:roomTimeLimit,board: clone(board), gridSize: GRID_SIZE, playerSpeed, vision: 5, groups: clone(groups), creators: clone(creatorGroup) };
     }
 
     /* =====================================================
@@ -1671,7 +1692,7 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
         pending = null; hidePending(); closeSpawnModal();
         GRID_SIZE = d.gridSize || d.board.length;
         gridSizeSelect.value = String(GRID_SIZE);
-        board = clone(d.board);
+        board = clone(d.board);darkZones=clone(d.darkZones||[]);
         groups = clone(d.groups || {});
         creatorGroup = clone(d.creators || {});
         playerSpeed = d.playerSpeed || 5;
@@ -1739,11 +1760,13 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
 
     function showScreen(s) {
         mainScreen.classList.toggle('hidden', s !== 'main');
+        if($('roomSetupScreen'))$('roomSetupScreen').classList.toggle('hidden',s!=='setup');
+        document.body.classList.toggle('studio-editing',s==='editor');
         editorScreen.classList.toggle('hidden', s !== 'editor');
         listScreen.classList.toggle('hidden', s !== 'list');
         draftScreen.classList.toggle('hidden', s !== 'drafts');
     }
-    $('goCreateBtn').addEventListener('click', () => { currentDraftId = null; initEmptyBoard(); history=[snap()];historyIndex=0;refreshHistory(); renderGrid(); renderBrushPanel(); updateWarn(); showScreen('editor'); });
+    $('goCreateBtn').addEventListener('click',showRoomSetup);
     $('goListBtn').addEventListener('click', () => { loadRoomList(); showScreen('list'); });
     $('goDraftsBtn').addEventListener('click', () => { loadDraftList(); showScreen('drafts'); });
     $('backToMainFromEditor').addEventListener('click', () => { if (pending) cancelPending(); showScreen('main'); });
@@ -1807,7 +1830,7 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
         const g = {
             n, grid, room,
             player: { x: 0, y: 0, rx: 0, ry: 0, facing: 'D' },
-            pendingClosing:new Set(),pendingLoot:[],arenas: [], chains: [], doubleOpen: new Set(), enemies: [], blocks: [], mwalls: [], bombs: [], arrows: [], lasers: [], rdias: [], hbtns: [],
+            hasTorch:false,litTorches:new Set(),darkCells:new Set((room.darkZones||[]).flatMap(z=>zoneCells(z,n)).map(c=>c.y*n+c.x)),pendingClosing:new Set(),pendingLoot:[],arenas: [], chains: [], doubleOpen: new Set(), enemies: [], blocks: [], mwalls: [], bombs: [], arrows: [], lasers: [], rdias: [], hbtns: [],
             beamCells: [], beamSet: new Set(), litIds: new Set(), holdIds: new Set(),
             permOpen: new Set(), pressed: new Set(), mwDone: new Set(), pressedCreators: new Set(), wgroups: {},
             totalCoins: 0, coins: 0, keys: 0, shields: 0, ammo: 0, bombCount: 0,
@@ -1849,12 +1872,14 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
             extend(); // Si no cabe, se desplegará al avanzar hacia espacio disponible.
         }
         g.exitActive = g.totalCoins === 0;
+        updateLighting();
         computeBeams();
     }
 
     function initTile(g, x, y, initial) {
         const t = g.grid[y][x], b = base(t);
         switch (b) {
+            case 'darkzone':{try{const z=JSON.parse(decodeURIComponent(part(t,1)));zoneCells({...z,x,y},g.n).forEach(c=>g.darkCells.add(c.y*g.n+c.x));}catch(e){}g.grid[y][x]='floor';break;}
             case 'start':
                 if (initial) { g.player.x = g.player.rx = x; g.player.y = g.player.ry = y; }
                 g.grid[y][x] = 'floor';
@@ -1888,7 +1913,7 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
             case 'wspawn': {
                 if (initial) {
                     const gr = g.room.groups && g.room.groups[tileId(t)];
-                    if (gr && gr.obj) g.wgroups[tileId(t)] = { count: gr.count, hit: 0, obj: gr.obj, sx: x, sy: y, done: false };
+                    if (gr && gr.obj) g.wgroups[tileId(t)] = { kind:gr.kind,count: gr.count, hit: 0, obj: gr.obj, sx: x, sy: y, done: false };
                 }
                 g.grid[y][x] = 'floor';
                 break;
@@ -2737,10 +2762,12 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
         else if (t === 'bow') { g.hasBow = true; pickup('🏹', '🏹 ¡Conseguiste el arco! (esquina inferior izquierda)'); }
         else if (t === 'ammo') { const q = tileId(tile); g.ammo += q; pickup('➶', `➶ +${q} flecha(s)`); }
         else if (t === 'bomb') { const q = tileId(tile); g.bombCount += q; pickup('💣', `💣 +${q} bomba(s) (esquina inferior derecha)`); }
+        else if(t==='torch'){g.hasTorch=true;pickup('🔥','🔥 Ahora puedes iluminar zonas oscuras y derretir hielo.');}
         else if (t === 'shield') { g.shields++; pickup('🛡️'); }
         // FIX: faltaba 'cbtn' — el personaje al pisar el botón-creador no lo activaba
         else if (t === 'btn' || t === 'mwbtn' || t === 'cbtn' || t==='openBtn' || t==='closeBtn') stepOnButton(p.x, p.y);
 
+        updateLighting();
         const e = enemyAt(p.x, p.y);
         if (e) { hurtPlayer('💀 ¡Atrapado por un enemigo!', e); if (g.over) return; }
         if (t === 'exit' && g.exitActive) win();
@@ -2808,7 +2835,7 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
         const g = G;
         g.time += dt * 1000;
         if(g.room.timeLimit>0&&g.time>=g.room.timeLimit*1000){die('⌛ ¡Se acabó el tiempo del cuarto!');return;}
-        updateDoubleDoors();retryLoot();
+        updateDoubleDoors();retryLoot();updateLighting();
         const now = g.time, p = g.player;
 
         const dir = touchDir || heldKeys[heldKeys.length - 1] || null;
@@ -2889,6 +2916,7 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
     function updateHud() {
         const g = G;
         let txt = `🪙 ${g.coins}/${g.totalCoins}  🔑 ${g.keys}  🛡️ ${g.shields}  ${g.exitActive ? '🚪' : '🔒'}`;
+        if(g.hasTorch)txt+='  🔥';
         if(g.room.timeLimit>0){const left=Math.max(0,Math.ceil(g.room.timeLimit-g.time/1000));txt+=`  ⏳ ${Math.floor(left/60)}:${String(left%60).padStart(2,'0')}`;}
         txt += S.mode === 'route' ? `  ·  Cuarto ${S.index + 1}/${S.rooms.length}` : '  ·  Prueba';
         if (txt !== g.hudText) { g.hudText = txt; hud.textContent = txt; }
@@ -3132,6 +3160,9 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
                     emoji('🚪', cx, cy, ts * 0.7);
                 }
                 break;
+            case 'torch':emoji('🔥',cx,cy,ts*.65);break;
+            case 'ftorch':emoji(g.litTorches.has(y*g.n+x)?'🔥':'🕯️',cx,cy,ts*.62);break;
+            case 'ice':ctx.fillStyle='#a5e6f6';ctx.fillRect(px+1,py+1,ts-2,ts-2);ctx.strokeStyle='#e9fcff';ctx.lineWidth=2;ctx.strokeRect(px+4,py+4,ts-8,ts-8);emoji('❄️',cx,cy,ts*.5);break;
             case 'spikes': drawSpikes(px, py, sp); break;
             case 'btn': case 'mwbtn': {
                 const id = tileId(tile), col = ID_COL[id] || '#999';
@@ -3444,6 +3475,7 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
                 ctx.globalAlpha = 1;
             }
         }
+        drawDarkness();
         ctx.restore();
     }
 
@@ -3526,10 +3558,11 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
     const touchEnd = e => {
         e.preventDefault();
         for (const t of e.changedTouches) {
-            if (centerTouch && t.identifier === centerTouch.id) centerTouch = null;
+            if (centerTouch && t.identifier === centerTouch.id) {if(!centerTouch.fired&&e.type!=='touchcancel'&&G?.weapon==='sword')useWeapon(G.player.facing);centerTouch = null;}
         }
         recomputeTouchDir(e.touches);
     };
+    canvas.addEventListener('click',e=>{if(e.sourceCapabilities?.firesTouchEvents)return;if(G&&!G.paused&&!G.over&&G.weapon==='sword')useWeapon(G.player.facing);});
     canvas.addEventListener('touchend', touchEnd, { passive: false });
     canvas.addEventListener('touchcancel', touchEnd, { passive: false });
 
@@ -3550,17 +3583,17 @@ function beginWizard(p,tool,st){
  wizard={parent:p,origin,root:null,tasks:[],used:new Set([`${origin.x},${origin.y}`]),ids:{},marks:[]};
  wizardBuild(tool,st,origin,t=>wizard.root=t);wizardNext();
 }
-function wizardId(kind){const used=new Set(wizard.ids[kind]||[]);walkRewards(t=>{if(base(t)===kind)used.add(tileId(t));});let id=1;while(used.has(id))id++;wizard.ids[kind]=[...used,id];return id;}
+function wizardId(kind){const used=new Set(wizard.ids[kind]||[]);walkRewards(t=>{if(base(t)===kind||(kind==='wd'&&base(t)==='ftorch'))used.add(tileId(t));});let id=1;while(used.has(id))id++;wizard.ids[kind]=[...used,id];return id;}
 function wizardBuild(tool,st,pos,done){
  const cfg={tile:tileFromTool(tool,st),extras:[],creators:{},wgroups:{}};
  const finish=()=>done(packBundle(cfg));
  if(PAIRS[tool]){const id=tool==='mwall'?clamp(st.channel||1,1,10):wizardId(tool);cfg.tile=tool==='mwall'?`mwall:${id}:${st.dir}`:`${tool}:${id}`;if(tool==='mwall'&&hasTile('mwbtn',id)){finish();return;}wizard.tasks.push({label:`Coloca ${PARTNER_LABEL[PAIRS[tool]]} del ${TOOL_LABELS[tool]}. Ambas piezas aparecerán juntas.`,run:q=>{cfg.extras.push({...q,tile:`${PAIRS[tool]}:${id}`});finish();}});}
  else if(tool==='doubleDoor'){const id=wizardId(tool);cfg.tile=`doubleDoor:${id}`;wizard.tasks.push({label:'Coloca el botón rojo para cerrar la puerta.',run:q=>cfg.extras.push({...q,tile:`closeBtn:${id}`})},{label:'Coloca el botón verde para abrir la puerta.',run:q=>{cfg.extras.push({...q,tile:`openBtn:${id}`});finish();}});}
  else if(tool==='cbtn'){const id=wizardId('cbtn');cfg.tile=`cbtn:${id}`;wizard.tasks.push({label:'Regalo encadenado: coloca dónde aparecerá su siguiente objeto.',run:q=>{wizard.tasks.unshift({select:true,label:'Elige qué creará este nuevo regalo.',run:(t,values)=>wizardBuild(t,values,q,child=>{cfg.creators[id]={obj:child,rx:q.x,ry:q.y};finish();})});}});}
- else if(tool==='wdiamond'){
- const id=wizardId('wd'),count=clamp(st.count||1,1,5);cfg.tile=`wd:${id}`;
- for(let i=1;i<count;i++)wizard.tasks.push({label:`Coloca el diamante blanco ${i+1} de ${count}.`,run:q=>cfg.extras.push({...q,tile:`wd:${id}`})});
- wizard.tasks.push({label:'Coloca la aparición de este grupo de diamantes blancos.',run:q=>wizard.tasks.unshift({select:true,label:'Elige la recompensa de los diamantes blancos.',run:(t,values)=>wizardBuild(t,values,q,child=>{cfg.wgroups[id]={count,obj:child,sx:q.x,sy:q.y,hit:0,done:false};finish();})})});
+ else if(tool==='wdiamond'||tool==='ftorch'){
+ const fixed=tool==='ftorch',id=wizardId('wd'),count=clamp(st.count||1,1,5),kind=fixed?'ftorch':'wd';cfg.tile=`${kind}:${id}`;
+ for(let i=1;i<count;i++)wizard.tasks.push({label:`Coloca ${fixed?'la antorcha fija':'el diamante blanco'} ${i+1} de ${count}.`,run:q=>cfg.extras.push({...q,tile:`${kind}:${id}`})});
+ wizard.tasks.push({label:'Coloca dónde aparecerá la recompensa del grupo.',run:q=>wizard.tasks.unshift({select:true,label:'Elige la recompensa del grupo.',run:(t,values)=>wizardBuild(t,values,q,child=>{cfg.wgroups[id]={kind:fixed?'torch':undefined,count,obj:child,sx:q.x,sy:q.y,hit:0,done:false};finish();})})});
  }
  else if(tool==='arena'){
  const arena={enemies:[]};const count=clamp(st.waveCount||2,2,8);
@@ -3583,17 +3616,17 @@ function abortWizard(){const p=wizard.parent;wizard=null;pending=p;cancelPending
 function futureReservations(){const out=[];const visit=(t,pos)=>{if(base(t)==='arena'){const a=JSON.parse(decodeURIComponent(part(t,1)));visit(a.reward,{x:a.rx,y:a.ry});return;}if(base(t)!=='bundle')return;const c=unpackBundle(t);out.push({...pos,tile:c.tile});if(base(c.tile)==='arena')visit(c.tile,pos);for(const e of c.extras||[])visit(packBundle({tile:e.tile}),e);for(const cr of Object.values(c.creators||{}))visit(cr.obj,{x:cr.rx,y:cr.ry});for(const wg of Object.values(c.wgroups||{}))visit(wg.obj,{x:wg.sx,y:wg.sy});};
  for(let y=0;y<GRID_SIZE;y++)for(let x=0;x<GRID_SIZE;x++){const t=board[y][x],b=base(t);if(b==='cspawn')visit(creatorGroup[tileId(t)]?.obj,{x,y});if(b==='wspawn')visit(groups[tileId(t)]?.obj,{x,y});if(b==='arena'){try{const c=JSON.parse(decodeURIComponent(part(t,1)));visit(c.reward,{x:c.rx,y:c.ry});}catch(e){}}}return out;}
 function paintFuture(){for(const q of [...futureReservations(),...(wizard?.marks||[])]){const el=$('editorGrid').children[q.y*GRID_SIZE+q.x];if(el){el.classList.add('future');el.title=`Aparición reservada (${q.x+1}, ${q.y+1}) · ${q.tile?base(q.tile):'pieza en configuración'}`;if(q.tile&&base(board[q.y][q.x])==='floor'){el.textContent=ICONS[base(q.tile)]||'✦';}}}}
-function snap(){return JSON.stringify({board,groups,creatorGroup,GRID_SIZE,playerSpeed,roomTimeLimit});}
+function snap(){return JSON.stringify({board,groups,creatorGroup,GRID_SIZE,playerSpeed,roomTimeLimit,darkZones});}
 function recordHistory(){if(restoring||pending||wizard)return;const v=snap();if(history[historyIndex]===v)return;history=history.slice(0,historyIndex+1);history.push(v);if(history.length>80)history.shift();historyIndex=history.length-1;try{localStorage.setItem('entropiaStudioAutosave',v);}catch(e){setStatus('No hay espacio para autoguardar. Exporta un respaldo.',3000);}refreshHistory();}
 function refreshHistory(){if($('undoStudio')){$('undoStudio').disabled=historyIndex<=0;$('redoStudio').disabled=historyIndex>=history.length-1;}}
-function restoreSnap(v){const c=JSON.parse(v);restoring=true;board=c.board;groups=c.groups||{};creatorGroup=c.creatorGroup||{};GRID_SIZE=c.GRID_SIZE;playerSpeed=c.playerSpeed||5;roomTimeLimit=Number(c.roomTimeLimit)||0;syncRoomTimer();gridSizeSelect.value=GRID_SIZE;playerSpeedInput.value=playerSpeed;playerSpeedVal.textContent=playerSpeed;afterEdit();restoring=false;refreshHistory();}
+function restoreSnap(v){const c=JSON.parse(v);restoring=true;board=c.board;darkZones=clone(c.darkZones||[]);groups=c.groups||{};creatorGroup=c.creatorGroup||{};GRID_SIZE=c.GRID_SIZE;playerSpeed=c.playerSpeed||5;roomTimeLimit=Number(c.roomTimeLimit)||0;syncRoomTimer();gridSizeSelect.value=GRID_SIZE;playerSpeedInput.value=playerSpeed;playerSpeedVal.textContent=playerSpeed;afterEdit();restoring=false;refreshHistory();}
 function undoStudio(d){if(wizard||pending)cancelPending();const i=historyIndex+d;if(i<0||i>=history.length)return;historyIndex=i;restoreSnap(history[i]);}
 function setupStudio(){
  const workspace=document.createElement('div');workspace.className='studio-workspace';const side=document.createElement('aside');side.className='studio-sidebar';side.innerHTML='<h3>◈ Catálogo de objetos</h3><input id="toolSearch" type="search" placeholder="Buscar objeto…" aria-label="Buscar objeto"><div class="studio-help">Elige un objeto y toca el tablero. Los mecanismos te guían paso a paso.</div>';
  const stage=document.createElement('div');stage.className='studio-board';const grid=document.querySelector('.editor-grid-container');grid.before(workspace);workspace.append(side,stage);side.append($('toolbar'));stage.append($('brushPanel'),$('pendingBar'),grid);
  const bar=document.createElement('div');bar.className='studio-actions';bar.innerHTML='<button class="tool-btn" id="undoStudio">↶ Deshacer</button><button class="tool-btn" id="redoStudio">↷ Rehacer</button><button class="tool-btn" id="exportStudio">↓ Exportar respaldo</button><button class="tool-btn" id="importStudio">↑ Importar</button><button class="tool-btn" id="recoverStudio">⏱ Recuperar autoguardado</button><button class="tool-btn" id="demoStudio">✦ Cuarto de ejemplo</button><button class="tool-btn" id="helpStudio">? Guía</button>';stage.prepend(bar);
  $('toolSearch').oninput=e=>side.querySelectorAll('.toolbar').forEach(g=>{let count=0;g.querySelectorAll('.tool-btn').forEach(b=>{const show=b.textContent.toLocaleLowerCase().includes(e.target.value.toLocaleLowerCase());b.hidden=!show;b.style.display=show?'':'none';if(show)count++;});g.style.display=count?'':'none';});
- $('demoStudio').onclick=()=>{if(!confirm('¿Cargar el cuarto de ejemplo en el editor? Puedes deshacer este cambio.'))return;if(pending)cancelPending();GRID_SIZE=12;gridSizeSelect.value='12';board=emptyBoard(12);groups={};creatorGroup={};for(let i=0;i<12;i++)board[0][i]=board[11][i]=board[i][0]=board[i][11]='wall';board[1][1]='start';board[10][10]='exit';board[1][2]='cbtn:1';board[1][4]='cspawn:1';creatorGroup[1]={obj:packBundle({tile:'cbtn:2',creators:{2:{rx:6,ry:1,obj:packBundle({tile:'portal:1',extras:[{x:8,y:8,tile:'portal2:1'}]})}}})};board[9][9]='coin';board[3][2]='sword';board[4][2]='shield';board[5][5]=tileFromTool('enemy',{...brush,speed:1,hp:8});for(let x=3;x<9;x++)board[6][x]='wall';afterEdit();setStatus('Demo: pisa el regalo → pisa el nuevo regalo → descubre los dos portales. Recoge la moneda y llega a la salida.',6500);};
+ $('demoStudio').onclick=()=>{if(!confirm('¿Cargar el cuarto de ejemplo en el editor? Puedes deshacer este cambio.'))return;if(pending)cancelPending();GRID_SIZE=12;gridSizeSelect.value='12';darkZones=[];roomTimeLimit=0;syncRoomTimer();board=emptyBoard(12);groups={};creatorGroup={};for(let i=0;i<12;i++)board[0][i]=board[11][i]=board[i][0]=board[i][11]='wall';board[1][1]='start';board[10][10]='exit';board[1][2]='cbtn:1';board[1][4]='cspawn:1';creatorGroup[1]={obj:packBundle({tile:'cbtn:2',creators:{2:{rx:6,ry:1,obj:packBundle({tile:'portal:1',extras:[{x:8,y:8,tile:'portal2:1'}]})}}})};darkZones=[{x:7,y:7,width:4,height:4,shape:'rect'}];board[2][3]='torch';board[8][9]='ice';board[8][3]='ftorch:1';board[9][6]='ftorch:1';board[8][10]='wspawn:1';groups[1]={kind:'torch',count:2,obj:packBundle({tile:'coin'})};board[9][9]='coin';board[3][2]='sword';board[4][2]='shield';board[5][5]=tileFromTool('enemy',{...brush,speed:1,hp:8});for(let x=3;x<9;x++)board[6][x]='wall';afterEdit();setStatus('Demo: recoge la antorcha, prueba los regalos y portales, enciende las dos antorchas fijas y recoge ambas monedas para salir.',6500);};
  $('undoStudio').onclick=()=>undoStudio(-1);$('redoStudio').onclick=()=>undoStudio(1);
  $('exportStudio').onclick=()=>{if(pending||wizard){setStatus('Completa o cancela el mecanismo antes de exportar.',2500);return;}const data={format:'entropia-studio',version:2,current:JSON.parse(snap()),rooms:loadRooms(),drafts:loadDrafts()};const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download='Entropia-respaldo.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);};
  const file=document.createElement('input');file.type='file';file.accept='.json';file.hidden=true;document.body.append(file);$('importStudio').onclick=()=>file.click();file.onchange=async()=>{try{const c=JSON.parse(await file.files[0].text());if(c.format!=='entropia-studio'||!validSnapshot(c.current))throw Error();if(pending)cancelPending();if(!Array.isArray(c.rooms)||!Array.isArray(c.drafts)||![...c.rooms,...c.drafts].every(r=>validSnapshot({...r,GRID_SIZE:r.gridSize||r.board?.length})))throw Error();if(!confirm('¿Restaurar este respaldo? Se sustituirán las listas locales de cuartos y borradores. Puedes exportar antes tu respaldo actual.'))return;saveRooms(c.rooms);saveDrafts(c.drafts);restoreSnap(JSON.stringify(c.current));recordHistory();setStatus('Respaldo completo restaurado: cuarto, ruta y borradores.',4000);}catch(e){setStatus('Archivo inválido: importa un respaldo de ENTROPÍA.',3500);}file.value='';};
@@ -3652,7 +3685,7 @@ function setupCatalogOrder(){
  $('catalogEdit').onclick=()=>{editing=!editing;chosen=null;$('toolSearch').value='';filter();refresh();};
  // Capture the click before the placement-tool handlers: ordering never switches the brush.
  toolbar.addEventListener('click',e=>{if(!editing)return;const b=e.target.closest('.tool-btn');if(!b)return;e.preventDefault();e.stopImmediatePropagation();chosen=b;refresh();},true);
- const move=delta=>{const a=current(),i=a.indexOf(chosen),j=i+delta;if(i<0||j<0||j>=a.length)return;if(delta<0)toolbar.insertBefore(chosen,a[j]);else toolbar.insertBefore(a[j],chosen);try{localStorage.setItem('entropiaCatalogOrder',JSON.stringify(current().map(b=>b.dataset.tool)));}catch(e){setStatus('El orden se mantiene durante esta sesión; no se pudo guardar.',2500);}chosen.scrollIntoView({block:'nearest'});refresh();};
+ const move=delta=>{const scroll=toolbar.scrollTop;const a=current(),i=a.indexOf(chosen),j=i+delta;if(i<0||j<0||j>=a.length)return;if(delta<0)toolbar.insertBefore(chosen,a[j]);else toolbar.insertBefore(a[j],chosen);try{localStorage.setItem('entropiaCatalogOrder',JSON.stringify(current().map(b=>b.dataset.tool)));}catch(e){setStatus('El orden se mantiene durante esta sesión; no se pudo guardar.',2500);}toolbar.scrollTop=scroll;refresh();};
  $('catalogUp').onclick=()=>move(-1);$('catalogDown').onclick=()=>move(1);refresh();
 }
 function setupMobileArrows(){
@@ -3663,8 +3696,68 @@ function setupMobileArrows(){
  window.addEventListener('blur',()=>{pointers.clear();touchDir=null;});
 }
 
+function zoneCells(z,n){
+ const cells=[],w=clamp(Math.round(Number(z.width)||1),1,20),h=clamp(Math.round(Number(z.height)||1),1,20);
+ for(let j=0;j<h;j++)for(let i=0;i<w;i++){const x=Number(z.x)+i,y=Number(z.y)+j;if(x<0||y<0||x>=n||y>=n)continue;
+ const nx=(i+.5-w/2)/(w/2),ny=(j+.5-h/2)/(h/2);
+ if(z.shape==='ellipse'&&nx*nx+ny*ny>1)continue;if(z.shape==='diamond'&&Math.abs(nx)+Math.abs(ny)>1.00001)continue;cells.push({x,y});}
+ return cells;
+}
+function placeDarkZone(x,y){
+ const width=clamp(brush.width||4,1,20),height=clamp(brush.height||4,1,20);
+ if(x+width>GRID_SIZE||y+height>GRID_SIZE){setStatus('La zona completa debe caber en el cuarto. Reduce sus medidas o colócala más arriba y a la izquierda.',4000);return;}
+ darkZones.push({x,y,width,height,shape:brush.shape||'rect'});afterEdit();setStatus('🌑 Zona oscura colocada. Puedes poner objetos dentro.',2200);
+}
+function paintDarkZones(){
+ for(const z of darkZones)for(const c of zoneCells(z,GRID_SIZE)){const el=$('editorGrid').children[c.y*GRID_SIZE+c.x];if(el){el.classList.add('dark-zone-cell');el.title=(el.title?el.title+' · ':'')+`Zona oscura · ${z.shape==='rect'?'rectángulo':z.shape==='ellipse'?'óvalo':'rombo'} ${z.width}×${z.height}`;}}
+}
+function startFixedTorches(x,y){
+ if(base(board[y][x])!=='floor'||futureReservations().some(q=>q.x===x&&q.y===y)){setStatus('Elige una casilla de piso libre.',2200);return;}
+ const gid=freeGid(),count=clamp(brush.count||1,1,5);if(!gid)return;
+ board[y][x]=`ftorch:${gid}`;groups[gid]={kind:'torch',count,obj:null};pending={type:'wgroup',gid,remaining:count-1,step:count>1?'diamonds':'spawn'};renderGrid();showPending();
+}
+function updateLighting(){
+ if(!G)return;const g=G,p=g.player;const sources=[];
+ if(g.hasTorch)sources.push({x:p.x,y:p.y});
+ for(let y=0;y<g.n;y++)for(let x=0;x<g.n;x++)if(base(g.grid[y][x])==='ftorch'){
+  const key=y*g.n+x;
+  if(!g.litTorches.has(key)&&Math.abs(x-p.x)+Math.abs(y-p.y)<=1){
+   g.litTorches.add(key);playSound('key');g.effects.push({kind:'pop',x,y,t0:g.time,dur:550,ch:'🔥'});
+   const wg=g.wgroups[tileId(g.grid[y][x])];if(wg&&wg.kind==='torch'&&!wg.done){wg.hit++;toast(`🕯️ Antorchas ${wg.hit}/${wg.count}`,1200);if(wg.hit>=wg.count){wg.done=true;spawnObject(wg.obj,wg.sx,wg.sy);toast('🔥 Todas encendidas: ¡recompensa desbloqueada!',2200);}}
+  }
+  if(g.litTorches.has(key))sources.push({x,y});
+ }
+ let melted=false;for(const source of sources)for(const [dx,dy]of [[0,0],[1,0],[-1,0],[0,1],[0,-1]]){const x=source.x+dx,y=source.y+dy;if(inb(x,y)&&base(g.grid[y][x])==='ice'){g.grid[y][x]='floor';g.effects.push({kind:'pop',x,y,t0:g.time,dur:550,ch:'💧'});melted=true;}}
+ if(melted){playSound('door');computeBeams();}
+}
+let darknessCanvas=null;
+function drawDarkness(){
+ const g=G;if(!g.darkCells.size)return;const ts=cv.ts,size=Math.ceil(g.n*ts);
+ if(!darknessCanvas)darknessCanvas=document.createElement('canvas');if(darknessCanvas.width!==size)darknessCanvas.width=size;if(darknessCanvas.height!==size)darknessCanvas.height=size;
+ const mask=darknessCanvas.getContext('2d');mask.clearRect(0,0,size,size);mask.globalCompositeOperation='source-over';mask.fillStyle='rgba(3,5,14,0.985)';
+ for(const key of g.darkCells){const x=key%g.n,y=Math.floor(key/g.n);mask.fillRect(x*ts,y*ts,ts+.5,ts+.5);}
+ mask.globalCompositeOperation='destination-out';
+ const lights=[];if(g.hasTorch)lights.push({x:g.player.rx+.5,y:g.player.ry+.5,r:3.1});
+ for(const key of g.litTorches)lights.push({x:key%g.n+.5,y:Math.floor(key/g.n)+.5,r:2.7});
+ for(const l of lights){const x=l.x*ts,y=l.y*ts,r=l.r*ts*(1+.015*Math.sin(g.time/130+l.x));const grad=mask.createRadialGradient(x,y,r*.2,x,y,r);grad.addColorStop(0,'rgba(0,0,0,1)');grad.addColorStop(.65,'rgba(0,0,0,.9)');grad.addColorStop(1,'rgba(0,0,0,0)');mask.fillStyle=grad;mask.fillRect(x-r,y-r,2*r,2*r);}
+ mask.globalCompositeOperation='source-over';ctx.drawImage(darknessCanvas,0,0);
+}
+function showRoomSetup(){
+ $('setupSize').value=GRID_SIZE;$('setupTime').value=0;showScreen('setup');
+}
+function setupWorkspaceLayout(){
+ const editor=$('editorScreen'),originalSize=editor.querySelector('.size-selector');originalSize.classList.add('hidden');$('roomTimeInput').closest('.size-selector').classList.add('hidden');$('playerSpeed').closest('.slider-group').classList.add('hidden');
+ const setup=document.createElement('div');setup.id='roomSetupScreen';setup.className='screen hidden';setup.innerHTML='<div class="room-setup-card"><span class="setup-eyebrow">UN NUEVO LABERINTO</span><h2>Configura tu cuarto</h2><p>Elige el espacio y el reto. La velocidad se configura al colocar el inicio.</p><label for="setupSize">Tamaño del cuarto</label><select id="setupSize"><option value="8">8 × 8</option><option value="10">10 × 10</option><option value="12" selected>12 × 12</option><option value="16">16 × 16</option><option value="20">20 × 20</option></select><label for="setupTime">Tiempo para superarlo · segundos</label><input id="setupTime" type="number" value="0" min="0" max="86400" step="1"><small>0 = sin límite de tiempo</small><div class="btn-group"><button class="btn btn-primary" id="setupCreate">Crear y abrir editor →</button><button class="btn" id="setupCancel">← Volver</button></div></div>';
+ $('app').appendChild(setup);$('setupCancel').onclick=()=>showScreen('main');$('setupCreate').onclick=()=>{const n=Number($('setupSize').value),seconds=clamp(Math.floor(Number($('setupTime').value)||0),0,86400);if(![8,10,12,16,20].includes(n))return;currentDraftId=null;GRID_SIZE=n;gridSizeSelect.value=n;initEmptyBoard();roomTimeLimit=seconds;syncRoomTimer();history=[snap()];historyIndex=0;refreshHistory();renderGrid();renderBrushPanel();updateWarn();showScreen('editor');};
+ const actions=editor.querySelector('.studio-actions');const workspace=editor.querySelector('.studio-workspace');workspace.before(actions);
+ const old=$('startGameBtn').parentElement;for(const id of ['startGameBtn','saveRoomBtn','saveDraftBtn','clearGridBtn'])actions.appendChild($(id));if(old&&!old.children.length)old.remove();
+ editor.querySelector('.studio-board').append($('editorWarn'),$('gameStatus'));$('gameStatus').style.minHeight='0';
+ $('helpStudio').onclick=()=>alert('ESTUDIO ENTROPÍA\n\n• Crear cuarto: primero elige tamaño y tiempo. La velocidad se elige al colocar el inicio.\n• Catálogo: ✎, selecciona un objeto y pulsa ↑ o ↓. Los controles no se desplazan.\n• Zona oscura: elige forma, ancho y largo. La casilla elegida es la esquina superior izquierda. Puedes superponer objetos. Borrar sobre piso oscuro elimina la zona.\n• Antorcha portátil: recógela para iluminar y derretir hielo cercano.\n• Antorchas fijas: elige cantidad, colócalas y configura la aparición. Se encienden al pasar al lado. Todas encendidas = recompensa.\n• Paredes movibles: canal 1–10. Cada pisada de su botón mueve una casilla.\n• Puerta doble: verde abre; rojo cierra.\n• Celular: abajo ocupa la franja entre arco y bombas. Los laterales llevan izquierda/derecha; arriba ocupa la franja superior. Son invisibles.\n• Espada: toca el centro para atacar hacia donde miras o desliza para elegir dirección.\n• Ctrl/Cmd+Z: deshacer; Shift+Ctrl/Cmd+Z: rehacer. Escape: cancelar mecanismo.');
+}
+
 setupStudio();
 setupNewFeatures();
+setupWorkspaceLayout();
 
     buildPalette();
     initEmptyBoard();
