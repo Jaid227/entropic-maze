@@ -543,6 +543,15 @@ body.studio-editing.mobile-editor .studio-board{gap:3px;min-width:0;min-height:0
 body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls{display:flex!important;flex-direction:row;flex:0 0 auto;align-items:center;gap:4px;margin:0!important;padding:2px;align-self:center}
 body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{width:30px;height:34px;flex:0 0 30px;font-size:17px}
 @media(orientation:landscape){body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls{align-self:stretch;justify-content:center;padding-bottom:5px}}
+
+#spawnModal .modal-box{width:min(980px,calc(100vw - 16px));height:min(92dvh,900px);max-height:calc(100dvh - 12px);padding:8px;gap:6px;overflow:hidden}
+#spawnModal .modal-box>h3,#spawnModal .modal-box>p,#spawnSelection{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip-path:inset(50%);white-space:nowrap;min-height:0!important}
+#spawnPalette{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));align-content:start;gap:6px;flex:1;min-height:0;max-height:none;overflow:auto;padding:3px}
+#spawnPalette .tool-btn{font-size:12px;min-height:40px;padding:8px;justify-content:flex-start;text-align:left}
+#spawnParams{flex:0 0 auto;max-height:28dvh;overflow:auto;gap:8px;padding:8px;font-size:12px}
+#spawnModal .btn-group{position:static;flex:0 0 auto;gap:7px;margin:0;padding:5px 0 0;border-top:1px solid var(--border-cell)}
+#spawnModal .btn-group .btn{padding:5px 10px!important;font-size:12px!important;min-height:30px;border-radius:8px}
+#objectMiniMenu,#objectEditModal{z-index:9600}#objectMiniMenu .object-mini-box{width:auto;max-width:calc(100vw - 20px);padding:14px;gap:10px}#objectMiniMenu .btn{font-size:13px;padding:9px 12px}#objectEditModal .modal-box{max-width:650px;gap:12px}#objectEditFields{display:flex;flex-direction:column;gap:12px;text-align:left}#objectEditFields select{width:100%;padding:10px;border:1px solid var(--border-cell);border-radius:8px;background:var(--bg-panel);color:var(--text-primary)}#objectEditModal .btn{font-size:12px;padding:8px 10px}#objectEditFields .tool-panel{justify-content:flex-start;max-height:none}.object-enemy-editors{display:flex;flex-direction:column;gap:10px}.object-enemy-card{padding:12px;border:1px solid var(--border-cell);border-radius:10px;display:flex;flex-direction:column;gap:9px}.object-enemy-card>div{display:flex;flex-wrap:wrap;gap:12px}
 </style>
 </head>
 <body>
@@ -581,7 +590,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
                 <span class="tool-label">Básico</span>
                 <button class="tool-btn active" data-tool="floor">🟫 Piso</button>
                 <button class="tool-btn" data-tool="wall">🧱 Pared</button>
-                <button class="tool-btn" data-tool="coin">🪙 Moneda</button>
+                <button class="tool-btn" data-tool="coin">🧍 Persona a rescatar</button>
                 <button class="tool-btn" data-tool="start">🏁 Inicio</button>
                 <button class="tool-btn" data-tool="exit">🚪 Salida</button>
                 <button class="tool-btn" data-tool="erase">🗑️ Borrar</button>
@@ -602,7 +611,8 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
                 <button class="tool-btn" data-tool="key">🔑 Llave</button>
                 <button class="tool-btn" data-tool="keydoor">🔒 Puerta con llave</button>
                 <button class="tool-btn" data-tool="spikes">🔺 Picos</button>
-                <button class="tool-btn" data-tool="bdoor">🚧 Puerta + botón</button>
+                <button class="tool-btn" data-tool="bdoor">🧱 Pared + botón</button>
+                <button class="tool-btn" data-tool="btn">🔘 Botón de pared</button>
                 <button class="tool-btn" data-tool="hbtn">⏺️ Botón sostenido</button>
                 <button class="tool-btn" data-tool="ddoor">💠 Puerta + diamante azul</button>
                 <button class="tool-btn" data-tool="rdoor">🟥 Puerta-láser + diamante rojo</button>
@@ -740,8 +750,8 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
     ===================================================== */
     const ID_COL = { 1: '#e74c3c', 2: '#3498db', 3: '#2ecc71', 4: '#e0a800',5:'#9b59b6',6:'#00a6a6',7:'#e67e22',8:'#d64c8c',9:'#607d8b',10:'#6d7f31' };
     const ICONS = {darkzone:'🌑',torch:'🔥',ftorch:'🕯️',ice:'🧊',
-        arena: '🏭', boxPath: '🪵', doubleDoor: '🚦', closeBtn: '🔴', openBtn: '🟢', snake: '🐍', worm: '🪱', wall: '🧱', coin: '🪙', enemy: '👹', enemy2: '👺', boss: '👁️', start: '🏁', exit: '🚪',
-        key: '🔑', keydoor: '🔒', spikes: '🔺', btn: '🔘', bdoor: '🚧', hbtn: '⏺️',
+        arena: '🏭', boxPath: '🪵', doubleDoor: '🚦', closeBtn: '🔴', openBtn: '🟢', snake: '🐍', worm: '🪱', wall: '🧱', coin: '🧍', enemy: '👹', enemy2: '👺', boss: '👁️', start: '🏁', exit: '🚪',
+        key: '🔑', keydoor: '🔒', spikes: '🔺', btn: '🔘', bdoor: '🔲', hbtn: '⏺️',
         ddoor: '💠', diamond: '💎', rdoor: '🟥', rdiamond: '♦️', mwall: '🔳', mwbtn: '🟦',
         wd: '◇', wspawn: '✴️', block: '📦', mirror: '🪞', portal: '🌀', portal2: '🌀', cbtn: '🎁', cspawn: '✨',
         arrowU: '⬆️', arrowD: '⬇️', arrowL: '⬅️', arrowR: '➡️',
@@ -765,7 +775,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
         rdiamond: '♦️ el diamante rojo', mwbtn: '🟦 el botón de la pared'
     };
     // FIX: faltaba 'portal' aquí y showPending() lanzaba un TypeError al colocar un portal
-    const DOOR_NAME = { bdoor: 'puerta-botón', ddoor: 'puerta-diamante', rdoor: 'puerta-láser', mwall: 'pared movible', portal: 'portal' };
+    const DOOR_NAME = { bdoor: 'pared-botón', ddoor: 'puerta-diamante', rdoor: 'puerta-láser', mwall: 'pared movible', portal: 'portal' };
     const SOLID = ['ice','wall', 'bdoor', 'ddoor', 'rdoor', 'stone', 'hole', 'diamond', 'rdiamond', 'wd', 'laser'];
     const ENEMY_BLOCK = SOLID.concat(['keydoor']);
     const BEAM_STOP = ['ice','wall', 'keydoor', 'bdoor', 'ddoor', 'rdoor', 'stone', 'laser'];
@@ -868,7 +878,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
     let selectedTool = 'floor';
     let playerSpeed = 5;
     let currentDraftId = null;
-    let roomTimeLimit=0,darkZones=[];
+    let roomTimeLimit=120,darkZones=[];
     const brush = { width:4,height:4,shape:'rect',startSpeed:5,channel:1, coin:false, waveCount: 2, length: 3, speed: 3, hp: 1, vision: 5, key: false, minis: 3, qty: 1, dir: 'R', count: 3, hid: 1 };
     let pending = null;              // {type:'pair'|'wgroup'|'creator', ...}
     let spawnTool = null, spawnStore = null;
@@ -876,7 +886,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
     document.querySelectorAll('#toolbar .tool-btn').forEach(b => { TOOL_LABELS[b.dataset.tool] = b.textContent.trim(); });
 
     function emptyBoard(n) { return Array.from({ length: n }, () => Array(n).fill('floor')); }
-    function initEmptyBoard() { wizard=null;darkZones=[];roomTimeLimit=0;syncRoomTimer();board = emptyBoard(GRID_SIZE); groups = {}; creatorGroup = {}; pending = null; hidePending(); closeSpawnModal(); }
+    function initEmptyBoard() { objectMove=null;editTransaction=null;wizard=null;darkZones=[];roomTimeLimit=120;syncRoomTimer();board = emptyBoard(GRID_SIZE); groups = {}; creatorGroup = {}; pending = null; hidePending(); closeSpawnModal(); }
     function countTile(type) {
         let c = 0;
         for (const row of board) for (const t of row) if (base(t) === type) c++;
@@ -904,13 +914,13 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
         minis:  { t: 'range', label: '👁️ Mini ojos', min: 1, max: 8 },
         qty:    { t: 'range', label: '📦 Cantidad', min: 1, max: 20 },
         count:  { t: 'range', label: '◇ Diamantes blancos', min: 1, max: 5 },
-        coin: {t:'check',label:'🪙 Suelta una moneda al morir'},
+        coin: {t:'check',label:'🧍 Libera una persona al ser derrotado'},
         channel:{t:'channel',label:'Canal de conexión (1–10)'},
         key:    { t: 'check', label: '🔑 Suelta una llave al morir' },
         dir:    { t: 'dir', label: 'Dirección:' },
-        hid:    { t: 'doorid', label: 'Abre la puerta-botón número:' }
+        hid:    { t: 'doorid', label: 'Abre la pared-botón número:' }
     };
-    const TOOL_PARAMS = {start:['startSpeed'],darkzone:['shape','width','height'],ftorch:['count'],
+    const TOOL_PARAMS = {bdoor:['channel'],btn:['channel'],start:['startSpeed'],darkzone:['shape','width','height'],ftorch:['count'],
         arena: ["waveCount"],
         snake: ['speed', 'hpBoss', 'length', 'key','coin'], worm: ['speed', 'hpBoss', 'key','coin'],
         enemy: ['speed', 'hp', 'vision', 'key','coin'],
@@ -920,7 +930,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
         laser: ['dir'], mwall: ['channel','dir'], mwbtn:['channel'],
         hbtn: ['hid'], wdiamond: ['count']
     };
-    const TOOL_NOTES = {start:'Elige aquí la velocidad y coloca el inicio. Puedes volver a colocarlo para cambiarla.',darkzone:'La casilla elegida es la esquina superior izquierda del área. Forma y medidas se ven en el tablero. Usa Borrar sobre piso oscuro para quitar esa zona.',torch:'Al recogerla, la llevas durante todo el cuarto. Ilumina la oscuridad y derrite hielo cercano.',ftorch:'Elige una cantidad, coloca cada antorcha y configura la recompensa. Se encienden al pasar a su lado y permanecen encendidas.',ice:'Bloquea el paso. Se derrite al acercarte con una antorcha o con una antorcha fija encendida al lado.',
+    const TOOL_NOTES = {bdoor:'Elige canal 1–10. Al pisar su botón, desaparecen todas las paredes-botón conectadas a ese canal.',btn:'Elige el mismo canal de las paredes-botón que quieres abrir.',start:'Elige aquí la velocidad y coloca el inicio. Puedes volver a colocarlo para cambiarla.',darkzone:'La casilla elegida es la esquina superior izquierda del área. Forma y medidas se ven en el tablero. Usa Borrar sobre piso oscuro para quitar esa zona.',torch:'Al recogerla, la llevas durante todo el cuarto. Ilumina la oscuridad y derrite hielo cercano.',ftorch:'Elige una cantidad, coloca cada antorcha y configura la recompensa. Se encienden al pasar a su lado después de recoger la antorcha portátil y permanecen encendidas.',ice:'Bloquea el paso. Se derrite al acercarte con una antorcha o con una antorcha fija encendida al lado.',
         arena: "Elige de 2 a 8 integrantes, iguales o variados, uno por uno. Salen del creador de uno en uno; al derrotarlos todos aparece la recompensa elegida en su casilla.",
         snake: 'Largo total de 3 a 10 casillas. Recorre los caminos disponibles; solo su cola dorada recibe daño. Deja espacio para su cuerpo.',
         worm: 'Coloca la cola creadora. La cabeza crece formando un camino continuo sin cruzarse. Cortar el cuerpo destruye progresivamente la parte desconectada; solo agotar la vida de la cola derrota al jefe.',
@@ -932,7 +942,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
         bomb: 'Es una bolsa: al recogerla das esa cantidad de bombas. Toca una ya puesta para cambiar su cantidad.',
         laser: 'El rayo avanza hasta chocar con pared, caja, puerta o emisor. Los espejos lo desvían. Toca un láser ya puesto para cambiarlo.',
         mwall: 'Elige canal 1–10 y dirección. Varias paredes pueden compartir botón. Cada nueva pisada mueve una casilla; puedes volver a pisarlo.' , mwbtn:'Comparte canal con las paredes que quieras mover. Cada nueva pisada las desplaza un cuadro.',
-        hbtn: 'Botón sostenido: la puerta-botón elegida solo está abierta mientras algo (una caja o el personaje) lo pisa.',
+        hbtn: 'Botón sostenido: la pared-botón elegida solo está abierta mientras algo (una caja o el personaje) lo pisa.',
         wdiamond: 'Elige cuántos diamantes (1-5), coloca cada uno, luego la casilla donde aparecerá algo y por último qué aparecerá.'
     };
 
@@ -1019,6 +1029,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
         if (tool === 'enemy' || tool === 'enemy2') return `${tool}:${st.speed}:${st.hp}:${st.vision}:${st.key ? 1 : 0}:${st.coin ? 1 : 0}`;
         if (tool === 'snake' || tool === 'worm') return `${tool}:${st.speed}:${st.hp}:${st.length || 3}:${st.key ? 1 : 0}:${st.coin ? 1 : 0}`;
         if (tool === 'boss') return `boss:${st.speed}:${st.hp}:${st.minis}:${st.key ? 1 : 0}:${st.coin ? 1 : 0}`;
+        if(tool==='btn')return `btn:${clamp(st.channel||1,1,10)}`;
         if(tool==='mwbtn')return `mwbtn:${clamp(st.channel||1,1,10)}`;
         if (tool === 'laser') return `laser:${st.dir}`;
         if (tool === 'ammo' || tool === 'bomb') return `${tool}:${st.qty}`;
@@ -1069,11 +1080,11 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
                     const pr = enemyProps(t, null);
                     addBadge(cell, pr.sp, null, 'tl');
                     addBadge(cell, pr.hp, null, 'hp');
-                    if (pr.key) addBadge(cell, '🔑', null, 'tr');if(pr.coin)addBadge(cell,'🪙',null,'bl');
+                    if (pr.key) addBadge(cell, '🔑', null, 'tr');if(pr.coin)addBadge(cell,'🧍',null,'bl');
                     cell.title = `Velocidad ${pr.sp} · Vida ${pr.hp} · Visión ${pr.vis}` + (pr.key ? ' · Suelta llave' : '');
                 } else if (b === 'snake' || b === 'worm') {
                     addBadge(cell, part(t, 2), null, 'hp');
-                    if(part(t,5)==='1')addBadge(cell,'🪙',null,'tr');
+                    if(part(t,5)==='1')addBadge(cell,'🧍',null,'tr');
                     if (b === 'snake') addBadge(cell, part(t, 3), '#427c40', 'bl');
                     cell.title = b === 'snake' ? 'Serpiente: cola vulnerable · Largo ' + part(t, 3) : 'Gusano: cola creadora vulnerable';
                 } else if (['doubleDoor','closeBtn','openBtn'].includes(b)) {
@@ -1083,7 +1094,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
                     addBadge(cell, pr.sp, null, 'tl');
                     addBadge(cell, pr.hp, null, 'hp');
                     addBadge(cell, pr.minis, null, 'bl');
-                    if (pr.key) addBadge(cell, '🔑', null, 'tr');if(pr.coin)addBadge(cell,'🪙',null,'bl');
+                    if (pr.key) addBadge(cell, '🔑', null, 'tr');if(pr.coin)addBadge(cell,'🧍',null,'bl');
                     cell.title = `Jefe · Velocidad ${pr.sp} · Vida ${pr.hp} · Mini ojos ${pr.minis}` + (pr.key ? ' · Suelta llave' : '');
                 } else if (b === 'laser') {
                     addBadge(cell, DIR_CHAR[dirOf(t)], '#c0392b');
@@ -1107,7 +1118,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
                     cell.title = gr && gr.obj ? 'Aquí aparecerá: ' + (TOOL_LABELS[base(visibleReward(gr.obj))] || base(visibleReward(gr.obj))) : 'Casilla de aparición: elige qué objeto crear';
                     addBadge(cell, tileId(t), '#d35400', 'tl');
                 }
-                cell.addEventListener('click', () => handleCellClick(x, y));
+                bindEditorCell(cell,x,y);
                 editorGrid.appendChild(cell);
             }
         }
@@ -1180,7 +1191,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
                 ['doubleDoor','closeBtn','openBtn'].forEach(k => removeById(k,id));
         }
         for (const dk of Object.keys(PAIRS)) {
-            if(dk==='mwall')continue;
+            if(dk==='mwall'||dk==='bdoor')continue;
             const pk = PAIRS[dk];
             const doorIds = new Set(), partIds = new Set();
             for (const row of board) for (const t of row) {
@@ -1195,7 +1206,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
                 else if (b === pk && !doorIds.has(id)) board[y][x] = 'floor';
             }
         }
-        // botones sostenidos: necesitan su puerta-botón
+        // botones sostenidos: necesitan su pared-botón
         for (let y = 0; y < GRID_SIZE; y++) for (let x = 0; x < GRID_SIZE; x++) {
             if (base(board[y][x]) === 'hbtn' && !doorExists(tileId(board[y][x]))) board[y][x] = 'floor';
         }
@@ -1229,10 +1240,11 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
         let msg = '';
         if (bow && !ammo) msg = '⚠️ El arco no sirve sin flechas: coloca al menos una bolsa de flechas.';
         else if (!bow && ammo) msg = '⚠️ Las flechas no sirven sin arco.';
-        else if ((countTile('diamond') || Object.keys(groups).length) && !countTile('sword') && !(bow && ammo)) msg = '⚠️ Para activar los diamantes necesitas espada o arco con flechas.';
+        else if ((countTile('diamond') || Object.values(groups).some(g=>g.kind!=='torch')) && !countTile('sword') && !(bow && ammo)) msg = '⚠️ Para activar los diamantes necesitas espada o arco con flechas.';
         $('editorWarn').textContent = msg;
     }
     function afterEdit() {
+        if(editTransaction&&!pending&&!wizard){editTransaction=null;}
         cleanGroups(); cleanOrphans();
         renderGrid(); updateWarn();
         recordHistory(); paintFuture();
@@ -1284,6 +1296,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
         return 0;
     }
     function showPending() {
+        if(objectMove){pendingBar.classList.remove('hidden');pendingText.textContent='↗ Toca una casilla libre para mover el objeto. Sus conexiones se conservan.';return;}
         if(wizard) { wizardHint(); return; }
         if (!pending) return;
         let txt = '';
@@ -1309,6 +1322,8 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
     }
     function hidePending() { pendingBar.classList.add('hidden'); }
     function cancelPending() {
+        if(objectMove){objectMove=null;pending=null;hidePending();renderGrid();return;}
+        if(editTransaction){rollbackObjectEdit();return;}
         if(wizard) { abortWizard(); return; }
         if (!pending) return;
         const p = pending;
@@ -1334,9 +1349,9 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
     $('pendingCancel').addEventListener('click', cancelPending);
 
     function startPair(kind, x, y) {
-        if(kind==='mwall'){
-            const id=clamp(brush.channel||1,1,10);board[y][x]=`mwall:${id}:${brush.dir}`;
-            if(hasTile('mwbtn',id)){afterEdit();setStatus(`Pared conectada al canal ${id}.`,1800);return;}
+        if(kind==='mwall'||kind==='bdoor'){
+            const id=clamp(brush.channel||1,1,10);board[y][x]=kind==='mwall'?`mwall:${id}:${brush.dir}`:`bdoor:${id}`;
+            if(hasTile(PAIRS[kind],id)){afterEdit();setStatus(`Pared conectada al canal ${id}.`,1800);return;}
             pending={type:'pair',kind,id,x,y};renderGrid();showPending();return;
         }
         if (base(board[y][x]) === kind) {
@@ -1433,12 +1448,13 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
     }
 
     function placeHold(x, y) {
-        if (!doorExists(brush.hid)) { setStatus(`Primero coloca la puerta-botón número ${brush.hid}.`, 2500); return; }
+        if (!doorExists(brush.hid)) { setStatus(`Primero coloca la pared-botón número ${brush.hid}.`, 2500); return; }
         board[y][x] = `hbtn:${brush.hid}`;
         afterEdit();
     }
 
     function handleCellClick(x, y) {
+        if(objectMove){finishObjectMove(x,y);return;}
         if(!pending&&selectedTool==='darkzone'){placeDarkZone(x,y);return;}
         if(!pending&&selectedTool==='erase'&&base(board[y][x])==='floor'&&darkZones.some(z=>zoneCells(z,GRID_SIZE).some(c=>c.x===x&&c.y===y))){darkZones=darkZones.filter(z=>!zoneCells(z,GRID_SIZE).some(c=>c.x===x&&c.y===y));afterEdit();return;}
         if(!pending&&selectedTool==='ftorch'){startFixedTorches(x,y);return;}
@@ -1496,7 +1512,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
                 } else spawnParams.classList.add('hidden');
                 $('spawnSelection').textContent = 'Seleccionado: ' + TOOL_LABELS[tool];
                 $('spawnOk').disabled = false;
-                $('spawnOk').textContent = (tool === 'mwall' ? '➡️ Continuar: colocar su botón' : '➡️ Continuar');
+                $('spawnOk').textContent = 'Continuar';
                 // Los objetos sin ajustes avanzan al tocarlos: no requieren un segundo clic oculto.
                 // Confirmación explícita para evitar selecciones accidentales.
             });
@@ -1510,7 +1526,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
         spawnTool = null;
         $('spawnSelection').textContent = 'Elige un objeto, ajusta sus valores y pulsa Continuar.';
         $('spawnOk').disabled = true;
-        $('spawnOk').textContent = '➡️ Continuar';
+        $('spawnOk').textContent = 'Continuar';
         spawnStore = Object.assign({}, brush);
         spawnParams.classList.add('hidden');
         spawnPalette.querySelectorAll('.tool-btn').forEach(x => {
@@ -1537,7 +1553,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
         if (!spawnTool) { setStatus('Elige qué objeto aparecerá.', 1800); return; }
         const tool = spawnTool, st = spawnStore;
         if (wizard) { wizardSelect(tool,st); return; }
-        if (p.type === 'creator' || p.type === 'wgroup' || (p.type === 'arena' && p.step === 'reward')) { beginWizard(p,tool,st); return; }
+        if (p.type==='editReward' || p.type === 'creator' || p.type === 'wgroup' || (p.type === 'arena' && p.step === 'reward')) { beginWizard(p,tool,st); return; }
 
         if(p.type==='arena') {
             if(p.step==='enemy') {
@@ -1585,7 +1601,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
             closeSpawnModal();renderGrid();showPending();return;
         }
         if(tool==='hbtn') {
-            if(!doorExists(st.hid)){setStatus('Primero coloca la puerta-botón seleccionada.',2000);return;}
+            if(!doorExists(st.hid)){setStatus('Primero coloca la pared-botón seleccionada.',2000);return;}
             groups[p.gid].obj=`hbtn:${st.hid}`;
         }
         if (PAIRS[tool]) {
@@ -1627,7 +1643,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
             selectedTool = btn.dataset.tool;
             renderBrushPanel();
             const hints = {
-                bdoor: 'Coloca la puerta: te pedirá enseguida dónde va su botón.',
+                bdoor: 'Elige canal 1–10. Su botón quita todas las paredes del mismo canal.',
                 ddoor: 'Coloca la puerta: te pedirá enseguida dónde va su diamante azul.',
                 rdoor: 'Coloca la puerta-láser: después coloca su diamante rojo (debe tocarlo un láser).',
                 mwall: 'Elige la dirección y coloca la pared: te pedirá dónde va su botón.',
@@ -1862,12 +1878,12 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
         };
         G = g;
         for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) initTile(g, x, y, true);
-        // Contar monedas que aparecerán desde grupos de diamantes blancos
+        // Contar personas que aparecerán desde grupos de diamantes blancos
         for (const gid in g.wgroups) {
             const wg = g.wgroups[gid];
             if (wg && wg.obj) g.totalCoins+=futureCoins(wg.obj);
         }
-        // Contar monedas que aparecerán desde botones-creadores
+        // Contar personas que aparecerán desde botones-creadores
         if (room.creators) {
             for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
                 const t = g.grid[y][x];
@@ -2394,7 +2410,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
             toast('👁️ ¡Derrotaste al jefe!', 1800);
         }
         if (e.hasKey) { dropKey(e.x, e.y); toast('🔑 ¡Soltó una llave!', 1400); }
-        if(e.hasCoin){dropLoot('coin',e.x,e.y);toast('🪙 ¡Soltó una moneda!',1400);}
+        if(e.hasCoin){dropLoot('coin',e.x,e.y);toast('🧍 ¡Hay una persona para rescatar!',1400);}
     }
     function knock(e, dir) {
         const g = G;
@@ -2773,7 +2789,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
         if (t === 'coin') {
             g.grid[p.y][p.x] = 'floor';
             g.coins++;
-            g.effects.push({ kind: 'pop', x: p.x, y: p.y, t0: g.time, dur: 400, ch: '🪙' });
+            g.effects.push({ kind: 'pop', x: p.x, y: p.y, t0: g.time, dur: 400, ch: '🧍' });
             playSound('coin');
             g.hudShowUntil = g.time + HUD_HOLD_MS;
             if (g.coins >= g.totalCoins) { g.exitActive = true; playSound('exit'); toast('🚪 ¡La salida se abrió!', 1400); }
@@ -2935,7 +2951,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
 
     function updateHud() {
         const g = G;
-        let txt = `🪙 ${g.coins}/${g.totalCoins}  🔑 ${g.keys}  🛡️ ${g.shields}  ${g.exitActive ? '🚪' : '🔒'}`;
+        let txt = `🧍 ${g.coins}/${g.totalCoins}  🔑 ${g.keys}  🛡️ ${g.shields}  ${g.exitActive ? '🚪' : '🔒'}`;
         if(g.hasTorch)txt+='  🔥';
         if(g.room.timeLimit>0){const left=Math.max(0,Math.ceil(g.room.timeLimit-g.time/1000));txt+=`  ⏳ ${Math.floor(left/60)}:${String(left%60).padStart(2,'0')}`;}
         txt += S.mode === 'route' ? `  ·  Cuarto ${S.index + 1}/${S.rooms.length}` : '  ·  Prueba';
@@ -3092,14 +3108,14 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
         const g = G, ts = cv.ts, px = x * ts, py = y * ts;
         const tile = g.grid[y][x], b = bt(x, y);
         const cx = px + ts / 2, cy = py + ts / 2;
-        if(b==='wall'){drawWallTexture(px,py,ts);return;}
+        if(b==='wall'||(base(tile)==='bdoor'&&b==='bdoor')){drawWallTexture(px,py,ts);return;}
         ctx.fillStyle = colors.floor;
         ctx.fillRect(px, py, ts, ts);
         ctx.strokeStyle = 'rgba(0,0,0,0.08)'; ctx.lineWidth = 1;
         ctx.strokeRect(px + 0.5, py + 0.5, ts - 1, ts - 1);
 
         switch (b) {
-            case 'coin': emoji('🪙', cx, cy + Math.sin(g.time / 250 + x + y) * ts * 0.05, ts * 0.6); break;
+            case 'coin': emoji('🧍', cx, cy + Math.sin(g.time / 250 + x + y) * ts * 0.05, ts * 0.6); break;
             case 'key': emoji('🔑', cx, cy + Math.sin(g.time / 300 + x * 2 + y) * ts * 0.05, ts * 0.6); break;
             case 'sword': emoji('🗡️', cx, cy + Math.sin(g.time / 300 + x * 2 + y * 2) * ts * 0.05, ts * 0.62); break;
             case 'bow': emoji('🏹', cx, cy + Math.sin(g.time / 300 + x + y * 2) * ts * 0.05, ts * 0.62); break;
@@ -3597,7 +3613,7 @@ function walkRewards(fn){
  const visit=t=>{if(!t)return;fn(t);if(base(t)==='bundle'){const c=unpackBundle(t);visit(c.tile);(c.extras||[]).forEach(e=>visit(e.tile));Object.values(c.creators||{}).forEach(e=>visit(e.obj));Object.values(c.wgroups||{}).forEach(e=>visit(e.obj));}if(base(t)==='arena'){try{visit(JSON.parse(decodeURIComponent(part(t,1))).reward);}catch(e){}}};
  board.flat().forEach(visit);Object.values(groups).forEach(g=>visit(g.obj));Object.values(creatorGroup).forEach(g=>visit(g.obj));
 }
-function rewardOrigin(p){if(p.type==='arena')return{x:p.config.rx,y:p.config.ry};const kind=p.type==='creator'?'cspawn':'wspawn';for(let y=0;y<GRID_SIZE;y++)for(let x=0;x<GRID_SIZE;x++)if(board[y][x]===`${kind}:${p.gid}`)return{x,y};}
+function rewardOrigin(p){if(p.type==='editReward')return p.pos;if(p.type==='arena')return{x:p.config.rx,y:p.config.ry};const kind=p.type==='creator'?'cspawn':'wspawn';for(let y=0;y<GRID_SIZE;y++)for(let x=0;x<GRID_SIZE;x++)if(board[y][x]===`${kind}:${p.gid}`)return{x,y};}
 function beginWizard(p,tool,st){
  const origin=rewardOrigin(p);if(!origin)return;
  wizard={parent:p,origin,root:null,tasks:[],used:new Set([`${origin.x},${origin.y}`]),ids:{},marks:[]};
@@ -3607,7 +3623,7 @@ function wizardId(kind){const used=new Set(wizard.ids[kind]||[]);walkRewards(t=>
 function wizardBuild(tool,st,pos,done){
  const cfg={tile:tileFromTool(tool,st),extras:[],creators:{},wgroups:{}};
  const finish=()=>done(packBundle(cfg));
- if(PAIRS[tool]){const id=tool==='mwall'?clamp(st.channel||1,1,10):wizardId(tool);cfg.tile=tool==='mwall'?`mwall:${id}:${st.dir}`:`${tool}:${id}`;if(tool==='mwall'&&hasTile('mwbtn',id)){finish();return;}wizard.tasks.push({label:`Coloca ${PARTNER_LABEL[PAIRS[tool]]} del ${TOOL_LABELS[tool]}. Ambas piezas aparecerán juntas.`,run:q=>{cfg.extras.push({...q,tile:`${PAIRS[tool]}:${id}`});finish();}});}
+ if(PAIRS[tool]){const id=['mwall','bdoor'].includes(tool)?clamp(st.channel||1,1,10):wizardId(tool);cfg.tile=tool==='mwall'?`mwall:${id}:${st.dir}`:`${tool}:${id}`;if(['mwall','bdoor'].includes(tool)&&hasTile(PAIRS[tool],id)){finish();return;}wizard.tasks.push({label:`Coloca ${PARTNER_LABEL[PAIRS[tool]]} del ${TOOL_LABELS[tool]}. Ambas piezas aparecerán juntas.`,run:q=>{cfg.extras.push({...q,tile:`${PAIRS[tool]}:${id}`});finish();}});}
  else if(tool==='doubleDoor'){const id=wizardId(tool);cfg.tile=`doubleDoor:${id}`;wizard.tasks.push({label:'Coloca el botón rojo para cerrar la puerta.',run:q=>cfg.extras.push({...q,tile:`closeBtn:${id}`})},{label:'Coloca el botón verde para abrir la puerta.',run:q=>{cfg.extras.push({...q,tile:`openBtn:${id}`});finish();}});}
  else if(tool==='cbtn'){const id=wizardId('cbtn');cfg.tile=`cbtn:${id}`;wizard.tasks.push({label:'Regalo encadenado: coloca dónde aparecerá su siguiente objeto.',run:q=>{wizard.tasks.unshift({select:true,label:'Elige qué creará este nuevo regalo.',run:(t,values)=>wizardBuild(t,values,q,child=>{cfg.creators[id]={obj:child,rx:q.x,ry:q.y};finish();})});}});}
  else if(tool==='wdiamond'||tool==='ftorch'){
@@ -3620,13 +3636,14 @@ function wizardBuild(tool,st,pos,done){
  for(let i=0;i<count;i++)wizard.tasks.push({select:true,enemy:true,label:`Creador: elige el enemigo ${i+1} de ${count}.`,run:(t,values)=>{if(!['enemy','enemy2','boss','snake','worm'].includes(t))throw Error('Tipo de enemigo inválido');arena.enemies.push(tileFromTool(t,values));}});
  wizard.tasks.push({label:'Coloca dónde aparecerá la recompensa al derrotar a todos.',run:q=>{arena.rx=q.x;arena.ry=q.y;wizard.tasks.unshift({select:true,label:'Elige la recompensa del creador de enemigos.',run:(t,values)=>wizardBuild(t,values,q,child=>{arena.reward=child;cfg.tile='arena:'+encodeURIComponent(JSON.stringify(arena));finish();})});}});
  }
- else if(tool==='hbtn'){if(!doorExists(st.hid)){setStatus('Primero coloca la puerta-botón de ese número.',2500);abortWizard();return;}cfg.tile=`hbtn:${st.hid}`;finish();}
+ else if(tool==='hbtn'){if(!doorExists(st.hid)){setStatus('Primero coloca la pared-botón de ese número.',2500);abortWizard();return;}cfg.tile=`hbtn:${st.hid}`;finish();}
  else finish();
 }
 function wizardSelect(tool,st){const task=wizard.tasks.shift();if(!task||!task.select)return;task.run(tool,st);wizardNext();}
 function wizardPlace(x,y){const t=wizard.tasks[0];if(!t||t.select)return;if(base(board[y][x])!=='floor'||wizard.used.has(`${x},${y}`)||futureReservations().some(q=>q.x===x&&q.y===y)){setStatus('Esta casilla está ocupada o reservada. Elige otro piso libre.',2400);return;}wizard.used.add(`${x},${y}`);wizard.marks.push({x,y});wizard.tasks.shift();t.run({x,y});wizardNext();}
 function wizardNext(){if(!wizard)return;closeSpawnModal();if(wizard.tasks.length){wizardHint();paintFuture();if(wizard.tasks[0].select){openSpawnModal();wizardHint();}return;}if(!wizard.root)return;const w=wizard,p=w.parent;wizard=null;
- if(p.type==='creator')creatorGroup[p.gid].obj=w.root;
+ if(p.type==='editReward')p.commit(w.root);
+ else if(p.type==='creator')creatorGroup[p.gid].obj=w.root;
  else if(p.type==='wgroup')groups[p.gid].obj=w.root;
  else {p.config.reward=w.root;finishArena();paintFuture();return;}
  pending=null;hidePending();afterEdit();setStatus('✦ Mecanismo completo. Pulsa Probar para activarlo.',3000);
@@ -3637,7 +3654,7 @@ function futureReservations(){const out=[];const visit=(t,pos)=>{if(base(t)==='a
  for(let y=0;y<GRID_SIZE;y++)for(let x=0;x<GRID_SIZE;x++){const t=board[y][x],b=base(t);if(b==='cspawn')visit(creatorGroup[tileId(t)]?.obj,{x,y});if(b==='wspawn')visit(groups[tileId(t)]?.obj,{x,y});if(b==='arena'){try{const c=JSON.parse(decodeURIComponent(part(t,1)));visit(c.reward,{x:c.rx,y:c.ry});}catch(e){}}}return out;}
 function paintFuture(){for(const q of [...futureReservations(),...(wizard?.marks||[])]){const el=$('editorGrid').children[q.y*GRID_SIZE+q.x];if(el){el.classList.add('future');el.title=`Aparición reservada (${q.x+1}, ${q.y+1}) · ${q.tile?base(q.tile):'pieza en configuración'}`;if(q.tile&&base(board[q.y][q.x])==='floor'){el.textContent=ICONS[base(q.tile)]||'✦';}}}}
 function snap(){return JSON.stringify({board,groups,creatorGroup,GRID_SIZE,playerSpeed,roomTimeLimit,darkZones});}
-function recordHistory(){if(restoring||pending||wizard)return;const v=snap();if(history[historyIndex]===v)return;history=history.slice(0,historyIndex+1);history.push(v);if(history.length>80)history.shift();historyIndex=history.length-1;try{localStorage.setItem('entropiaStudioAutosave',v);}catch(e){setStatus('No hay espacio para autoguardar. Exporta un respaldo.',3000);}refreshHistory();}
+function recordHistory(){if(restoring||pending||wizard||editTransaction)return;const v=snap();if(history[historyIndex]===v)return;history=history.slice(0,historyIndex+1);history.push(v);if(history.length>80)history.shift();historyIndex=history.length-1;try{localStorage.setItem('entropiaStudioAutosave',v);}catch(e){setStatus('No hay espacio para autoguardar. Exporta un respaldo.',3000);}refreshHistory();}
 function refreshHistory(){if($('undoStudio')){$('undoStudio').disabled=historyIndex<=0;$('redoStudio').disabled=historyIndex>=history.length-1;}}
 function restoreSnap(v){const c=JSON.parse(v);restoring=true;board=c.board;darkZones=clone(c.darkZones||[]);groups=c.groups||{};creatorGroup=c.creatorGroup||{};GRID_SIZE=c.GRID_SIZE;playerSpeed=c.playerSpeed||5;roomTimeLimit=Number(c.roomTimeLimit)||0;syncRoomTimer();gridSizeSelect.value=GRID_SIZE;playerSpeedInput.value=playerSpeed;playerSpeedVal.textContent=playerSpeed;afterEdit();restoring=false;refreshHistory();}
 function undoStudio(d){if(wizard||pending)cancelPending();const i=historyIndex+d;if(i<0||i>=history.length)return;historyIndex=i;restoreSnap(history[i]);}
@@ -3646,7 +3663,7 @@ function setupStudio(){
  const stage=document.createElement('div');stage.className='studio-board';const grid=document.querySelector('.editor-grid-container');grid.before(workspace);workspace.append(side,stage);side.append($('toolbar'));stage.append($('brushPanel'),$('pendingBar'),grid);
  const bar=document.createElement('div');bar.className='studio-actions';bar.innerHTML='<button class="tool-btn" id="undoStudio">↶ Deshacer</button><button class="tool-btn" id="redoStudio">↷ Rehacer</button><button class="tool-btn" id="exportStudio">↓ Exportar respaldo</button><button class="tool-btn" id="importStudio">↑ Importar</button><button class="tool-btn" id="recoverStudio">⏱ Recuperar autoguardado</button><button class="tool-btn" id="demoStudio">✦ Cuarto de ejemplo</button><button class="tool-btn" id="helpStudio">? Guía</button>';stage.prepend(bar);
  $('toolSearch').oninput=e=>side.querySelectorAll('.toolbar').forEach(g=>{let count=0;g.querySelectorAll('.tool-btn').forEach(b=>{const show=b.textContent.toLocaleLowerCase().includes(e.target.value.toLocaleLowerCase());b.hidden=!show;b.style.display=show?'':'none';if(show)count++;});g.style.display=count?'':'none';});
- $('demoStudio').onclick=()=>{if(!confirm('¿Cargar el cuarto de ejemplo en el editor? Puedes deshacer este cambio.'))return;if(pending)cancelPending();GRID_SIZE=12;gridSizeSelect.value='12';darkZones=[];roomTimeLimit=0;syncRoomTimer();board=emptyBoard(12);groups={};creatorGroup={};for(let i=0;i<12;i++)board[0][i]=board[11][i]=board[i][0]=board[i][11]='wall';board[1][1]='start';board[10][10]='exit';board[1][2]='cbtn:1';board[1][4]='cspawn:1';creatorGroup[1]={obj:packBundle({tile:'cbtn:2',creators:{2:{rx:6,ry:1,obj:packBundle({tile:'portal:1',extras:[{x:8,y:8,tile:'portal2:1'}]})}}})};darkZones=[{x:7,y:7,width:4,height:4,shape:'rect'}];board[2][3]='torch';board[8][9]='ice';board[8][3]='ftorch:1';board[9][6]='ftorch:1';board[8][10]='wspawn:1';groups[1]={kind:'torch',count:2,obj:packBundle({tile:'coin'})};board[9][9]='coin';board[3][2]='sword';board[4][2]='shield';board[5][5]=tileFromTool('enemy',{...brush,speed:1,hp:8});for(let x=3;x<9;x++)board[6][x]='wall';afterEdit();setStatus('Demo: recoge la antorcha, prueba los regalos y portales, enciende las dos antorchas fijas y recoge ambas monedas para salir.',6500);};
+ $('demoStudio').onclick=()=>{if(!confirm('¿Cargar el cuarto de ejemplo en el editor? Puedes deshacer este cambio.'))return;if(pending)cancelPending();GRID_SIZE=12;gridSizeSelect.value='12';darkZones=[];roomTimeLimit=120;syncRoomTimer();board=emptyBoard(12);groups={};creatorGroup={};for(let i=0;i<12;i++)board[0][i]=board[11][i]=board[i][0]=board[i][11]='wall';board[1][1]='start';board[10][10]='exit';board[1][2]='cbtn:1';board[1][4]='cspawn:1';creatorGroup[1]={obj:packBundle({tile:'cbtn:2',creators:{2:{rx:6,ry:1,obj:packBundle({tile:'portal:1',extras:[{x:8,y:8,tile:'portal2:1'}]})}}})};darkZones=[{x:7,y:7,width:4,height:4,shape:'rect'}];board[2][3]='torch';board[8][9]='ice';board[8][3]='ftorch:1';board[9][6]='ftorch:1';board[8][10]='wspawn:1';groups[1]={kind:'torch',count:2,obj:packBundle({tile:'coin'})};board[9][9]='coin';board[3][2]='sword';board[4][2]='shield';board[5][5]=tileFromTool('enemy',{...brush,speed:1,hp:8});for(let x=3;x<9;x++)board[6][x]='wall';afterEdit();setStatus('Demo: recoge la antorcha, prueba los regalos y portales, enciende las dos antorchas fijas y rescata a las dos personas para salir.',6500);};
  $('undoStudio').onclick=()=>undoStudio(-1);$('redoStudio').onclick=()=>undoStudio(1);
  $('exportStudio').onclick=()=>{if(pending||wizard){setStatus('Completa o cancela el mecanismo antes de exportar.',2500);return;}const data={format:'entropia-studio',version:2,current:JSON.parse(snap()),rooms:loadRooms(),drafts:loadDrafts()};const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download='Entropia-respaldo.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);};
  const file=document.createElement('input');file.type='file';file.accept='.json';file.hidden=true;document.body.append(file);$('importStudio').onclick=()=>file.click();file.onchange=async()=>{try{const c=JSON.parse(await file.files[0].text());if(c.format!=='entropia-studio'||!validSnapshot(c.current))throw Error();if(pending)cancelPending();if(!Array.isArray(c.rooms)||!Array.isArray(c.drafts)||![...c.rooms,...c.drafts].every(r=>validSnapshot({...r,GRID_SIZE:r.gridSize||r.board?.length})))throw Error();if(!confirm('¿Restaurar este respaldo? Se sustituirán las listas locales de cuartos y borradores. Puedes exportar antes tu respaldo actual.'))return;saveRooms(c.rooms);saveDrafts(c.drafts);restoreSnap(JSON.stringify(c.current));recordHistory();setStatus('Respaldo completo restaurado: cuarto, ruta y borradores.',4000);}catch(e){setStatus('Archivo inválido: importa un respaldo de ENTROPÍA.',3500);}file.value='';};
@@ -3679,13 +3696,13 @@ function dropLoot(kind,x,y,queue=true){
  cells.sort((a,b)=>a.d-b.d);
  const p=cells.find(q=>base(g.grid[q.y][q.x])==='floor'&&!blockAt(q.x,q.y)&&!mwallAt(q.x,q.y)&&!enemyAt(q.x,q.y));
  if(!p){if(queue)g.pendingLoot.push({kind,x,y});return false;}
- g.grid[p.y][p.x]=kind;g.effects.push({kind:'pop',x:p.x,y:p.y,t0:g.time,dur:600,ch:kind==='coin'?'🪙':'🔑'});
+ g.grid[p.y][p.x]=kind;g.effects.push({kind:'pop',x:p.x,y:p.y,t0:g.time,dur:600,ch:kind==='coin'?'🧍':'🔑'});
  if(p.x===g.player.x&&p.y===g.player.y)afterPlayerArrive();return true;
 }
 function retryLoot(){if(!G.pendingLoot.length)return;G.pendingLoot=G.pendingLoot.filter(q=>!dropLoot(q.kind,q.x,q.y,false));}
 function syncRoomTimer(){const input=$('roomTimeInput');if(input)input.value=roomTimeLimit;}
 function setupNewFeatures(){
- const timer=document.createElement('div');timer.className='size-selector';timer.innerHTML='<label for="roomTimeInput">⏳ Tiempo del cuarto (segundos)</label><input id="roomTimeInput" type="number" min="0" max="86400" step="1" value="0" style="width:110px;padding:9px;border-radius:8px;border:1px solid var(--border-cell);background:var(--bg-panel);color:var(--text-primary)"><span style="font-size:12px;color:var(--text-secondary)">0 = sin límite · se pausa con el menú</span>';
+ const timer=document.createElement('div');timer.className='size-selector';timer.innerHTML='<label for="roomTimeInput">⏳ Tiempo del cuarto (segundos)</label><input id="roomTimeInput" type="number" min="0" max="86400" step="1" value="120" style="width:110px;padding:9px;border-radius:8px;border:1px solid var(--border-cell);background:var(--bg-panel);color:var(--text-primary)"><span style="font-size:12px;color:var(--text-secondary)">0 = sin límite · se pausa con el menú</span>';
  document.querySelector('#editorScreen .size-selector').after(timer);$('roomTimeInput').addEventListener('change',e=>{roomTimeLimit=clamp(Math.floor(Number(e.target.value)||0),0,86400);syncRoomTimer();recordHistory();});
  setupCatalogOrder();setupMobileArrows();
 }
@@ -3741,7 +3758,7 @@ function updateLighting(){
  if(g.hasTorch)sources.push({x:p.x,y:p.y});
  for(let y=0;y<g.n;y++)for(let x=0;x<g.n;x++)if(base(g.grid[y][x])==='ftorch'){
   const key=y*g.n+x;
-  if(!g.litTorches.has(key)&&Math.abs(x-p.x)+Math.abs(y-p.y)<=1){
+  if(g.hasTorch&&!g.litTorches.has(key)&&Math.abs(x-p.x)+Math.abs(y-p.y)<=1){
    g.litTorches.add(key);playSound('key');g.effects.push({kind:'pop',x,y,t0:g.time,dur:550,ch:'🔥'});
    const wg=g.wgroups[tileId(g.grid[y][x])];if(wg&&wg.kind==='torch'&&!wg.done){wg.hit++;toast(`🕯️ Antorchas ${wg.hit}/${wg.count}`,1200);if(wg.hit>=wg.count){wg.done=true;spawnObject(wg.obj,wg.sx,wg.sy);toast('🔥 Todas encendidas: ¡recompensa desbloqueada!',2200);}}
   }
@@ -3763,16 +3780,16 @@ function drawDarkness(){
  mask.globalCompositeOperation='source-over';ctx.drawImage(darknessCanvas,0,0);
 }
 function showRoomSetup(){
- $('setupSize').value=GRID_SIZE;$('setupTime').value=0;showScreen('setup');
+ $('setupSize').value=GRID_SIZE;$('setupTime').value=120;showScreen('setup');
 }
 function setupWorkspaceLayout(){
  const editor=$('editorScreen'),originalSize=editor.querySelector('.size-selector');originalSize.classList.add('hidden');$('roomTimeInput').closest('.size-selector').classList.add('hidden');$('playerSpeed').closest('.slider-group').classList.add('hidden');
- const setup=document.createElement('div');setup.id='roomSetupScreen';setup.className='screen hidden';setup.innerHTML='<div class="room-setup-card"><span class="setup-eyebrow">UN NUEVO LABERINTO</span><h2>Configura tu cuarto</h2><p>Elige el espacio y el reto. La velocidad se configura al colocar el inicio.</p><label for="setupSize">Tamaño del cuarto</label><select id="setupSize"><option value="8">8 × 8</option><option value="10">10 × 10</option><option value="12" selected>12 × 12</option><option value="16">16 × 16</option><option value="20">20 × 20</option></select><label for="setupTime">Tiempo para superarlo · segundos</label><input id="setupTime" type="number" value="0" min="0" max="86400" step="1"><small>0 = sin límite de tiempo</small><div class="btn-group"><button class="btn btn-primary" id="setupCreate">Crear y abrir editor →</button><button class="btn" id="setupCancel">← Volver</button></div></div>';
+ const setup=document.createElement('div');setup.id='roomSetupScreen';setup.className='screen hidden';setup.innerHTML='<div class="room-setup-card"><span class="setup-eyebrow">UN NUEVO LABERINTO</span><h2>Configura tu cuarto</h2><p>Elige el espacio y el reto. La velocidad se configura al colocar el inicio.</p><label for="setupSize">Tamaño del cuarto</label><select id="setupSize"><option value="8">8 × 8</option><option value="10">10 × 10</option><option value="12" selected>12 × 12</option><option value="16">16 × 16</option><option value="20">20 × 20</option></select><label for="setupTime">Tiempo para superarlo · segundos</label><input id="setupTime" type="number" value="120" min="0" max="86400" step="1"><small>0 = sin límite de tiempo</small><div class="btn-group"><button class="btn btn-primary" id="setupCreate">Crear y abrir editor →</button><button class="btn" id="setupCancel">← Volver</button></div></div>';
  $('app').appendChild(setup);$('setupCancel').onclick=()=>showScreen('main');$('setupCreate').onclick=()=>{const n=Number($('setupSize').value),seconds=clamp(Math.floor(Number($('setupTime').value)||0),0,86400);if(![8,10,12,16,20].includes(n))return;currentDraftId=null;GRID_SIZE=n;gridSizeSelect.value=n;initEmptyBoard();roomTimeLimit=seconds;syncRoomTimer();history=[snap()];historyIndex=0;refreshHistory();renderGrid();renderBrushPanel();updateWarn();showScreen('editor');};
  const actions=editor.querySelector('.studio-actions');const workspace=editor.querySelector('.studio-workspace');workspace.before(actions);
  const old=$('startGameBtn').parentElement;for(const id of ['startGameBtn','saveRoomBtn','saveDraftBtn','clearGridBtn'])actions.appendChild($(id));if(old&&!old.children.length)old.remove();
  editor.querySelector('.studio-board').append($('editorWarn'),$('gameStatus'));$('gameStatus').style.minHeight='0';
- $('helpStudio').onclick=()=>alert('ESTUDIO ENTROPÍA\n\n• Crear cuarto: primero elige tamaño y tiempo. La velocidad se elige al colocar el inicio.\n• Catálogo: ✎, selecciona un objeto y pulsa ↑ o ↓. Los controles no se desplazan.\n• Zona oscura: elige forma, ancho y largo. La casilla elegida es la esquina superior izquierda. Puedes superponer objetos. Borrar sobre piso oscuro elimina la zona.\n• Antorcha portátil: recógela para iluminar y derretir hielo cercano.\n• Antorchas fijas: elige cantidad, colócalas y configura la aparición. Se encienden al pasar al lado. Todas encendidas = recompensa.\n• Paredes movibles: canal 1–10. Cada pisada de su botón mueve una casilla.\n• Puerta doble: verde abre; rojo cierra.\n• Celular: abajo ocupa la franja entre arco y bombas. Los laterales llevan izquierda/derecha; arriba ocupa la franja superior. Son invisibles.\n• Espada: toca el centro para atacar hacia donde miras o desliza para elegir dirección.\n• Ctrl/Cmd+Z: deshacer; Shift+Ctrl/Cmd+Z: rehacer. Escape: cancelar mecanismo.');
+ $('helpStudio').onclick=()=>alert('ESTUDIO ENTROPÍA\n\n• Crear cuarto: primero elige tamaño y tiempo. La velocidad se elige al colocar el inicio.\n• Mantén presionado un objeto colocado para editarlo o moverlo.\n• Catálogo: ✎, selecciona un objeto y pulsa ↑ o ↓. Los controles no se desplazan.\n• Zona oscura: elige forma, ancho y largo. La casilla elegida es la esquina superior izquierda. Puedes superponer objetos. Borrar sobre piso oscuro elimina la zona.\n• Antorcha portátil: recógela para iluminar y derretir hielo cercano.\n• Antorchas fijas: elige cantidad, colócalas y configura la aparición. Necesitas la antorcha portátil para encenderlas al pasar al lado. Todas encendidas = recompensa.\n• Paredes movibles: canal 1–10. Cada pisada de su botón mueve una casilla.\n• Pared-botón: elige canal 1–10; un botón abre todas las paredes de ese canal.\n• Puerta doble: verde abre; rojo cierra.\n• Celular: abajo ocupa la franja entre arco y bombas. Los laterales llevan izquierda/derecha; arriba ocupa la franja superior. Son invisibles.\n• Espada: toca el centro para atacar hacia donde miras o desliza para elegir dirección.\n• Ctrl/Cmd+Z: deshacer; Shift+Ctrl/Cmd+Z: rehacer. Escape: cancelar mecanismo.');
 }
 
 const mobileEditorQuery='(max-width: 767px), (pointer: coarse) and (max-width: 1100px) and (max-height: 600px)';
@@ -3820,10 +3837,132 @@ function setupResponsiveEditor(){
  responsiveEditor.media.addEventListener('change',syncResponsiveEditor);window.addEventListener('resize',syncResponsiveEditor);syncResponsiveEditor();
 }
 
+let objectMove=null,editTransaction=null,objectMenuRef=null,ignoreEditorClick=null;
+function editorObjectRefs(){
+ const out=[];
+ const boardRef=(x,y)=>{let pos={x,y};return{board:true,pos:()=>({...pos}),read:()=>board[pos.y][pos.x],write:t=>board[pos.y][pos.x]=t,move:q=>{const t=board[pos.y][pos.x];board[pos.y][pos.x]='floor';board[q.y][q.x]=t;pos={...q};}};};
+ const walk=(read,write,pos,move,env={})=>{
+  const token=read(),kind=base(token);
+  if(kind==='bundle'){
+   const cfg=unpackBundle(token),flush=()=>write(packBundle(cfg));const innerEnv={creators:{...env.creators,...cfg.creators},wgroups:{...env.wgroups,...cfg.wgroups}};
+   const ref={future:true,pos,move,read:()=>cfg.tile,write:t=>{cfg.tile=t;flush();},rebuild:write,env:innerEnv};
+   if(base(cfg.tile)==='bundle')walk(()=>cfg.tile,t=>{cfg.tile=t;flush();},pos,move,innerEnv);else{out.push(ref);if(base(cfg.tile)==='arena')walkArena(ref);}
+   (cfg.extras||[]).forEach(e=>walk(()=>e.tile,t=>{e.tile=t;flush();},()=>({x:e.x,y:e.y}),q=>{e.x=q.x;e.y=q.y;flush();},innerEnv));
+   Object.values(cfg.creators||{}).forEach(cr=>walk(()=>cr.obj,t=>{cr.obj=t;flush();},()=>({x:cr.rx,y:cr.ry}),q=>{cr.rx=q.x;cr.ry=q.y;flush();},innerEnv));
+   Object.values(cfg.wgroups||{}).forEach(wg=>walk(()=>wg.obj,t=>{wg.obj=t;flush();},()=>({x:wg.sx,y:wg.sy}),q=>{wg.sx=q.x;wg.sy=q.y;flush();},innerEnv));
+  }else{const ref={future:true,pos,move,read,write,rebuild:write,env};out.push(ref);if(kind==='arena')walkArena(ref);}
+ };
+ const walkArena=ref=>{try{const cfg=JSON.parse(decodeURIComponent(part(ref.read(),1))),flush=()=>ref.write('arena:'+encodeURIComponent(JSON.stringify(cfg)));if(cfg.reward)walk(()=>cfg.reward,t=>{cfg.reward=t;flush();},()=>({x:cfg.rx,y:cfg.ry}),q=>{cfg.rx=q.x;cfg.ry=q.y;flush();},ref.env);if(cfg.partner)walk(()=>cfg.partner.tile,t=>{cfg.partner.tile=t;flush();},()=>({x:cfg.partner.x,y:cfg.partner.y}),q=>{cfg.partner.x=q.x;cfg.partner.y=q.y;flush();},ref.env);}catch(e){}};
+ for(let y=0;y<GRID_SIZE;y++)for(let x=0;x<GRID_SIZE;x++){
+  const t=board[y][x],b=base(t);if(b==='floor')continue;const ref=boardRef(x,y);out.push(ref);
+  if(b==='arena')walkArena(ref);
+  if(b==='cspawn'||b==='wspawn'){
+   const collection=b==='cspawn'?creatorGroup:groups,gr=collection[tileId(t)];if(gr?.obj)walk(()=>gr.obj,v=>gr.obj=v,ref.pos,ref.move,{wgroups:groups,creators:creatorGroup});
+  }
+ }
+ return out;
+}
+function editorObjectAt(x,y,preferFuture=false){const refs=editorObjectRefs().filter(r=>{const p=r.pos();return p.x===x&&p.y===y;});if(preferFuture)return refs.find(r=>r.future)||refs[0];if(refs.length)return refs.find(r=>r.board)||refs[0];const z=darkZones.find(z=>zoneCells(z,GRID_SIZE).some(c=>c.x===x&&c.y===y));return z?{zone:z,pos:()=>({x:z.x,y:z.y}),read:()=> 'darkzone',move:q=>{z.x=q.x;z.y=q.y;}}:null;}
+function toolForTile(tile){const b=base(tile);if(b==='wd')return'wdiamond';if(b==='mirror')return'mirror'+(part(tile,1)||'NE');return b;}
+function valuesForObject(ref){
+ const t=ref.read(),b=base(t),a=String(t).split(':'),values={...brush,channel:tileId(t)};
+ if(ref.zone)return{...values,...ref.zone};
+ if(['enemy','enemy2','boss','snake','worm'].includes(b)){values.speed=+a[1]||3;values.hp=+a[2]||1;values.key=a[4]==='1';values.coin=a[5]==='1';if(b==='boss')values.minis=+a[3]||3;else if(['snake','worm'].includes(b))values.length=+a[3]||3;else values.vision=+a[3]||5;}
+ if(b==='ammo'||b==='bomb')values.qty=tileId(t);if(b==='laser')values.dir=dirOf(t);if(b==='mwall')values.dir=mwDir(t);if(b==='hbtn')values.hid=tileId(t);if(b==='start')values.startSpeed=playerSpeed;
+ if(['wd','ftorch','wspawn'].includes(b))values.count=(ref.env?.wgroups?.[tileId(t)]||groups[tileId(t)])?.count||1;
+ if(b==='darkzone'&&!ref.zone){try{Object.assign(values,JSON.parse(decodeURIComponent(part(t,1))));}catch(e){}}
+ if(b==='arena'){try{values.waveCount=JSON.parse(decodeURIComponent(part(t,1))).enemies.length;}catch(e){}}
+ return values;
+}
+function bindEditorCell(cell,x,y){
+ let timer=null,start=null;const clear=()=>{clearTimeout(timer);timer=null;};
+ cell.addEventListener('pointerdown',e=>{if(e.button!==undefined&&e.button!==0)return;if(pending||wizard)return;start={x:e.clientX,y:e.clientY};timer=setTimeout(()=>{timer=null;ignoreEditorClick={x,y,until:Date.now()+1000};openObjectMenu(x,y);},520);});
+ cell.addEventListener('pointermove',e=>{if(start&&Math.hypot(e.clientX-start.x,e.clientY-start.y)>9)clear();});
+ for(const event of ['pointerup','pointercancel','pointerleave'])cell.addEventListener(event,clear);
+ cell.addEventListener('contextmenu',e=>{e.preventDefault();clear();if(!pending){ignoreEditorClick={x,y,until:Date.now()+1000};openObjectMenu(x,y);}});
+ cell.addEventListener('click',e=>{if(ignoreEditorClick&&ignoreEditorClick.x===x&&ignoreEditorClick.y===y&&Date.now()<ignoreEditorClick.until){e.preventDefault();return;}handleCellClick(x,y);});
+ cell.tabIndex=0;cell.setAttribute('aria-label',`${x+1}, ${y+1}: ${TOOL_LABELS[toolForTile(board[y][x])]||base(board[y][x])}`);
+ cell.addEventListener('keydown',e=>{if(e.key==='ContextMenu'||(e.shiftKey&&e.key==='F10')){e.preventDefault();openObjectMenu(x,y);}});
+}
+function openObjectMenu(x,y){if(pending||wizard)return;const ref=editorObjectAt(x,y);if(!ref)return;closeMobileEditorMenu();objectMenuRef=ref;$('objectMenuTitle').textContent=ref.zone?'🌑 Zona oscura':(TOOL_LABELS[toolForTile(ref.read())]||ICONS[base(ref.read())]||'Objeto');$('objectMiniMenu').classList.remove('hidden');}
+function startObjectMove(ref){objectMove=ref;pending={type:'objectMove'};$('objectMiniMenu').classList.add('hidden');showPending();}
+function finishObjectMove(x,y){
+ const ref=objectMove;if(!ref)return;const p=ref.pos();if(p.x===x&&p.y===y){objectMove=null;pending=null;hidePending();return;}
+ if(ref.zone){if(x+ref.zone.width>GRID_SIZE||y+ref.zone.height>GRID_SIZE){setStatus('La zona debe caber completa en el cuarto.',2200);return;}}
+ else if(base(board[y][x])!=='floor'||futureReservations().some(q=>q.x===x&&q.y===y)){setStatus('Elige una casilla de piso libre y sin apariciones reservadas.',2500);return;}
+ ref.move({x,y});objectMove=null;pending=null;hidePending();afterEdit();setStatus('↗ Objeto movido; conexiones conservadas.',1800);
+}
+function rollbackObjectEdit(){const tx=editTransaction;if(!tx)return;editTransaction=null;objectMove=null;wizard=null;pending=null;closeSpawnModal();hidePending();restoreSnap(tx.before);setStatus('Edición cancelada: se conservó el objeto original.',2200);}
+function beginObjectTransaction(){if(!editTransaction)editTransaction={before:snap()};}
+function editReward(ref){
+ const b=base(ref.read()),id=tileId(ref.read());let target=null;
+ if(['cspawn','wspawn'].includes(b))target=editorObjectAt(ref.pos().x,ref.pos().y,true);
+ else if(b==='cbtn'||['wd','ftorch'].includes(b)){
+  if(ref.board){const marker=b==='cbtn'?'cspawn':'wspawn';for(let y=0;y<GRID_SIZE;y++)for(let x=0;x<GRID_SIZE;x++)if(board[y][x]===`${marker}:${id}`)target=editorObjectAt(x,y,true);}
+  else {const data=b==='cbtn'?ref.env?.creators?.[id]:ref.env?.wgroups?.[id];if(data){const p=b==='cbtn'?{x:data.rx,y:data.ry}:{x:data.sx,y:data.sy};target=editorObjectAt(p.x,p.y,true);}}
+ }else if(b==='arena'){try{const c=JSON.parse(decodeURIComponent(part(ref.read(),1)));target=editorObjectAt(c.rx,c.ry,true);}catch(e){}}
+ if(target)openObjectEditor(target);else setStatus('No se encontró la aparición. Usa Reconfigurar para definirla.',2500);
+}
+function rebuildEditorObject(ref,tool,values){
+ tool=({portal2:'portal',diamond:'ddoor',rdiamond:'rdoor',closeBtn:'doubleDoor',openBtn:'doubleDoor',wspawn:'wdiamond',cspawn:'cbtn'})[tool]||tool;
+ beginObjectTransaction();$('objectEditModal').classList.add('hidden');
+ if(ref.future){const pos=ref.pos();pending={type:'editReward',step:'object',pos,commit:t=>(ref.rebuild||ref.write)(t)};beginWizard(pending,tool,values);return;}
+ const pos=ref.pos(),t=ref.read(),b=base(t),id=tileId(t);
+ if(['wd','ftorch','wspawn'].includes(b))removeGroup(id);
+ else if(b==='cbtn'||b==='cspawn')removeCreator(id);
+ else if(['doubleDoor','closeBtn','openBtn'].includes(b))['doubleDoor','closeBtn','openBtn'].forEach(k=>removeById(k,id));
+ else if(['portal','portal2','ddoor','diamond','rdoor','rdiamond'].includes(b)){
+  const root=['portal','portal2'].includes(b)?'portal':['ddoor','diamond'].includes(b)?'ddoor':'rdoor';removeById(root,id);removeById(PAIRS[root],id);
+ }else board[pos.y][pos.x]='floor';
+ const oldBrush={...brush},oldTool=selectedTool;Object.assign(brush,values);selectedTool=tool;handleCellClick(pos.x,pos.y);Object.assign(brush,oldBrush);selectedTool=oldTool;
+ if(!pending&&!wizard){editTransaction=null;afterEdit();}else showPending();
+}
+function openObjectEditor(inputRef){
+ $('objectMiniMenu').classList.add('hidden');let ref=inputRef;if(['cspawn','wspawn'].includes(base(ref.read()))){const p=ref.pos();ref=editorObjectAt(p.x,p.y,true)||ref;}
+ const token=ref.read(),originalTool=toolForTile(token),values=valuesForObject(ref),box=$('objectEditFields');box.innerHTML='';$('objectEditTitle').textContent='Editar objeto';
+ const select=document.createElement('select');select.setAttribute('aria-label','Tipo de objeto');
+ const choices=Object.keys(TOOL_LABELS).filter(t=>!['erase','floor'].includes(t));if(!choices.includes(originalTool))choices.unshift(originalTool);
+ for(const tool of choices){const op=document.createElement('option');op.value=tool;op.textContent=TOOL_LABELS[tool]||ICONS[tool]||tool;select.appendChild(op);}select.value=originalTool;if(ref.zone)select.disabled=true;box.appendChild(select);
+ const params=document.createElement('div');params.className='tool-panel';box.appendChild(params);const members=document.createElement('div');members.className='object-enemy-editors';box.appendChild(members);let enemyEdits=[];
+ const paramsFor=t=>['portal','portal2','ddoor','diamond','rdoor','rdiamond','doubleDoor','closeBtn','openBtn'].includes(t)?['channel']:(TOOL_PARAMS[t]||[]);
+ const refresh=()=>{buildControls(params,paramsFor(select.value),values);params.classList.toggle('hidden',!paramsFor(select.value).length);members.innerHTML='';enemyEdits=[];
+  if(select.value==='arena'&&originalTool==='arena'){try{const cfg=JSON.parse(decodeURIComponent(part(token,1)));cfg.enemies.forEach((enemy,i)=>{const card=document.createElement('div');card.className='object-enemy-card';const label=document.createElement('strong');label.textContent='Integrante '+(i+1);card.appendChild(label);const pick=document.createElement('select');for(const type of ['enemy','enemy2','boss','snake','worm']){const op=document.createElement('option');op.value=type;op.textContent=TOOL_LABELS[type];pick.appendChild(op);}pick.value=base(enemy);card.appendChild(pick);const st=valuesForObject({read:()=>enemy}),controls=document.createElement('div');card.appendChild(controls);const render=()=>buildControls(controls,TOOL_PARAMS[pick.value],st);pick.onchange=render;render();members.appendChild(card);enemyEdits.push({pick,st});});}catch(e){}}
+ };select.onchange=refresh;refresh();
+ const complex=['cbtn','wd','ftorch','arena','cspawn','wspawn'].includes(base(token));$('objectEditReward').classList.toggle('hidden',!complex);$('objectEditRebuild').classList.toggle('hidden',!complex&&!PAIRS[originalTool]&&!['doubleDoor','portal2','diamond','rdiamond','closeBtn','openBtn'].includes(originalTool));
+ $('objectEditReward').onclick=()=>{$('objectEditModal').classList.add('hidden');editReward(ref);};
+ $('objectEditRebuild').onclick=()=>rebuildEditorObject(ref,originalTool==='wd'?'wdiamond':originalTool,values);
+ $('objectEditApply').onclick=()=>{
+  const tool=select.value,b=base(token),pos=ref.pos();
+  if(ref.zone){const width=clamp(values.width||1,1,20),height=clamp(values.height||1,1,20);if(pos.x+width>GRID_SIZE||pos.y+height>GRID_SIZE){setStatus('La zona editada debe caber en el cuarto.',2200);return;}Object.assign(ref.zone,{width,height,shape:values.shape});}
+  else if(tool!==originalTool){rebuildEditorObject(ref,tool,values);return;}
+  else if(['wd','ftorch'].includes(b)&&values.count!==valuesForObject(ref).count){rebuildEditorObject(ref,tool,values);return;}
+  else if(b==='arena'){
+   const cfg=JSON.parse(decodeURIComponent(part(token,1)));if(values.waveCount!==cfg.enemies.length){rebuildEditorObject(ref,'arena',values);return;}cfg.enemies=enemyEdits.map(e=>tileFromTool(e.pick.value,e.st));ref.write('arena:'+encodeURIComponent(JSON.stringify(cfg)));
+  }else if(['portal','portal2','ddoor','diamond','rdoor','rdiamond','doubleDoor','closeBtn','openBtn'].includes(b)){
+   const family=['portal','portal2'].includes(b)?['portal','portal2']:['ddoor','diamond'].includes(b)?['ddoor','diamond']:['rdoor','rdiamond'].includes(b)?['rdoor','rdiamond']:['doubleDoor','closeBtn','openBtn'];const id=tileId(token),newId=values.channel;
+   const refs=editorObjectRefs();if(newId!==id&&refs.some(r=>family.includes(base(r.read()))&&tileId(r.read())===newId)){setStatus('Ese canal ya está ocupado por otro mecanismo de este tipo.',2600);return;}refs.filter(r=>family.includes(base(r.read()))&&tileId(r.read())===id).forEach(r=>r.write(`${base(r.read())}:${newId}`));
+  }else if(['bdoor','btn','mwbtn'].includes(b))ref.write(`${b}:${values.channel}`);
+  else if(b==='mwall')ref.write(`mwall:${values.channel}:${values.dir}`);
+  else if(b==='hbtn'){if(!doorExists(values.hid)){setStatus('Selecciona un canal con una pared-botón.',2200);return;}ref.write(`hbtn:${values.hid}`);}
+  else if(b==='start'){playerSpeed=values.startSpeed;playerSpeedInput.value=playerSpeed;playerSpeedVal.textContent=playerSpeed;}
+  else if(!['cbtn','wd','ftorch'].includes(b))ref.write(tileFromTool(tool,values));
+  $('objectEditModal').classList.add('hidden');afterEdit();setStatus('✓ Objeto actualizado.',1600);
+ };
+ $('objectEditModal').classList.remove('hidden');
+}
+function setupObjectEditing(){
+ const menu=document.createElement('div');menu.id='objectMiniMenu';menu.className='modal hidden';menu.innerHTML='<div class="modal-box object-mini-box"><strong id="objectMenuTitle"></strong><div class="btn-group"><button class="btn" id="objectMenuEdit">✎ Editar</button><button class="btn" id="objectMenuMove">↗ Mover</button><button class="btn" id="objectMenuCancel">×</button></div></div>';document.body.appendChild(menu);
+ const edit=document.createElement('div');edit.id='objectEditModal';edit.className='modal hidden';edit.innerHTML='<div class="modal-box"><h3 id="objectEditTitle">Editar objeto</h3><div id="objectEditFields"></div><div class="btn-group"><button class="btn btn-primary" id="objectEditApply">Aplicar</button><button class="btn" id="objectEditReward">Editar aparición</button><button class="btn" id="objectEditRebuild">Reconfigurar conexiones</button><button class="btn" id="objectEditCancel">Cancelar</button></div></div>';document.body.appendChild(edit);
+ $('objectMenuEdit').onclick=()=>openObjectEditor(objectMenuRef);$('objectMenuMove').onclick=()=>startObjectMove(objectMenuRef);$('objectMenuCancel').onclick=()=>menu.classList.add('hidden');$('objectEditCancel').onclick=()=>edit.classList.add('hidden');
+ for(const modal of [menu,edit])modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.add('hidden');});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'){menu.classList.add('hidden');edit.classList.add('hidden');}});
+}
+
 setupStudio();
 setupNewFeatures();
 setupWorkspaceLayout();
 setupResponsiveEditor();
+setupObjectEditing();
 
     buildPalette();
     initEmptyBoard();
