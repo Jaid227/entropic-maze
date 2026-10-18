@@ -524,6 +524,20 @@ body{justify-content:flex-start;padding:24px;background-image:radial-gradient(el
 .dark-zone-cell{box-shadow:inset 0 0 0 100px #14173366!important;border-color:#555180!important}.dark-zone-cell:before{content:'☾';position:absolute;left:2px;top:0;font-size:10px;color:#dad3ff;pointer-events:none}.cell.ice{background:#bfeaf5!important;border-color:#7fc7dc}.room-setup-card{width:min(520px,100%);margin:25px auto;padding:28px;background:var(--bg-body);border:1px solid var(--border-cell);border-radius:22px;display:flex;flex-direction:column;gap:14px}.room-setup-card h2{font-size:28px;font-weight:750}.room-setup-card p,.room-setup-card small{color:var(--text-secondary);line-height:1.6}.room-setup-card input,.room-setup-card select{padding:13px;border:1px solid var(--border-cell);border-radius:10px;background:var(--bg-panel);color:var(--text-primary);font-size:16px}.setup-eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--accent)}
 body.studio-editing{min-height:0;height:100dvh;overflow:hidden;padding:8px;justify-content:flex-start}body.studio-editing #app{height:calc(100dvh - 16px);margin:0;max-width:none;padding:12px;border-radius:16px;overflow:hidden}body.studio-editing #app>h1{display:none}body.studio-editing .footer{display:none}body.studio-editing #editorScreen{height:100%;min-height:0;overflow:hidden;gap:8px}body.studio-editing #editorScreen>div:first-child{flex-shrink:0}body.studio-editing #backToMainFromEditor{margin-right:48px}body.studio-editing #editorScreen h2{font-size:16px}body.studio-editing .studio-actions{flex:none;margin:0;gap:5px}body.studio-editing .studio-actions button{font-size:11px;padding:8px 9px;min-height:32px;border-radius:8px}body.studio-editing .studio-workspace{flex:1;min-height:0;align-items:stretch;grid-template-rows:minmax(0,1fr);gap:12px}body.studio-editing .studio-sidebar{position:static;max-height:none;min-height:0;display:flex;flex-direction:column;overflow:hidden;padding:12px}body.studio-editing .studio-sidebar h3{font-size:13px;margin-bottom:8px}body.studio-editing .studio-sidebar .studio-help{margin:5px 0;font-size:11px}body.studio-editing .studio-sidebar>.studio-help:not(#catalogOrderHint){display:none}body.studio-editing #toolSearch{margin-bottom:6px;padding:9px}body.studio-editing .catalog-mini-controls{margin-bottom:5px;flex-shrink:0}body.studio-editing #toolbar{overflow-y:auto;overflow-anchor:none;flex:1;min-height:0;scroll-behavior:auto;padding-right:3px}body.studio-editing .studio-board{min-height:0;display:flex;flex-direction:column;gap:6px;overflow:hidden}body.studio-editing .editor-grid-container{min-height:0;max-height:none;flex:1;margin:0;align-items:flex-start}body.studio-editing .tool-panel{flex-shrink:0;padding:8px;gap:8px;font-size:12px;max-height:24vh;overflow:auto}body.studio-editing #pendingBar{position:static}body.studio-editing #gameStatus,body.studio-editing #editorWarn{font-size:11px;min-height:0;margin:0;flex-shrink:0}body.studio-editing #editorScreen>.route-hint{display:none}
 @media(max-width:800px){body.studio-editing .studio-workspace{grid-template-columns:175px minmax(0,1fr)}}@media(max-width:530px){body.studio-editing .studio-workspace{grid-template-columns:135px minmax(0,1fr);gap:7px}body.studio-editing .studio-sidebar{padding:7px}body.studio-editing .catalog-flat>.tool-btn{font-size:10px;padding:8px 4px}body.studio-editing .studio-actions button{padding:6px;font-size:10px}body.studio-editing #app{padding:8px}body.studio-editing #editorScreen>div:first-child .btn{font-size:11px;padding:6px}}
+/* Phone editor: leave the desktop layout intact. */
+.editor-main-header{flex-shrink:0}#mobileEditorBar{display:none}#mobileEditorDrawer[hidden]{display:none!important}
+#mobileEditorDrawer{position:fixed;inset:0;z-index:9500;display:flex;justify-content:flex-end;isolation:isolate}
+.mobile-editor-backdrop{position:absolute;inset:0;border:0;background:#080e2366;backdrop-filter:blur(3px);cursor:pointer}
+.mobile-editor-sheet{position:relative;display:flex;flex-direction:column;gap:14px;width:min(350px,92vw);height:100dvh;padding:16px max(16px,env(safe-area-inset-right)) 20px 16px;background:var(--bg-panel);color:var(--text-primary);overflow-y:auto;overscroll-behavior:contain;box-shadow:-12px 0 40px #0003}
+.mobile-editor-menu-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.mobile-editor-menu-head h3{font-size:17px;font-weight:700}.mobile-editor-menu-head button{width:36px;height:36px;border:1px solid var(--border-cell);border-radius:10px;background:var(--button-bg);color:var(--text-primary);font-size:24px;cursor:pointer;flex-shrink:0}
+.mobile-editor-sheet h4{font-size:12px;font-weight:650;color:var(--text-secondary);margin:0 0 8px}.mobile-editor-sheet .studio-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}.mobile-editor-sheet .studio-actions button{font-size:12px!important;padding:11px 8px!important;justify-content:flex-start;min-height:42px!important;white-space:normal;text-align:left}.mobile-editor-sheet #brushPanel{max-height:none!important;overflow:visible!important;justify-content:flex-start;gap:12px;padding:10px}.mobile-editor-sheet #brushPanel.hidden+h4{display:none}.mobile-editor-sheet #toolSearch{width:100%;padding:11px;margin:0 0 10px;border-radius:9px;background:var(--bg-body);color:var(--text-primary);border:1px solid var(--border-cell)}.mobile-editor-sheet .catalog-mini-controls{margin:0 0 8px!important}.mobile-editor-sheet .catalog-mini-controls button{width:42px;height:36px}.mobile-editor-sheet #catalogOrderHint{font-size:12px!important;line-height:1.5}.mobile-editor-sheet #mobileEditorNavigation{display:flex;flex-wrap:wrap;gap:8px;padding-top:12px;border-top:1px solid var(--border-cell)}.mobile-editor-sheet #backToMainFromEditor{margin:0!important;font-size:12px!important}.mobile-editor-sheet #themeToggleFixed{position:static;width:40px;height:40px;box-shadow:none;flex:none;font-size:18px}
+body.studio-editing.mobile-editor{padding:0}body.studio-editing.mobile-editor #app{height:100dvh;padding:5px;border-radius:0;border:0}body.studio-editing.mobile-editor #editorScreen{gap:5px}body.studio-editing.mobile-editor .editor-main-header{display:none!important}body.studio-editing.mobile-editor #mobileEditorBar{display:flex;align-items:center;justify-content:space-between;gap:8px;flex:0 0 32px;min-height:32px;padding:0 3px}#mobileEditorLabel{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:11px;color:var(--text-secondary)}#mobileEditorToggle{position:relative;flex:0 0 34px;width:34px;height:30px;border:1px solid var(--border-cell);border-radius:9px;background:var(--bg-panel);color:var(--text-primary);font-size:19px;cursor:pointer}#mobileEditorToggle.has-object-settings:after{content:'';position:absolute;top:4px;right:4px;width:5px;height:5px;background:var(--accent);border-radius:50%}
+body.studio-editing.mobile-editor .studio-sidebar{border-radius:10px;padding:4px;min-width:0;max-height:none;overflow:hidden;background:var(--bg-body)}body.studio-editing.mobile-editor .studio-sidebar>:not(#toolbar){display:none!important}body.studio-editing.mobile-editor #toolbar{margin:0;padding:2px;min-width:0;min-height:0;gap:5px!important;overscroll-behavior:contain;scrollbar-width:thin}body.studio-editing.mobile-editor .catalog-flat>.tool-btn{white-space:nowrap;min-height:40px;flex-shrink:0;font-size:11px;padding:9px 10px;border-width:1px;border-radius:8px;justify-content:flex-start}
+body.studio-editing.mobile-editor .studio-board{gap:3px;min-width:0;min-height:0}body.studio-editing.mobile-editor .editor-grid-container{overflow:auto;overscroll-behavior:contain;touch-action:pan-x pan-y;-webkit-overflow-scrolling:touch;min-height:0;max-height:none;padding:7px;border-radius:10px;flex:1 1 0;scrollbar-width:thin}body.studio-editing.mobile-editor #pendingBar{font-size:11px;max-height:25%;padding:6px;gap:5px}body.studio-editing.mobile-editor #pendingBar .tool-btn{padding:5px;font-size:10px}body.studio-editing.mobile-editor #editorWarn,body.studio-editing.mobile-editor #gameStatus{font-size:10px;line-height:1.2;max-height:36px;overflow:auto}
+@media(orientation:portrait){body.studio-editing.mobile-editor .studio-workspace{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:58px minmax(0,1fr);gap:5px}body.studio-editing.mobile-editor .studio-sidebar{height:58px;display:flex;flex-direction:row}body.studio-editing.mobile-editor #toolbar{display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;overflow-x:auto;overflow-y:hidden;touch-action:pan-x;align-items:center}body.studio-editing.mobile-editor .catalog-flat>.tool-btn{max-width:none;height:40px}}
+@media(orientation:landscape){body.studio-editing.mobile-editor #mobileEditorBar{flex-basis:26px;min-height:26px}body.studio-editing.mobile-editor #mobileEditorToggle{height:25px;font-size:17px}body.studio-editing.mobile-editor .studio-workspace{display:grid;grid-template-columns:136px minmax(0,1fr);grid-template-rows:minmax(0,1fr);gap:5px}body.studio-editing.mobile-editor #toolbar{display:flex!important;flex-direction:column!important;overflow-y:auto;overflow-x:hidden;touch-action:pan-y;align-items:stretch}body.studio-editing.mobile-editor .catalog-flat>.tool-btn{white-space:normal;min-height:38px;font-size:10px;padding:8px 5px}body.studio-editing.mobile-editor .mobile-editor-sheet{padding-top:10px;gap:10px}}
+@supports(padding:max(0px)){body.studio-editing.mobile-editor #app{padding-left:max(5px,env(safe-area-inset-left));padding-right:max(5px,env(safe-area-inset-right));padding-bottom:max(5px,env(safe-area-inset-bottom))}}
+
 </style>
 </head>
 <body>
@@ -1019,7 +1033,7 @@ body.studio-editing{min-height:0;height:100dvh;overflow:hidden;padding:8px;justi
     }
 
     function renderGrid() {
-        drawEditorGrid(); paintFuture();paintDarkZones();
+        drawEditorGrid(); paintFuture();paintDarkZones();updateMobileEditorLabel();
     }
     function drawEditorGrid() {
         editorGrid.style.gridTemplateColumns = `repeat(${GRID_SIZE}, 48px)`;
@@ -1762,6 +1776,7 @@ body.studio-editing{min-height:0;height:100dvh;overflow:hidden;padding:8px;justi
         mainScreen.classList.toggle('hidden', s !== 'main');
         if($('roomSetupScreen'))$('roomSetupScreen').classList.toggle('hidden',s!=='setup');
         document.body.classList.toggle('studio-editing',s==='editor');
+        syncResponsiveEditor();
         editorScreen.classList.toggle('hidden', s !== 'editor');
         listScreen.classList.toggle('hidden', s !== 'list');
         draftScreen.classList.toggle('hidden', s !== 'drafts');
@@ -3685,7 +3700,7 @@ function setupCatalogOrder(){
  $('catalogEdit').onclick=()=>{editing=!editing;chosen=null;$('toolSearch').value='';filter();refresh();};
  // Capture the click before the placement-tool handlers: ordering never switches the brush.
  toolbar.addEventListener('click',e=>{if(!editing)return;const b=e.target.closest('.tool-btn');if(!b)return;e.preventDefault();e.stopImmediatePropagation();chosen=b;refresh();},true);
- const move=delta=>{const scroll=toolbar.scrollTop;const a=current(),i=a.indexOf(chosen),j=i+delta;if(i<0||j<0||j>=a.length)return;if(delta<0)toolbar.insertBefore(chosen,a[j]);else toolbar.insertBefore(a[j],chosen);try{localStorage.setItem('entropiaCatalogOrder',JSON.stringify(current().map(b=>b.dataset.tool)));}catch(e){setStatus('El orden se mantiene durante esta sesión; no se pudo guardar.',2500);}toolbar.scrollTop=scroll;refresh();};
+ const move=delta=>{const scroll=toolbar.scrollTop,scrollX=toolbar.scrollLeft;const a=current(),i=a.indexOf(chosen),j=i+delta;if(i<0||j<0||j>=a.length)return;if(delta<0)toolbar.insertBefore(chosen,a[j]);else toolbar.insertBefore(a[j],chosen);try{localStorage.setItem('entropiaCatalogOrder',JSON.stringify(current().map(b=>b.dataset.tool)));}catch(e){setStatus('El orden se mantiene durante esta sesión; no se pudo guardar.',2500);}toolbar.scrollTop=scroll;toolbar.scrollLeft=scrollX;refresh();};
  $('catalogUp').onclick=()=>move(-1);$('catalogDown').onclick=()=>move(1);refresh();
 }
 function setupMobileArrows(){
@@ -3755,9 +3770,57 @@ function setupWorkspaceLayout(){
  $('helpStudio').onclick=()=>alert('ESTUDIO ENTROPÍA\n\n• Crear cuarto: primero elige tamaño y tiempo. La velocidad se elige al colocar el inicio.\n• Catálogo: ✎, selecciona un objeto y pulsa ↑ o ↓. Los controles no se desplazan.\n• Zona oscura: elige forma, ancho y largo. La casilla elegida es la esquina superior izquierda. Puedes superponer objetos. Borrar sobre piso oscuro elimina la zona.\n• Antorcha portátil: recógela para iluminar y derretir hielo cercano.\n• Antorchas fijas: elige cantidad, colócalas y configura la aparición. Se encienden al pasar al lado. Todas encendidas = recompensa.\n• Paredes movibles: canal 1–10. Cada pisada de su botón mueve una casilla.\n• Puerta doble: verde abre; rojo cierra.\n• Celular: abajo ocupa la franja entre arco y bombas. Los laterales llevan izquierda/derecha; arriba ocupa la franja superior. Son invisibles.\n• Espada: toca el centro para atacar hacia donde miras o desliza para elegir dirección.\n• Ctrl/Cmd+Z: deshacer; Shift+Ctrl/Cmd+Z: rehacer. Escape: cancelar mecanismo.');
 }
 
+const mobileEditorQuery='(max-width: 767px), (pointer: coarse) and (max-width: 1100px) and (max-height: 600px)';
+let responsiveEditor=null;
+function syncResponsiveEditor(){
+ if(!responsiveEditor)return;const r=responsiveEditor,mobile=r.media.matches;document.body.classList.toggle('mobile-editor',mobile);
+ const useDrawer=mobile&&document.body.classList.contains('studio-editing');
+ if(useDrawer!==r.moved){
+  closeMobileEditorMenu();
+  for(const slot of r.slots){if(useDrawer)slot.target.appendChild(slot.node);else slot.anchor.parentNode.insertBefore(slot.node,slot.anchor.nextSibling);}
+  r.moved=useDrawer;
+ }
+ if(!useDrawer)closeMobileEditorMenu();updateMobileEditorLabel();
+}
+function updateMobileEditorLabel(){
+ if(!responsiveEditor)return;const label=$('mobileEditorLabel');label.textContent=`${GRID_SIZE} × ${GRID_SIZE} · ${TOOL_LABELS[selectedTool]||selectedTool}`;
+ $('mobileEditorToggle').title=TOOL_PARAMS[selectedTool]?'Acciones y ajustes del objeto':'Abrir acciones del editor';
+}
+function closeMobileEditorMenu(){
+ const drawer=$('mobileEditorDrawer');if(!drawer)return;drawer.hidden=true;const button=$('mobileEditorToggle');if(button)button.setAttribute('aria-expanded','false');
+}
+function setupResponsiveEditor(){
+ const editor=$('editorScreen'),sidebar=editor.querySelector('.studio-sidebar');
+ editor.querySelector('h2').parentElement.classList.add('editor-main-header');
+ const bar=document.createElement('div');bar.id='mobileEditorBar';bar.innerHTML='<span id="mobileEditorLabel"></span><button type="button" id="mobileEditorToggle" aria-label="Abrir acciones y ajustes" aria-controls="mobileEditorDrawer" aria-expanded="false">☰</button>';
+ editor.prepend(bar);
+ const drawer=document.createElement('div');drawer.id='mobileEditorDrawer';drawer.hidden=true;drawer.innerHTML='<button type="button" class="mobile-editor-backdrop" aria-label="Cerrar menú"></button><section class="mobile-editor-sheet" role="dialog" aria-modal="true" aria-labelledby="mobileEditorMenuTitle"><div class="mobile-editor-menu-head"><h3 id="mobileEditorMenuTitle">Acciones y ajustes</h3><button type="button" id="mobileEditorClose" aria-label="Cerrar menú">×</button></div><div id="mobileEditorActions"></div><div id="mobileEditorInspector"><h4>Ajustes del objeto seleccionado</h4></div><div id="mobileEditorCatalog"><h4>Buscar y ordenar objetos</h4></div><div id="mobileEditorNavigation"></div></section>';
+ document.body.appendChild(drawer);
+ const slots=[];const register=(node,target)=>{const anchor=document.createComment('posición de escritorio');node.parentNode.insertBefore(anchor,node);slots.push({node,anchor,target});};
+ register(editor.querySelector('.studio-actions'),$('mobileEditorActions'));
+ register($('brushPanel'),$('mobileEditorInspector'));
+ register($('toolSearch'),$('mobileEditorCatalog'));
+ register(sidebar.querySelector('.catalog-mini-controls'),$('mobileEditorCatalog'));
+ register($('catalogOrderHint'),$('mobileEditorCatalog'));
+ register($('backToMainFromEditor'),$('mobileEditorNavigation'));
+ register($('themeToggleFixed'),$('mobileEditorNavigation'));
+ responsiveEditor={media:window.matchMedia(mobileEditorQuery),slots,moved:false};
+ const open=()=>{const showing=drawer.hidden;drawer.hidden=!showing;$('mobileEditorToggle').setAttribute('aria-expanded',String(showing));if(showing)$('mobileEditorClose').focus({preventScroll:true});};
+ $('mobileEditorToggle').onclick=open;$('mobileEditorClose').onclick=closeMobileEditorMenu;drawer.querySelector('.mobile-editor-backdrop').onclick=closeMobileEditorMenu;
+ drawer.addEventListener('click',e=>{if(e.target.closest('.studio-actions')||e.target.closest('#backToMainFromEditor'))closeMobileEditorMenu();});
+ document.addEventListener('keydown',e=>{if(drawer.hidden)return;if(e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();closeMobileEditorMenu();$('mobileEditorToggle').focus({preventScroll:true});return;}
+  if(e.key==='Tab'){const focusable=[...drawer.querySelectorAll('button,input,select,[tabindex="0"]')].filter(el=>!el.disabled&&el.getClientRects().length);if(!focusable.length)return;const first=focusable[0],last=focusable.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}
+ },true);
+ $('toolbar').addEventListener('click',()=>{updateMobileEditorLabel();if(responsiveEditor.moved&&drawer.hidden&&TOOL_PARAMS[selectedTool])$('mobileEditorToggle').classList.add('has-object-settings');else $('mobileEditorToggle').classList.remove('has-object-settings');});
+ $('catalogEdit').addEventListener('click',()=>{if(responsiveEditor.moved&&$('catalogEdit').getAttribute('aria-pressed')==='true'){closeMobileEditorMenu();setStatus('Selecciona un objeto en el catálogo y abre ☰ para moverlo con ↑ o ↓.',4500);}});
+ $('toolSearch').addEventListener('keydown',e=>{if(e.key==='Enter'&&responsiveEditor.moved){e.preventDefault();closeMobileEditorMenu();}});
+ responsiveEditor.media.addEventListener('change',syncResponsiveEditor);window.addEventListener('resize',syncResponsiveEditor);syncResponsiveEditor();
+}
+
 setupStudio();
 setupNewFeatures();
 setupWorkspaceLayout();
+setupResponsiveEditor();
 
     buildPalette();
     initEmptyBoard();
