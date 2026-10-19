@@ -3830,7 +3830,7 @@ let darknessCanvas=null;
 function drawDarkness(){
  const g=G;if(!g.darkCells.size)return;const ts=cv.ts,size=Math.ceil(g.n*ts);
  if(!darknessCanvas)darknessCanvas=document.createElement('canvas');if(darknessCanvas.width!==size)darknessCanvas.width=size;if(darknessCanvas.height!==size)darknessCanvas.height=size;
- const mask=darknessCanvas.getContext('2d');mask.clearRect(0,0,size,size);mask.globalCompositeOperation='source-over';mask.fillStyle='rgba(2,3,10,0.84)';
+ const mask=darknessCanvas.getContext('2d');mask.clearRect(0,0,size,size);mask.globalCompositeOperation='source-over';mask.fillStyle='rgba(2,3,10,0.94)';
  for(const key of g.darkCells){const x=key%g.n,y=Math.floor(key/g.n);mask.fillRect(x*ts,y*ts,ts+.5,ts+.5);}
  mask.globalCompositeOperation='destination-out';
  const lights=[];if(g.hasTorch)lights.push({x:g.player.rx+.5,y:g.player.ry+.5,r:3.1});
