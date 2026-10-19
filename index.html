@@ -552,6 +552,15 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
 #spawnModal .btn-group{position:static;flex:0 0 auto;gap:7px;margin:0;padding:5px 0 0;border-top:1px solid var(--border-cell)}
 #spawnModal .btn-group .btn{padding:5px 10px!important;font-size:12px!important;min-height:30px;border-radius:8px}
 #objectMiniMenu,#objectEditModal{z-index:9600}#objectMiniMenu .object-mini-box{width:auto;max-width:calc(100vw - 20px);padding:14px;gap:10px}#objectMiniMenu .btn{font-size:13px;padding:9px 12px}#objectEditModal .modal-box{max-width:650px;gap:12px}#objectEditFields{display:flex;flex-direction:column;gap:12px;text-align:left}#objectEditFields select{width:100%;padding:10px;border:1px solid var(--border-cell);border-radius:8px;background:var(--bg-panel);color:var(--text-primary)}#objectEditModal .btn{font-size:12px;padding:8px 10px}#objectEditFields .tool-panel{justify-content:flex-start;max-height:none}.object-enemy-editors{display:flex;flex-direction:column;gap:10px}.object-enemy-card{padding:12px;border:1px solid var(--border-cell);border-radius:10px;display:flex;flex-direction:column;gap:9px}.object-enemy-card>div{display:flex;flex-wrap:wrap;gap:12px}
+#moveUp{top:auto!important;bottom:78px!important;height:86px!important}
+.feature-modal{z-index:9700}.feature-modal .modal-box{width:min(650px,calc(100vw - 16px));max-height:calc(100dvh - 16px);text-align:left}.feature-modal.wide .modal-box{width:min(980px,calc(100vw - 16px))}.feature-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:-18px;background:var(--bg-panel);z-index:2;padding:5px 0}.feature-heading h3{font-weight:700;font-size:18px}.feature-close{border:1px solid var(--border-cell);border-radius:10px;background:var(--button-bg);color:var(--text-primary);height:34px;width:34px;flex:none;font-size:22px;cursor:pointer}.feature-modal p,.feature-modal li{line-height:1.6;font-size:13px;color:var(--text-secondary)}.feature-modal input[type=search]{width:100%;padding:12px;border:1px solid var(--border-cell);background:var(--bg-body);color:var(--text-primary);border-radius:10px}.feature-modal ol{padding-left:22px}.feature-modal .btn{font-size:12px;padding:10px 13px;border-radius:10px}
+#routesList{display:flex;flex-direction:column;gap:12px}.route-card{display:flex;flex-direction:column;gap:8px;padding:14px;border:1px solid var(--border-cell);border-radius:13px;background:var(--bg-body)}.route-card small{color:var(--text-secondary)}.route-card button{border:1px solid var(--border-cell);background:var(--bg-panel);color:var(--text-primary);border-radius:8px;padding:8px;cursor:pointer}.room-item{border-radius:12px}.room-actions{flex-wrap:wrap;justify-content:flex-end}
+#objectGuideList{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}.guide-card{display:flex;gap:12px;border:1px solid var(--border-cell);padding:12px;border-radius:12px}.guide-card>span{font-size:28px;min-width:34px}.guide-card strong{font-size:13px}.guide-card p{margin:5px 0 0;font-size:12px}.learning-content p,.learning-content li{margin-bottom:10px}
+#iconCatalogModal .modal-box{height:calc(100dvh - 12px);max-height:none;width:calc(100vw - 12px);padding:7px;border-radius:14px;gap:4px;overflow:hidden}#iconCatalogModal .feature-heading{position:static;justify-content:flex-end;padding:0;height:30px;flex:none}#iconCatalogModal .feature-heading h3{display:none}#iconCatalogGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));grid-auto-rows:68px;align-content:start;gap:7px;flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:5px;touch-action:pan-y}.icon-catalog-item{display:flex;align-items:center;justify-content:center;font-size:31px;border-radius:12px;border:1px solid var(--border-cell);background:var(--bg-body);color:var(--text-primary);cursor:pointer;user-select:none;-webkit-touch-callout:none}.icon-catalog-item.active{outline:2px solid var(--accent)}.icon-catalog-item.drag-source{opacity:.25}.catalog-drag-ghost{position:fixed;pointer-events:none;z-index:20000;transform:translate(-50%,-50%) scale(1.12);height:70px;width:70px;display:flex;align-items:center;justify-content:center;font-size:37px;background:var(--bg-panel);border:2px solid var(--accent);border-radius:15px;box-shadow:0 8px 28px #0005}
+body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls{display:none!important}#mobileEditorBar #quickCatalog,#mobileEditorBar #undoStudio,#mobileEditorBar #redoStudio{font-size:17px;width:31px;height:30px;padding:2px;min-height:0;flex:0 0 31px;border-radius:8px;border:1px solid var(--border-cell);box-shadow:none;margin:0}#mobileEditorBar{gap:4px!important}#mobileEditorBar #undoStudio:disabled,#mobileEditorBar #redoStudio:disabled{opacity:.3}#mobileEditorBar #mobileEditorLabel{flex:1}
+#gameShopItems{display:flex;flex-direction:column;gap:9px}.shop-purchase{justify-content:flex-start!important}.shop-config-row{display:grid;grid-template-columns:22px 1fr 72px 58px;align-items:center;gap:7px;margin:10px 0;font-size:13px}.shop-config-row input[type=number]{width:100%;padding:9px 5px;border-radius:8px;border:1px solid var(--border-cell);background:var(--bg-body);color:var(--text-primary)}#gameShopGold{color:#b98916;font-size:19px}
+@media(max-width:600px){.feature-modal{padding:6px}.feature-modal .modal-box{padding:12px}.guide-card p{font-size:12px}#iconCatalogGrid{grid-template-columns:repeat(auto-fill,minmax(57px,1fr));grid-auto-rows:61px;gap:6px}.icon-catalog-item{font-size:28px}.room-item{align-items:flex-start}.room-actions button{padding:7px 6px;min-height:32px}}
+
 </style>
 </head>
 <body>
@@ -611,13 +620,14 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
                 <button class="tool-btn" data-tool="key">🔑 Llave</button>
                 <button class="tool-btn" data-tool="keydoor">🔒 Puerta con llave</button>
                 <button class="tool-btn" data-tool="spikes">🔺 Picos</button>
+                <button class="tool-btn" data-tool="switch">🔘 Botón + pared</button>
+                <button class="tool-btn" data-tool="crossgate">🛂 Puerta de cruce</button>
+                <button class="tool-btn" data-tool="cash">🪙 Monedas</button>
+                <button class="tool-btn" data-tool="shop">🏪 Tienda</button>
                 <button class="tool-btn" data-tool="bdoor">🧱 Pared + botón</button>
-                <button class="tool-btn" data-tool="btn">🔘 Botón de pared</button>
-                <button class="tool-btn" data-tool="hbtn">⏺️ Botón sostenido</button>
                 <button class="tool-btn" data-tool="ddoor">💠 Puerta + diamante azul</button>
                 <button class="tool-btn" data-tool="rdoor">🟥 Puerta-láser + diamante rojo</button>
                 <button class="tool-btn" data-tool="mwall">🔳 Pared movible + botón</button>
-                <button class="tool-btn" data-tool="mwbtn">🔘 Botón de pared movible</button>
                 <button class="tool-btn" data-tool="wdiamond">◇ Diamantes blancos</button>
                 <button class="tool-btn" data-tool="stone">🪨 Puerta de piedra</button>
                 <button class="tool-btn" data-tool="hole">🕳️ Hoyo</button>
@@ -749,7 +759,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
        CONSTANTES
     ===================================================== */
     const ID_COL = { 1: '#e74c3c', 2: '#3498db', 3: '#2ecc71', 4: '#e0a800',5:'#9b59b6',6:'#00a6a6',7:'#e67e22',8:'#d64c8c',9:'#607d8b',10:'#6d7f31' };
-    const ICONS = {darkzone:'🌑',torch:'🔥',ftorch:'🕯️',ice:'🧊',
+    const ICONS = {switch:'🔘',crossgate:'🛂',crossbtn:'🔘',cash:'🪙',shop:'🏪',darkzone:'🌑',torch:'🔥',ftorch:'🕯️',ice:'🧊',
         arena: '🏭', boxPath: '🪵', doubleDoor: '🚦', closeBtn: '🔴', openBtn: '🟢', snake: '🐍', worm: '🪱', wall: '🧱', coin: '🧍', enemy: '👹', enemy2: '👺', boss: '👁️', start: '🏁', exit: '🚪',
         key: '🔑', keydoor: '🔒', spikes: '🔺', btn: '🔘', bdoor: '🔲', hbtn: '⏺️',
         ddoor: '💠', diamond: '💎', rdoor: '🟥', rdiamond: '♦️', mwall: '🔳', mwbtn: '🟦',
@@ -776,9 +786,9 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
     };
     // FIX: faltaba 'portal' aquí y showPending() lanzaba un TypeError al colocar un portal
     const DOOR_NAME = { bdoor: 'pared-botón', ddoor: 'puerta-diamante', rdoor: 'puerta-láser', mwall: 'pared movible', portal: 'portal' };
-    const SOLID = ['ice','wall', 'bdoor', 'ddoor', 'rdoor', 'stone', 'hole', 'diamond', 'rdiamond', 'wd', 'laser'];
+    const SOLID = ['shop','ice','wall', 'bdoor', 'ddoor', 'rdoor', 'stone', 'hole', 'diamond', 'rdiamond', 'wd', 'laser'];
     const ENEMY_BLOCK = SOLID.concat(['keydoor']);
-    const BEAM_STOP = ['ice','wall', 'keydoor', 'bdoor', 'ddoor', 'rdoor', 'stone', 'laser'];
+    const BEAM_STOP = ['shop','ice','wall', 'keydoor', 'bdoor', 'ddoor', 'rdoor', 'stone', 'laser'];
     const ARROW_STOP = BEAM_STOP.concat(['rdiamond']);
     const BLOCK_OK = ['floor', 'btn', 'mwbtn', 'hbtn', 'spikes', 'diamondY', 'wdY', 'arrowU', 'arrowD', 'arrowL', 'arrowR', 'portal', 'portal2', 'cbtn', 'cspawn'];
     const WALL_OK = ['floor', 'diamondY', 'wdY', 'arrowU', 'arrowD', 'arrowL', 'arrowR', 'cbtn', 'cspawn'];
@@ -877,16 +887,16 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
     let creatorGroup = {};           // botones-creadores: gid -> {obj}
     let selectedTool = 'floor';
     let playerSpeed = 5;
-    let currentDraftId = null;
+    let currentDraftId = null,editingSavedRoomId=null;
     let roomTimeLimit=120,darkZones=[];
-    const brush = { width:4,height:4,shape:'rect',startSpeed:5,channel:1, coin:false, waveCount: 2, length: 3, speed: 3, hp: 1, vision: 5, key: false, minis: 3, qty: 1, dir: 'R', count: 3, hid: 1 };
+    const brush = {mode:'tap',target:'wall',amount:1, width:4,height:4,shape:'rect',startSpeed:5,channel:1, coin:false, waveCount: 2, length: 3, speed: 3, hp: 1, vision: 5, key: false, minis: 3, qty: 1, dir: 'R', count: 3, hid: 1 };
     let pending = null;              // {type:'pair'|'wgroup'|'creator', ...}
     let spawnTool = null, spawnStore = null;
     const TOOL_LABELS = {};
     document.querySelectorAll('#toolbar .tool-btn').forEach(b => { TOOL_LABELS[b.dataset.tool] = b.textContent.trim(); });
 
     function emptyBoard(n) { return Array.from({ length: n }, () => Array(n).fill('floor')); }
-    function initEmptyBoard() { objectMove=null;editTransaction=null;wizard=null;darkZones=[];roomTimeLimit=120;syncRoomTimer();board = emptyBoard(GRID_SIZE); groups = {}; creatorGroup = {}; pending = null; hidePending(); closeSpawnModal(); }
+    function initEmptyBoard() { editingSavedRoomId=null; objectMove=null;editTransaction=null;wizard=null;darkZones=[];roomTimeLimit=120;syncRoomTimer();board = emptyBoard(GRID_SIZE); groups = {}; creatorGroup = {}; pending = null; hidePending(); closeSpawnModal(); }
     function countTile(type) {
         let c = 0;
         for (const row of board) for (const t of row) if (base(t) === type) c++;
@@ -902,7 +912,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
     /* =====================================================
        EDITOR: PANEL DE VALORES
     ===================================================== */
-    const PSPEC = {
+    const PSPEC = {mode:{t:'select',label:'Tipo de botón',options:[['tap','Una pisada'],['hold','Mantener presionado']]},target:{t:'select',label:'Objeto conectado',options:[['wall','Pared que se abre'],['move','Pared movible']]},amount:{t:'range',label:'🪙 Monedas',min:1,max:100},
         startSpeed:{t:'range',label:'🏃 Velocidad del personaje',min:2,max:10},
         width:{t:'range',label:'↔ Ancho',min:1,max:20},height:{t:'range',label:'↕ Largo',min:1,max:20},shape:{t:'shape',label:'Forma'},
         waveCount: {t:"range", label:"Enemigos o jefes",min:2,max:8},
@@ -920,14 +930,14 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
         dir:    { t: 'dir', label: 'Dirección:' },
         hid:    { t: 'doorid', label: 'Abre la pared-botón número:' }
     };
-    const TOOL_PARAMS = {bdoor:['channel'],btn:['channel'],start:['startSpeed'],darkzone:['shape','width','height'],ftorch:['count'],
+    const TOOL_PARAMS = {switch:['channel','mode','target','dir'],crossgate:['mode'],cash:['amount'],bdoor:['channel','mode'],btn:['channel'],start:['startSpeed'],darkzone:['shape','width','height'],ftorch:['count'],
         arena: ["waveCount"],
         snake: ['speed', 'hpBoss', 'length', 'key','coin'], worm: ['speed', 'hpBoss', 'key','coin'],
         enemy: ['speed', 'hp', 'vision', 'key','coin'],
         enemy2: ['speed', 'hp', 'vision', 'key','coin'],
         boss: ['speed', 'hpBoss', 'minis', 'key','coin'],
         ammo: ['qty'], bomb: ['qty'],
-        laser: ['dir'], mwall: ['channel','dir'], mwbtn:['channel'],
+        laser: ['dir'], mwall: ['channel','mode','dir'], mwbtn:['channel'],
         hbtn: ['hid'], wdiamond: ['count']
     };
     const TOOL_NOTES = {bdoor:'Elige canal 1–10. Al pisar su botón, desaparecen todas las paredes-botón conectadas a ese canal.',btn:'Elige el mismo canal de las paredes-botón que quieres abrir.',start:'Elige aquí la velocidad y coloca el inicio. Puedes volver a colocarlo para cambiarla.',darkzone:'La casilla elegida es la esquina superior izquierda del área. Forma y medidas se ven en el tablero. Usa Borrar sobre piso oscuro para quitar esa zona.',torch:'Al recogerla, la llevas durante todo el cuarto. Ilumina la oscuridad y derrite hielo cercano.',ftorch:'Elige una cantidad, coloca cada antorcha y configura la recompensa. Se encienden al pasar a su lado después de recoger la antorcha portátil y permanecen encendidas.',ice:'Bloquea el paso. Se derrite al acercarte con una antorcha o con una antorcha fija encendida al lado.',
@@ -989,6 +999,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
                     });
                     row.appendChild(b);
                 });
+            } else if(sp.t==='select'){const select=document.createElement('select');select.setAttribute('aria-label',sp.label);for(const [value,label]of sp.options){const op=document.createElement('option');op.value=value;op.textContent=label;select.appendChild(op);}select.value=st[f]||sp.options[0][0];select.addEventListener('change',()=>st[f]=select.value);row.appendChild(select);
             } else if(sp.t==='shape'){
                 const select=document.createElement('select');select.setAttribute('aria-label','Forma de la zona oscura');for(const [value,name]of [['rect','Rectángulo'],['ellipse','Óvalo'],['diamond','Rombo']]){const op=document.createElement('option');op.value=value;op.textContent=name;select.appendChild(op);}select.value=st.shape||'rect';select.addEventListener('change',()=>st.shape=select.value);row.appendChild(select);
             } else if(sp.t==='channel') {
@@ -1025,6 +1036,9 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
     }
 
     function tileFromTool(tool, st) {
+        if(tool==='cash')return `cash:${clamp(st.amount||1,1,100)}`;
+        if(tool==='switch')return `switch:${clamp(st.channel||1,1,10)}:${st.mode||'tap'}`;
+        if(tool==='shop')return 'shop:'+encodeURIComponent(JSON.stringify(st.shopConfig||defaultShop()));
         if(tool==='darkzone')return 'darkzone:'+encodeURIComponent(JSON.stringify({width:st.width||4,height:st.height||4,shape:st.shape||'rect'}));
         if (tool === 'enemy' || tool === 'enemy2') return `${tool}:${st.speed}:${st.hp}:${st.vision}:${st.key ? 1 : 0}:${st.coin ? 1 : 0}`;
         if (tool === 'snake' || tool === 'worm') return `${tool}:${st.speed}:${st.hp}:${st.length || 3}:${st.key ? 1 : 0}:${st.coin ? 1 : 0}`;
@@ -1066,6 +1080,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
                     span.textContent = ICONS[b];
                     cell.appendChild(span);
                 }
+                if(b==='cash'){const amount=tileId(t);if(amount>10)cell.querySelector('.icon').textContent='💰';if(amount>1)addBadge(cell,amount,'#997326');}
                 if (b === 'portal' || b === 'portal2') {
                     const id = tileId(t);
                     addBadge(cell, id, ID_COL[id] || '#9b59b6');
@@ -1296,6 +1311,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
         return 0;
     }
     function showPending() {
+        if(pending&&['switchTarget','crossButton'].includes(pending.type)){pendingBar.classList.remove('hidden');pendingText.textContent=pending.type==='crossButton'?'Coloca dónde aparecerá el botón después de cruzar la puerta.':'Coloca la pared que controlará este botón.';return;}
         if(objectMove){pendingBar.classList.remove('hidden');pendingText.textContent='↗ Toca una casilla libre para mover el objeto. Sus conexiones se conservan.';return;}
         if(wizard) { wizardHint(); return; }
         if (!pending) return;
@@ -1322,6 +1338,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
     }
     function hidePending() { pendingBar.classList.add('hidden'); }
     function cancelPending() {
+        if(!editTransaction&&pending&&['switchTarget','crossButton'].includes(pending.type)){const p=pending;board[p.y][p.x]='floor';pending=null;hidePending();afterEdit();return;}
         if(objectMove){objectMove=null;pending=null;hidePending();renderGrid();return;}
         if(editTransaction){rollbackObjectEdit();return;}
         if(wizard) { abortWizard(); return; }
@@ -1351,8 +1368,8 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
     function startPair(kind, x, y) {
         if(kind==='mwall'||kind==='bdoor'){
             const id=clamp(brush.channel||1,1,10);board[y][x]=kind==='mwall'?`mwall:${id}:${brush.dir}`:`bdoor:${id}`;
-            if(hasTile(PAIRS[kind],id)){afterEdit();setStatus(`Pared conectada al canal ${id}.`,1800);return;}
-            pending={type:'pair',kind,id,x,y};renderGrid();showPending();return;
+            if(hasChannelButton(id)){afterEdit();setStatus(`Pared conectada al canal ${id}.`,1800);return;}
+            pending={type:'pair',kind,id,x,y,mode:brush.mode||'tap'};renderGrid();showPending();return;
         }
         if (base(board[y][x]) === kind) {
             const id = tileId(board[y][x]);
@@ -1385,6 +1402,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
         cleanOrphans(); renderGrid(); showPending();
     }
     function resolvePending(x, y) {
+        if(pending&&['switchTarget','crossButton'].includes(pending.type)){resolveNewMechanism(x,y);return;}
         const p = pending;
         if(futureReservations().some(q=>q.x===x&&q.y===y)){setStatus('Esta casilla está reservada para una aparición.',2000);return;}
         if(p.type==='arena') {
@@ -1422,7 +1440,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
         } else if (p.type === 'pair') {
             if (!p.virtual && x === p.x && y === p.y) { cancelPending(); return; }
             if(base(board[y][x])!=='floor') {setStatus('Coloca la pieza en una casilla vacía distinta a la aparición y los diamantes.',2200);return;}
-            board[y][x] = `${PAIRS[p.kind]}:${p.id}`;
+            board[y][x] = ['bdoor','mwall'].includes(p.kind)?`switch:${p.id}:${p.mode||'tap'}`:`${PAIRS[p.kind]}:${p.id}`;
             pending = null;
             hidePending();
             afterEdit();
@@ -1454,6 +1472,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
     }
 
     function handleCellClick(x, y) {
+        if(!pending&&!wizard&&!objectMove){if(selectedTool==='switch'){startUnifiedSwitch(x,y);return;}if(selectedTool==='crossgate'){startCrossGate(x,y);return;}if(selectedTool==='shop'){if(base(board[y][x])!=='floor'){setStatus('Elige piso libre.',1800);return;}editShopConfig(null,{x,y});return;}if(selectedTool==='cash'){if(base(board[y][x])==='cash')openObjectEditor(editorObjectAt(x,y));else if(base(board[y][x])==='floor'){board[y][x]='cash:1';afterEdit();}return;}}
         if(objectMove){finishObjectMove(x,y);return;}
         if(!pending&&selectedTool==='darkzone'){placeDarkZone(x,y);return;}
         if(!pending&&selectedTool==='erase'&&base(board[y][x])==='floor'&&darkZones.some(z=>zoneCells(z,GRID_SIZE).some(c=>c.x===x&&c.y===y))){darkZones=darkZones.filter(z=>!zoneCells(z,GRID_SIZE).some(c=>c.x===x&&c.y===y));afterEdit();return;}
@@ -1700,8 +1719,10 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
         const data = currentRoomData();
         data.timestamp = Date.now();
         data.name = `Cuarto ${GRID_SIZE}×${GRID_SIZE} - ${new Date().toLocaleString()}`;
-        const rooms = loadRooms();
-        rooms.push(data);
+        const rooms = roomsWithIds();
+        data.id=editingSavedRoomId||newLocalId('room');
+        const old=rooms.findIndex(r=>r.id===editingSavedRoomId);
+        if(old>=0){data.name=rooms[old].name;rooms[old]=data;}else rooms.push(data);editingSavedRoomId=null;
         saveRooms(rooms);
         if (currentDraftId) {
             saveDrafts(loadDrafts().filter(d => d.id !== currentDraftId));
@@ -1748,7 +1769,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
         return b;
     }
     function loadRoomList() {
-        const rooms = loadRooms();
+        const rooms = roomsWithIds();
         roomListContainer.innerHTML = '';
         $('playRouteBtn').style.display = rooms.length ? '' : 'none';
         if (rooms.length === 0) { noRoomsMsg.style.display = 'block'; return; }
@@ -1765,6 +1786,8 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
                 makeActionButton('⬆️', 'Subir en la ruta', () => { const r = loadRooms(); [r[i - 1], r[i]] = [r[i], r[i - 1]]; saveRooms(r); loadRoomList(); }, i === 0),
                 makeActionButton('⬇️', 'Bajar en la ruta', () => { const r = loadRooms(); [r[i + 1], r[i]] = [r[i], r[i + 1]]; saveRooms(r); loadRoomList(); }, i === rooms.length - 1),
                 makeActionButton('▶️', 'Jugar la ruta desde este cuarto', () => startRoute(i)),
+                makeActionButton('✏️','Editar cuarto',()=>openSavedRoom(room.id)),
+                makeActionButton('⬇','Exportar cuarto',()=>exportRoom(room)),
                 makeActionButton('🗑️', 'Borrar', () => { if (confirm('¿Borrar este cuarto?')) { const r = loadRooms(); r.splice(i, 1); saveRooms(r); loadRoomList(); } }, false, 'danger')
             );
             div.append(name, acts);
@@ -1785,7 +1808,8 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
             const acts = document.createElement('div');
             acts.className = 'room-actions';
             acts.append(
-                makeActionButton('✏️', 'Seguir editando', () => openDraft(d)),
+                makeActionButton('✏️', 'Seguir editando', () => {editingSavedRoomId=null;openDraft(d);}),
+                makeActionButton('⬇','Exportar borrador',()=>exportRoom(d)),
                 makeActionButton('🗑️', 'Borrar', () => { if (confirm('¿Borrar este borrador?')) { saveDrafts(loadDrafts().filter(x => x.id !== d.id)); loadDraftList(); } }, false, 'danger')
             );
             div.append(name, acts);
@@ -1866,7 +1890,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
         const g = {
             n, grid, room,
             player: { x: 0, y: 0, rx: 0, ry: 0, facing: 'D' },
-            hasTorch:false,litTorches:new Set(),darkCells:new Set((room.darkZones||[]).flatMap(z=>zoneCells(z,n)).map(c=>c.y*n+c.x)),pendingClosing:new Set(),pendingLoot:[],arenas: [], chains: [], doubleOpen: new Set(), enemies: [], blocks: [], mwalls: [], bombs: [], arrows: [], lasers: [], rdias: [], hbtns: [],
+            gold:0,shopDwell:null,shopSuppressed:null,heatTimers:new Map(),heatPositions:new Map(),torchTimers:new Map(),crossActivated:new Set(),crossOpen:new Set(),crossEntries:new Map(),switchLatched:new Set(),holdWallOrigins:new Map(),hasTorch:false,litTorches:new Set(),darkCells:new Set((room.darkZones||[]).flatMap(z=>zoneCells(z,n)).map(c=>c.y*n+c.x)),pendingClosing:new Set(),pendingLoot:[],arenas: [], chains: [], doubleOpen: new Set(), enemies: [], blocks: [], mwalls: [], bombs: [], arrows: [], lasers: [], rdias: [], hbtns: [],
             beamCells: [], beamSet: new Set(), litIds: new Set(), holdIds: new Set(),
             permOpen: new Set(), pressed: new Set(), mwDone: new Set(), pressedCreators: new Set(), wgroups: {},
             totalCoins: 0, coins: 0, keys: 0, shields: 0, ammo: 0, bombCount: 0,
@@ -2005,6 +2029,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
             if(['snake','worm'].includes(base(t))) {makeChain(g,a.x,a.y,t);a.active=g.chains[g.chains.length-1];}
             else {makeEnemy(g,a.x,a.y,t);a.active=g.enemies[g.enemies.length-1];}
             a.active.next=now+600;
+            if(a.index>=a.enemies.length&&base(g.grid[a.y][a.x])==='arena'){g.grid[a.y][a.x]='floor';g.effects.push({kind:'pop',x:a.x,y:a.y,t0:now,dur:450,ch:'💥'});}
         }
     }
     function chainAt(x,y) {
@@ -2086,6 +2111,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
     // Tipo efectivo de la casilla (las puertas abiertas cuentan como piso)
     function bt(x, y) {
         const t = G.grid[y][x], b = base(t);
+        if(b==='crossgate'){const c=parseCross(t);return !G.crossActivated.has(c.id)||G.crossOpen.has(c.id)?'floor':'bdoor';}
         if (b === 'doubleDoor') return G.doubleOpen.has(tileId(t)) ? 'floor' : 'bdoor';
         if (b === 'bdoor') return (G.permOpen.has(tileId(t)) || G.holdIds.has(tileId(t))) ? 'floor' : 'bdoor';
         if (b === 'rdoor') return G.litIds.has(tileId(t)) ? 'floor' : 'rdoor';
@@ -2327,12 +2353,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
         S = { mode: 'test', rooms: [], index: 0, currentRoom: currentRoomData(), timer: null, toastT: null, overlayKind: null };
         beginGame();
     }
-    function startRoute(i) {
-        const rooms = loadRooms();
-        if (!rooms.length) return;
-        S = { mode: 'route', rooms, index: i, currentRoom: rooms[i], timer: null, toastT: null, overlayKind: null };
-        beginGame();
-    }
+    function startRoute(i) {playRouteRooms(loadRooms(),i,'Mi ruta');}
 
     function die(msg) {
         const g = G;
@@ -2363,7 +2384,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
                 S.timer = setTimeout(() => {
                     if (!G) return;
                     showOverlay('🏆 ¡Ruta completada!', [
-                        ['🔁 Jugar de nuevo', () => startRoute(0), true],
+                        ['🔁 Jugar de nuevo', () => playRouteRooms(S.rooms,0,S.routeName), true],
                         ['🏠 Menú principal', () => exitGame('main')]
                     ], 'end');
                 }, 700);
@@ -2640,6 +2661,8 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
         }
         else if (b === 'btn') press(tileId(t));
         else if (b === 'mwbtn') activateMW(tileId(t));
+        else if (b === 'switch')activateUnifiedSwitch(tileId(t),part(t,2)||'tap');
+        else if(b==='crossbtn'){if(part(t,2)!=='hold')G.crossOpen.add(tileId(t));computeBeams();}
         else if (b === 'cbtn') activateCreator(tileId(t));
     }
 
@@ -2661,10 +2684,12 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
     }
     function computeHolds() {
         const g = G, s = new Set();
+        for(let y=0;y<g.n;y++)for(let x=0;x<g.n;x++)if(base(g.grid[y][x])==='switch'&&part(g.grid[y][x],2)==='hold'&&((g.player.x===x&&g.player.y===y)||blockAt(x,y)))s.add(tileId(g.grid[y][x]));
         for (const h of g.hbtns) if ((g.player.x === h.x && g.player.y === h.y) || blockAt(h.x, h.y)) s.add(h.id);
         let changed = s.size !== g.holdIds.size;
         if (!changed) for (const i of s) if (!g.holdIds.has(i)) { changed = true; break; }
         if (changed) { g.holdIds = s; playSound('press'); playSound('door'); }
+        updateNewMechanisms();
     }
 
     function canBlockMove(b, dir) {
@@ -2679,7 +2704,8 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
         if (g.player.x === tx && g.player.y === ty) return false;
         return true;
     }
-    function tryPlayerMove(dir) {
+    function tryPlayerMove(dir){const before={x:G.player.x,y:G.player.y};const ok=tryPlayerMoveCore(dir);if(ok&&G)trackCrossing(before,{x:G.player.x,y:G.player.y});return ok;}
+    function tryPlayerMoveCore(dir) {
         const g = G, p = g.player;
         const nx = p.x + DIRS[dir][0], ny = p.y + DIRS[dir][1];
         if (!inb(nx, ny)) return false;
@@ -2798,10 +2824,11 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
         else if (t === 'bow') { g.hasBow = true; pickup('🏹', '🏹 ¡Conseguiste el arco! (esquina inferior izquierda)'); }
         else if (t === 'ammo') { const q = tileId(tile); g.ammo += q; pickup('➶', `➶ +${q} flecha(s)`); }
         else if (t === 'bomb') { const q = tileId(tile); g.bombCount += q; pickup('💣', `💣 +${q} bomba(s) (esquina inferior derecha)`); }
+        else if(t==='cash'){const amount=clamp(tileId(tile),1,100);g.gold+=amount;pickup('🪙',`🪙 +${amount} monedas`);}
         else if(t==='torch'){g.hasTorch=true;pickup('🔥','🔥 Ahora puedes iluminar zonas oscuras y derretir hielo.');}
         else if (t === 'shield') { g.shields++; pickup('🛡️'); }
         // FIX: faltaba 'cbtn' — el personaje al pisar el botón-creador no lo activaba
-        else if (t === 'btn' || t === 'mwbtn' || t === 'cbtn' || t==='openBtn' || t==='closeBtn') stepOnButton(p.x, p.y);
+        else if (t === 'btn' || t === 'mwbtn' || t === 'cbtn' || t==='openBtn' || t==='closeBtn'||t==='switch'||t==='crossbtn') stepOnButton(p.x, p.y);
 
         updateLighting();
         const e = enemyAt(p.x, p.y);
@@ -2871,7 +2898,8 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
         const g = G;
         g.time += dt * 1000;
         if(g.room.timeLimit>0&&g.time>=g.room.timeLimit*1000){die('⌛ ¡Se acabó el tiempo del cuarto!');return;}
-        updateDoubleDoors();retryLoot();updateLighting();
+        updateDoubleDoors();retryLoot();updateLighting();updateNewMechanisms();updateShop();
+        if(g.paused)return;
         const now = g.time, p = g.player;
 
         const dir = touchDir || heldKeys[heldKeys.length - 1] || null;
@@ -2952,7 +2980,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
     function updateHud() {
         const g = G;
         let txt = `🧍 ${g.coins}/${g.totalCoins}  🔑 ${g.keys}  🛡️ ${g.shields}  ${g.exitActive ? '🚪' : '🔒'}`;
-        if(g.hasTorch)txt+='  🔥';
+        txt+=`  🪙 ${g.gold}`;if(g.hasTorch)txt+='  🔥';
         if(g.room.timeLimit>0){const left=Math.max(0,Math.ceil(g.room.timeLimit-g.time/1000));txt+=`  ⏳ ${Math.floor(left/60)}:${String(left%60).padStart(2,'0')}`;}
         txt += S.mode === 'route' ? `  ·  Cuarto ${S.index + 1}/${S.rooms.length}` : '  ·  Prueba';
         if (txt !== g.hudText) { g.hudText = txt; hud.textContent = txt; }
@@ -3104,7 +3132,8 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
         }
     }
 
-    function drawTile(x, y, sp) {
+    function drawTile(x,y,sp){if(drawExtraTile(x,y))return;drawTileCore(x,y,sp);drawHeatProgress(x,y);}
+    function drawTileCore(x, y, sp) {
         const g = G, ts = cv.ts, px = x * ts, py = y * ts;
         const tile = g.grid[y][x], b = bt(x, y);
         const cx = px + ts / 2, cy = py + ts / 2;
@@ -3521,6 +3550,7 @@ body.studio-editing.mobile-editor .studio-sidebar>.catalog-mini-controls button{
     const KEYMAP = { arrowup: 'U', arrowdown: 'D', arrowleft: 'L', arrowright: 'R', w: 'U', s: 'D', a: 'L', d: 'R' };
     window.addEventListener('keydown', e => {
         if (!G) return;
+        if(e.key==='Escape'&&$('gameShopModal')&&!$('gameShopModal').classList.contains('hidden')){e.preventDefault();e.stopImmediatePropagation();closeGameShop();return;}
         const k = e.key.toLowerCase();
         if (k === 'escape') {
             e.preventDefault();
@@ -3621,9 +3651,11 @@ function beginWizard(p,tool,st){
 }
 function wizardId(kind){const used=new Set(wizard.ids[kind]||[]);walkRewards(t=>{if(base(t)===kind||(kind==='wd'&&base(t)==='ftorch'))used.add(tileId(t));});let id=1;while(used.has(id))id++;wizard.ids[kind]=[...used,id];return id;}
 function wizardBuild(tool,st,pos,done){
+ if(tool==='switch'){const id=clamp(st.channel||1,1,10);wizard.tasks.push({label:'Coloca la pared conectada al botón.',run:q=>done(packBundle({tile:tileFromTool('switch',st),extras:[{...q,tile:st.target==='move'?`mwall:${id}:${st.dir}`:`bdoor:${id}`}]}))});return;}
+ if(tool==='crossgate'){const id=wizardId('crossgate');wizard.tasks.push({label:'Coloca el futuro botón de la puerta de cruce.',run:q=>done(packBundle({tile:crossTile({id,mode:st.mode||'tap',bx:q.x,by:q.y})}))});return;}
  const cfg={tile:tileFromTool(tool,st),extras:[],creators:{},wgroups:{}};
  const finish=()=>done(packBundle(cfg));
- if(PAIRS[tool]){const id=['mwall','bdoor'].includes(tool)?clamp(st.channel||1,1,10):wizardId(tool);cfg.tile=tool==='mwall'?`mwall:${id}:${st.dir}`:`${tool}:${id}`;if(['mwall','bdoor'].includes(tool)&&hasTile(PAIRS[tool],id)){finish();return;}wizard.tasks.push({label:`Coloca ${PARTNER_LABEL[PAIRS[tool]]} del ${TOOL_LABELS[tool]}. Ambas piezas aparecerán juntas.`,run:q=>{cfg.extras.push({...q,tile:`${PAIRS[tool]}:${id}`});finish();}});}
+ if(PAIRS[tool]){const id=['mwall','bdoor'].includes(tool)?clamp(st.channel||1,1,10):wizardId(tool);cfg.tile=tool==='mwall'?`mwall:${id}:${st.dir}`:`${tool}:${id}`;if(['mwall','bdoor'].includes(tool)&&hasChannelButton(id)){finish();return;}wizard.tasks.push({label:`Coloca ${PARTNER_LABEL[PAIRS[tool]]} del ${TOOL_LABELS[tool]}. Ambas piezas aparecerán juntas.`,run:q=>{cfg.extras.push({...q,tile:['bdoor','mwall'].includes(tool)?`switch:${id}:${st.mode||'tap'}`:`${PAIRS[tool]}:${id}`});finish();}});}
  else if(tool==='doubleDoor'){const id=wizardId(tool);cfg.tile=`doubleDoor:${id}`;wizard.tasks.push({label:'Coloca el botón rojo para cerrar la puerta.',run:q=>cfg.extras.push({...q,tile:`closeBtn:${id}`})},{label:'Coloca el botón verde para abrir la puerta.',run:q=>{cfg.extras.push({...q,tile:`openBtn:${id}`});finish();}});}
  else if(tool==='cbtn'){const id=wizardId('cbtn');cfg.tile=`cbtn:${id}`;wizard.tasks.push({label:'Regalo encadenado: coloca dónde aparecerá su siguiente objeto.',run:q=>{wizard.tasks.unshift({select:true,label:'Elige qué creará este nuevo regalo.',run:(t,values)=>wizardBuild(t,values,q,child=>{cfg.creators[id]={obj:child,rx:q.x,ry:q.y};finish();})});}});}
  else if(tool==='wdiamond'||tool==='ftorch'){
@@ -3650,7 +3682,7 @@ function wizardNext(){if(!wizard)return;closeSpawnModal();if(wizard.tasks.length
 }
 function wizardHint(){if(!wizard)return;pendingBar.classList.remove('hidden');pendingText.textContent='✦ Configuración guiada · '+(wizard.tasks[0]?.label||'Completando…');}
 function abortWizard(){const p=wizard.parent;wizard=null;pending=p;cancelPending();paintFuture();setStatus('Configuración cancelada.',1800);}
-function futureReservations(){const out=[];const visit=(t,pos)=>{if(base(t)==='arena'){const a=JSON.parse(decodeURIComponent(part(t,1)));visit(a.reward,{x:a.rx,y:a.ry});return;}if(base(t)!=='bundle')return;const c=unpackBundle(t);out.push({...pos,tile:c.tile});if(base(c.tile)==='arena')visit(c.tile,pos);for(const e of c.extras||[])visit(packBundle({tile:e.tile}),e);for(const cr of Object.values(c.creators||{}))visit(cr.obj,{x:cr.rx,y:cr.ry});for(const wg of Object.values(c.wgroups||{}))visit(wg.obj,{x:wg.sx,y:wg.sy});};
+function futureReservationsCore(){const out=[];const visit=(t,pos)=>{if(base(t)==='arena'){const a=JSON.parse(decodeURIComponent(part(t,1)));visit(a.reward,{x:a.rx,y:a.ry});return;}if(base(t)!=='bundle')return;const c=unpackBundle(t);out.push({...pos,tile:c.tile});if(base(c.tile)==='arena')visit(c.tile,pos);for(const e of c.extras||[])visit(packBundle({tile:e.tile}),e);for(const cr of Object.values(c.creators||{}))visit(cr.obj,{x:cr.rx,y:cr.ry});for(const wg of Object.values(c.wgroups||{}))visit(wg.obj,{x:wg.sx,y:wg.sy});};
  for(let y=0;y<GRID_SIZE;y++)for(let x=0;x<GRID_SIZE;x++){const t=board[y][x],b=base(t);if(b==='cspawn')visit(creatorGroup[tileId(t)]?.obj,{x,y});if(b==='wspawn')visit(groups[tileId(t)]?.obj,{x,y});if(b==='arena'){try{const c=JSON.parse(decodeURIComponent(part(t,1)));visit(c.reward,{x:c.rx,y:c.ry});}catch(e){}}}return out;}
 function paintFuture(){for(const q of [...futureReservations(),...(wizard?.marks||[])]){const el=$('editorGrid').children[q.y*GRID_SIZE+q.x];if(el){el.classList.add('future');el.title=`Aparición reservada (${q.x+1}, ${q.y+1}) · ${q.tile?base(q.tile):'pieza en configuración'}`;if(q.tile&&base(board[q.y][q.x])==='floor'){el.textContent=ICONS[base(q.tile)]||'✦';}}}}
 function snap(){return JSON.stringify({board,groups,creatorGroup,GRID_SIZE,playerSpeed,roomTimeLimit,darkZones});}
@@ -3663,7 +3695,7 @@ function setupStudio(){
  const stage=document.createElement('div');stage.className='studio-board';const grid=document.querySelector('.editor-grid-container');grid.before(workspace);workspace.append(side,stage);side.append($('toolbar'));stage.append($('brushPanel'),$('pendingBar'),grid);
  const bar=document.createElement('div');bar.className='studio-actions';bar.innerHTML='<button class="tool-btn" id="undoStudio">↶ Deshacer</button><button class="tool-btn" id="redoStudio">↷ Rehacer</button><button class="tool-btn" id="exportStudio">↓ Exportar respaldo</button><button class="tool-btn" id="importStudio">↑ Importar</button><button class="tool-btn" id="recoverStudio">⏱ Recuperar autoguardado</button><button class="tool-btn" id="demoStudio">✦ Cuarto de ejemplo</button><button class="tool-btn" id="helpStudio">? Guía</button>';stage.prepend(bar);
  $('toolSearch').oninput=e=>side.querySelectorAll('.toolbar').forEach(g=>{let count=0;g.querySelectorAll('.tool-btn').forEach(b=>{const show=b.textContent.toLocaleLowerCase().includes(e.target.value.toLocaleLowerCase());b.hidden=!show;b.style.display=show?'':'none';if(show)count++;});g.style.display=count?'':'none';});
- $('demoStudio').onclick=()=>{if(!confirm('¿Cargar el cuarto de ejemplo en el editor? Puedes deshacer este cambio.'))return;if(pending)cancelPending();GRID_SIZE=12;gridSizeSelect.value='12';darkZones=[];roomTimeLimit=120;syncRoomTimer();board=emptyBoard(12);groups={};creatorGroup={};for(let i=0;i<12;i++)board[0][i]=board[11][i]=board[i][0]=board[i][11]='wall';board[1][1]='start';board[10][10]='exit';board[1][2]='cbtn:1';board[1][4]='cspawn:1';creatorGroup[1]={obj:packBundle({tile:'cbtn:2',creators:{2:{rx:6,ry:1,obj:packBundle({tile:'portal:1',extras:[{x:8,y:8,tile:'portal2:1'}]})}}})};darkZones=[{x:7,y:7,width:4,height:4,shape:'rect'}];board[2][3]='torch';board[8][9]='ice';board[8][3]='ftorch:1';board[9][6]='ftorch:1';board[8][10]='wspawn:1';groups[1]={kind:'torch',count:2,obj:packBundle({tile:'coin'})};board[9][9]='coin';board[3][2]='sword';board[4][2]='shield';board[5][5]=tileFromTool('enemy',{...brush,speed:1,hp:8});for(let x=3;x<9;x++)board[6][x]='wall';afterEdit();setStatus('Demo: recoge la antorcha, prueba los regalos y portales, enciende las dos antorchas fijas y rescata a las dos personas para salir.',6500);};
+ $('demoStudio').onclick=()=>{if(!confirm('¿Cargar el cuarto de ejemplo en el editor? Puedes deshacer este cambio.'))return;if(pending)cancelPending();editingSavedRoomId=null;GRID_SIZE=12;gridSizeSelect.value='12';darkZones=[];roomTimeLimit=120;syncRoomTimer();board=emptyBoard(12);groups={};creatorGroup={};for(let i=0;i<12;i++)board[0][i]=board[11][i]=board[i][0]=board[i][11]='wall';board[1][1]='start';board[10][10]='exit';board[1][2]='cbtn:1';board[1][4]='cspawn:1';creatorGroup[1]={obj:packBundle({tile:'cbtn:2',creators:{2:{rx:6,ry:1,obj:packBundle({tile:'portal:1',extras:[{x:8,y:8,tile:'portal2:1'}]})}}})};darkZones=[{x:7,y:7,width:4,height:4,shape:'rect'}];board[2][3]='torch';board[8][9]='ice';board[8][3]='ftorch:1';board[9][6]='ftorch:1';board[8][10]='wspawn:1';groups[1]={kind:'torch',count:2,obj:packBundle({tile:'coin'})};board[9][9]='coin';board[3][2]='sword';board[4][2]='shield';board[5][5]=tileFromTool('enemy',{...brush,speed:1,hp:8});for(let x=3;x<9;x++)board[6][x]='wall';afterEdit();setStatus('Demo: recoge la antorcha, prueba los regalos y portales, enciende las dos antorchas fijas y rescata a las dos personas para salir.',6500);};
  $('undoStudio').onclick=()=>undoStudio(-1);$('redoStudio').onclick=()=>undoStudio(1);
  $('exportStudio').onclick=()=>{if(pending||wizard){setStatus('Completa o cancela el mecanismo antes de exportar.',2500);return;}const data={format:'entropia-studio',version:2,current:JSON.parse(snap()),rooms:loadRooms(),drafts:loadDrafts()};const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download='Entropia-respaldo.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);};
  const file=document.createElement('input');file.type='file';file.accept='.json';file.hidden=true;document.body.append(file);$('importStudio').onclick=()=>file.click();file.onchange=async()=>{try{const c=JSON.parse(await file.files[0].text());if(c.format!=='entropia-studio'||!validSnapshot(c.current))throw Error();if(pending)cancelPending();if(!Array.isArray(c.rooms)||!Array.isArray(c.drafts)||![...c.rooms,...c.drafts].every(r=>validSnapshot({...r,GRID_SIZE:r.gridSize||r.board?.length})))throw Error();if(!confirm('¿Restaurar este respaldo? Se sustituirán las listas locales de cuartos y borradores. Puedes exportar antes tu respaldo actual.'))return;saveRooms(c.rooms);saveDrafts(c.drafts);restoreSnap(JSON.stringify(c.current));recordHistory();setStatus('Respaldo completo restaurado: cuarto, ruta y borradores.',4000);}catch(e){setStatus('Archivo inválido: importa un respaldo de ENTROPÍA.',3500);}file.value='';};
@@ -3802,7 +3834,7 @@ function syncResponsiveEditor(){
   for(const slot of r.slots){if(useDrawer)slot.target.appendChild(slot.node);else slot.anchor.parentNode.insertBefore(slot.node,slot.anchor.nextSibling);}
   r.moved=useDrawer;
  }
- if(!useDrawer)closeMobileEditorMenu();updateMobileEditorLabel();
+ if(!useDrawer)closeMobileEditorMenu();updateMobileEditorLabel();syncQuickTools();
 }
 function updateMobileEditorLabel(){
  if(!responsiveEditor)return;const label=$('mobileEditorLabel');label.textContent=`${GRID_SIZE} × ${GRID_SIZE} · ${TOOL_LABELS[selectedTool]||selectedTool}`;
@@ -3838,7 +3870,7 @@ function setupResponsiveEditor(){
 }
 
 let objectMove=null,editTransaction=null,objectMenuRef=null,ignoreEditorClick=null;
-function editorObjectRefs(){
+function editorObjectRefsCore(){
  const out=[];
  const boardRef=(x,y)=>{let pos={x,y};return{board:true,pos:()=>({...pos}),read:()=>board[pos.y][pos.x],write:t=>board[pos.y][pos.x]=t,move:q=>{const t=board[pos.y][pos.x];board[pos.y][pos.x]='floor';board[q.y][q.x]=t;pos={...q};}};};
  const walk=(read,write,pos,move,env={})=>{
@@ -3867,6 +3899,7 @@ function toolForTile(tile){const b=base(tile);if(b==='wd')return'wdiamond';if(b=
 function valuesForObject(ref){
  const t=ref.read(),b=base(t),a=String(t).split(':'),values={...brush,channel:tileId(t)};
  if(ref.zone)return{...values,...ref.zone};
+ if(b==='switch'){values.mode=part(t,2)||'tap';}if(b==='crossgate'){Object.assign(values,parseCross(t));}if(b==='cash')values.amount=clamp(tileId(t),1,100);
  if(['enemy','enemy2','boss','snake','worm'].includes(b)){values.speed=+a[1]||3;values.hp=+a[2]||1;values.key=a[4]==='1';values.coin=a[5]==='1';if(b==='boss')values.minis=+a[3]||3;else if(['snake','worm'].includes(b))values.length=+a[3]||3;else values.vision=+a[3]||5;}
  if(b==='ammo'||b==='bomb')values.qty=tileId(t);if(b==='laser')values.dir=dirOf(t);if(b==='mwall')values.dir=mwDir(t);if(b==='hbtn')values.hid=tileId(t);if(b==='start')values.startSpeed=playerSpeed;
  if(['wd','ftorch','wspawn'].includes(b))values.count=(ref.env?.wgroups?.[tileId(t)]||groups[tileId(t)])?.count||1;
@@ -3918,17 +3951,19 @@ function rebuildEditorObject(ref,tool,values){
  if(!pending&&!wizard){editTransaction=null;afterEdit();}else showPending();
 }
 function openObjectEditor(inputRef){
+ if(inputRef.ownerCross){openObjectEditor(inputRef.ownerCross);return;}
+ if(base(inputRef.read())==='shop'){$('objectMiniMenu').classList.add('hidden');editShopConfig(inputRef);return;}
  $('objectMiniMenu').classList.add('hidden');let ref=inputRef;if(['cspawn','wspawn'].includes(base(ref.read()))){const p=ref.pos();ref=editorObjectAt(p.x,p.y,true)||ref;}
  const token=ref.read(),originalTool=toolForTile(token),values=valuesForObject(ref),box=$('objectEditFields');box.innerHTML='';$('objectEditTitle').textContent='Editar objeto';
  const select=document.createElement('select');select.setAttribute('aria-label','Tipo de objeto');
  const choices=Object.keys(TOOL_LABELS).filter(t=>!['erase','floor'].includes(t));if(!choices.includes(originalTool))choices.unshift(originalTool);
  for(const tool of choices){const op=document.createElement('option');op.value=tool;op.textContent=TOOL_LABELS[tool]||ICONS[tool]||tool;select.appendChild(op);}select.value=originalTool;if(ref.zone)select.disabled=true;box.appendChild(select);
  const params=document.createElement('div');params.className='tool-panel';box.appendChild(params);const members=document.createElement('div');members.className='object-enemy-editors';box.appendChild(members);let enemyEdits=[];
- const paramsFor=t=>['portal','portal2','ddoor','diamond','rdoor','rdiamond','doubleDoor','closeBtn','openBtn'].includes(t)?['channel']:(TOOL_PARAMS[t]||[]);
+ const paramsFor=t=>t==='switch'&&originalTool==='switch'?['channel','mode']:['portal','portal2','ddoor','diamond','rdoor','rdiamond','doubleDoor','closeBtn','openBtn'].includes(t)?['channel']:(TOOL_PARAMS[t]||[]);
  const refresh=()=>{buildControls(params,paramsFor(select.value),values);params.classList.toggle('hidden',!paramsFor(select.value).length);members.innerHTML='';enemyEdits=[];
   if(select.value==='arena'&&originalTool==='arena'){try{const cfg=JSON.parse(decodeURIComponent(part(token,1)));cfg.enemies.forEach((enemy,i)=>{const card=document.createElement('div');card.className='object-enemy-card';const label=document.createElement('strong');label.textContent='Integrante '+(i+1);card.appendChild(label);const pick=document.createElement('select');for(const type of ['enemy','enemy2','boss','snake','worm']){const op=document.createElement('option');op.value=type;op.textContent=TOOL_LABELS[type];pick.appendChild(op);}pick.value=base(enemy);card.appendChild(pick);const st=valuesForObject({read:()=>enemy}),controls=document.createElement('div');card.appendChild(controls);const render=()=>buildControls(controls,TOOL_PARAMS[pick.value],st);pick.onchange=render;render();members.appendChild(card);enemyEdits.push({pick,st});});}catch(e){}}
  };select.onchange=refresh;refresh();
- const complex=['cbtn','wd','ftorch','arena','cspawn','wspawn'].includes(base(token));$('objectEditReward').classList.toggle('hidden',!complex);$('objectEditRebuild').classList.toggle('hidden',!complex&&!PAIRS[originalTool]&&!['doubleDoor','portal2','diamond','rdiamond','closeBtn','openBtn'].includes(originalTool));
+ const complex=['cbtn','wd','ftorch','arena','cspawn','wspawn'].includes(base(token));$('objectEditReward').classList.toggle('hidden',!complex);$('objectEditRebuild').classList.toggle('hidden',!complex&&!PAIRS[originalTool]&&!['switch','crossgate','doubleDoor','portal2','diamond','rdiamond','closeBtn','openBtn'].includes(originalTool));
  $('objectEditReward').onclick=()=>{$('objectEditModal').classList.add('hidden');editReward(ref);};
  $('objectEditRebuild').onclick=()=>rebuildEditorObject(ref,originalTool==='wd'?'wdiamond':originalTool,values);
  $('objectEditApply').onclick=()=>{
@@ -3941,7 +3976,8 @@ function openObjectEditor(inputRef){
   }else if(['portal','portal2','ddoor','diamond','rdoor','rdiamond','doubleDoor','closeBtn','openBtn'].includes(b)){
    const family=['portal','portal2'].includes(b)?['portal','portal2']:['ddoor','diamond'].includes(b)?['ddoor','diamond']:['rdoor','rdiamond'].includes(b)?['rdoor','rdiamond']:['doubleDoor','closeBtn','openBtn'];const id=tileId(token),newId=values.channel;
    const refs=editorObjectRefs();if(newId!==id&&refs.some(r=>family.includes(base(r.read()))&&tileId(r.read())===newId)){setStatus('Ese canal ya está ocupado por otro mecanismo de este tipo.',2600);return;}refs.filter(r=>family.includes(base(r.read()))&&tileId(r.read())===id).forEach(r=>r.write(`${base(r.read())}:${newId}`));
-  }else if(['bdoor','btn','mwbtn'].includes(b))ref.write(`${b}:${values.channel}`);
+  }else if(b==='crossgate'){const c=parseCross(token);c.mode=values.mode;ref.write(crossTile(c));}
+  else if(['bdoor','btn','mwbtn'].includes(b))ref.write(`${b}:${values.channel}`);
   else if(b==='mwall')ref.write(`mwall:${values.channel}:${values.dir}`);
   else if(b==='hbtn'){if(!doorExists(values.hid)){setStatus('Selecciona un canal con una pared-botón.',2200);return;}ref.write(`hbtn:${values.hid}`);}
   else if(b==='start'){playerSpeed=values.startSpeed;playerSpeedInput.value=playerSpeed;playerSpeedVal.textContent=playerSpeed;}
@@ -3951,18 +3987,128 @@ function openObjectEditor(inputRef){
  $('objectEditModal').classList.remove('hidden');
 }
 function setupObjectEditing(){
- const menu=document.createElement('div');menu.id='objectMiniMenu';menu.className='modal hidden';menu.innerHTML='<div class="modal-box object-mini-box"><strong id="objectMenuTitle"></strong><div class="btn-group"><button class="btn" id="objectMenuEdit">✎ Editar</button><button class="btn" id="objectMenuMove">↗ Mover</button><button class="btn" id="objectMenuCancel">×</button></div></div>';document.body.appendChild(menu);
+ const menu=document.createElement('div');menu.id='objectMiniMenu';menu.className='modal hidden';menu.innerHTML='<div class="modal-box object-mini-box"><strong id="objectMenuTitle"></strong><div class="btn-group"><button class="btn" id="objectMenuEdit">✎ Editar</button><button class="btn" id="objectMenuMove">↗ Mover</button><button class="btn" id="objectMenuDelete">🗑 Borrar</button><button class="btn" id="objectMenuCancel">×</button></div></div>';document.body.appendChild(menu);
  const edit=document.createElement('div');edit.id='objectEditModal';edit.className='modal hidden';edit.innerHTML='<div class="modal-box"><h3 id="objectEditTitle">Editar objeto</h3><div id="objectEditFields"></div><div class="btn-group"><button class="btn btn-primary" id="objectEditApply">Aplicar</button><button class="btn" id="objectEditReward">Editar aparición</button><button class="btn" id="objectEditRebuild">Reconfigurar conexiones</button><button class="btn" id="objectEditCancel">Cancelar</button></div></div>';document.body.appendChild(edit);
+ $('objectMenuDelete').onclick=()=>deleteEditorObject(objectMenuRef);
  $('objectMenuEdit').onclick=()=>openObjectEditor(objectMenuRef);$('objectMenuMove').onclick=()=>startObjectMove(objectMenuRef);$('objectMenuCancel').onclick=()=>menu.classList.add('hidden');$('objectEditCancel').onclick=()=>edit.classList.add('hidden');
  for(const modal of [menu,edit])modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.add('hidden');});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'){menu.classList.add('hidden');edit.classList.add('hidden');}});
 }
+
+const SHOP_ITEMS={shield:{name:'Escudo',icon:'🛡️',price:10,qty:1},sword:{name:'Espada',icon:'🗡️',price:20,qty:1},bomb:{name:'Bomba',icon:'💣',price:8,qty:1},bow:{name:'Arco',icon:'🏹',price:20,qty:1},ammo:{name:'Flechas',icon:'➶',price:5,qty:5}};
+function defaultShop(){return{items:Object.entries(SHOP_ITEMS).map(([type,v])=>({type,price:v.price,qty:v.qty}))};}
+function hasChannelButton(id){return hasTile('btn',id)||hasTile('mwbtn',id)||hasTile('hbtn',id)||hasTile('switch',id);}
+function freeCrossId(){const ids=new Set();walkRewards(t=>{if(base(t)==='crossgate')ids.add(parseCross(t).id);});let i=1;while(ids.has(i))i++;return i;}
+function crossTile(c){return'crossgate:'+encodeURIComponent(JSON.stringify(c));}
+function parseCross(t){try{return JSON.parse(decodeURIComponent(part(t,1)));}catch(e){return{id:1,mode:'tap',bx:0,by:0};}}
+function startUnifiedSwitch(x,y){if(base(board[y][x])!=='floor'||futureReservations().some(q=>q.x===x&&q.y===y)){setStatus('Elige piso libre.',1800);return;}board[y][x]=tileFromTool('switch',brush);pending={type:'switchTarget',x,y,channel:brush.channel,mode:brush.mode,target:brush.target,dir:brush.dir};renderGrid();showPending();}
+function startCrossGate(x,y){if(base(board[y][x])!=='floor'||futureReservations().some(q=>q.x===x&&q.y===y)){setStatus('Elige piso libre.',1800);return;}const id=freeCrossId();board[y][x]=crossTile({id,mode:brush.mode||'tap',bx:-1,by:-1});pending={type:'crossButton',x,y,id,mode:brush.mode||'tap'};renderGrid();showPending();}
+function resolveNewMechanism(x,y){const p=pending;if(base(board[y][x])!=='floor'||futureReservations().some(q=>q.x===x&&q.y===y)){setStatus('Elige otra casilla libre.',1800);return;}
+ if(p.type==='switchTarget')board[y][x]=p.target==='move'?`mwall:${p.channel}:${p.dir}`:`bdoor:${p.channel}`;
+ else board[p.y][p.x]=crossTile({id:p.id,mode:p.mode,bx:x,by:y});pending=null;hidePending();afterEdit();}
+function activateUnifiedSwitch(id,mode){if(mode==='hold')return;if(G.switchLatched.has(id))return;G.switchLatched.add(id);press(id);activateMW(id);}
+function wallDestinationFree(w,x,y){return inb(x,y)&&WALL_OK.includes(bt(x,y))&&!blockAt(x,y)&&!enemyAt(x,y)&&!mwallAt(x,y)&&!(G.player.x===x&&G.player.y===y);}
+function updateNewMechanisms(){const g=G;
+ const holdChannels=new Set();for(let y=0;y<g.n;y++)for(let x=0;x<g.n;x++){const t=g.grid[y][x],b=base(t);if(b==='switch'&&part(t,2)==='hold')holdChannels.add(tileId(t));}
+ for(const w of g.mwalls){if(!holdChannels.has(w.id))continue;if(!g.holdWallOrigins.has(w))g.holdWallOrigins.set(w,{x:w.x,y:w.y});const o=g.holdWallOrigins.get(w),active=g.holdIds.has(w.id),[dx,dy]=DIRS[w.dir],x=o.x+(active?dx:0),y=o.y+(active?dy:0);if((x!==w.x||y!==w.y)&&wallDestinationFree(w,x,y)){w.x=x;w.y=y;}}
+ // Hold doors do not close through an occupying player, box, or enemy.
+ for(let y=0;y<g.n;y++)for(let x=0;x<g.n;x++)if(base(g.grid[y][x])==='bdoor'&&holdChannels.has(tileId(g.grid[y][x]))&&((g.player.x===x&&g.player.y===y)||blockAt(x,y)||enemyAt(x,y)||mwallAt(x,y)))g.holdIds.add(tileId(g.grid[y][x]));
+ for(let y=0;y<g.n;y++)for(let x=0;x<g.n;x++)if(base(g.grid[y][x])==='crossgate'){const c=parseCross(g.grid[y][x]);if(c.mode!=='hold'||!g.crossActivated.has(c.id))continue;const occupied=(g.player.x===c.bx&&g.player.y===c.by)||blockAt(c.bx,c.by);const doorway=(g.player.x===x&&g.player.y===y)||blockAt(x,y)||enemyAt(x,y);if(occupied||doorway)g.crossOpen.add(c.id);else g.crossOpen.delete(c.id);}
+}
+function trackCrossing(before,after){const g=G;if(Math.abs(after.x-before.x)+Math.abs(after.y-before.y)!==1)return;
+ if(base(g.grid[after.y][after.x])==='crossgate'){const c=parseCross(g.grid[after.y][after.x]);if(!g.crossActivated.has(c.id))g.crossEntries.set(c.id,{from:{...before},x:after.x,y:after.y});}
+ if(base(g.grid[before.y][before.x])==='crossgate'){const c=parseCross(g.grid[before.y][before.x]),entry=g.crossEntries.get(c.id);if(entry&&!g.crossActivated.has(c.id)&&after.x-before.x===before.x-entry.from.x&&after.y-before.y===before.y-entry.from.y){g.crossActivated.add(c.id);g.grid[c.by][c.bx]=`crossbtn:${c.id}:${c.mode}`;playSound('door');toast('🛂 La puerta se cerró: apareció su botón.',1600);}g.crossEntries.delete(c.id);}}
+function updateLighting(){if(!G)return;const g=G,p=g.player,sources=[];if(g.hasTorch)sources.push({x:p.x,y:p.y,portable:true});const heating=new Map(),igniting=new Set();
+ for(let y=0;y<g.n;y++)for(let x=0;x<g.n;x++)if(base(g.grid[y][x])==='ftorch'){const key=y*g.n+x;
+  if(g.hasTorch&&!g.litTorches.has(key)&&Math.abs(x-p.x)+Math.abs(y-p.y)<=1){igniting.add(key);if(!g.torchTimers.has(key))g.torchTimers.set(key,{since:g.time,position:`${p.x},${p.y}`});let timer=g.torchTimers.get(key);if(timer.position!==`${p.x},${p.y}`){timer={since:g.time,position:`${p.x},${p.y}`};g.torchTimers.set(key,timer);}if(g.time-timer.since>=850){g.litTorches.add(key);g.torchTimers.delete(key);playSound('key');const wg=g.wgroups[tileId(g.grid[y][x])];if(wg&&wg.kind==='torch'&&!wg.done){wg.hit++;toast(`🕯️ ${wg.hit}/${wg.count} encendidas`,1200);if(wg.hit>=wg.count){wg.done=true;spawnObject(wg.obj,wg.sx,wg.sy);}}}}
+  if(g.litTorches.has(key))sources.push({x,y});}
+ for(const key of g.torchTimers.keys())if(!igniting.has(key))g.torchTimers.delete(key);
+ for(const source of sources)for(const [dx,dy]of [[0,0],[1,0],[-1,0],[0,1],[0,-1]]){const x=source.x+dx,y=source.y+dy;if(!inb(x,y)||base(g.grid[y][x])!=='ice')continue;const key=y*g.n+x,heatSource=(source.portable?'player:':'fixed:')+source.x+','+source.y;if(!heating.has(key)||!source.portable)heating.set(key,heatSource);}
+ for(const [key,source]of heating){if(!g.heatTimers.has(key)||g.heatPositions.get(key)!==source){g.heatTimers.set(key,g.time);g.heatPositions.set(key,source);}if(g.time-g.heatTimers.get(key)>=1400){const x=key%g.n,y=Math.floor(key/g.n);g.grid[y][x]='floor';g.heatTimers.delete(key);g.heatPositions.delete(key);playSound('door');g.effects.push({kind:'pop',x,y,t0:g.time,dur:400,ch:'💧'});computeBeams();}}
+ for(const key of g.heatTimers.keys())if(!heating.has(key)){g.heatTimers.delete(key);g.heatPositions.delete(key);}
+}
+function drawHeatProgress(x,y){const key=y*G.n+x,t=G.heatTimers.get(key),c=G.torchTimers.get(key);let progress=null;if(t!==undefined)progress=(G.time-t)/1400;else if(c)progress=(G.time-c.since)/850;if(progress===null)return;const ts=cv.ts;ctx.strokeStyle='#ffc86e';ctx.lineWidth=3;ctx.beginPath();ctx.arc((x+.5)*ts,(y+.5)*ts,ts*.35,-Math.PI/2,-Math.PI/2+Math.PI*2*clamp(progress,0,1));ctx.stroke();}
+function drawExtraTile(x,y){const t=G.grid[y][x],b=base(t),ts=cv.ts,cx=(x+.5)*ts,cy=(y+.5)*ts;if(!['cash','shop','switch','crossgate','crossbtn'].includes(b))return false;
+ ctx.fillStyle=colors.floor;ctx.fillRect(x*ts,y*ts,ts,ts);
+ if(b==='cash'){emoji(tileId(t)>10?'💰':'🪙',cx,cy,ts*.65);if(tileId(t)>1)numTag(cx+ts*.3,cy+ts*.3,tileId(t),ts*.16,'#b97d17');}
+ if(b==='shop')emoji('🏪',cx,cy,ts*.8);
+ if(b==='switch'||b==='crossbtn'){emoji(part(t,2)==='hold'?'⏺️':'🔘',cx,cy,ts*.6);numTag(cx+ts*.32,cy+ts*.32,tileId(t),ts*.15);}
+ if(b==='crossgate'){const c=parseCross(t);if(bt(x,y)==='bdoor'){ctx.fillStyle='#805a39';ctx.fillRect(x*ts+3,y*ts+3,ts-6,ts-6);emoji('🔒',cx,cy,ts*.45);}else{ctx.strokeStyle='#9c7dd5';ctx.lineWidth=3;ctx.strokeRect(x*ts+4,y*ts+2,ts-8,ts-4);}}
+ return true;
+}
+function updateShop(){const g=G,p=g.player;let found=null;for(let y=0;y<g.n;y++)for(let x=0;x<g.n;x++)if(base(g.grid[y][x])==='shop'&&Math.abs(x-p.x)+Math.abs(y-p.y)===1)found={x,y,key:`${x},${y}`,position:`${p.x},${p.y}`};if(!found){g.shopDwell=null;g.shopSuppressed=null;return;}if(g.shopSuppressed===found.key)return;if(!g.shopDwell||g.shopDwell.key!==found.key||g.shopDwell.position!==found.position)g.shopDwell={...found,since:g.time};if(g.time-g.shopDwell.since>=800){g.shopSuppressed=found.key;openGameShop(found.x,found.y);}}
+function safeShop(t){try{const cfg=JSON.parse(decodeURIComponent(part(t,1)));return{items:(cfg.items||[]).filter(v=>Object.hasOwn(SHOP_ITEMS,v.type)).map(v=>({type:v.type,price:clamp(Math.floor(+v.price||0),0,9999),qty:clamp(Math.floor(+v.qty||1),1,100)}))};}catch(e){return defaultShop();}}
+function openGameShop(x,y){const g=G;g.paused=true;heldKeys=[];touchDir=null;$('gameShopModal').classList.remove('hidden');const cfg=safeShop(g.grid[y][x]);const render=()=>{const box=$('gameShopItems');box.innerHTML='';$('gameShopGold').textContent=`🪙 ${g.gold} monedas`;for(const item of cfg.items){const spec=SHOP_ITEMS[item.type],button=document.createElement('button');button.className='btn shop-purchase';button.textContent=`${spec.icon} ${spec.name} ×${item.qty} · ${item.price} 🪙`;button.disabled=g.gold<item.price||(item.type==='sword'&&g.hasSword)||(item.type==='bow'&&g.hasBow);button.onclick=()=>{if(g.gold<item.price)return;g.gold-=item.price;if(item.type==='shield')g.shields+=item.qty;if(item.type==='bomb')g.bombCount+=item.qty;if(item.type==='ammo')g.ammo+=item.qty;if(item.type==='sword'){g.hasSword=true;g.weapon='sword';}if(item.type==='bow'){g.hasBow=true;g.weapon='bow';}g.hudKey='';playSound('key');render();};box.appendChild(button);}if(!cfg.items.length)box.textContent='Esta tienda no tiene artículos.';};render();}
+function closeGameShop(){ $('gameShopModal').classList.add('hidden');if(G){G.paused=false;lastTs=performance.now();}}
+function editShopConfig(ref,position){closeMobileEditorMenu();const cfg=ref?safeShop(ref.read()):defaultShop(),body=$('shopEditItems');body.innerHTML='';const rows=[];for(const [type,spec]of Object.entries(SHOP_ITEMS)){const row=document.createElement('label');row.className='shop-config-row';const check=document.createElement('input');check.type='checkbox';const item=cfg.items.find(i=>i.type===type);check.checked=!!item;const text=document.createElement('span');text.textContent=spec.icon+' '+spec.name;const price=document.createElement('input');price.type='number';price.min=0;price.max=9999;price.value=item?.price??spec.price;price.setAttribute('aria-label','Precio de '+spec.name);const qty=document.createElement('input');qty.type='number';qty.min=1;qty.max=100;qty.value=item?.qty??spec.qty;qty.setAttribute('aria-label','Cantidad de '+spec.name);row.append(check,text,price,qty);body.appendChild(row);rows.push({type,check,price,qty});}$('shopEditModal').classList.remove('hidden');$('shopEditApply').onclick=()=>{const data={items:rows.filter(r=>r.check.checked).map(r=>({type:r.type,price:clamp(Math.floor(+r.price.value||0),0,9999),qty:clamp(Math.floor(+r.qty.value||1),1,100)}))},tile='shop:'+encodeURIComponent(JSON.stringify(data));if(ref)ref.write(tile);else board[position.y][position.x]=tile;$('shopEditModal').classList.add('hidden');afterEdit();};}
+function deleteEditorObject(ref){if(!ref)return;if(ref.zone)darkZones=darkZones.filter(z=>z!==ref.zone);else if(ref.delete)ref.delete();else if(ref.board){const b=base(ref.read()),id=tileId(ref.read());if(['wd','ftorch','wspawn'].includes(b))removeGroup(id);else if(['cbtn','cspawn'].includes(b))removeCreator(id);else if(['portal','portal2','ddoor','diamond','rdoor','rdiamond','doubleDoor','closeBtn','openBtn'].includes(b)){const family=['portal','portal2'].includes(b)?['portal','portal2']:['ddoor','diamond'].includes(b)?['ddoor','diamond']:['rdoor','rdiamond'].includes(b)?['rdoor','rdiamond']:['doubleDoor','closeBtn','openBtn'];family.forEach(k=>removeById(k,id));}else ref.write('floor');}else ref.write('floor');$('objectMiniMenu').classList.add('hidden');afterEdit();setStatus('🗑 Objeto borrado. Puedes deshacer.',1600);}
+
+function newLocalId(prefix){return prefix+'-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,9);}
+function roomsWithIds(){const rooms=loadRooms();let changed=false;const used=new Set();for(const room of rooms){if(!room.id||used.has(room.id)){room.id=newLocalId('room');changed=true;}used.add(room.id);}if(changed)saveRooms(rooms);return rooms;}
+function openSavedRoom(id){const room=roomsWithIds().find(r=>r.id===id);if(!room)return;openDraft({...clone(room),id:null});editingSavedRoomId=id;currentDraftId=null;setStatus('Editando un cuarto guardado. Terminar y guardar actualizará este mismo cuarto.',3500);}
+function downloadJson(data,name){const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);}
+function exportRoom(room){downloadJson({format:'entropia-room',version:1,room:clone(room)},'Entropia-cuarto.json');}
+function exportCurrentRoute(){const rooms=loadRooms();if(!rooms.length){alert('Guarda al menos un cuarto para exportar la ruta.');return;}const name=prompt('Nombre de la ruta','Mi ruta');if(name===null)return;downloadJson({format:'entropia-route',version:1,name:name.trim()||'Mi ruta',rooms:clone(rooms)},'Entropia-ruta.json');}
+function readRoutes(){try{const v=JSON.parse(localStorage.getItem('entropiaSharedRoutes')||'[]');return Array.isArray(v)?v:[];}catch(e){return[];}}
+function writeRoutes(v){localStorage.setItem('entropiaSharedRoutes',JSON.stringify(v));}
+function validatedRoom(input,playable=true){
+ if(!input||typeof input!=='object')throw Error('Cuarto inválido.');const n=Number(input.gridSize||input.board?.length);if(![8,10,12,16,20].includes(n)||!Array.isArray(input.board)||input.board.length!==n||input.board.some(row=>!Array.isArray(row)||row.length!==n))throw Error('Tamaño de cuarto inválido.');
+ let budget=0;const coord=(x,y)=>Number.isInteger(x)&&Number.isInteger(y)&&x>=0&&y>=0&&x<n&&y<n;const object=v=>v&&typeof v==='object'&&!Array.isArray(v);
+ const checkMap=(map,depth)=>{if(map==null)return;if(!object(map))throw Error('Configuración inválida.');for(const [key,gr]of Object.entries(map)){if(!/^\d+$/.test(key)||!object(gr))throw Error('Canal inválido.');if(gr.obj)tile(gr.obj,depth+1);if(gr.rx!==undefined&&!coord(gr.rx,gr.ry))throw Error('Aparición fuera del cuarto.');if(gr.sx!==undefined&&!coord(gr.sx,gr.sy))throw Error('Aparición fuera del cuarto.');}};
+ const tile=(t,depth=0)=>{if(++budget>10000||depth>14||typeof t!=='string'||t.length>600000)throw Error('Objeto inválido o demasiado complejo.');const b=base(t);if(['bundle','arena','crossgate','shop','darkzone'].includes(b)){let c;try{c=JSON.parse(decodeURIComponent(part(t,1)));}catch(e){throw Error('Objeto compuesto inválido.');}if(!object(c))throw Error('Objeto inválido.');if(b==='bundle'){tile(c.tile,depth+1);if(c.extras&&!Array.isArray(c.extras))throw Error('Piezas inválidas.');for(const e of c.extras||[]){if(!coord(e.x,e.y))throw Error('Pieza fuera del cuarto.');tile(e.tile,depth+1);}checkMap(c.creators,depth);checkMap(c.wgroups,depth);}if(b==='arena'){if(!Array.isArray(c.enemies)||!c.enemies.length||c.enemies.length>12||!coord(c.rx,c.ry))throw Error('Creador inválido.');c.enemies.forEach(v=>{if(!['enemy','enemy2','boss','snake','worm'].includes(base(v)))throw Error('Enemigo inválido.');tile(v,depth+1);});tile(c.reward,depth+1);if(c.partner){if(!coord(c.partner.x,c.partner.y))throw Error('Pareja inválida.');tile(c.partner.tile,depth+1);}}if(b==='crossgate'&&(!coord(c.bx,c.by)||!Number.isInteger(c.id)||c.id<1||!['tap','hold'].includes(c.mode)))throw Error('Puerta de cruce inválida.');if(b==='shop'&&(!Array.isArray(c.items)||c.items.some(i=>!Object.hasOwn(SHOP_ITEMS,i.type)||!Number.isInteger(i.price)||i.price<0||i.price>9999||!Number.isInteger(i.qty)||i.qty<1||i.qty>100)))throw Error('Tienda inválida.');if(b==='darkzone'&&(!Number.isInteger(c.width)||!Number.isInteger(c.height)||c.width<1||c.height<1||c.width>20||c.height>20))throw Error('Zona inválida.');}
+  if(b==='cash'&&(!/^cash:\d+$/.test(t)||tileId(t)>100))throw Error('Cantidad de monedas inválida.');if(b==='switch'&&(!['tap','hold'].includes(part(t,2))||tileId(t)>10))throw Error('Botón inválido.');
+ };
+ input.board.flat().forEach(v=>tile(v));checkMap(input.groups,0);checkMap(input.creators,0);
+ if(playable&&(!input.board.flat().includes('start')||!input.board.flat().includes('exit')))throw Error('Cada cuarto de una ruta necesita inicio y salida.');
+ const dark=(input.darkZones||[]);if(!Array.isArray(dark)||dark.length>1000||dark.some(z=>!coord(z.x,z.y)||!Number.isInteger(z.width)||!Number.isInteger(z.height)||z.width<1||z.height<1||z.width>20||z.height>20||!['rect','ellipse','diamond'].includes(z.shape)))throw Error('Oscuridad inválida.');
+ return{board:clone(input.board),gridSize:n,playerSpeed:clamp(+input.playerSpeed||5,2,10),timeLimit:clamp(Math.floor(+input.timeLimit||0),0,86400),vision:5,groups:clone(input.groups||{}),creators:clone(input.creators||{}),darkZones:clone(dark),name:String(input.name||'Cuarto importado').slice(0,160),id:newLocalId('room'),timestamp:Date.now()};
+}
+function normalizeRoute(data){let source=data.rooms;if(data.format==='entropia-studio')source=data.rooms;if(!['entropia-route','entropia-studio'].includes(data.format)||!Array.isArray(source)||!source.length||source.length>100)throw Error('Selecciona un archivo de ruta de ENTROPÍA (máximo 100 cuartos).');return{id:newLocalId('route'),name:String(data.name||'Ruta importada').slice(0,160),rooms:source.map(r=>validatedRoom(r,true)),timestamp:Date.now()};}
+async function importSharedFile(file){if(!file)return;if(file.size>5*1024*1024)throw Error('El archivo debe pesar menos de 5 MB.');const data=JSON.parse(await file.text());if(data.format==='entropia-room'){const room=validatedRoom(data.room,false),playable=room.board.flat().includes('start')&&room.board.flat().includes('exit');if(playable)saveRooms([...roomsWithIds(),room]);else saveDrafts([...loadDrafts(),room]);loadRoomList();return{room};}const route=normalizeRoute(data);writeRoutes([...readRoutes(),route]);return{route};}
+function playRouteRooms(rooms,index=0,name='Ruta'){if(!rooms?.length)return;for(const id of ['routesModal','learningModal','objectGuideModal','iconCatalogModal'])$(id)?.classList.add('hidden');closeMobileEditorMenu();S={mode:'route',rooms:clone(rooms),index,currentRoom:clone(rooms[index]),routeName:name,timer:null,toastT:null,overlayKind:null};beginGame();}
+function showRoutes(){const box=$('routesList');box.innerHTML='';const routes=readRoutes();if(!routes.length){const p=document.createElement('p');p.textContent='Importa una ruta para jugarla aquí. Tus cuartos del historial se conservan por separado.';box.appendChild(p);}routes.forEach(route=>{const row=document.createElement('div');row.className='route-card';const title=document.createElement('strong');title.textContent=route.name;const subtitle=document.createElement('small');subtitle.textContent=`${route.rooms.length} cuartos · orden de juego incluido`;const controls=document.createElement('div');controls.className='btn-group';const play=makeActionButton('▶ Jugar','Jugar ruta',()=>playRouteRooms(route.rooms,0,route.name));const exp=makeActionButton('↓ Exportar','Exportar ruta',()=>downloadJson({format:'entropia-route',version:1,name:route.name,rooms:route.rooms},'Entropia-ruta.json'));const copy=makeActionButton('✎ Copiar cuartos al historial','Copiar para editar',()=>{const copied=route.rooms.map(r=>({...clone(r),id:newLocalId('room')}));saveRooms([...roomsWithIds(),...copied]);loadRoomList();$('routesModal').classList.add('hidden');showScreen('list');});const del=makeActionButton('🗑','Borrar ruta',()=>{if(confirm('¿Quitar esta ruta importada?')){writeRoutes(readRoutes().filter(r=>r.id!==route.id));showRoutes();}});controls.append(play,exp,copy,del);row.append(title,subtitle,controls);box.appendChild(row);});$('routesModal').classList.remove('hidden');}
+const GUIDE_DETAILS={floor:'Piso transitable. Sirve para abrir caminos y reemplazar elementos.',wall:'Pared fija: bloquea al personaje, enemigos y proyectiles.',coin:'Persona que debes rescatar. La salida aparece después de rescatar a todas, incluidas las que liberan enemigos o mecanismos.',cash:'Dinero para comprar en tiendas. Cada pila contiene de 1 a 100 monedas; con más de 10 se muestra una bolsa. No bloquea la salida.',shop:'Quédate 0.8 segundos a un lado para comprar con tus monedas. Su creador elige artículos, precios y cantidades.',start:'Posición inicial del personaje. Al colocarlo eliges su velocidad.',exit:'Salida del cuarto. Permanece oculta hasta rescatar a todas las personas.',erase:'Borra una casilla. Sobre piso oscuro puede eliminar la zona de oscuridad.',switch:'Botón unificado por canal 1–10. Controla paredes normales y movibles. Una pisada lo activa una vez; mantenerlo presionado abre mientras haya una caja o el personaje encima. La pared movible vuelve al soltar si su origen está libre.',crossgate:'Empieza abierta. Debes atravesarla de lado a lado, sin volver por donde entraste; entonces se cierra y aparece su botón. Puede abrirse con una pisada o mientras sostienes el botón.',bdoor:'Pared oculta conectada a un canal. Se ve como una pared normal y desaparece cuando su botón abre el canal.',mwall:'Pared que se desplaza una casilla en la dirección elegida al activar su canal. No atraviesa objetos ni al personaje.',doubleDoor:'Puerta con dos botones: verde abre y rojo cierra. El cierre espera si alguien ocupa el paso.',hbtn:'Botón sostenido de cuartos anteriores: abre su canal mientras alguien lo ocupa.',btn:'Botón de pared de cuartos anteriores.',mwbtn:'Botón de pared movible de cuartos anteriores.',key:'Llave para abrir una puerta con llave; se consume al abrirla.',keydoor:'Puerta que necesita una llave.',stone:'Obstáculo de piedra que puedes destruir con una explosión.',hole:'Hoyo peligroso. Empuja una caja de madera para convertirlo en un camino que una bomba puede volver a destruir.',block:'Caja empujable. Sirve para sostener botones, bloquear rayos y rellenar hoyos.',torch:'Antorcha portátil. Al recogerla iluminas la oscuridad, puedes encender velas y calentar hielo.',ftorch:'Quédate quieto junto a ella durante 0.85 segundos llevando la antorcha portátil. Al encender el grupo completo aparece su recompensa.',ice:'Bloquea el paso. Mantén calor cercano de una antorcha durante 1.4 segundos para derretirlo; al alejar el calor se reinicia.',darkzone:'Capa de oscuridad con forma y medidas configurables. Las antorchas iluminan sus alrededores.',portal:'Dos extremos enlazados. Permiten transportar al personaje y, según la situación, cajas y proyectiles.',wdiamond:'Golpea todos los diamantes blancos del grupo para liberar la aparición que elegiste.',ddoor:'Puerta que se abre al golpear su diamante azul.',rdoor:'Puerta que se abre cuando un rayo ilumina su diamante rojo.',cbtn:'Botón regalo. Al pisarlo crea el objeto configurado, con sus conexiones; puedes encadenar regalos.',arena:'Creador de enemigos: emite integrantes uno a uno. Desaparece cuando sale el último; su recompensa espera a que todos sean derrotados.',sword:'Activa la espada para atacar cerca. Toca el centro hacia tu última dirección o desliza para elegir otra.',bow:'Permite disparar flechas en una dirección. Necesitas munición.',ammo:'Bolsa con la cantidad configurada de flechas.',bomb:'Bombas con retardo. La explosión afecta casillas cercanas: aléjate antes de que detone.',shield:'Absorbe un golpe y concede un breve momento de protección.',spikes:'Trampa que alterna entre reposo, aviso y activación.',laser:'Emisor de un rayo continuo en la dirección configurada. Los obstáculos lo detienen y los espejos lo desvían.',enemy:'Detecta y persigue al personaje; tiene vida, velocidad y visión configurables. Puede liberar llave y persona.',enemy2:'Enemigo territorial: persigue dentro de una zona limitada.',boss:'Jefe Ojo: invoca pequeños ojos. Al derrotarlos queda vulnerable unos segundos.',snake:'Serpiente de largo configurable. Su cola es el punto vulnerable.',worm:'Gusano que va creciendo. La cola creadora es vulnerable y cortar su cuerpo desconecta segmentos.',mirrorNE:'Espejo empujable orientado al noreste. Desvía rayos.',mirrorNW:'Espejo empujable orientado al noroeste. Desvía rayos.',mirrorSE:'Espejo empujable orientado al sureste. Desvía rayos.',mirrorSW:'Espejo empujable orientado al suroeste. Desvía rayos.',arrowU:'Casilla de sentido único hacia arriba.',arrowD:'Casilla de sentido único hacia abajo.',arrowL:'Casilla de sentido único hacia la izquierda.',arrowR:'Casilla de sentido único hacia la derecha.'};
+function toolIcon(tool){return({wdiamond:ICONS.wd,erase:'🗑️',floor:'▫️',mirrorNE:'🪞',mirrorNW:'🪞',mirrorSE:'🪞',mirrorSW:'🪞'})[tool]||ICONS[tool]||'✦';}
+function guideText(tool){return GUIDE_DETAILS[tool]||TOOL_NOTES[tool]||'Selecciona este objeto para ver y configurar sus valores en el editor.';}
+function showObjectGuide(){closeMobileEditorMenu();const render=()=>{const query=$('guideSearch').value.toLocaleLowerCase(),box=$('objectGuideList');box.innerHTML='';for(const tool of Object.keys(TOOL_LABELS)){if(!(`${TOOL_LABELS[tool]} ${guideText(tool)}`.toLocaleLowerCase().includes(query)))continue;const card=document.createElement('article');card.className='guide-card';const icon=document.createElement('span');icon.textContent=toolIcon(tool);const text=document.createElement('div'),title=document.createElement('strong'),p=document.createElement('p');title.textContent=TOOL_LABELS[tool];p.textContent=guideText(tool);text.append(title,p);card.append(icon,text);box.appendChild(card);}};$('guideSearch').oninput=render;render();$('objectGuideModal').classList.remove('hidden');}
+function learningRoom(){const b=emptyBoard(12);for(let i=0;i<12;i++)b[0][i]=b[11][i]=b[i][0]=b[i][11]='wall';b[1][1]='start';b[10][10]='exit';b[2][2]='sword';b[3][2]='bow';b[4][2]='ammo:10';b[5][2]='bomb:3';b[2][3]='torch';b[2][4]='coin';b[2][5]='ice';b[3][6]='ftorch:1';b[8][9]='wspawn:1';b[4][4]='cash:35';b[4][5]='shop:'+encodeURIComponent(JSON.stringify(defaultShop()));b[7][3]='switch:1:tap';b[7][4]='bdoor:1';b[8][8]='enemy:1:1:3:0:0';return{board:b,gridSize:12,playerSpeed:5,timeLimit:0,groups:{1:{kind:'torch',count:1,obj:packBundle({tile:'coin'})}},creators:{},darkZones:[{x:7,y:6,width:4,height:5,shape:'rect'}],name:'Aprender a jugar'};}
+let quickToolsState=null,iconDrag=null,iconHold=null,ignoreIconClickUntil=0;
+function syncQuickTools(){if(!quickToolsState||!responsiveEditor)return;const mobile=responsiveEditor.moved;for(const slot of quickToolsState.slots){if(mobile)quickToolsState.bar.insertBefore(slot.node,$('mobileEditorToggle'));else slot.anchor.parentNode.insertBefore(slot.node,slot.anchor.nextSibling);}}
+function saveCatalogOrder(){localStorage.setItem('entropiaCatalogOrder',JSON.stringify([...$('toolbar').querySelectorAll('.tool-btn')].map(b=>b.dataset.tool)));}
+function cleanupIconDrag(){clearTimeout(iconHold);iconHold=null;if(iconDrag?.ghost)iconDrag.ghost.remove();if(iconDrag?.source)iconDrag.source.classList.remove('drag-source');iconDrag=null;}
+function swapCatalogTools(a,b){if(!a||!b||a===b)return;const tools=[...$('toolbar').querySelectorAll('.tool-btn')],i=tools.findIndex(v=>v.dataset.tool===a),j=tools.findIndex(v=>v.dataset.tool===b);if(i<0||j<0)return;[tools[i],tools[j]]=[tools[j],tools[i]];const x=$('toolbar').scrollLeft,y=$('toolbar').scrollTop;tools.forEach(v=>$('toolbar').appendChild(v));$('toolbar').scrollLeft=x;$('toolbar').scrollTop=y;saveCatalogOrder();}
+function showIconCatalog(){closeMobileEditorMenu();if($('catalogEdit').getAttribute('aria-pressed')==='true')$('catalogEdit').click();renderIconCatalog();$('iconCatalogModal').classList.remove('hidden');}
+function renderIconCatalog(){const grid=$('iconCatalogGrid'),scroll=grid.scrollTop;grid.innerHTML='';for(const entry of $('toolbar').querySelectorAll('.tool-btn')){const tool=entry.dataset.tool,button=document.createElement('button');button.className='icon-catalog-item';button.dataset.catalogTool=tool;button.textContent=toolIcon(tool);button.title=TOOL_LABELS[tool];button.setAttribute('aria-label',TOOL_LABELS[tool]);if(selectedTool===tool)button.classList.add('active');grid.appendChild(button);
+ let origin=null;button.addEventListener('pointerdown',e=>{if(e.button!==undefined&&e.button!==0)return;origin={x:e.clientX,y:e.clientY};cleanupIconDrag();iconHold=setTimeout(()=>{const ghost=document.createElement('div');ghost.className='catalog-drag-ghost';ghost.textContent=toolIcon(tool);ghost.style.left=e.clientX+'px';ghost.style.top=e.clientY+'px';document.body.appendChild(ghost);button.classList.add('drag-source');iconDrag={tool,source:button,ghost,pointer:e.pointerId};button.setPointerCapture(e.pointerId);ignoreIconClickUntil=Date.now()+1000;},480);});
+ button.addEventListener('pointermove',e=>{if(iconDrag?.source===button){e.preventDefault();iconDrag.ghost.style.left=e.clientX+'px';iconDrag.ghost.style.top=e.clientY+'px';}else if(origin&&Math.hypot(e.clientX-origin.x,e.clientY-origin.y)>9){clearTimeout(iconHold);iconHold=null;}});
+ button.addEventListener('pointerup',e=>{if(iconDrag?.source===button){const hit=document.elementFromPoint(e.clientX,e.clientY)?.closest('[data-catalog-tool]');const target=hit&&grid.contains(hit)?hit.dataset.catalogTool:null;const source=iconDrag.tool;cleanupIconDrag();if(target&&target!==source)swapCatalogTools(source,target);ignoreIconClickUntil=Date.now()+600;renderIconCatalog();}else cleanupIconDrag();});button.addEventListener('pointercancel',cleanupIconDrag);button.addEventListener('contextmenu',e=>e.preventDefault());button.addEventListener('click',()=>{if(Date.now()<ignoreIconClickUntil)return;entry.click();$('iconCatalogModal').classList.add('hidden');});}grid.scrollTop=scroll;}
+function makeFeatureModal(id,title,content,wide=false){const modal=document.createElement('div');modal.id=id;modal.className='modal hidden feature-modal'+(wide?' wide':'');modal.innerHTML=`<section class="modal-box"><div class="feature-heading"><h3>${title}</h3><button type="button" class="feature-close" aria-label="Cerrar">×</button></div>${content}</section>`;document.body.appendChild(modal);modal.querySelector('.feature-close').onclick=()=>{if(id==='gameShopModal')closeGameShop();else{modal.classList.add('hidden');if(id==='iconCatalogModal')cleanupIconDrag();}};modal.addEventListener('click',e=>{if(e.target===modal){if(id==='gameShopModal')closeGameShop();else modal.classList.add('hidden');}});return modal;}
+function setupExpansion(){
+ makeFeatureModal('routesModal','Rutas para jugar','<div class="btn-group"><button class="btn btn-primary" id="routeImport">↑ Importar ruta o cuarto</button><button class="btn" id="routeSaveCurrent">＋ Guardar mi ruta aquí</button></div><div id="routesList"></div>',true);
+ makeFeatureModal('objectGuideModal','Todos los objetos','<input id="guideSearch" type="search" placeholder="Buscar por nombre o función…" aria-label="Buscar objeto"><div id="objectGuideList"></div>',true);
+ makeFeatureModal('learningModal','Aprender a jugar','<div class="learning-content"><p><strong>Tu misión:</strong> rescata a todas las personas 🧍 para descubrir la salida 🚪. Las monedas 🪙 son dinero para las tiendas.</p><ol><li>Muévete con flechas o WASD en computadora. En celular usa los laterales y las franjas inferiores invisibles: arriba está justo encima de abajo.</li><li>Recoge la espada y selecciónala. Toca el centro para golpear hacia donde miras o desliza para elegir dirección. En computadora: espacio o J; 1, 2 y 3 cambian de arma.</li><li>Recoge la antorcha. Quédate junto a una vela para encenderla y junto al hielo para derretirlo.</li><li>Prueba el botón, recoge monedas y espera junto a la tienda para comprar.</li><li>Rescata a las dos personas del ejemplo y busca la salida. El ejemplo no tiene límite de tiempo.</li></ol><p><strong>Compartir rutas:</strong> en Cuartos creados usa Exportar ruta completa. Envía el archivo JSON junto con este HTML. La otra persona abre el HTML y entra en Ver rutas → Importar ruta para jugar en su dispositivo.</p><p>En el editor: mantén presionado un objeto para editarlo, moverlo o borrarlo. En ▦ puedes elegir iconos y mantener/arrastrar uno sobre otro para intercambiar su lugar.</p></div><div class="btn-group"><button class="btn btn-primary" id="learningPlay">▶ Jugar cuarto de muestra</button><button class="btn" id="learningGuide">📖 Explicación de todos los objetos</button></div>',true);
+ makeFeatureModal('iconCatalogModal','','<div id="iconCatalogGrid" aria-label="Catálogo de objetos; mantén y arrastra para intercambiar"></div>',true);
+ makeFeatureModal('shopEditModal','Configurar tienda','<p>Marca los artículos disponibles. Columnas: precio en monedas y cantidad por compra.</p><div id="shopEditItems"></div><button class="btn btn-primary" id="shopEditApply">Guardar tienda</button>');
+ makeFeatureModal('gameShopModal','🏪 Tienda','<strong id="gameShopGold"></strong><div id="gameShopItems"></div><button class="btn" id="gameShopExit">Seguir jugando</button>');$('gameShopModal').style.zIndex='11000';$('gameShopExit').onclick=closeGameShop;
+ const mainButtons=$('goCreateBtn').parentElement,learn=document.createElement('button');learn.className='btn';learn.textContent='🎮 Aprender a jugar';learn.onclick=()=>$('learningModal').classList.remove('hidden');mainButtons.appendChild(learn);$('helpStudio').onclick=()=>{closeMobileEditorMenu();$('learningModal').classList.remove('hidden');};$('learningPlay').onclick=()=>playRouteRooms([learningRoom()],0,'Aprender a jugar');$('learningGuide').onclick=showObjectGuide;
+ const routeButtons=document.createElement('div');routeButtons.className='btn-group';const exp=document.createElement('button');exp.className='btn';exp.textContent='↓ Exportar ruta completa';exp.onclick=exportCurrentRoute;const routes=document.createElement('button');routes.className='btn';routes.textContent='🗺 Ver rutas';routes.onclick=showRoutes;routeButtons.append(exp,routes);$('listScreen').insertBefore(routeButtons,$('roomListContainer'));
+ const file=document.createElement('input');file.type='file';file.accept='.json';file.hidden=true;document.body.appendChild(file);$('routeImport').onclick=()=>file.click();file.onchange=async()=>{try{const result=await importSharedFile(file.files[0]);if(result?.route)showRoutes();else if(result?.room){$('routesModal').classList.add('hidden');showScreen('list');alert('Cuarto importado. Si está incompleto, lo encontrarás en Cuartos en construcción.');}}catch(e){alert('No se pudo importar: '+e.message);}finally{file.value='';}};
+ $('routeSaveCurrent').onclick=()=>{const rooms=loadRooms();if(!rooms.length){alert('No hay cuartos en el historial.');return;}try{const name=prompt('Nombre de la ruta','Mi ruta');if(name===null)return;const route=normalizeRoute({format:'entropia-route',name:name||'Mi ruta',rooms});writeRoutes([...readRoutes(),route]);showRoutes();}catch(e){alert(e.message);}};
+ const actions=$('editorScreen').querySelector('.studio-actions'),guide=document.createElement('button');guide.className='tool-btn';guide.textContent='📖 Todos los objetos';guide.onclick=showObjectGuide;actions.appendChild(guide);const icons=document.createElement('button');icons.className='tool-btn';icons.textContent='▦ Catálogo de iconos';icons.onclick=showIconCatalog;actions.appendChild(icons);
+ const quick=document.createElement('button');quick.id='quickCatalog';quick.className='tool-btn';quick.textContent='▦';quick.title='Todos los objetos: seleccionar o arrastrar para ordenar';quick.setAttribute('aria-label',quick.title);quick.onclick=showIconCatalog;const bar=$('mobileEditorBar');bar.insertBefore(quick,$('mobileEditorToggle'));const slots=[];for(const id of ['undoStudio','redoStudio']){const node=$(id),anchor=document.createComment('posición de acción rápida');node.parentNode.insertBefore(anchor,node);slots.push({node,anchor});}quickToolsState={slots,bar};syncQuickTools();
+ $('iconCatalogGrid').addEventListener('touchmove',e=>{if(iconDrag)e.preventDefault();},{passive:false});
+ document.body.classList.add('catalog-v2');document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(!$('gameShopModal').classList.contains('hidden')){closeGameShop();return;}for(const id of ['routesModal','objectGuideModal','learningModal','iconCatalogModal','shopEditModal'])$(id).classList.add('hidden');cleanupIconDrag();});
+}
+
+function futureReservations(){const out=futureReservationsCore();for(const ref of editorObjectRefsCore())if(base(ref.read())==='crossgate'){const c=parseCross(ref.read());if(c.bx>=0&&c.by>=0)out.push({x:c.bx,y:c.by,tile:`crossbtn:${c.id}:${c.mode}`});}return out;}
+function editorObjectRefs(){const refs=editorObjectRefsCore();for(const owner of [...refs])if(base(owner.read())==='crossgate'){const cfg=parseCross(owner.read());if(cfg.bx<0||cfg.by<0)continue;const flush=()=>owner.write(crossTile(cfg));refs.push({future:true,ownerCross:owner,pos:()=>({x:cfg.bx,y:cfg.by}),read:()=>`crossbtn:${cfg.id}:${cfg.mode}`,write:t=>{cfg.mode=part(t,2)||cfg.mode;flush();},move:q=>{cfg.bx=q.x;cfg.by=q.y;flush();},delete:()=>owner.write('floor')});}return refs;}
 
 setupStudio();
 setupNewFeatures();
 setupWorkspaceLayout();
 setupResponsiveEditor();
 setupObjectEditing();
+setupExpansion();
 
     buildPalette();
     initEmptyBoard();
