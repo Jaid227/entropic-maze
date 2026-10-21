@@ -567,6 +567,10 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
 #btnHook{position:absolute;top:12px;left:84px;z-index:6;border:1px solid #b38cec60;background:#171d3060;color:white;border-radius:14px;width:44px;height:44px;font-size:24px;touch-action:manipulation}#btnHook.off{opacity:.25}
 #toolbar [data-tool="ftorch"],#spawnPalette [data-tool="ftorch"]{color:#dba352}#toolbar [data-tool="torchdecor"],#spawnPalette [data-tool="torchdecor"]{color:#ffdc72}#toolbar [data-tool="gemwall"]{color:#58d2de}#toolbar [data-tool="torchwall"]{color:#b78bfd}
 #floorSwitches[hidden]{display:none!important}#floorSwitches{display:inline-flex;gap:3px;align-items:center;flex:none}#floorSwitches button{border:1px solid var(--border-cell);background:var(--bg-panel);color:var(--text-primary);border-radius:7px;padding:6px 8px;font-size:11px;min-width:31px}#floorSwitches button.active{background:var(--accent);color:#101522}#floorSwitches button:disabled{opacity:.4}
+#undoStudio,#redoStudio{width:31px!important;min-width:31px!important;max-width:31px!important;height:30px!important;overflow:hidden!important;padding:2px!important;white-space:nowrap!important;font-size:20px!important;flex:0 0 31px!important}#historyQuick{display:inline-flex;gap:3px;flex:none;order:-1}#historyQuick:empty{display:none}#mobileEditorLabel{min-width:0!important;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}#floorSwitches{position:relative;z-index:2}#mobileEditorBar{overflow:visible!important}
+body.custom-controls #mobileArrows{display:block!important}body.custom-controls .custom-play-control{touch-action:none!important;box-sizing:border-box!important}body.custom-controls #mobileArrows button{opacity:.72!important;color:white!important}body.custom-controls .custom-play-control.off{opacity:.3!important}body.custom-controls .custom-play-control.sel{border-color:#ffe292!important;box-shadow:0 0 0 3px #ffe29255}
+#controlEditor{position:fixed;inset:0;z-index:20000;background:#07101b9e;font-family:inherit}#controlEditor.hidden{display:none}#controlPreview{position:absolute;inset:0;pointer-events:none}.control-preview-button{position:absolute;pointer-events:auto;background:#1c355fdc;color:white;border:2px solid #9db7df;border-radius:16px;touch-action:none;user-select:none;box-sizing:border-box}.control-preview-button.selected{border-color:#ffdc76;box-shadow:0 0 0 3px #ffdc7644}.control-preview-button.blocked{border-color:#ff647b}.mode-one .control-preview-button{opacity:.24;pointer-events:none}.control-tools{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:min(390px,calc(100vw - 150px));max-height:38vh;overflow:auto;background:#101d30ed;border:1px solid #7891b7;border-radius:14px;padding:12px;color:#eaf2ff;box-sizing:border-box}.control-tools strong{display:block;margin-bottom:8px}.control-tools select{max-width:100%;padding:5px;margin:3px;background:#203451;color:white;border-radius:6px}.control-tools label{display:flex;gap:5px;align-items:center;font-size:12px}.control-tools input{min-width:50px;flex:1}.control-tools p{font-size:11px;line-height:1.4;margin:6px 0}.control-tools button{background:#294767;color:white;border:1px solid #7a98ba;border-radius:7px;padding:6px;margin:2px;font-size:11px}#controlSave{background:#3a6960}
+
 </style>
 </head>
 <body>
@@ -625,7 +629,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
                 <span class="tool-label">Mecanismos</span>
                 <button class="tool-btn" data-tool="key">🔑 Llave</button>
                 <button class="tool-btn" data-tool="keydoor">🔒 Puerta con llave</button>
-                <button class="tool-btn" data-tool="spikes">🔺 Picos</button>
+                <button class="tool-btn" data-tool="touchSpikes">⚠️ Picos de presión</button><button class="tool-btn" data-tool="enemy3">🧌 Enemigo constructor</button><button class="tool-btn" data-tool="bramble">🪵 Barricada de espada</button><button class="tool-btn" data-tool="spikes">🔺 Picos</button>
                 <button class="tool-btn" data-tool="switch">🔘 Botón + pared</button>
                 <button class="tool-btn" data-tool="crossgate">🛂 Puerta de cruce</button>
                 <button class="tool-btn" data-tool="cash">🪙 Monedas</button>
@@ -770,7 +774,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
        CONSTANTES
     ===================================================== */
     const ID_COL = { 1: '#e74c3c', 2: '#3498db', 3: '#2ecc71', 4: '#e0a800',5:'#9b59b6',6:'#00a6a6',7:'#e67e22',8:'#d64c8c',9:'#607d8b',10:'#6d7f31' };
-    const ICONS = {redGate:'🟥',blueGate:'🟦',colorGem:'💠',stairs:'🪜',boxbox:'📦',hook:"🪝",anchor:"⚓",checkpoint:"💾",blinkboss:"🧿",blinkpad:"🔮",icebox:'🧊',torchdecor:'🔥',remwall:'🔲',gemwall:'💎',torchwall:'🕯️',bossdoor:'🚪',bosskey:'🗝️',switch:'🔘',crossgate:'🛂',crossbtn:'🔘',cash:'🪙',shop:'🏪',darkzone:'🌑',torch:'🔥',ftorch:'🕯️',ice:'🧊',
+    const ICONS = {enemy3:'🧌',bramble:'🪵',touchSpikes:'⚠️',lightswitch:'💡',redGate:'🟥',blueGate:'🟦',colorGem:'💠',stairs:'🪜',boxbox:'📦',hook:"🪝",anchor:"⚓",checkpoint:"💾",blinkboss:"🧿",blinkpad:"🔮",icebox:'🧊',torchdecor:'🔥',remwall:'🔲',gemwall:'💎',torchwall:'🕯️',bossdoor:'🚪',bosskey:'🗝️',switch:'🔘',crossgate:'🛂',crossbtn:'🔘',cash:'🪙',shop:'🏪',darkzone:'🌑',torch:'🔥',ftorch:'🕯️',ice:'🧊',
         arena: '🏭', boxPath: '🪵', doubleDoor: '🚦', closeBtn: '🔴', openBtn: '🟢', snake: '🐍', worm: '🪱', wall: '🧱', coin: '🧍', enemy: '👹', enemy2: '👺', boss: '👁️', start: '🏁', exit: '🚪',
         key: '🔑', keydoor: '🔒', spikes: '🔺', btn: '🔘', bdoor: '🔲', hbtn: '⏺️',
         ddoor: '💠', diamond: '💎', rdoor: '🟥', rdiamond: '♦️', mwall: '🔳', mwbtn: '🟦',
@@ -797,11 +801,11 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
     };
     // FIX: faltaba 'portal' aquí y showPending() lanzaba un TypeError al colocar un portal
     const DOOR_NAME = { bdoor: 'pared-botón', ddoor: 'puerta-diamante', rdoor: 'puerta-láser', mwall: 'pared movible', portal: 'portal' };
-    const SOLID = ['shop','ice','wall', 'bdoor', 'ddoor', 'rdoor', 'stone', 'hole', 'diamond', 'rdiamond', 'wd', 'laser'];
+    const SOLID = ['bramble','shop','ice','wall', 'bdoor', 'ddoor', 'rdoor', 'stone', 'hole', 'diamond', 'rdiamond', 'wd', 'laser'];
     const ENEMY_BLOCK = SOLID.concat(['keydoor']);
-    const BEAM_STOP = ['anchor','shop','ice','wall', 'keydoor', 'bdoor', 'ddoor', 'rdoor', 'stone', 'laser'];
+    const BEAM_STOP = ['bramble','anchor','shop','ice','wall', 'keydoor', 'bdoor', 'ddoor', 'rdoor', 'stone', 'laser'];
     const ARROW_STOP = BEAM_STOP.concat(['rdiamond']);
-    const BLOCK_OK = ['floor', 'btn', 'mwbtn', 'hbtn', 'spikes', 'diamondY', 'wdY', 'arrowU', 'arrowD', 'arrowL', 'arrowR', 'portal', 'portal2', 'cbtn', 'cspawn'];
+    const BLOCK_OK = ['touchSpikes','floor', 'btn', 'mwbtn', 'hbtn', 'spikes', 'diamondY', 'wdY', 'arrowU', 'arrowD', 'arrowL', 'arrowR', 'portal', 'portal2', 'cbtn', 'cspawn'];
     const WALL_OK = ['floor', 'diamondY', 'wdY', 'arrowU', 'arrowD', 'arrowL', 'arrowR', 'cbtn', 'cspawn'];
     const TERRITORY = 2;
     const HUD_HOLD_MS = 2200;
@@ -902,7 +906,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
     let playerSpeed = 5;
     let currentDraftId = null,editingSavedRoomId=null;
     let roomTimeLimit=120,darkZones=[],startGear={sword:false,bombs:0,bow:false,ammo:0};
-    const brush = {stairDir:'up',appearMs:1100,aimMs:1300,startTorch:false,startHook:false,territory:2,travel:1,hookLength:5,startShields:false,startShieldCount:1,sites:3,lightIntensity:5,goldDrop:0,startSword:false,startBombs:false,startBombCount:3,startBow:false,startAmmo:10,mode:'tap',target:'wall',amount:1, width:4,height:4,shape:'rect',startSpeed:5,channel:1, coin:false, waveCount: 2, length: 3, speed: 3, hp: 1, vision: 5, key: false, minis: 3, qty: 1, dir: 'R', count: 3, hid: 1 };
+    const brush = {darknessLevel:'dim',hasSwitch:false,spikeRest:1800,spikeActive:1200,trapDelay:650,buildMs:1000,stairDir:'up',appearMs:1100,aimMs:1300,startTorch:false,startHook:false,territory:2,travel:1,hookLength:5,startShields:false,startShieldCount:1,sites:3,lightIntensity:5,goldDrop:0,startSword:false,startBombs:false,startBombCount:3,startBow:false,startAmmo:10,mode:'tap',target:'wall',amount:1, width:4,height:4,shape:'rect',startSpeed:5,channel:1, coin:false, waveCount: 2, length: 3, speed: 3, hp: 1, vision: 5, key: false, minis: 3, qty: 1, dir: 'R', count: 3, hid: 1 };
     let pending = null;              // {type:'pair'|'wgroup'|'creator', ...}
     let spawnTool = null, spawnStore = null;
     const TOOL_LABELS = {};
@@ -925,7 +929,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
     /* =====================================================
        EDITOR: PANEL DE VALORES
     ===================================================== */
-    const PSPEC = {stairDir:{t:'select',label:'Destino de la escalera',options:[['up','Subir un piso'],['down','Bajar un piso']]},appearMs:{t:'range',label:'Tiempo de aparición · milisegundos',min:200,max:6000},aimMs:{t:'range',label:'Preparación de ataque · milisegundos',min:200,max:6000},startTorch:{t:'check',label:'Comienza con antorcha portátil'},startHook:{t:'check',label:'Comienza con gancho'},territory:{t:'range',label:'Radio del territorio · cuadros',min:1,max:15},travel:{t:'range',label:'Cuadros por activación',min:1,max:10},hookLength:{t:'range',label:'Alcance del gancho · cuadros',min:1,max:20},startShields:{t:'check',label:'Comienza con escudos'},startShieldCount:{t:'range',label:'Escudos iniciales',min:1,max:100},sites:{t:'range',label:'Lugares de aparición',min:2,max:6},lightIntensity:{t:'range',label:'Intensidad de luz',min:1,max:10},goldDrop:{t:'range',label:'🪙 Monedas al ser derrotado',min:0,max:100},startSword:{t:'check',label:'Comienza con espada'},startBombs:{t:'check',label:'Comienza con bombas'},startBombCount:{t:'range',label:'Bombas iniciales',min:0,max:100},startBow:{t:'check',label:'Comienza con arco'},startAmmo:{t:'range',label:'Flechas iniciales',min:0,max:100},mode:{t:'select',label:'Tipo de botón',options:[['tap','Una pisada'],['hold','Mantener presionado']]},target:{t:'select',label:'Objeto conectado',options:[['wall','Pared que se abre'],['move','Pared movible']]},amount:{t:'range',label:'🪙 Monedas',min:1,max:100},
+    const PSPEC = {builderRange:{t:'range',field:'vision',label:'Radio de su cuarto y visión',min:1,max:8},darknessLevel:{t:'select',label:'Oscuridad de la zona',options:[['total','Total'],['dim','Tenue · actual'],['medium','Media'],['light','Clara']]},hasSwitch:{t:'check',label:'Colocar apagador para esta zona'},spikeRest:{t:'range',label:'Picos dentro · milisegundos',min:500,max:10000},spikeActive:{t:'range',label:'Picos fuera · milisegundos',min:200,max:6000},trapDelay:{t:'range',label:'Espera tras pisarlos · milisegundos',min:200,max:5000},buildMs:{t:'range',label:'Tiempo de construcción · milisegundos',min:300,max:5000},stairDir:{t:'select',label:'Destino de la escalera',options:[['up','Subir un piso'],['down','Bajar un piso']]},appearMs:{t:'range',label:'Tiempo de aparición · milisegundos',min:200,max:6000},aimMs:{t:'range',label:'Preparación de ataque · milisegundos',min:200,max:6000},startTorch:{t:'check',label:'Comienza con antorcha portátil'},startHook:{t:'check',label:'Comienza con gancho'},territory:{t:'range',label:'Radio del territorio · cuadros',min:1,max:15},travel:{t:'range',label:'Cuadros por activación',min:1,max:10},hookLength:{t:'range',label:'Alcance del gancho · cuadros',min:1,max:20},startShields:{t:'check',label:'Comienza con escudos'},startShieldCount:{t:'range',label:'Escudos iniciales',min:1,max:100},sites:{t:'range',label:'Lugares de aparición',min:2,max:6},lightIntensity:{t:'range',label:'Intensidad de luz',min:1,max:10},goldDrop:{t:'range',label:'🪙 Monedas al ser derrotado',min:0,max:100},startSword:{t:'check',label:'Comienza con espada'},startBombs:{t:'check',label:'Comienza con bombas'},startBombCount:{t:'range',label:'Bombas iniciales',min:0,max:100},startBow:{t:'check',label:'Comienza con arco'},startAmmo:{t:'range',label:'Flechas iniciales',min:0,max:100},mode:{t:'select',label:'Tipo de botón',options:[['tap','Una pisada'],['hold','Mantener presionado']]},target:{t:'select',label:'Objeto conectado',options:[['wall','Pared que se abre'],['move','Pared movible']]},amount:{t:'range',label:'🪙 Monedas',min:1,max:100},
         startSpeed:{t:'range',label:'🏃 Velocidad del personaje',min:2,max:10},
         width:{t:'range',label:'↔ Ancho',min:1,max:20},height:{t:'range',label:'↕ Largo',min:1,max:20},shape:{t:'shape',label:'Forma'},
         waveCount: {t:"range", label:"Enemigos o jefes",min:2,max:8},
@@ -943,11 +947,11 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
         dir:    { t: 'dir', label: 'Dirección:' },
         hid:    { t: 'doorid', label: 'Abre la pared-botón número:' }
     };
-    const TOOL_PARAMS = {stairs:['stairDir'],hook:['hookLength'],blinkboss:['sites','speed','hpBoss','vision','appearMs','aimMs','key','coin','goldDrop'],torchdecor:['lightIntensity'],gemwall:['count'],torchwall:['count'],switch:['channel','mode','target','dir','travel'],crossgate:['mode'],cash:['amount'],bdoor:['channel','mode'],btn:['channel'],start:['startSpeed','startSword','startBombs','startBombCount','startBow','startAmmo','startShields','startShieldCount','startTorch','startHook','hookLength'],darkzone:['shape','width','height'],ftorch:['count'],
+    const TOOL_PARAMS = {spikes:['spikeRest','spikeActive'],touchSpikes:['trapDelay'],enemy3:['speed','hp','builderRange','buildMs','key','coin','goldDrop'],stairs:['stairDir'],hook:['hookLength'],blinkboss:['sites','speed','hpBoss','vision','appearMs','aimMs','key','coin','goldDrop'],torchdecor:['lightIntensity'],gemwall:['count'],torchwall:['count'],switch:['channel','mode','target','dir','travel'],crossgate:['mode'],cash:['amount'],bdoor:['channel','mode'],btn:['channel'],start:['startSpeed','startSword','startBombs','startBombCount','startBow','startAmmo','startShields','startShieldCount','startTorch','startHook','hookLength'],darkzone:['shape','width','height','darknessLevel','hasSwitch'],ftorch:['count'],
         arena: ["waveCount"],
         snake: ['speed', 'hpBoss', 'length','vision', 'key','coin','goldDrop'], worm: ['speed', 'hpBoss','vision', 'key','coin','goldDrop'],
         enemy: ['speed', 'hp', 'vision', 'key','coin','goldDrop'],
-        enemy2: ['speed', 'hp', 'vision', 'territory','key','coin','goldDrop'],
+        enemy2: ['speed', 'hp', 'vision','key','coin','goldDrop'],
         boss: ['speed', 'hpBoss', 'minis','vision','key','coin','goldDrop'],
         ammo: ['qty'], bomb: ['qty'],
         laser: ['dir'], mwall: ['channel','mode','dir','travel'], mwbtn:['channel'],
@@ -990,7 +994,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
                 const max = sp.max === 'spd' ? Math.max(1, playerSpeed - 1) : sp.max;
                 if (st[f] > max) st[f] = max;
                 const inp = document.createElement('input');
-                inp.type = 'range';inp.step=sp.step||(['appearMs','aimMs'].includes(nm)?100:1); inp.min = sp.min; inp.max = max; inp.value = st[f];
+                inp.type = 'range';inp.step=sp.step||(['appearMs','aimMs','spikeRest','spikeActive','trapDelay','buildMs'].includes(nm)?100:1); inp.min = sp.min; inp.max = max; inp.value = st[f];
                 const val = document.createElement('span');
                 val.textContent = st[f];
                 inp.addEventListener('input', () => { st[f] = parseInt(inp.value); val.textContent = st[f]; });
@@ -1049,13 +1053,15 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
     }
 
     function tileFromTool(tool, st) {
+        if(tool==='spikes')return `spikes:${st.spikeRest||1800}:${st.spikeActive||1200}`;if(tool==='touchSpikes')return `touchSpikes:${st.trapDelay||650}`;
+        if(tool==='enemy3')return `enemy3:${st.speed}:${st.hp}:${st.vision}:${st.key?1:0}:${st.coin?1:0}:${st.goldDrop||0}:${st.buildMs||1000}`;
         if(tool==='blinkboss')return blinkTile(blinkConfig(st,st.id||1,st.points||[]));
         if(tool==='hook')return `hook:${clamp(st.hookLength||5,1,20)}`;
         if(tool==='torchdecor')return `torchdecor:${clamp(Math.round(st.lightIntensity||5),1,10)}`;
         if(tool==='cash')return `cash:${clamp(st.amount||1,1,100)}`;
         if(tool==='switch')return `switch:${clamp(st.channel||1,1,10)}:${st.mode||'tap'}`;
         if(tool==='shop')return 'shop:'+encodeURIComponent(JSON.stringify(st.shopConfig||defaultShop()));
-        if(tool==='darkzone')return 'darkzone:'+encodeURIComponent(JSON.stringify({width:st.width||4,height:st.height||4,shape:st.shape||'rect'}));
+        if(tool==='darkzone')return 'darkzone:'+encodeURIComponent(JSON.stringify({width:st.width||4,height:st.height||4,shape:st.shape||'rect',darknessLevel:st.darknessLevel||'dim'}));
         if (tool === 'enemy' || tool === 'enemy2') return `${tool}:${st.speed}:${st.hp}:${st.vision}:${st.key ? 1 : 0}:${st.coin ? 1 : 0}:${clamp(st.goldDrop||0,0,100)}:${tool==='enemy2'?clamp(st.territory||2,1,15):clamp(st.vision||5,1,20)}`;
         if (tool === 'snake' || tool === 'worm') return `${tool}:${st.speed}:${st.hp}:${st.length || 3}:${st.key ? 1 : 0}:${st.coin ? 1 : 0}:${clamp(st.goldDrop||0,0,100)}:${tool==='enemy2'?clamp(st.territory||2,1,15):clamp(st.vision||5,1,20)}`;
         if (tool === 'boss') return `boss:${st.speed}:${st.hp}:${st.minis}:${st.key ? 1 : 0}:${st.coin ? 1 : 0}:${clamp(st.goldDrop||0,0,100)}:${tool==='enemy2'?clamp(st.territory||2,1,15):clamp(st.vision||5,1,20)}`;
@@ -1279,7 +1285,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
     }
     function afterEdit() {
         if(editTransaction&&!pending&&!wizard){editTransaction=null;}
-        cleanGroups(); cleanOrphans();
+        cleanGroups(); cleanOrphans();cleanZoneSwitches();
         renderGrid(); updateWarn();
         recordHistory(); paintFuture();
         if (selectedTool === 'hbtn') renderBrushPanel();
@@ -1330,6 +1336,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
         return 0;
     }
     function showPending() {
+        if(pending?.type==='zoneSwitch'){pendingBar.classList.remove('hidden');pendingText.textContent='Coloca el apagador de esta zona oscura. Puedes cambiar de piso.';return;}
         if(pending?.type==='blinkPoints'){pendingBar.classList.remove('hidden');pendingText.textContent=`Coloca el lugar ${pending.points.length+1} de ${pending.total} del jefe.`;return;}
         if(wizard){wizardHint();return;}
         if(pending&&['wallGroup','bossKeys','iceContents','boxContents'].includes(pending.type)){pendingBar.classList.remove('hidden');pendingText.textContent=pending.type==='bossKeys'?`Coloca la parte ${pending.parts===0?'A':'B'} de la gran llave.`:pending.type==='wallGroup'?(pending.remaining>0?`Coloca ${pending.remaining} elemento(s) más del grupo.`:'Coloca la pared que desaparecerá al completar el grupo.'):(pending.type==='boxContents'?'Elige el contenido de la caja.':'Elige el contenido del hielo.');return;}
@@ -1360,6 +1367,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
     }
     function hidePending() { pendingBar.classList.add('hidden'); }
     function cancelPending() {
+        if(pending?.type==='zoneSwitch'){if(editTransaction){rollbackObjectEdit();return;}const id=pending.zoneId;if(pending.existing){const z=darkZones.find(z=>z.id===id);if(z)z.hasSwitch=false;}else darkZones=darkZones.filter(z=>z.id!==id);pending=null;hidePending();afterEdit();return;}
         if(pending?.type==='blinkPoints'){if(editTransaction){rollbackObjectEdit();return;}for(const p of pending.points)board[p.y][p.x]='floor';pending=null;hidePending();afterEdit();return;}
         if(!editTransaction&&pending&&['wallGroup','bossKeys','iceContents','boxContents'].includes(pending.type)){const p=pending;pending=null;wizard=null;closeSpawnModal();if(p.type==='wallGroup')removeGroup(p.gid);else if(p.type==='bossKeys'){removeById('bossdoor',p.id);removeById('bosskey',p.id);}else board[p.pos.y][p.pos.x]='floor';hidePending();afterEdit();return;}
         if(!editTransaction&&pending&&['switchTarget','crossButton'].includes(pending.type)){const p=pending;board[p.y][p.x]='floor';pending=null;hidePending();afterEdit();return;}
@@ -1426,6 +1434,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
         cleanOrphans(); renderGrid(); showPending();
     }
     function resolvePending(x, y) {
+        if(pending?.type==='zoneSwitch'){placeZoneSwitch(x,y);return;}
         if(pending?.type==='blinkPoints'){placeBlinkPoint(x,y);return;}
         if(pending&&['wallGroup','bossKeys'].includes(pending.type)){resolveLatestPending(x,y);return;}
         if(pending&&['switchTarget','crossButton'].includes(pending.type)){resolveNewMechanism(x,y);return;}
@@ -1586,7 +1595,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
             const onlyEnemies=(wizard&&wizard.tasks[0]?.enemy)||(pending&&pending.type==='arena'&&pending.step==='enemy');
             const white=pending&&pending.type==='wgroup';
             const iceOnly=wizard?!!wizard.tasks[0]?.iceOnly:['iceContents','boxContents'].includes(pending?.type);
-            x.classList.toggle('hidden',iceOnly?!ICE_CONTENT_TOOLS.includes(tool):onlyEnemies?!['enemy','enemy2','boss','snake','worm'].includes(tool):false);
+            x.classList.toggle('hidden',iceOnly?!ICE_CONTENT_TOOLS.includes(tool):onlyEnemies?!['enemy','enemy2','enemy3','boss','snake','worm'].includes(tool):false);
         });
         if($('spawnEmptyIce'))$('spawnEmptyIce').classList.toggle('hidden',!(wizard?wizard.tasks[0]?.container==='ice':pending?.type==='iceContents'));if($('spawnEmptyBox'))$('spawnEmptyBox').classList.toggle('hidden',!(wizard?wizard.tasks[0]?.container==='box':pending?.type==='boxContents'));
         spawnModal.classList.remove('hidden');
@@ -1610,7 +1619,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
 
         if(p.type==='arena') {
             if(p.step==='enemy') {
-                if(!['enemy','enemy2','boss','snake','worm'].includes(tool)) return;
+                if(!['enemy','enemy2','enemy3','boss','snake','worm'].includes(tool)) return;
                 p.enemies.push(tileFromTool(tool,st)); closeSpawnModal();
                 if(p.enemies.length<p.total) {showPending();openSpawnModal();}
                 else {p.step='spawn';showPending();} return;
@@ -1916,7 +1925,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
         if(base(tile)==='boxbox')return futureCoins(readBox(tile).obj);
         if(base(tile)==='blinkboss')return readBlink(tile).coin?1:0;
         if(base(tile)==='icebox')return futureCoins(readIce(tile).obj);
-        if(['enemy','enemy2','boss','snake','worm'].includes(base(tile)))return part(tile,5)==='1'?1:0;
+        if(['enemy','enemy2','enemy3','boss','snake','worm'].includes(base(tile)))return part(tile,5)==='1'?1:0;
         if(base(tile)==='bundle'){const c=unpackBundle(tile);return futureCoins(c.tile)+(c.extras||[]).reduce((n,e)=>n+futureCoins(e.tile),0)+Object.values(c.creators||{}).reduce((n,e)=>n+futureCoins(e.obj),0)+Object.values(c.wgroups||{}).reduce((n,e)=>n+futureCoins(e.obj),0);}
         if(base(tile)==='coin')return 1;
         if(base(tile)==='arena') {try{const a=JSON.parse(decodeURIComponent(part(tile,1)));return futureCoins(a.reward)+(a.enemies||[]).reduce((n,t)=>n+futureCoins(t),0);}catch(err){return 0;}}
@@ -1931,7 +1940,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
         const g = {
             n, grid, room,
             player: { x: 0, y: 0, rx: 0, ry: 0, facing: 'D' },
-            colorGateState:'blue',bossKeys:new Map(),bossDoorsOpen:new Set(),gold:0,shopDwell:null,shopSuppressed:null,heatTimers:new Map(),heatPositions:new Map(),torchTimers:new Map(),crossActivated:new Set(),crossOpen:new Set(),crossEntries:new Map(),switchLatched:new Set(),holdWallOrigins:new Map(),hasTorch:false,litTorches:new Set(),darkCells:new Set((room.darkZones||[]).flatMap(z=>zoneCells(z,n)).map(c=>c.y*n+c.x)),pendingClosing:new Set(),pendingLoot:[],arenas: [], chains: [], doubleOpen: new Set(), enemies: [], blocks: [], mwalls: [], bombs: [], arrows: [], lasers: [], rdias: [], hbtns: [],
+            colorGateState:'blue',bossKeys:new Map(),bossDoorsOpen:new Set(),gold:0,shopDwell:null,shopSuppressed:null,heatTimers:new Map(),heatPositions:new Map(),torchTimers:new Map(),crossActivated:new Set(),crossOpen:new Set(),crossEntries:new Map(),switchLatched:new Set(),holdWallOrigins:new Map(),hasTorch:false,litTorches:new Set(),zoneDisabled:new Set(),zones:normalizeZoneIds(clone(room.darkZones||[])),trapTimers:new Map(),darkCells:new Set((room.darkZones||[]).flatMap(z=>zoneCells(z,n)).map(c=>c.y*n+c.x)),pendingClosing:new Set(),pendingLoot:[],arenas: [], chains: [], doubleOpen: new Set(), enemies: [], blocks: [], mwalls: [], bombs: [], arrows: [], lasers: [], rdias: [], hbtns: [],
             beamCells: [], beamSet: new Set(), litIds: new Set(), holdIds: new Set(),
             permOpen: new Set(), pressed: new Set(), mwDone: new Set(), pressedCreators: new Set(), wgroups: {},
             totalCoins: 0, coins: 0, keys: 0, shields: 0, ammo: 0, bombCount: 0,
@@ -1972,7 +1981,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
             };
             extend(); // Si no cabe, se desplegará al avanzar hacia espacio disponible.
         }
-        prepareRoomMechanisms(g,originalRoom);
+        prepareRoomMechanisms(g,originalRoom);rebuildDarkness(g);
         g.exitActive = g.totalCoins === 0;
         updateLighting();
         computeBeams();
@@ -1985,7 +1994,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
             case 'blinkboss':makeBlinkBoss(g,x,y,t);g.grid[y][x]='floor';break;
             case 'icebox':initializeIceBox(g,x,y,t,initial);break;
             case 'remwall':{const gr=g.room.groups?.[tileId(t)];if(gr)g.wgroups[tileId(t)]={kind:gr.kind,count:gr.count,hit:0,obj:'floor',sx:x,sy:y,done:false};g.grid[y][x]='wall';break;}
-            case 'darkzone':{try{const z=JSON.parse(decodeURIComponent(part(t,1)));zoneCells({...z,x,y},g.n).forEach(c=>g.darkCells.add(c.y*g.n+c.x));}catch(e){}g.grid[y][x]='floor';break;}
+            case 'darkzone':{try{const z=JSON.parse(decodeURIComponent(part(t,1)));g.zones.push({...z,x,y,id:z.id||nextRuntimeZoneId(g)});zoneCells({...z,x,y},g.n).forEach(c=>g.darkCells.add(c.y*g.n+c.x));}catch(e){}rebuildDarkness(g);g.grid[y][x]='floor';break;}
             case 'start':
                 if (initial) { g.player.x = g.player.rx = x; g.player.y = g.player.ry = y; }
                 g.grid[y][x] = 'floor';
@@ -1996,7 +2005,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
             }
             case 'snake': case 'worm':
                 makeChain(g,x,y,t);if(initial)g.totalCoins+=futureCoins(t); g.grid[y][x] = 'floor'; break;
-            case 'enemy': case 'enemy2': case 'boss':
+            case 'enemy': case 'enemy2': case 'enemy3': case 'boss':
                 makeEnemy(g, x, y, t);if(initial)g.totalCoins+=futureCoins(t);
                 g.grid[y][x] = 'floor';
                 break;
@@ -2039,8 +2048,8 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
         } else {
             const pr = enemyProps(t, g.room);
             g.enemies.push(Object.assign(common, {
-                kind: b === 'enemy2' ? 2 : 1, hp: pr.hp, maxHp: pr.hp,
-                speed: Math.min(pr.sp, g.maxE), territory:clamp(+part(t,7)||2,1,15),vision: pr.vis, hasKey: pr.key,hasCoin:pr.coin,hasGold:pr.gold
+                kind:b==='enemy3'?6:b==='enemy2'?2:1,buildMs:clamp(+part(t,7)||1000,300,5000), hp: pr.hp, maxHp: pr.hp,
+                speed: Math.min(pr.sp, g.maxE), territory:pr.vis,vision: pr.vis, hasKey: pr.key,hasCoin:pr.coin,hasGold:pr.gold
             }));
         }
     }
@@ -2174,13 +2183,10 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
         const a = ARROW_DIR[base(G.grid[y][x])];
         return !(a && OPP[a] === dir);
     }
-    function spikeState() {
-        const p = G.time % SPIKE_PERIOD;
-        return p >= SPIKE_UP_AT ? 'up' : (p >= SPIKE_WARN_AT ? 'warn' : 'down');
-    }
+    function spikeState(tile='spikes'){const rest=clamp(+part(tile,1)||1800,500,10000),active=clamp(+part(tile,2)||1200,200,6000),p=G.time%(rest+active),warn=Math.min(600,rest*.4);return p>=rest?'up':p>=rest-warn?'warn':'down';}
     function opaque(x, y) {
         const b = bt(x, y);
-        return b === 'wall' || b === 'keydoor' || b === 'bdoor' || b === 'ddoor' || b === 'rdoor' || b === 'stone' || !!blockAt(x, y) || !!mwallAt(x, y);
+        return b === 'wall' || b === 'keydoor' || b === 'bdoor' || b === 'ddoor' || b === 'rdoor' || b === 'stone' || b==='bramble'|| !!blockAt(x, y) || !!mwallAt(x, y);
     }
     function hasLOS(x0, y0, x1, y1) {
         const dx = Math.abs(x1 - x0), dy = Math.abs(y1 - y0);
@@ -2353,7 +2359,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
     }
     function openMenu() {
         if (!G || G.over || G.paused) return;
-        const items = [['▶️ Continuar', hideOverlay, true], ['🔄 Reiniciar cuarto', restartRoom]];
+        const items = [['▶️ Continuar', hideOverlay, true],['🎛 Controles de movimiento',openControlEditor], ['🔄 Reiniciar cuarto', restartRoom]];
         if (S.mode === 'test') items.push(['✏️ Volver al editor', () => exitGame('editor')]);
         items.push(['🏠 Menú principal', () => exitGame('main')]);
         showOverlay('⏸️ Pausa', items, 'pause');
@@ -2672,6 +2678,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
             for (const cell of attackCells) {
                 if (!inb(cell.x, cell.y)) continue;
                 const tb = base(g.grid[cell.y][cell.x]);
+                if(tb==='bramble')breakBramble(cell.x,cell.y);
                 if (tb === 'diamond' || tb === 'wd'||tb==='colorGem') hitDiamondAt(cell.x, cell.y);
             }
             g.nextAttack = now + 320;
@@ -2718,6 +2725,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
     }
     function stepOnButton(x, y) {
         const t = G.grid[y][x], b = base(t);
+        if(b==='lightswitch'){toggleZone(tileId(t));return;}
         if (b === 'openBtn' || b === 'closeBtn') {
             if (b === 'openBtn') {G.doubleOpen.add(tileId(t));G.pendingClosing.delete(tileId(t));} else {G.pendingClosing.add(tileId(t));updateDoubleDoors();}
             playSound('press'); playSound('door');
@@ -2762,7 +2770,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
         if (!arrowOK(b.x, b.y, dir) || !arrowOK(tx, ty, dir)) return false;
         const t = bt(tx, ty);
         if (!BLOCK_OK.includes(t) && t!=='boxPath' && !(t==='hole' && b.kind==='block')) return false;
-        if (t === 'spikes' && spikeState() === 'up') return false;
+        if (t === 'spikes' && spikeState(g.grid[ty][tx]) === 'up') return false;
         if (blockAt(tx, ty) || enemyAt(tx, ty) || mwallAt(tx, ty)) return false;
         if (g.player.x === tx && g.player.y === ty) return false;
         return true;
@@ -2777,7 +2785,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
         const raw=g.grid[ny][nx];if(base(raw)==='bossdoor'&&g.bossKeys.get(tileId(raw))?.size===2){g.bossDoorsOpen.add(tileId(raw));g.bossKeys.delete(tileId(raw));playSound('door');}
         const t = bt(nx, ny);
         if ((SOLID.includes(t)&&t!=='hole') || mwallAt(nx, ny)) return false;
-        if (t === 'spikes' && spikeState() === 'up') return false;
+        if (t === 'spikes' && spikeState(g.grid[ny][nx]) === 'up') return false;
         if (t === 'keydoor' && g.keys <= 0) {
             const now = performance.now();
             if (now - (S.lastKeyToast || 0) > 1500) { S.lastKeyToast = now; toast('🔒 Necesitas una llave', 1200); }
@@ -2899,7 +2907,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
         else if(t==='torch'){g.hasTorch=true;pickup('🔥','🔥 Ahora puedes iluminar zonas oscuras y derretir hielo.');}
         else if (t === 'shield') { g.shields++; pickup('🛡️'); }
         // FIX: faltaba 'cbtn' — el personaje al pisar el botón-creador no lo activaba
-        else if (t === 'btn' || t === 'mwbtn' || t === 'cbtn' || t==='openBtn' || t==='closeBtn'||t==='switch'||t==='crossbtn') stepOnButton(p.x, p.y);
+        else if (t === 'btn' || t === 'mwbtn' || t === 'cbtn' || t==='openBtn' || t==='closeBtn'||t==='switch'||t==='crossbtn'||t==='lightswitch') stepOnButton(p.x, p.y);
 
         updateLighting();
         const e = enemyAt(p.x, p.y);
@@ -2968,7 +2976,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
     ===================================================== */
     function update(dt) {
         const g = G;
-        g.time += dt * 1000;updateInputHolds();updateHookFlight(dt);if(g.over)return;
+        g.time += dt * 1000;updateInputHolds();updateTraps();updateHookFlight(dt);if(g.over)return;
         if(g.room.timeLimit>0&&g.time>=g.room.timeLimit*1000){die('⌛ ¡Se acabó el tiempo del cuarto!');return;}
         updateDoubleDoors();retryLoot();updateLighting();updateNewMechanisms();updateShop();
         if(g.paused)return;
@@ -2987,7 +2995,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
         computeHolds();
         computeBeams();
         if (base(g.grid[p.y][p.x]) === 'hole'&&!g.hookAction&&!standingOnBox(g)) {fallPlayer();if(g.over)return;}
-        if (base(g.grid[p.y][p.x]) === 'spikes' && spikeState() === 'up') { die('☠️ ¡Te pincharon los picos!'); return; }
+        updateTraps();if(g.over)return;
         if (g.beamSet.has(p.y * g.n + p.x)) { hurtPlayer('☠️ ¡Te alcanzó el láser!'); if (g.over) return; }
 
         for (let i = g.bombs.length - 1; i >= 0; i--) {
@@ -3003,10 +3011,12 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
 
         for (const e of g.enemies.slice()) {
             if (!g.enemies.includes(e)) continue;
+            if(e.kind===6){builderLogic(e,now);if(g.over)return;continue;}
             if(e.kind===5){blinkLogic(e,now);if(g.over)return;continue;}
             if(e.kind===3&&!wakeBoss(e,e))continue;
             if (e.kind === 3) bossLogic(e, now);
-            if (e.kind === 1 || e.kind === 2) {
+            if(e.kind===2)senseTerritory(e,p,now);
+            if (e.kind === 1) {
                 const dist = Math.hypot(p.x - e.x, p.y - e.y);
                 const sees = dist <= e.vision && hasLOS(e.x, e.y, p.x, p.y);
                 if (sees) {
@@ -3022,7 +3032,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
                 if (e.state === 'chase') step = e.kind === 2 ? territoryStep(e, p) : bfsNext(e.x, e.y, p.x, p.y);
                 else if (e.state === 'return') {
                     if (e.x === e.hx && e.y === e.hy) e.state = 'idle';
-                    else step = bfsNext(e.x, e.y, e.hx, e.hy);
+                    else step = e.kind===2?territoryStep(e,{x:e.hx,y:e.hy}):bfsNext(e.x, e.y, e.hx, e.hy);
                 }
                 if (step) {
                     if (!enemyAt(step.x, step.y) && !blockAt(step.x, step.y)) {
@@ -3303,7 +3313,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
             case 'torch':emoji('🔥',cx,cy,ts*.65);break;
             case 'ftorch':emoji(g.litTorches.has(y*g.n+x)?'🔥':'🕯️',cx,cy,ts*.62);break;
             case 'ice':ctx.fillStyle='#a5e6f6';ctx.fillRect(px+1,py+1,ts-2,ts-2);ctx.strokeStyle='#e9fcff';ctx.lineWidth=2;ctx.strokeRect(px+4,py+4,ts-8,ts-8);emoji('❄️',cx,cy,ts*.5);break;
-            case 'spikes': drawSpikes(px, py, sp); break;
+            case 'spikes': drawSpikes(px,py,spikeState(tile)); break;
             case 'btn': case 'mwbtn': {
                 const id = tileId(tile), col = ID_COL[id] || '#999';
                 const pressed = b === 'btn' ? g.pressed.has(id) : ((g.player.x===x&&g.player.y===y)||!!blockAt(x,y));
@@ -3552,7 +3562,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
             if(e.kind===5){emoji(e.awake?(e.phase==='warning'?'✨':e.phase==='aim'?'🧿':'💨'):'💤',cx,cy,ts*.78);if(e.phase==='aim')numTag(cx,cy-ts*.5,'¡ATACA!',ts*.13,'#a642dc');}
             else if (e.kind === 3) drawEye(cx, cy, ts * 0.52, e.bossState === 'open', g.time, true);
             else if (e.kind === 4) drawEye(cx, cy, ts * 0.27, true, g.time, false);
-            else emoji(e.kind === 2 ? '👺' : '👹', cx, cy, ts * 0.72);
+            else emoji(e.kind===6?'🧌':e.kind === 2 ? '👺' : '👹', cx, cy, ts * 0.72);
             if (g.time < e.flash) {
                 ctx.fillStyle = 'rgba(255,255,255,0.55)';
                 ctx.beginPath(); ctx.arc(cx, cy, ts * 0.34, 0, Math.PI * 2); ctx.fill();
@@ -3563,6 +3573,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
                 ctx.fillStyle = '#e04040'; ctx.fillRect(bx, by, bw * Math.max(0, e.hp) / e.maxHp, 5);
             }
             if(e.kind===3&&!e.awake)emoji('💤',cx,cy-ts*.6,ts*.3);
+            if(e.kind===6&&e.buildSince!=null)emoji('🔨',cx,cy-ts*.6,ts*.32);
             if (e.hasKey) emoji('🔑', cx + ts * 0.32, cy - ts * 0.36, ts * 0.3);
             if (e.state === 'chase') emoji('❗', cx, cy - ts * 0.78 + Math.sin(g.time / 120) * 2, ts * 0.4);
             if (g.time < e.stun && g.time >= e.flash && e.kind !== 3) emoji('💫', cx, cy - ts * 0.6, ts * 0.3);
@@ -3629,6 +3640,7 @@ body.catalog-v2.studio-editing .catalog-mini-controls,body.catalog-v2.studio-edi
     const KEYMAP = { arrowup: 'U', arrowdown: 'D', arrowleft: 'L', arrowright: 'R', w: 'U', s: 'D', a: 'L', d: 'R' };
     window.addEventListener('keydown', e => {
         if (!G) return;
+        if(controlDraft){if(e.key==='Escape'){e.preventDefault();closeControlEditor(false);}return;}
         if(e.key==='Escape'&&$('gameShopModal')&&!$('gameShopModal').classList.contains('hidden')){e.preventDefault();e.stopImmediatePropagation();closeGameShop();return;}
         const k = e.key.toLowerCase();
         if (k === 'escape') {
@@ -3732,6 +3744,7 @@ function beginWizard(p,tool,st){
 }
 function wizardId(kind){const used=new Set(wizard.ids[kind]||[]);walkRewards(t=>{if(base(t)===kind||(kind==='wd'&&base(t)==='ftorch'))used.add(tileId(t));});let id=1;while(used.has(id))id++;wizard.ids[kind]=[...used,id];return id;}
 function wizardBuild(tool,st,pos,done){
+ if(tool==='darkzone'&&st.hasSwitch){const id=reserveWizardZone();wizard.tasks.push({label:'Coloca el apagador de la futura zona oscura.',run:q=>{const cfg=JSON.parse(decodeURIComponent(part(tileFromTool(tool,st),1)));done(packBundle({tile:'darkzone:'+encodeURIComponent(JSON.stringify({...cfg,id,hasSwitch:true})),extras:[{...q,tile:`lightswitch:${id}`}]}));}});return;}
  if(tool==='stairs'){wizardStairs(st,pos,done);return;}
  if(tool==='blinkboss'){wizardBlink(st,pos,done);return;}
  if(tool==='block'){wizard.tasks.push({select:true,iceOnly:true,container:'box',label:'Elige qué guardará la caja.',run:(t,values)=>wizardBuild(t,values,pos,payload=>done(wrapBoxContents(payload)))});return;}
@@ -3753,7 +3766,7 @@ function wizardBuild(tool,st,pos,done){
  }
  else if(tool==='arena'){
  const arena={enemies:[]};const count=clamp(st.waveCount||2,2,8);
- for(let i=0;i<count;i++)wizard.tasks.push({select:true,enemy:true,label:`Creador: elige el enemigo ${i+1} de ${count}.`,run:(t,values)=>{if(!['enemy','enemy2','boss','snake','worm'].includes(t))throw Error('Tipo de enemigo inválido');arena.enemies.push(tileFromTool(t,values));}});
+ for(let i=0;i<count;i++)wizard.tasks.push({select:true,enemy:true,label:`Creador: elige el enemigo ${i+1} de ${count}.`,run:(t,values)=>{if(!['enemy','enemy2','enemy3','boss','snake','worm'].includes(t))throw Error('Tipo de enemigo inválido');arena.enemies.push(tileFromTool(t,values));}});
  wizard.tasks.push({label:'Coloca dónde aparecerá la recompensa al derrotar a todos.',run:q=>{arena.rx=q.x;arena.ry=q.y;wizard.tasks.unshift({select:true,label:'Elige la recompensa del creador de enemigos.',run:(t,values)=>wizardBuild(t,values,q,child=>{arena.reward=child;cfg.tile='arena:'+encodeURIComponent(JSON.stringify(arena));finish();})});}});
  }
  else if(tool==='hbtn'){if(!doorExists(st.hid)){setStatus('Primero coloca la pared-botón de ese número.',2500);abortWizard();return;}cfg.tile=`hbtn:${st.hid}`;finish();}
@@ -3783,9 +3796,9 @@ function undoStudio(d){if(wizard||pending)cancelPending();const i=historyIndex+d
 function setupStudio(){
  const workspace=document.createElement('div');workspace.className='studio-workspace';const side=document.createElement('aside');side.className='studio-sidebar';side.innerHTML='<h3>◈ Catálogo de objetos</h3><input id="toolSearch" type="search" placeholder="Buscar objeto…" aria-label="Buscar objeto"><div class="studio-help">Elige un objeto y toca el tablero. Los mecanismos te guían paso a paso.</div>';
  const stage=document.createElement('div');stage.className='studio-board';const grid=document.querySelector('.editor-grid-container');grid.before(workspace);workspace.append(side,stage);side.append($('toolbar'));stage.append($('brushPanel'),$('pendingBar'),grid);
- const bar=document.createElement('div');bar.className='studio-actions';bar.innerHTML='<button class="tool-btn" id="undoStudio">↶ Deshacer</button><button class="tool-btn" id="redoStudio">↷ Rehacer</button><button class="tool-btn" id="exportStudio">↓ Exportar respaldo</button><button class="tool-btn" id="importStudio">↑ Importar</button><button class="tool-btn" id="recoverStudio">⏱ Recuperar autoguardado</button><button class="tool-btn" id="demoStudio">✦ Cuarto de ejemplo</button><button class="tool-btn" id="helpStudio">? Guía</button>';stage.prepend(bar);
+ const bar=document.createElement('div');bar.className='studio-actions';bar.innerHTML='<button class="tool-btn" id="undoStudio">↶</button><button class="tool-btn" id="redoStudio">↷</button><button class="tool-btn" id="exportStudio">↓ Exportar respaldo</button><button class="tool-btn" id="importStudio">↑ Importar</button><button class="tool-btn" id="recoverStudio">⏱ Recuperar autoguardado</button><button class="tool-btn" id="demoStudio">✦ Cuarto de ejemplo</button><button class="tool-btn" id="helpStudio">? Guía</button>';stage.prepend(bar);
  $('toolSearch').oninput=e=>side.querySelectorAll('.toolbar').forEach(g=>{let count=0;g.querySelectorAll('.tool-btn').forEach(b=>{const show=b.textContent.toLocaleLowerCase().includes(e.target.value.toLocaleLowerCase());b.hidden=!show;b.style.display=show?'':'none';if(show)count++;});g.style.display=count?'':'none';});
- $('demoStudio').onclick=()=>{if(!confirm('¿Cargar el cuarto de ejemplo en el editor? Puedes deshacer este cambio.'))return;if(pending)cancelPending();editingSavedRoomId=null;floorSize=12;floorCount=1;editorFloor=0;GRID_SIZE=12;gridSizeSelect.value='12';darkZones=[];roomTimeLimit=120;syncRoomTimer();board=emptyBoard(12);groups={};creatorGroup={};for(let i=0;i<12;i++)board[0][i]=board[11][i]=board[i][0]=board[i][11]='wall';board[1][1]='start';board[10][10]='exit';board[1][2]='cbtn:1';board[1][4]='cspawn:1';creatorGroup[1]={obj:packBundle({tile:'cbtn:2',creators:{2:{rx:6,ry:1,obj:packBundle({tile:'portal:1',extras:[{x:8,y:8,tile:'portal2:1'}]})}}})};darkZones=[{x:7,y:7,width:4,height:4,shape:'rect'}];board[2][3]='torch';board[8][9]='ice';board[8][3]='ftorch:1';board[9][6]='ftorch:1';board[8][10]='wspawn:1';groups[1]={kind:'torch',count:2,obj:packBundle({tile:'coin'})};board[9][9]='coin';board[3][2]='sword';board[4][2]='shield';board[5][5]=tileFromTool('enemy',{...brush,speed:1,hp:8});for(let x=3;x<9;x++)board[6][x]='wall';afterEdit();setStatus('Demo: recoge la antorcha, prueba los regalos y portales, enciende las dos antorchas fijas y rescata a las dos personas para salir.',6500);};
+ $('demoStudio').onclick=()=>{if(!confirm('¿Cargar el cuarto de muestra de un piso? Puedes deshacer.'))return;const data=learningRoom(),previousHistory=history.slice(0,historyIndex+1),previousIndex=historyIndex;openDraft({...data,id:null});history=previousHistory;historyIndex=previousIndex;currentDraftId=null;editingSavedRoomId=null;afterEdit();setStatus('Cuarto de muestra de un solo piso cargado.',2500);};
  $('undoStudio').onclick=()=>undoStudio(-1);$('redoStudio').onclick=()=>undoStudio(1);
  $('exportStudio').onclick=()=>{if(pending||wizard){setStatus('Completa o cancela el mecanismo antes de exportar.',2500);return;}const data={format:'entropia-studio',version:2,current:JSON.parse(snap()),rooms:loadRooms(),drafts:loadDrafts()};const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download='Entropia-respaldo.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);};
  const file=document.createElement('input');file.type='file';file.accept='.json';file.hidden=true;document.body.append(file);$('importStudio').onclick=()=>file.click();file.onchange=async()=>{try{const c=JSON.parse(await file.files[0].text());if(c.format!=='entropia-studio'||!validSnapshot(c.current))throw Error();if(pending)cancelPending();if(!Array.isArray(c.rooms)||!Array.isArray(c.drafts)||![...c.rooms,...c.drafts].every(r=>validSnapshot({...r,GRID_SIZE:r.gridSize||r.board?.length})))throw Error();if(!confirm('¿Restaurar este respaldo? Se sustituirán las listas locales de cuartos y borradores. Puedes exportar antes tu respaldo actual.'))return;saveRooms(c.rooms);saveDrafts(c.drafts);restoreSnap(JSON.stringify(c.current));recordHistory();setStatus('Respaldo completo restaurado: cuarto, ruta y borradores.',4000);}catch(e){setStatus('Archivo inválido: importa un respaldo de ENTROPÍA.',3500);}file.value='';};
@@ -3865,7 +3878,7 @@ function zoneCells(z,n){
 function placeDarkZone(x,y){
  const width=clamp(brush.width||4,1,20),height=clamp(brush.height||4,1,20);
  if(x+width>floorSize||y+height>(editorFloor*editorStride()+floorSize)){setStatus('La zona completa debe caber en el cuarto. Reduce sus medidas o colócala más arriba y a la izquierda.',4000);return;}
- darkZones.push({x,y,width,height,shape:brush.shape||'rect'});afterEdit();setStatus('🌑 Zona oscura colocada. Puedes poner objetos dentro.',2200);
+ const zone={id:nextEditorZoneId(),x,y,width,height,shape:brush.shape||'rect',darknessLevel:brush.darknessLevel||'dim',hasSwitch:!!brush.hasSwitch};darkZones.push(zone);if(zone.hasSwitch){pending={type:'zoneSwitch',zoneId:zone.id};renderGrid();showPending();return;}afterEdit();setStatus('🌑 Zona oscura colocada. Puedes poner objetos dentro.',2200);
 }
 function paintDarkZones(){
  for(const z of darkZones)for(const c of zoneCells(z,GRID_SIZE)){const el=editorCellAt(c.x,c.y);if(el){el.classList.add('dark-zone-cell');el.title=(el.title?el.title+' · ':'')+`Zona oscura · ${z.shape==='rect'?'rectángulo':z.shape==='ellipse'?'óvalo':'rombo'} ${z.width}×${z.height}`;}}
@@ -3893,8 +3906,8 @@ let darknessCanvas=null;
 function drawDarkness(){
  const g=G;if(!g.darkCells.size)return;const ts=cv.ts,bounds=floorBounds(g,g.player.y),size=Math.ceil(bounds.size*ts),offset=bounds.y*ts;
  if(!darknessCanvas)darknessCanvas=document.createElement('canvas');if(darknessCanvas.width!==size)darknessCanvas.width=size;if(darknessCanvas.height!==size)darknessCanvas.height=size;
- const mask=darknessCanvas.getContext('2d');mask.clearRect(0,0,size,size);mask.globalCompositeOperation='source-over';mask.fillStyle='rgba(2,3,10,0.94)';
- for(const key of g.darkCells){const x=key%g.n,y=Math.floor(key/g.n);if(y>=bounds.y&&y<bounds.y+bounds.size)mask.fillRect(x*ts,y*ts-offset,ts+.5,ts+.5);}
+ const mask=darknessCanvas.getContext('2d');mask.clearRect(0,0,size,size);mask.globalCompositeOperation='source-over';
+ for(const key of g.darkCells){const x=key%g.n,y=Math.floor(key/g.n);if(y>=bounds.y&&y<bounds.y+bounds.size){mask.fillStyle=`rgba(2,3,10,${g.darkOpacity?.get(key)??.94})`;mask.fillRect(x*ts,y*ts-offset,ts+.5,ts+.5);}}
  mask.globalCompositeOperation='destination-out';
  const lights=[];if(g.hasTorch)lights.push({x:g.player.rx+.5,y:g.player.ry+.5,r:3.1});
  for(const key of g.litTorches)lights.push({x:key%g.n+.5,y:Math.floor(key/g.n)+.5,r:2.7});
@@ -3991,11 +4004,12 @@ function editorObjectAt(x,y,preferFuture=false){const refs=editorObjectRefs().fi
 function toolForTile(tile){const b=base(tile);if(b==='wd')return'wdiamond';if(b==='mirror')return'mirror'+(part(tile,1)||'NE');return b;}
 function valuesForObject(ref){
  const t=ref.read(),b=base(t),a=String(t).split(':'),values={...brush,channel:tileId(t)};
- if(ref.zone)return{...values,...ref.zone};
+ if(ref.zone)return{...values,...ref.zone,darknessLevel:ref.zone.darknessLevel||'dim',hasSwitch:!!ref.zone.hasSwitch};
  if(b==='blinkboss'){const c=readBlink(t);return{...values,...c,sites:c.points?.length||3,goldDrop:c.gold||0};}
+ if(b==='spikes'){values.spikeRest=+a[1]||1800;values.spikeActive=+a[2]||1200;}if(b==='touchSpikes')values.trapDelay=+a[1]||650;if(b==='enemy3')values.buildMs=+a[7]||1000;
  if(b==='stairs')values.stairDir=part(t,1)==='down'?'down':'up';
  if(b==='switch'){values.mode=part(t,2)||'tap';}if(b==='crossgate'){Object.assign(values,parseCross(t));}if(b==='cash')values.amount=clamp(tileId(t),1,100);
- if(['enemy','enemy2','boss','snake','worm'].includes(b)){values.territory=clamp(+a[7]||2,1,15);values.speed=+a[1]||3;values.hp=+a[2]||1;values.key=a[4]==='1';values.coin=a[5]==='1';values.goldDrop=clamp(+a[6]||0,0,100);if(b==='boss')values.minis=+a[3]||3;else if(['snake','worm'].includes(b))values.length=+a[3]||3;else values.vision=+a[3]||5;if(['boss','snake','worm'].includes(b))values.vision=clamp(+a[7]||5,1,20);}
+ if(['enemy','enemy2','enemy3','boss','snake','worm'].includes(b)){values.territory=clamp(+a[7]||2,1,15);values.speed=+a[1]||3;values.hp=+a[2]||1;values.key=a[4]==='1';values.coin=a[5]==='1';values.goldDrop=clamp(+a[6]||0,0,100);if(b==='boss')values.minis=+a[3]||3;else if(['snake','worm'].includes(b))values.length=+a[3]||3;else values.vision=+a[3]||5;if(['boss','snake','worm'].includes(b))values.vision=clamp(+a[7]||5,1,20);}
  if(b==='torchdecor')values.lightIntensity=clamp(+part(t,1)||5,1,10);
  if(b==='ammo'||b==='bomb')values.qty=tileId(t);if(b==='laser')values.dir=dirOf(t);if(b==='hook')values.hookLength=clamp(+a[1]||5,1,20);if(b==='mwall')values.travel=clamp(+a[3]||1,1,10);if(b==='mwall')values.dir=mwDir(t);if(b==='hbtn')values.hid=tileId(t);if(b==='start'){values.startSpeed=playerSpeed;Object.assign(values,brushFromGear(startGear));}
  if(['wd','ftorch','wspawn','remwall'].includes(b))values.count=(ref.env?.wgroups?.[tileId(t)]||groups[tileId(t)])?.count||1;
@@ -4062,14 +4076,14 @@ function openObjectEditor(inputRef){
  const params=document.createElement('div');params.className='tool-panel';box.appendChild(params);const members=document.createElement('div');members.className='object-enemy-editors';box.appendChild(members);let enemyEdits=[];
  const paramsFor=t=>t==='switch'&&originalTool==='switch'?['channel','mode']:['portal','portal2','ddoor','diamond','rdoor','rdiamond','doubleDoor','closeBtn','openBtn'].includes(t)?['channel']:(TOOL_PARAMS[t]||[]);
  const refresh=()=>{buildControls(params,paramsFor(select.value),values);params.classList.toggle('hidden',!paramsFor(select.value).length);members.innerHTML='';enemyEdits=[];
-  if(select.value==='arena'&&originalTool==='arena'){try{const cfg=JSON.parse(decodeURIComponent(part(token,1)));cfg.enemies.forEach((enemy,i)=>{const card=document.createElement('div');card.className='object-enemy-card';const label=document.createElement('strong');label.textContent='Integrante '+(i+1);card.appendChild(label);const pick=document.createElement('select');for(const type of ['enemy','enemy2','boss','snake','worm']){const op=document.createElement('option');op.value=type;op.textContent=TOOL_LABELS[type];pick.appendChild(op);}pick.value=base(enemy);card.appendChild(pick);const st=valuesForObject({read:()=>enemy}),controls=document.createElement('div');card.appendChild(controls);const render=()=>buildControls(controls,TOOL_PARAMS[pick.value],st);pick.onchange=render;render();members.appendChild(card);enemyEdits.push({pick,st});});}catch(e){}}
+  if(select.value==='arena'&&originalTool==='arena'){try{const cfg=JSON.parse(decodeURIComponent(part(token,1)));cfg.enemies.forEach((enemy,i)=>{const card=document.createElement('div');card.className='object-enemy-card';const label=document.createElement('strong');label.textContent='Integrante '+(i+1);card.appendChild(label);const pick=document.createElement('select');for(const type of ['enemy','enemy2','enemy3','boss','snake','worm']){const op=document.createElement('option');op.value=type;op.textContent=TOOL_LABELS[type];pick.appendChild(op);}pick.value=base(enemy);card.appendChild(pick);const st=valuesForObject({read:()=>enemy}),controls=document.createElement('div');card.appendChild(controls);const render=()=>buildControls(controls,TOOL_PARAMS[pick.value],st);pick.onchange=render;render();members.appendChild(card);enemyEdits.push({pick,st});});}catch(e){}}
  };select.onchange=refresh;refresh();
  const complex=['cbtn','wd','ftorch','arena','cspawn','wspawn'].includes(base(token));$('objectEditReward').classList.toggle('hidden',!complex||!!(ref.board&&groups[tileId(token)]?.effect==='removeWall'));$('objectEditRebuild').classList.toggle('hidden',!complex&&!PAIRS[originalTool]&&!['gemwall','torchwall','bossdoor','blinkboss','switch','crossgate','doubleDoor','portal2','diamond','rdiamond','closeBtn','openBtn'].includes(originalTool));
  $('objectEditReward').onclick=()=>{$('objectEditModal').classList.add('hidden');editReward(ref);};
  $('objectEditRebuild').onclick=()=>rebuildEditorObject(ref,originalTool==='wd'?'wdiamond':originalTool,values);
  $('objectEditApply').onclick=()=>{
   const tool=select.value,b=base(token),pos=ref.pos();
-  if(ref.zone){const width=clamp(values.width||1,1,20),height=clamp(values.height||1,1,20);if(pos.x+width>floorSize||pos.y+height>editorFloor*editorStride()+floorSize){setStatus('La zona editada debe caber en el cuarto.',2200);return;}Object.assign(ref.zone,{width,height,shape:values.shape});}
+  if(ref.zone){const width=clamp(values.width||1,1,20),height=clamp(values.height||1,1,20);if(pos.x+width>floorSize||pos.y+height>editorFloor*editorStride()+floorSize){setStatus('La zona editada debe caber en el cuarto.',2200);return;}Object.assign(ref.zone,{width,height,shape:values.shape,darknessLevel:values.darknessLevel||'dim'});configureZoneSwitch(ref.zone,!!values.hasSwitch);}
   else if(tool!==originalTool){rebuildEditorObject(ref,tool,values);return;}
   else if(['wd','ftorch'].includes(b)&&values.count!==valuesForObject(ref).count){rebuildEditorObject(ref,tool,values);return;}
   else if(b==='arena'){
@@ -4159,7 +4173,7 @@ function validatedRoom(input,playable=true){
  if(!input||typeof input!=='object')throw Error('Cuarto inválido.');const n=Number(input.gridSize||input.board?.length);if(!validFloorLayout(input,n)||!Array.isArray(input.board)||input.board.length!==n||input.board.some(row=>!Array.isArray(row)||row.length!==n))throw Error('Tamaño de cuarto inválido.');
  let budget=0;const coord=(x,y)=>Number.isInteger(x)&&Number.isInteger(y)&&x>=0&&y>=0&&x<(+input.floorSize||n)&&y<n&&((+input.floorCount||1)===1||y%((+input.floorSize||n)+2)<+input.floorSize);const object=v=>v&&typeof v==='object'&&!Array.isArray(v);
  const checkMap=(map,depth)=>{if(map==null)return;if(!object(map))throw Error('Configuración inválida.');for(const [key,gr]of Object.entries(map)){if(!/^\d+$/.test(key)||!object(gr))throw Error('Canal inválido.');if(gr.obj)tile(gr.obj,depth+1);if(gr.rx!==undefined&&!coord(gr.rx,gr.ry))throw Error('Aparición fuera del cuarto.');if(gr.sx!==undefined&&!coord(gr.sx,gr.sy))throw Error('Aparición fuera del cuarto.');}};
- const tile=(t,depth=0)=>{if(++budget>30000||depth>14||typeof t!=='string'||t.length>600000)throw Error('Objeto inválido o demasiado complejo.');const b=base(t);if(['boxbox','icebox','bundle','arena','crossgate','shop','darkzone'].includes(b)){let c;try{c=JSON.parse(decodeURIComponent(part(t,1)));}catch(e){throw Error('Objeto compuesto inválido.');}if(!object(c))throw Error('Objeto inválido.');if(b==='icebox'||b==='boxbox')tile(c.obj,depth+1);if(b==='bundle'){tile(c.tile,depth+1);if(c.extras&&!Array.isArray(c.extras))throw Error('Piezas inválidas.');for(const e of c.extras||[]){if(!coord(e.x,e.y))throw Error('Pieza fuera del cuarto.');tile(e.tile,depth+1);}checkMap(c.creators,depth);checkMap(c.wgroups,depth);}if(b==='arena'){if(!Array.isArray(c.enemies)||!c.enemies.length||c.enemies.length>12||!coord(c.rx,c.ry))throw Error('Creador inválido.');c.enemies.forEach(v=>{if(!['enemy','enemy2','boss','snake','worm'].includes(base(v)))throw Error('Enemigo inválido.');tile(v,depth+1);});tile(c.reward,depth+1);if(c.partner){if(!coord(c.partner.x,c.partner.y))throw Error('Pareja inválida.');tile(c.partner.tile,depth+1);}}if(b==='crossgate'&&(!coord(c.bx,c.by)||!Number.isInteger(c.id)||c.id<1||!['tap','hold'].includes(c.mode)))throw Error('Puerta de cruce inválida.');if(b==='shop'&&(!Array.isArray(c.items)||c.items.some(i=>!Object.hasOwn(SHOP_ITEMS,i.type)||!Number.isInteger(i.price)||i.price<0||i.price>9999||!Number.isInteger(i.qty)||i.qty<1||i.qty>(i.type==='hook'?20:100))))throw Error('Tienda inválida.');if(b==='darkzone'&&(!Number.isInteger(c.width)||!Number.isInteger(c.height)||c.width<1||c.height<1||c.width>20||c.height>20))throw Error('Zona inválida.');}
+ const tile=(t,depth=0)=>{if(++budget>30000||depth>14||typeof t!=='string'||t.length>600000)throw Error('Objeto inválido o demasiado complejo.');const b=base(t);if(['boxbox','icebox','bundle','arena','crossgate','shop','darkzone'].includes(b)){let c;try{c=JSON.parse(decodeURIComponent(part(t,1)));}catch(e){throw Error('Objeto compuesto inválido.');}if(!object(c))throw Error('Objeto inválido.');if(b==='icebox'||b==='boxbox')tile(c.obj,depth+1);if(b==='bundle'){tile(c.tile,depth+1);if(c.extras&&!Array.isArray(c.extras))throw Error('Piezas inválidas.');for(const e of c.extras||[]){if(!coord(e.x,e.y))throw Error('Pieza fuera del cuarto.');tile(e.tile,depth+1);}checkMap(c.creators,depth);checkMap(c.wgroups,depth);}if(b==='arena'){if(!Array.isArray(c.enemies)||!c.enemies.length||c.enemies.length>12||!coord(c.rx,c.ry))throw Error('Creador inválido.');c.enemies.forEach(v=>{if(!['enemy','enemy2','enemy3','boss','snake','worm'].includes(base(v)))throw Error('Enemigo inválido.');tile(v,depth+1);});tile(c.reward,depth+1);if(c.partner){if(!coord(c.partner.x,c.partner.y))throw Error('Pareja inválida.');tile(c.partner.tile,depth+1);}}if(b==='crossgate'&&(!coord(c.bx,c.by)||!Number.isInteger(c.id)||c.id<1||!['tap','hold'].includes(c.mode)))throw Error('Puerta de cruce inválida.');if(b==='shop'&&(!Array.isArray(c.items)||c.items.some(i=>!Object.hasOwn(SHOP_ITEMS,i.type)||!Number.isInteger(i.price)||i.price<0||i.price>9999||!Number.isInteger(i.qty)||i.qty<1||i.qty>(i.type==='hook'?20:100))))throw Error('Tienda inválida.');if(b==='darkzone'&&(!Number.isInteger(c.width)||!Number.isInteger(c.height)||c.width<1||c.height<1||c.width>20||c.height>20||(c.darknessLevel&&!Object.hasOwn(DARK_LEVELS,c.darknessLevel))))throw Error('Zona inválida.');}
   if(b==='blinkboss'){const c=readBlink(t);if(!Array.isArray(c.points)||c.points.length<2||c.points.length>6||c.points.some(q=>!coord(q.x,q.y))||!Number.isFinite(c.hp)||c.hp<1||c.hp>1000)throw Error('Jefe de destellos inválido.');}
   if(b==='hook'&&(!Number.isInteger(+part(t,1))||+part(t,1)<1||+part(t,1)>20))throw Error('Alcance de gancho inválido.');
   if(b==='cash'&&(!/^cash:\d+$/.test(t)||tileId(t)>100))throw Error('Cantidad de monedas inválida.');if(b==='switch'&&(!['tap','hold'].includes(part(t,2))||tileId(t)>10))throw Error('Botón inválido.');
@@ -4167,7 +4181,7 @@ function validatedRoom(input,playable=true){
  if((input.floorCount||1)>1){const sz=+input.floorSize,stride=sz+2;for(let y=0;y<n;y++)for(let x=0;x<n;x++)if((x>=sz||y%stride>=sz)&&input.board[y][x]!=='wall')throw Error('Objetos fuera de los límites de un piso.');}
  input.board.flat().forEach(v=>tile(v));checkMap(input.groups,0);checkMap(input.creators,0);
  if(playable&&(!input.board.flat().includes('start')||!input.board.flat().includes('exit')))throw Error('Cada cuarto de una ruta necesita inicio y salida.');
- const dark=(input.darkZones||[]);if(!Array.isArray(dark)||dark.length>1000||dark.some(z=>!coord(z.x,z.y)||!Number.isInteger(z.width)||!Number.isInteger(z.height)||z.width<1||z.height<1||z.width>20||z.height>20||!['rect','ellipse','diamond'].includes(z.shape)))throw Error('Oscuridad inválida.');
+ const dark=(input.darkZones||[]);if(!Array.isArray(dark)||dark.length>1000||dark.some(z=>!coord(z.x,z.y)||!Number.isInteger(z.width)||!Number.isInteger(z.height)||z.width<1||z.height<1||z.width>20||z.height>20||!['rect','ellipse','diamond'].includes(z.shape)||(z.darknessLevel&&!Object.hasOwn(DARK_LEVELS,z.darknessLevel))))throw Error('Oscuridad inválida.');
  return{floorSize:+input.floorSize||n,floorCount:+input.floorCount||1,startGear:normalizeStartGear(input.startGear),board:clone(input.board),gridSize:n,playerSpeed:clamp(+input.playerSpeed||5,2,10),timeLimit:clamp(Math.floor(+input.timeLimit||0),0,86400),vision:5,groups:clone(input.groups||{}),creators:clone(input.creators||{}),darkZones:clone(dark),name:String(input.name||'Cuarto importado').slice(0,160),id:newLocalId('room'),timestamp:Date.now()};
 }
 function normalizeRoute(data){let source=data.rooms;if(data.format==='entropia-studio')source=data.rooms;if(!['entropia-route','entropia-studio'].includes(data.format)||!Array.isArray(source)||!source.length||source.length>100)throw Error('Selecciona un archivo de ruta de ENTROPÍA (máximo 100 cuartos).');return{id:newLocalId('route'),name:String(data.name||'Ruta importada').slice(0,160),rooms:source.map(r=>validatedRoom(r,true)),timestamp:Date.now()};}
@@ -4178,9 +4192,10 @@ const GUIDE_DETAILS={floor:'Piso transitable. Sirve para abrir caminos y reempla
 function toolIcon(tool){return({wdiamond:'◇',erase:'🗑️',floor:'▫️',mirrorNE:'↗️',mirrorNW:'↖️',mirrorSE:'↘️',mirrorSW:'↙️'})[tool]||ICONS[tool]||'✦';}
 function guideText(tool){return GUIDE_DETAILS[tool]||TOOL_NOTES[tool]||'Selecciona este objeto para ver y configurar sus valores en el editor.';}
 function showObjectGuide(){closeMobileEditorMenu();const render=()=>{const query=$('guideSearch').value.toLocaleLowerCase(),box=$('objectGuideList');box.innerHTML='';for(const tool of Object.keys(TOOL_LABELS)){if(!(`${TOOL_LABELS[tool]} ${guideText(tool)}`.toLocaleLowerCase().includes(query)))continue;const card=document.createElement('article');card.className='guide-card';const icon=document.createElement('span');icon.textContent=toolIcon(tool);const text=document.createElement('div'),title=document.createElement('strong'),p=document.createElement('p');title.textContent=TOOL_LABELS[tool];p.textContent=guideText(tool);text.append(title,p);card.append(icon,text);box.appendChild(card);}};$('guideSearch').oninput=render;render();$('objectGuideModal').classList.remove('hidden');}
-function learningRoom(){const b=emptyBoard(12);for(let i=0;i<12;i++)b[0][i]=b[11][i]=b[i][0]=b[i][11]='wall';b[1][1]='start';b[10][10]='exit';b[2][2]='sword';b[3][2]='bow';b[4][2]='ammo:10';b[5][2]='bomb:3';b[2][3]='torch';b[2][4]='coin';b[2][5]='ice';b[3][6]='ftorch:1';b[8][9]='wspawn:1';b[4][4]='cash:35';b[4][5]='shop:'+encodeURIComponent(JSON.stringify(defaultShop()));b[7][3]='switch:1:tap';b[7][4]='bdoor:1';b[8][8]='enemy:1:1:3:0:0';return{board:b,gridSize:12,playerSpeed:5,timeLimit:0,groups:{1:{kind:'torch',count:1,obj:packBundle({tile:'coin'})}},creators:{},darkZones:[{x:7,y:6,width:4,height:5,shape:'rect'}],name:'Aprender a jugar'};}
+function learningRoom(){const b=emptyBoard(12);for(let i=0;i<12;i++)b[0][i]=b[11][i]=b[i][0]=b[i][11]='wall';b[1][1]='start';b[10][10]='exit';b[1][2]='sword';b[2][2]='hook:5';b[2][5]='anchor';b[2][3]='hole';b[2][4]='hole';b[3][2]='bow';b[4][2]='ammo:12';b[5][2]='bomb:4';b[3][3]='torch';b[3][4]='coin';b[4][5]='icebox:'+encodeURIComponent(JSON.stringify({obj:'cash:10'}));b[4][7]='ftorch:1';b[6][7]='ftorch:1';b[8][8]='wspawn:1';b[4][3]='cash:35';b[5][3]='shop:'+encodeURIComponent(JSON.stringify(defaultShop()));b[7][2]='colorGem';b[7][4]='blueGate';b[7][5]='redGate';b[8][3]='touchSpikes:900';b[8][5]='lightswitch:1';b[9][7]='torchdecor:4';b[9][3]='checkpoint';b[8][9]='enemy:1:8:3:0:0:0';return{board:b,gridSize:12,floorSize:12,floorCount:1,playerSpeed:5,timeLimit:0,startGear:{shields:2},groups:{1:{kind:'torch',count:2,obj:packBundle({tile:'coin'})}},creators:{},darkZones:[{id:1,x:6,y:6,width:5,height:5,shape:'rect',darknessLevel:'dim',hasSwitch:true}],name:'Cuarto de muestra · un piso'};}
+
 let quickToolsState=null,iconDrag=null,iconHold=null,ignoreIconClickUntil=0;
-function syncQuickTools(){if(!quickToolsState||!responsiveEditor)return;const mobile=responsiveEditor.moved;for(const slot of quickToolsState.slots){if(mobile)quickToolsState.bar.insertBefore(slot.node,$('mobileEditorToggle'));else slot.anchor.parentNode.insertBefore(slot.node,slot.anchor.nextSibling);}}
+function syncQuickTools(){if(!quickToolsState||!responsiveEditor)return;const mobile=responsiveEditor.moved;for(const slot of quickToolsState.slots){if(mobile){if(['undoStudio','redoStudio'].includes(slot.node.id)&&$('historyQuick'))$('historyQuick').appendChild(slot.node);else quickToolsState.bar.insertBefore(slot.node,$('mobileEditorToggle'));}else slot.anchor.parentNode.insertBefore(slot.node,slot.anchor.nextSibling);}}
 function saveCatalogOrder(){localStorage.setItem('entropiaCatalogOrder',JSON.stringify([...$('toolbar').querySelectorAll('.tool-btn')].map(b=>b.dataset.tool)));}
 function cleanupIconDrag(){clearTimeout(iconHold);iconHold=null;if(iconDrag?.ghost)iconDrag.ghost.remove();if(iconDrag?.source)iconDrag.source.classList.remove('drag-source');iconDrag=null;}
 function swapCatalogTools(a,b){if(!a||!b||a===b)return;const tools=[...$('toolbar').querySelectorAll('.tool-btn')],i=tools.findIndex(v=>v.dataset.tool===a),j=tools.findIndex(v=>v.dataset.tool===b);if(i<0||j<0)return;[tools[i],tools[j]]=[tools[j],tools[i]];const x=$('toolbar').scrollLeft,y=$('toolbar').scrollTop;tools.forEach(v=>$('toolbar').appendChild(v));$('toolbar').scrollLeft=x;$('toolbar').scrollTop=y;saveCatalogOrder();}
@@ -4239,7 +4254,7 @@ function wizardWallGroup(tool,st,pos,done){const gid=wizardId('wd'),kind=tool===
  wizard.tasks.push({label:'Coloca la pared que desaparecerá.',run:q=>{cfg.extras.push({...q,tile:'wall'});cfg.wgroups[gid]={kind,count,obj:'floor',sx:q.x,sy:q.y,hit:0,done:false};done(packBundle(cfg));}});
 }
 function cleanOrphans(){cleanOrphansCore();const all=[];walkRewards(t=>all.push(t));const ids=new Set(all.filter(t=>base(t)==='bossdoor').map(tileId));for(const id of ids){if(pending?.type==='bossKeys'&&pending.id===id)continue;const parts=new Set(all.filter(t=>base(t)==='bosskey'&&tileId(t)===id).map(t=>part(t,2)));if(parts.has('A')&&parts.has('B'))continue;removeById('bossdoor',id);removeById('bosskey',id);}for(const row of board)for(const t of row)if(base(t)==='bosskey'&&!ids.has(tileId(t)))removeById('bosskey',tileId(t));}
-function drawExtraTile(x,y){const t=G.grid[y][x],b=base(t),ts=cv.ts,cx=(x+.5)*ts,cy=(y+.5)*ts;if(['redGate','blueGate','colorGem'].includes(b)){drawColorMechanism(x,y,t);return true;}if(['stairs','hook','anchor','checkpoint','blinkpad'].includes(b)){ctx.fillStyle=colors.floor;ctx.fillRect(x*ts,y*ts,ts,ts);if(b==='blinkpad'){ctx.globalAlpha=.35;emoji('🔮',cx,cy,ts*.48);ctx.globalAlpha=1;}else emoji(ICONS[b],cx,cy,ts*.66);return true;}if(b==='torchdecor'){ctx.fillStyle=colors.floor;ctx.fillRect(x*ts,y*ts,ts,ts);emoji('🔥',cx,cy,ts*(.62+.025*Math.sin(G.time/90+x)));return true;}
+function drawExtraTile(x,y){const t=G.grid[y][x],b=base(t);if(['bramble','touchSpikes','lightswitch'].includes(b)){drawRepairTile(x,y,t);return true;}const ts=cv.ts,cx=(x+.5)*ts,cy=(y+.5)*ts;if(['redGate','blueGate','colorGem'].includes(b)){drawColorMechanism(x,y,t);return true;}if(['stairs','hook','anchor','checkpoint','blinkpad'].includes(b)){ctx.fillStyle=colors.floor;ctx.fillRect(x*ts,y*ts,ts,ts);if(b==='blinkpad'){drawBlinkBase(x,y);}else emoji(ICONS[b],cx,cy,ts*.66);return true;}if(b==='torchdecor'){ctx.fillStyle=colors.floor;ctx.fillRect(x*ts,y*ts,ts,ts);emoji('🔥',cx,cy,ts*(.62+.025*Math.sin(G.time/90+x)));return true;}
  if(b==='bosskey'){ctx.fillStyle=colors.floor;ctx.fillRect(x*ts,y*ts,ts,ts);emoji('🗝️',cx,cy,ts*.65);numTag(cx+ts*.3,cy+ts*.3,part(t,2),ts*.16,'#e1b643');return true;}
  if(b==='bossdoor'){ctx.fillStyle=colors.floor;ctx.fillRect(x*ts,y*ts,ts,ts);if(!G.bossDoorsOpen.has(tileId(t))){emoji('🚪',cx,cy,ts*.85);emoji('🗝️',cx,cy,ts*.3);numTag(cx+ts*.3,cy+ts*.3,tileId(t),ts*.13);}return true;}
  return drawExtraTileCore(x,y);
@@ -4321,11 +4336,11 @@ function blinkConfig(st,id,points){return{id,points,appearMs:clamp(st.appearMs||
 function startBlinkPlacement(x,y){if(base(board[y][x])!=='floor'||futureReservations().some(p=>p.x===x&&p.y===y)){setStatus('Elige piso libre.',1800);return;}const id=freeId('blinkpad');board[y][x]=`blinkpad:${id}`;pending={type:'blinkPoints',id,total:clamp(brush.sites||3,2,6),points:[{x,y}],values:{...brush}};renderGrid();showPending();}
 function placeBlinkPoint(x,y){if(base(board[y][x])!=='floor'||futureReservations().some(p=>p.x===x&&p.y===y)){setStatus('Elige otro piso libre.',1800);return;}const p=pending;p.points.push({x,y});board[y][x]=`blinkpad:${p.id}`;if(p.points.length>=p.total){const first=p.points[0];board[first.y][first.x]=blinkTile(blinkConfig(p.values,p.id,p.points));pending=null;hidePending();afterEdit();}else{renderGrid();showPending();}}
 function wizardBlink(st,pos,done){const id=wizardId('blinkpad'),points=[{...pos}],extras=[],total=clamp(st.sites||3,2,6);for(let i=1;i<total;i++)wizard.tasks.push({label:`Coloca el lugar ${i+1} de ${total} del jefe de destellos.`,run:q=>{points.push(q);extras.push({...q,tile:`blinkpad:${id}`});if(points.length===total)done(packBundle({tile:blinkTile(blinkConfig(st,id,points)),extras}));}});}
-function makeBlinkBoss(g,x,y,t){const c=readBlink(t);if(!c.points?.length){c.points=[{x,y}];for(let yy=0;yy<g.n&&c.points.length<3;yy++)for(let xx=0;xx<g.n&&c.points.length<3;xx++)if(Math.hypot(xx-x,yy-y)>=2&&base(g.grid[yy][xx])==='floor')c.points.push({x:xx,y:yy});}g.enemies.push({kind:5,x,y,rx:x,ry:y,hx:x,hy:y,...c,maxHp:c.hp||1,hp:c.hp||1,hasKey:c.key,hasCoin:c.coin,hasGold:c.gold,awake:false,phase:'sleep',until:0,next:0,stun:0,flash:0,points:c.points||[{x,y}]});}
+function makeBlinkBoss(g,x,y,t){const c=readBlink(t);g.blinkPlatforms??=[];for(const p of c.points||[])if(!g.blinkPlatforms.some(q=>q.x===p.x&&q.y===p.y))g.blinkPlatforms.push({...p});if(!c.points?.length){c.points=[{x,y}];for(let yy=0;yy<g.n&&c.points.length<3;yy++)for(let xx=0;xx<g.n&&c.points.length<3;xx++)if(Math.hypot(xx-x,yy-y)>=2&&base(g.grid[yy][xx])==='floor')c.points.push({x:xx,y:yy});}g.enemies.push({kind:5,x,y,rx:x,ry:y,hx:x,hy:y,...c,maxHp:c.hp||1,hp:c.hp||1,hasKey:c.key,hasCoin:c.coin,hasGold:c.gold,awake:false,phase:'sleep',until:0,next:0,stun:0,flash:0,points:c.points||[{x,y}]});}
 function chooseBlink(e,now){let options=e.points.filter(q=>Math.abs(q.x-G.player.x)+Math.abs(q.y-G.player.y)>1&&!blockAt(q.x,q.y)&&!mwallAt(q.x,q.y)&&!G.enemies.some(o=>o!==e&&o.x===q.x&&o.y===q.y));const other=options.filter(q=>q.x!==e.x||q.y!==e.y);if(other.length)options=other;if(!options.length){e.phase='cooldown';e.until=now+200;return;}const q=options[Math.floor(Math.random()*options.length)];e.x=e.rx=q.x;e.y=e.ry=q.y;e.phase='warning';e.until=now+(e.appearMs||Math.max(400,1400-e.speed*90));}
 function bossRay(e){const g=G,cells=[];let x=e.x,y=e.y;const tx=e.target.x,ty=e.target.y,dx=Math.abs(tx-x),sx=x<tx?1:-1,dy=-Math.abs(ty-y),sy=y<ty?1:-1;let err=dx+dy;for(let i=0;i<g.n*2;i++){if(x===tx&&y===ty)break;const v=2*err;if(v>=dy){err+=dy;x+=sx;}if(v<=dx){err+=dx;y+=sy;}if(!inb(x,y)||BEAM_STOP.includes(bt(x,y))||mwallAt(x,y))break;cells.push({x,y});}g.bossRays??=[];g.bossRays.push({cells,until:g.time+320});if(cells.some(q=>q.x===g.player.x&&q.y===g.player.y))hurtPlayer('⚡ ¡Te alcanzó el jefe de destellos!');playSound('shoot');}
 function blinkLogic(e,now){if(!wakeBoss(e,e))return;if(e.phase==='sleep'){chooseBlink(e,now);return;}if(e.phase==='warning'&&Math.abs(e.x-G.player.x)+Math.abs(e.y-G.player.y)<=1){chooseBlink(e,now);return;}if(now<e.until)return;if(e.phase==='warning'){if(G.player.x===e.x&&G.player.y===e.y||blockAt(e.x,e.y)){chooseBlink(e,now);return;}e.phase='aim';e.target={x:G.player.x,y:G.player.y};e.until=now+(e.aimMs||Math.max(500,1500-e.speed*80));playSound('alert');}else if(e.phase==='aim'){if(now<e.stun)return;bossRay(e);e.phase='cooldown';e.until=now+Math.max(250,1000-e.speed*65);}else chooseBlink(e,now);}
-function drawAdventureEffects(){const g=G,ts=cv.ts;if(g.hookAction?.loot){const a=g.hookAction;emoji(ICONS[base(a.loot)]||'🎁',(a.head.x+.5)*ts,(a.head.y+.5)*ts,ts*.52);}for(const e of g.enemies)if(e.kind===5&&e.phase==='aim'&&e.target){ctx.strokeStyle='#f1a6ff88';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo((e.x+.5)*ts,(e.y+.5)*ts);ctx.lineTo((e.target.x+.5)*ts,(e.target.y+.5)*ts);ctx.stroke();}g.bossRays=(g.bossRays||[]).filter(r=>r.until>g.time);ctx.fillStyle='#e2b7ffb0';for(const r of g.bossRays)for(const p of r.cells)ctx.fillRect(p.x*ts+ts*.25,p.y*ts+ts*.25,ts*.5,ts*.5);if(g.hookLine?.until>g.time){const l=g.hookLine;ctx.strokeStyle='#bedbea';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo((l.from.x+.5)*ts,(l.from.y+.5)*ts);ctx.lineTo((l.to.x+.5)*ts,(l.to.y+.5)*ts);ctx.stroke();}}
+function drawAdventureEffects(){const g=G,ts=cv.ts;for(const p of g.blinkPlatforms||[])if(base(g.grid[p.y][p.x])!=='blinkpad')drawBlinkBase(p.x,p.y);if(g.hookAction?.loot){const a=g.hookAction;emoji(ICONS[base(a.loot)]||'🎁',(a.head.x+.5)*ts,(a.head.y+.5)*ts,ts*.52);}for(const e of g.enemies)if(e.kind===5&&e.phase==='aim'&&e.target){ctx.strokeStyle='#f1a6ff88';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo((e.x+.5)*ts,(e.y+.5)*ts);ctx.lineTo((e.target.x+.5)*ts,(e.target.y+.5)*ts);ctx.stroke();}g.bossRays=(g.bossRays||[]).filter(r=>r.until>g.time);ctx.fillStyle='#e2b7ffb0';for(const r of g.bossRays)for(const p of r.cells)ctx.fillRect(p.x*ts+ts*.25,p.y*ts+ts*.25,ts*.5,ts*.5);if(g.hookLine?.until>g.time){const l=g.hookLine;ctx.strokeStyle='#bedbea';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo((l.from.x+.5)*ts,(l.from.y+.5)*ts);ctx.lineTo((l.to.x+.5)*ts,(l.to.y+.5)*ts);ctx.stroke();}}
 function removeBlinkFamily(id){removeById('blinkboss',id);removeById('blinkpad',id);}
 function setupAdventure(){const h=document.createElement('button');h.id='btnHook';h.textContent='🪝';h.title='Gancho · 4 para seleccionar / H para lanzar';h.setAttribute('aria-label',h.title);h.onclick=()=>{toggleWeapon('hook');};gameScreen.appendChild(h);
  canvas.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'||e.button!==0||!G||G.paused||G.over)return;mouseCenter={sx:e.clientX,sy:e.clientY,since:G.time,fired:false};});
@@ -4382,6 +4397,55 @@ function setupColorDoors(){const b=document.createElement('button');b.className=
  Object.assign(GUIDE_DETAILS,{redGate:'Puerta roja alternante: empieza abierta. Cuando un diamante rojo-azul se vuelve rojo, todas las puertas rojas se elevan y cierran. Al quedar abiertas se sigue viendo su marco rojo y la sección bajada. Si alguien ocupa el paso, espera a que salga.',blueGate:'Puerta azul alternante: empieza cerrada. Al golpear cualquier diamante rojo-azul, se abre mientras las rojas se cierran. Todas las puertas de color y diamantes del cuarto comparten el mismo estado, incluso entre pisos.',colorGem:'Diamante rojo-azul. Puedes colocar varios. Golpéalo con espada, flecha o bomba para cambiar el color de todos: azul significa puertas azules cerradas y rojas abiertas; rojo significa rojas cerradas y azules abiertas. Funciona con uno o ambos colores de puerta.'});Object.assign(TOOL_NOTES,GUIDE_DETAILS);
 }
 
+const DARK_LEVELS={total:1,dim:.94,medium:.78,light:.55};
+function nextRuntimeZoneId(g){const ids=g.zones.map(z=>+z.id||0);const scan=(t,depth=0)=>{if(depth>20||typeof t!=='string')return;const b=base(t);if(b==='lightswitch')ids.push(tileId(t));try{if(b==='darkzone')ids.push(+JSON.parse(decodeURIComponent(part(t,1))).id||0);if(b==='bundle'){const c=unpackBundle(t);scan(c.tile,depth+1);for(const e of c.extras||[])scan(e.tile,depth+1);for(const e of Object.values(c.creators||{}))scan(e.obj,depth+1);for(const e of Object.values(c.wgroups||{}))scan(e.obj,depth+1);}if(b==='icebox'||b==='boxbox')scan(JSON.parse(decodeURIComponent(part(t,1))).obj,depth+1);if(b==='arena')scan(JSON.parse(decodeURIComponent(part(t,1))).reward,depth+1);}catch(e){}};g.room.board.flat().forEach(t=>scan(t));for(const e of Object.values(g.room.groups||{}))scan(e.obj);for(const e of Object.values(g.room.creators||{}))scan(e.obj);return Math.max(0,...ids)+1;}
+function nextEditorZoneId(){normalizeZoneIds(darkZones);const ids=darkZones.map(z=>+z.id||0);walkRewards(t=>{if(base(t)==='lightswitch')ids.push(tileId(t));if(base(t)==='darkzone')try{ids.push(+JSON.parse(decodeURIComponent(part(t,1))).id||0);}catch(e){}});return Math.max(0,...ids)+1;}
+function rebuildDarkness(g=G){g.darkOpacity=new Map();for(const zone of g.zones||[])if(!g.zoneDisabled.has(zone.id))for(const p of zoneCells(zone,g.n)){const key=p.y*g.n+p.x;g.darkOpacity.set(key,Math.max(g.darkOpacity.get(key)||0,DARK_LEVELS[zone.darknessLevel]??.94));}g.darkCells=new Set(g.darkOpacity.keys());}
+function toggleZone(id){if(!G)return;if(G.zoneDisabled.has(id))G.zoneDisabled.delete(id);else G.zoneDisabled.add(id);rebuildDarkness();playSound('press');toast(G.zoneDisabled.has(id)?'💡 Luz encendida en esta zona':'🌑 Luz apagada en esta zona',1100);}
+function placeZoneSwitch(x,y){if(base(board[y][x])!=='floor'||futureReservations().some(q=>q.x===x&&q.y===y)){setStatus('Elige piso libre para el apagador.',1800);return;}board[y][x]=`lightswitch:${pending.zoneId}`;pending=null;hidePending();afterEdit();}
+function configureZoneSwitch(z,enabled){z.id||=nextEditorZoneId();z.hasSwitch=enabled;if(!enabled){for(const row of board)for(let x=0;x<row.length;x++)if(row[x]===`lightswitch:${z.id}`)row[x]='floor';return;}if(!board.flat().includes(`lightswitch:${z.id}`)){pending={type:'zoneSwitch',zoneId:z.id,existing:true};showPending();}}
+function drawBlinkBase(x,y){const ts=cv.ts;ctx.fillStyle='#6e478348';ctx.strokeStyle='#bc91dc';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse((x+.5)*ts,(y+.74)*ts,ts*.39,ts*.18,0,0,Math.PI*2);ctx.fill();ctx.stroke();}
+function senseTerritory(e,p,now){const inside=floorIndex(G,p.y)===floorIndex(G,e.hy)&&Math.max(Math.abs(p.x-e.hx),Math.abs(p.y-e.hy))<=e.vision;e.territory=e.vision;if(inside){e.outsideSince=null;if(hasLOS(e.x,e.y,p.x,p.y)||e.state==='chase'){if(e.state!=='chase'){e.state='chase';e.next=Math.max(e.next,now+250);playSound('alert');}}}else{if(e.outsideSince==null)e.outsideSince=now;if(now-e.outsideSince>=1100)e.state='return';}}
+function trapState(x,y,t=G.grid[y][x]){const timer=G.trapTimers.get(y*G.n+x);if(timer===undefined)return'down';const delay=clamp(+part(t,1)||650,200,5000),age=G.time-timer;return age<delay?'warn':age<delay+1000?'up':'down';}
+function updateTraps(){const g=G;if(!g||g.over||g.paused)return;const p=g.player,t=g.grid[p.y][p.x],b=base(t);for(const[key,start]of g.trapTimers){const tile=g.grid[Math.floor(key/g.n)]?.[key%g.n],delay=clamp(+part(tile,1)||650,200,5000);if(base(tile)!=='touchSpikes'||g.time-start>delay+1400)g.trapTimers.delete(key);}if(standingOnBox(g)||g.hookAction?.phase==='pull')return;if(b==='touchSpikes'){const key=p.y*g.n+p.x;if(!g.trapTimers.has(key)){g.trapTimers.set(key,g.time);playSound('alert');}if(trapState(p.x,p.y,t)==='up')hurtPlayer('⚠️ ¡Se activaron los picos de presión!');}else if(b==='spikes'&&spikeState(t)==='up')hurtPlayer('☠️ ¡Te alcanzaron los picos!');}
+function drawRepairTile(x,y,t){const b=base(t),ts=cv.ts,px=x*ts,py=y*ts;ctx.fillStyle=colors.floor;ctx.fillRect(px,py,ts,ts);if(b==='touchSpikes'){drawSpikes(px,py,trapState(x,y,t));if(trapState(x,y,t)==='warn'){ctx.strokeStyle='#ffb657';ctx.lineWidth=3;ctx.strokeRect(px+3,py+3,ts-6,ts-6);}}if(b==='lightswitch'){const on=G.zoneDisabled.has(tileId(t));emoji(on?'💡':'🔌',px+ts/2,py+ts/2,ts*.62);numTag(px+ts*.8,py+ts*.8,tileId(t),ts*.14);}if(b==='bramble'){ctx.fillStyle='#806044';ctx.fillRect(px+3,py+4,ts-6,ts-8);ctx.strokeStyle='#dab387';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(px+5,py+6);ctx.lineTo(px+ts-5,py+ts-6);ctx.moveTo(px+ts-5,py+6);ctx.lineTo(px+5,py+ts-6);ctx.stroke();}}
+function breakBramble(x,y){if(base(G.grid[y][x])!=='bramble')return;G.grid[y][x]='floor';G.effects.push({kind:'pop',x,y,t0:G.time,dur:400,ch:'🪵'});playSound('hit');computeBeams();}
+function builderSites(e){const g=G,b=floorBounds(g,e.hy),r=clamp(e.vision||3,1,8),out=[];for(let dy=-r;dy<=r;dy++)for(let dx=-r;dx<=r;dx++)if(Math.max(Math.abs(dx),Math.abs(dy))===r){const x=e.hx+dx,y=e.hy+dy;if(x>=0&&x<b.size&&y>=b.y&&y<b.y+b.size)out.push({x,y});}return out;}
+function builderLogic(e,now){const g=G,p=g.player;e.territory=clamp(e.vision||3,1,8);if(e.sites==null)e.sites=builderSites(e);const inside=floorIndex(g,p.y)===floorIndex(g,e.hy)&&Math.max(Math.abs(p.x-e.hx),Math.abs(p.y-e.hy))<=e.territory;
+ if(inside&&(hasLOS(e.x,e.y,p.x,p.y)||e.state==='chase')){e.state='chase';e.buildSince=null;e.outsideSince=null;if(now<e.next||now<e.stun||waitBeforeEnemyAttack(e,p,now))return;const step=territoryStep(e,p);builderStep(e,step,now);return;}
+ if(e.state==='chase'){if(e.outsideSince==null)e.outsideSince=now;if(now-e.outsideSince<1100)return;e.state='repair';}
+ if(now<e.next||now<e.stun)return;
+ const missing=e.sites.filter(q=>base(g.grid[q.y][q.x])==='floor'&&!blockAt(q.x,q.y)&&!mwallAt(q.x,q.y));let target=null,step=null;
+ for(const q of missing.sort((a,b)=>Math.hypot(a.x-e.x,a.y-e.y)-Math.hypot(b.x-e.x,b.y-e.y))){if(Math.max(Math.abs(e.x-q.x),Math.abs(e.y-q.y))<=1){target=q;break;}const options=[];for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){const x=q.x+dx,y=q.y+dy;if(inb(x,y)&&Math.max(Math.abs(x-e.hx),Math.abs(y-e.hy))<e.territory&&enemyCanEnter(x,y)&&!blockAt(x,y)&&!enemyAt(x,y))options.push({x,y});}for(const dest of options){const path=bfsNext(e.x,e.y,dest.x,dest.y);if(path){target=q;step=path;break;}}if(target)break;}
+ if(!target){e.buildSince=null;if(e.x!==e.hx||e.y!==e.hy)builderStep(e,bfsNext(e.x,e.y,e.hx,e.hy),now);else e.state='idle';return;}
+ e.state='repair';if(step){e.buildSince=null;builderStep(e,step,now);return;}const key=target.x+','+target.y;if(e.buildTarget!==key){e.buildTarget=key;e.buildSince=now;}if(e.buildSince==null)e.buildSince=now;
+ if(now-e.buildSince>=e.buildMs&&!(p.x===target.x&&p.y===target.y)&&!enemyAt(target.x,target.y)){g.grid[target.y][target.x]='bramble';e.buildSince=null;e.buildTarget=null;e.next=now+150;g.effects.push({kind:'pop',...target,t0:now,dur:400,ch:'🔨'});computeBeams();}}
+function builderStep(e,step,now){if(!step)return;if(blockAt(step.x,step.y)||enemyAt(step.x,step.y))return;if(step.x===G.player.x&&step.y===G.player.y){e.lunge={...step,at:now};hurtPlayer('🧌 ¡Te alcanzó el constructor!',e);}else{e.x=step.x;e.y=step.y;}e.next=now+moveDelay(e.speed);}
+function setupRepairs(){for(const[id,icon,label]of [['undoStudio','↶','Deshacer'],['redoStudio','↷','Rehacer']]){const b=$(id);b.textContent=icon;b.title=label;b.setAttribute('aria-label',label);}const h=document.createElement('span');h.id='historyQuick';$('mobileEditorBar').prepend(h);syncQuickTools();Object.assign(GUIDE_DETAILS,{enemy2:'Su visión define también su territorio alrededor del punto inicial. Persigue al entrar; al salir, espera un momento y vuelve a su lugar.',enemy3:'Constructor territorial. Levanta un recinto de barricadas alrededor de su centro; las paredes y hoyos existentes cierran el borde. Las barricadas se rompen solo con espada. Sale a reconstruir huecos, tarda el tiempo elegido y ataca si entras en su rango.',bramble:'Barricada que se destruye solo con la espada. Detiene flechas, rayos y movimiento. Un constructor cercano puede repararla.',touchSpikes:'Se activan al pisarlos: primero avisan y salen tras el retardo elegido. Puedes escapar antes de que emerjan.',spikes:'Elige cuánto tiempo permanecen dentro y cuánto tiempo fuera. Destellan antes de salir.',darkzone:'Elige cuatro niveles de oscuridad y si tendrá un apagador propio. Coloca la zona y después su interruptor; solo controla esa zona, incluso desde otro piso.'});Object.assign(TOOL_NOTES,GUIDE_DETAILS);}
+
+const CONTROL_IDS=['moveLeft','moveUp','moveRight','moveDown','btnSword','btnBow','btnBomb','btnHook'];
+const CONTROL_NAMES=['Izquierda','Arriba','Derecha','Abajo','Espada','Arco','Bombas','Gancho'];
+const CONTROL_ICONS=['←','↑','→','↓','🗡️','🏹','💣','🪝'];
+let controlPrefs=readControlPrefs(),controlDraft=null,controlOriginalStyles=new Map(),controlDrag=null,controlSelected='moveUp';
+function defaultControls(){const points=[[.08,.7],[.2,.57],[.32,.7],[.2,.83],[.91,.57],[.79,.7],[.91,.83],[.79,.44]];return Object.fromEntries(CONTROL_IDS.map((id,i)=>[id,{x:points[i][0],y:points[i][1],size:.15}]));}
+function readControlPrefs(){try{const c=JSON.parse(localStorage.getItem('entropiaControlsV2')||'null');if(c&&[1,2].includes(c.mode)&&CONTROL_IDS.every(id=>Number.isFinite(c.buttons?.[id]?.x)&&Number.isFinite(c.buttons?.[id]?.y)&&Number.isFinite(c.buttons?.[id]?.size)))return c;}catch(e){}return{mode:1,buttons:defaultControls()};}
+function controlRects(prefs,w=window.innerWidth,h=window.innerHeight){const placed=[],short=Math.min(w,h),menu={x:5,y:5,w:65,h:65};for(const id of CONTROL_IDS){const c=prefs.buttons[id],size=clamp(c.size*short,28,Math.min(short*.28,130));let r={id,x:clamp(c.x*w-size/2,0,w-size),y:clamp(c.y*h-size/2,0,h-size),w:size,h:size};const fits=q=>![...placed,menu].some(p=>rectsOverlap(q,p,4));if(!fits(r)){let best=null,score=Infinity;for(let y=0;y<=h-size;y+=12)for(let x=0;x<=w-size;x+=12){const q={...r,x,y},d=Math.hypot(x-r.x,y-r.y);if(d<score&&fits(q)){best=q;score=d;}}if(best)r=best;else{r={...r,w:28,h:28};for(let y=0;y<h-28;y+=30)for(let x=0;x<w-28;x+=30)if(fits({...r,x,y})){r.x=x;r.y=y;y=h;break;}}}placed.push(r);}return placed;}
+function rectsOverlap(a,b,gap=0){return a.x<b.x+b.w+gap&&a.x+a.w+gap>b.x&&a.y<b.y+b.h+gap&&a.y+a.h+gap>b.y;}
+function applyControlPrefs(){document.body.classList.toggle('custom-controls',controlPrefs.mode===2);for(const id of CONTROL_IDS){const el=$(id);if(!el)continue;if(!controlOriginalStyles.has(id))controlOriginalStyles.set(id,el.getAttribute('style')||'');el.style.cssText=controlOriginalStyles.get(id);el.classList.remove('custom-play-control');}if(controlPrefs.mode!==2)return;for(const r of controlRects(controlPrefs)){const el=$(r.id);el.classList.add('custom-play-control');for(const[k,v]of Object.entries({left:r.x+'px',top:r.y+'px',right:'auto',bottom:'auto',width:r.w+'px',height:r.h+'px',color:'#fff',background:'#152339b8',position:'absolute',border:'1px solid #b6c9df90','border-radius':'16px','font-size':Math.max(20,r.w*.45)+'px','z-index':'10',display:'flex','align-items':'center','justify-content':'center','pointer-events':'auto'}))el.style.setProperty(k,v,'important');if(r.id.startsWith('move'))el.textContent=CONTROL_ICONS[CONTROL_IDS.indexOf(r.id)];}}
+function normalizeControlDraft(){for(const r of controlRects(controlDraft)){controlDraft.buttons[r.id]={x:(r.x+r.w/2)/window.innerWidth,y:(r.y+r.h/2)/window.innerHeight,size:r.w/Math.min(window.innerWidth,window.innerHeight)};}}
+function openControlEditor(){if(!G||G.over)return;G.paused=true;heldKeys=[];touchDir=null;centerTouch=null;overlay.classList.add('hidden');controlDraft=clone(controlPrefs);$('controlMode').value=controlDraft.mode;$('controlEditor').classList.remove('hidden');renderControlPreview();}
+function renderControlPreview(){if(!controlDraft)return;normalizeControlDraft();const preview=$('controlPreview');preview.innerHTML='';for(const r of controlRects(controlDraft)){const b=document.createElement('button');b.className='control-preview-button'+(r.id===controlSelected?' selected':'');b.dataset.control=r.id;b.textContent=CONTROL_ICONS[CONTROL_IDS.indexOf(r.id)];b.title=CONTROL_NAMES[CONTROL_IDS.indexOf(r.id)];Object.assign(b.style,{left:r.x+'px',top:r.y+'px',width:r.w+'px',height:r.h+'px',fontSize:Math.max(20,r.w*.45)+'px'});b.onclick=()=>{if(controlDrag)return;controlSelected=r.id;$('controlPick').value=r.id;syncControlSize();renderControlPreview();};b.addEventListener('pointerdown',e=>{e.preventDefault();controlSelected=r.id;$('controlPick').value=r.id;syncControlSize();b.setPointerCapture?.(e.pointerId);controlDrag={id:r.id,x:e.clientX,y:e.clientY,rect:r,since:performance.now(),active:false};});b.addEventListener('pointermove',e=>moveControlPreview(e,b));for(const name of ['pointerup','pointercancel','lostpointercapture'])b.addEventListener(name,()=>{if(controlDrag){controlDrag=null;renderControlPreview();}});preview.appendChild(b);}syncControlSize();$('controlPreview').classList.toggle('mode-one',+controlDraft.mode===1);$('controlEditHint').textContent=+controlDraft.mode===1?'Modo 1 conserva las zonas invisibles originales. Elige modo 2 para personalizar.':'Mantén pulsado un botón y arrástralo. Selecciónalo para cambiar su tamaño. No se permiten superposiciones.';}
+function moveControlPreview(e,button){const d=controlDrag;if(!d||d.id!==button.dataset.control||+controlDraft.mode!==2)return;if(!d.active){if(performance.now()-d.since<280)return;d.active=true;}const r={...d.rect,x:clamp(d.rect.x+e.clientX-d.x,0,window.innerWidth-d.rect.w),y:clamp(d.rect.y+e.clientY-d.y,0,window.innerHeight-d.rect.h)},others=controlRects(controlDraft).filter(q=>q.id!==d.id);if(others.some(q=>rectsOverlap(r,q,4))||rectsOverlap(r,{x:5,y:5,w:65,h:65},4)){button.classList.add('blocked');return;}button.classList.remove('blocked');controlDraft.buttons[d.id]={x:(r.x+r.w/2)/window.innerWidth,y:(r.y+r.h/2)/window.innerHeight,size:r.w/Math.min(window.innerWidth,window.innerHeight)};button.style.left=r.x+'px';button.style.top=r.y+'px';}
+function syncControlSize(){const r=controlRects(controlDraft).find(r=>r.id===controlSelected);$('controlSize').value=Math.round(r.w);$('controlSizeValue').textContent=Math.round(r.w)+' px';$('controlSize').disabled=+controlDraft.mode!==2;}
+function resizeSelectedControl(px){if(!controlDraft||+controlDraft.mode!==2)return;const old=clone(controlDraft.buttons[controlSelected]);controlDraft.buttons[controlSelected].size=clamp(px,28,130)/Math.min(window.innerWidth,window.innerHeight);normalizeControlDraft();renderControlPreview();}
+function closeControlEditor(save){if(save){normalizeControlDraft();controlPrefs=clone(controlDraft);controlPrefs.mode=+$('controlMode').value;try{localStorage.setItem('entropiaControlsV2',JSON.stringify(controlPrefs));}catch(e){toast('Controles aplicados en esta sesión.',1200);}applyControlPrefs();}controlDraft=null;controlDrag=null;$('controlEditor').classList.add('hidden');if(G){G.paused=false;S.overlayKind=null;lastTs=performance.now();}}
+function setupControlEditor(){const modal=document.createElement('div');modal.id='controlEditor';modal.className='hidden';modal.innerHTML='<div id="controlPreview"></div><section class="control-tools"><strong>🎛 Controles</strong><select id="controlMode" aria-label="Modo de control"><option value="1">Modo 1 · original invisible</option><option value="2">Modo 2 · personalizable</option></select><select id="controlPick" aria-label="Botón a modificar"></select><label>Tamaño <input id="controlSize" type="range" min="28" max="130" step="1"><span id="controlSizeValue"></span></label><p id="controlEditHint"></p><div><button id="controlReset">Restablecer posiciones</button><button id="controlCancel">Cancelar</button><button id="controlSave">Guardar y jugar</button></div></section>';document.body.appendChild(modal);for(let i=0;i<CONTROL_IDS.length;i++){const o=document.createElement('option');o.value=CONTROL_IDS[i];o.textContent=CONTROL_NAMES[i];$('controlPick').appendChild(o);}$('controlPick').value=controlSelected;$('controlPick').onchange=e=>{controlSelected=e.target.value;renderControlPreview();};$('controlMode').onchange=e=>{controlDraft.mode=+e.target.value;renderControlPreview();};$('controlSize').oninput=e=>resizeSelectedControl(+e.target.value);$('controlReset').onclick=()=>{controlDraft.buttons=defaultControls();renderControlPreview();};$('controlCancel').onclick=()=>closeControlEditor(false);$('controlSave').onclick=()=>closeControlEditor(true);window.addEventListener('resize',()=>{applyControlPrefs();if(controlDraft)renderControlPreview();});applyControlPrefs();}
+
+
+function normalizeZoneIds(zones){const used=new Set(zones.filter(z=>Number.isInteger(z.id)&&z.id>0).map(z=>z.id));let next=Math.max(0,...used)+1;const seen=new Set();for(const z of zones){if(!Number.isInteger(z.id)||z.id<1||seen.has(z.id)){while(used.has(next))next++;z.id=next++;used.add(z.id);}seen.add(z.id);}return zones;}
+function reserveWizardZone(){const ids=new Set([nextEditorZoneId()-1,...darkZones.map(z=>z.id),...(wizard.ids.zone||[])]);walkRewards(t=>{if(base(t)==='lightswitch')ids.add(tileId(t));if(base(t)==='darkzone')try{ids.add(JSON.parse(decodeURIComponent(part(t,1))).id);}catch(e){}});let id=1;while(ids.has(id))id++;wizard.ids.zone=[...(wizard.ids.zone||[]),id];return id;}
+function cleanZoneSwitches(){const ids=new Set(darkZones.map(z=>z.id));walkRewards(t=>{if(base(t)==='darkzone')try{const c=JSON.parse(decodeURIComponent(part(t,1)));if(c.id)ids.add(c.id);}catch(e){}});if(pending?.type==='zoneSwitch')ids.add(pending.zoneId);for(const row of board)for(let i=0;i<row.length;i++)if(base(row[i])==='lightswitch'&&!ids.has(tileId(row[i])))row[i]='floor';}
+
 setupStudio();
 setupNewFeatures();
 setupWorkspaceLayout();
@@ -4392,6 +4456,8 @@ setupLatestFeatures();
 setupAdventure();
 setupFloorsUI();
 setupColorDoors();
+setupRepairs();
+setupControlEditor();
 
     buildPalette();
     initEmptyBoard();
