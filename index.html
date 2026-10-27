@@ -4498,3 +4498,118 @@ let controlPrefs=readControlPrefs(),controlDraft=null,controlOriginalStyles=new 
 function defaultControls(){const points=[[.08,.7],[.2,.57],[.32,.7],[.2,.83],[.91,.57],[.79,.7],[.91,.83],[.79,.44],[.67,.32]];return Object.fromEntries(CONTROL_IDS.map((id,i)=>[id,{x:points[i][0],y:points[i][1],size:.15}]));}
 function activeControlIds(p){return +p.mode===3?CONTROL_IDS.slice(4):CONTROL_IDS;}
 function controlMap(p){return +p.mode===3?p.mode3Buttons:p.buttons;}
+function defaultMode3(){return Object.fromEntries(CONTROL_IDS.slice(4).map((id,i)=>[id,{x:.12+i*.19,y:.22,size:.11}]));}
+function readControlPrefs(){let c;try{c=JSON.parse(localStorage.getItem('entropiaControlsV2')||'null');}catch(e){}const valid=m=>m&&Object.values(m).every(v=>Number.isFinite(v.x)&&Number.isFinite(v.y)&&Number.isFinite(v.size));return{mode:[1,2,3].includes(c?.mode)?c.mode:1,buttons:valid(c?.buttons)?{...defaultControls(),...c.buttons}:defaultControls(),mode3Buttons:valid(c?.mode3Buttons)?{...defaultMode3(),...c.mode3Buttons}:defaultMode3(),opacity:clamp(Number.isFinite(c?.opacity)?c.opacity:.72,0,1)};}
+function controlRects(prefs,w=window.innerWidth,h=window.innerHeight){const placed=[],short=Math.min(w,h),limit=+prefs.mode===3?h/2:h,menu={x:5,y:5,w:65,h:65};for(const id of activeControlIds(prefs)){const c=controlMap(prefs)[id],size=clamp(c.size*short,28,Math.min(short*.28,130));let r={id,x:clamp(c.x*w-size/2,0,w-size),y:clamp(c.y*h-size/2,0,limit-size),w:size,h:size};const fits=q=>![...placed,menu].some(p=>rectsOverlap(q,p,4));if(!fits(r)){let best=null,score=Infinity;for(let y=0;y<=limit-size;y+=12)for(let x=0;x<=w-size;x+=12){const q={...r,x,y},d=Math.hypot(x-r.x,y-r.y);if(d<score&&fits(q)){best=q;score=d;}}if(best)r=best;else{r={...r,w:28,h:28};for(let y=0;y<limit-28;y+=30)for(let x=0;x<w-28;x+=30)if(fits({...r,x,y})){r.x=x;r.y=y;y=limit;break;}}}placed.push(r);}return placed;}
+function rectsOverlap(a,b,gap=0){return a.x<b.x+b.w+gap&&a.x+a.w+gap>b.x&&a.y<b.y+b.h+gap&&a.y+a.h+gap>b.y;}
+function applyControlPrefs(){cancelGesture();document.body.style.setProperty("--control-opacity",String(controlPrefs.opacity));document.body.classList.toggle('custom-controls',controlPrefs.mode!==1);document.body.classList.toggle('gesture-controls',controlPrefs.mode===3);for(const id of CONTROL_IDS){const el=$(id);if(!el)continue;if(!controlOriginalStyles.has(id))controlOriginalStyles.set(id,el.getAttribute('style')||'');el.style.cssText=controlOriginalStyles.get(id);el.classList.remove('custom-play-control');}if(controlPrefs.mode===1)return;for(const r of controlRects(controlPrefs)){const el=$(r.id);el.classList.add('custom-play-control');for(const[k,v]of Object.entries({left:r.x+'px',top:r.y+'px',right:'auto',bottom:'auto',width:r.w+'px',height:r.h+'px',opacity:String(controlPrefs.opacity),color:'#fff',background:'#152339b8',position:'absolute',border:'1px solid #b6c9df90','border-radius':'16px','font-size':Math.max(20,r.w*.45)+'px','z-index':'10',display:'flex','align-items':'center','justify-content':'center','pointer-events':'auto'}))el.style.setProperty(k,v,'important');if(r.id.startsWith('move'))el.textContent=CONTROL_ICONS[CONTROL_IDS.indexOf(r.id)];}}
+function normalizeControlDraft(){for(const r of controlRects(controlDraft)){controlMap(controlDraft)[r.id]={x:(r.x+r.w/2)/window.innerWidth,y:(r.y+r.h/2)/window.innerHeight,size:r.w/Math.min(window.innerWidth,window.innerHeight)};}}
+function openControlEditor(){if(!G||G.over)return;G.paused=true;cancelGesture();heldKeys=[];touchDir=null;centerTouch=null;overlay.classList.add('hidden');controlDraft=clone(controlPrefs);$('controlMode').value=controlDraft.mode;$('controlEditor').classList.remove('hidden');renderControlPreview();}
+function renderControlPreview(){if(!controlDraft)return;normalizeControlDraft();if(!activeControlIds(controlDraft).includes(controlSelected))controlSelected=activeControlIds(controlDraft)[0];const pick=$('controlPick');pick.innerHTML='';for(const id of activeControlIds(controlDraft)){const o=document.createElement('option');o.value=id;o.textContent=CONTROL_NAMES[CONTROL_IDS.indexOf(id)];pick.appendChild(o);}pick.value=controlSelected;const preview=$('controlPreview');preview.innerHTML='';for(const r of controlRects(controlDraft)){const b=document.createElement('button');b.className='control-preview-button'+(r.id===controlSelected?' selected':'');b.dataset.control=r.id;b.textContent=CONTROL_ICONS[CONTROL_IDS.indexOf(r.id)];b.title=CONTROL_NAMES[CONTROL_IDS.indexOf(r.id)];Object.assign(b.style,{left:r.x+'px',top:r.y+'px',width:r.w+'px',height:r.h+'px',fontSize:Math.max(20,r.w*.45)+'px',opacity:String(Math.max(.15,controlDraft.opacity))});b.onclick=()=>{if(controlDrag)return;controlSelected=r.id;$('controlPick').value=r.id;syncControlSize();renderControlPreview();};b.addEventListener('pointerdown',e=>{e.preventDefault();controlSelected=r.id;$('controlPick').value=r.id;syncControlSize();b.setPointerCapture?.(e.pointerId);controlDrag={id:r.id,x:e.clientX,y:e.clientY,rect:r,since:performance.now(),active:false};});b.addEventListener('pointermove',e=>moveControlPreview(e,b));for(const name of ['pointerup','pointercancel','lostpointercapture'])b.addEventListener(name,()=>{if(controlDrag){controlDrag=null;renderControlPreview();}});preview.appendChild(b);}syncControlSize();$('controlTransparency').value=Math.round((1-controlDraft.opacity)*100);$('controlTransparencyValue').textContent=Math.round((1-controlDraft.opacity)*100)+'%';$('controlPreview').classList.toggle('mode-three',+controlDraft.mode===3);$('controlPreview').classList.toggle('mode-one',+controlDraft.mode===1);$('controlEditHint').textContent=+controlDraft.mode===1?'Modo 1 conserva las zonas invisibles originales. Elige modo 2 o 3 para personalizar.':'Mantén pulsado un botón y arrástralo. Selecciónalo para cambiar su tamaño. No se permiten superposiciones. Arrastra la cabecera del panel para apartarlo. En modo 3: abajo desliza para caminar; arriba toca para espada, mantén para bomba y desliza para flecha.';}
+function moveControlPreview(e,button){const d=controlDrag;if(!d||d.id!==button.dataset.control||+controlDraft.mode===1)return;if(!d.active){if(performance.now()-d.since<280)return;d.active=true;}const r={...d.rect,x:clamp(d.rect.x+e.clientX-d.x,0,window.innerWidth-d.rect.w),y:clamp(d.rect.y+e.clientY-d.y,0,(+controlDraft.mode===3?window.innerHeight/2:window.innerHeight)-d.rect.h)},others=controlRects(controlDraft).filter(q=>q.id!==d.id);if(others.some(q=>rectsOverlap(r,q,4))||rectsOverlap(r,{x:5,y:5,w:65,h:65},4)){button.classList.add('blocked');return;}button.classList.remove('blocked');controlMap(controlDraft)[d.id]={x:(r.x+r.w/2)/window.innerWidth,y:(r.y+r.h/2)/window.innerHeight,size:r.w/Math.min(window.innerWidth,window.innerHeight)};button.style.left=r.x+'px';button.style.top=r.y+'px';}
+function syncControlSize(){const r=controlRects(controlDraft).find(r=>r.id===controlSelected);$('controlSize').value=Math.round(r.w);$('controlSizeValue').textContent=Math.round(r.w)+' px';$('controlSize').disabled=+controlDraft.mode===1;}
+function resizeSelectedControl(px){if(!controlDraft||+controlDraft.mode===1)return;if(!activeControlIds(controlDraft).includes(controlSelected))controlSelected=activeControlIds(controlDraft)[0];controlMap(controlDraft)[controlSelected].size=clamp(px,28,130)/Math.min(window.innerWidth,window.innerHeight);normalizeControlDraft();renderControlPreview();}
+function closeControlEditor(save){if(save){normalizeControlDraft();controlPrefs=clone(controlDraft);controlPrefs.mode=+$('controlMode').value;try{localStorage.setItem('entropiaControlsV2',JSON.stringify(controlPrefs));}catch(e){toast('Controles aplicados en esta sesión.',1200);}applyControlPrefs();}controlDraft=null;controlDrag=null;$('controlEditor').classList.add('hidden');if(G){G.paused=false;S.overlayKind=null;lastTs=performance.now();}}
+function setupControlEditor(){const modal=document.createElement('div');modal.id='controlEditor';modal.className='hidden';modal.innerHTML='<div id="controlPreview"></div><section class="control-tools" id="controlTools"><strong id="controlToolsHandle">⠿ Controles · arrastra aquí</strong><select id="controlMode" aria-label="Modo de control"><option value="1">Modo 1 · original invisible</option><option value="2">Modo 2 · personalizable</option><option value="3">Modo 3 · deslizar abajo</option></select><select id="controlPick" aria-label="Botón a modificar"></select><label>Tamaño <input id="controlSize" type="range" min="28" max="130" step="1"><span id="controlSizeValue"></span></label><label>Transparencia <input id="controlTransparency" type="range" min="0" max="100"><span id="controlTransparencyValue"></span></label><p id="controlEditHint"></p><div><button id="controlReset">Restablecer posiciones</button><button id="controlCancel">Cancelar</button><button id="controlSave">Guardar y jugar</button></div></section>';document.body.appendChild(modal);for(let i=0;i<CONTROL_IDS.length;i++){const o=document.createElement('option');o.value=CONTROL_IDS[i];o.textContent=CONTROL_NAMES[i];$('controlPick').appendChild(o);}$('controlPick').value=controlSelected;$('controlPick').onchange=e=>{controlSelected=e.target.value;renderControlPreview();};$('controlMode').onchange=e=>{controlDraft.mode=+e.target.value;renderControlPreview();};$('controlSize').oninput=e=>resizeSelectedControl(+e.target.value);$('controlReset').onclick=()=>{if(+controlDraft.mode===3)controlDraft.mode3Buttons=defaultMode3();else controlDraft.buttons=defaultControls();renderControlPreview();};$('controlTransparency').oninput=e=>{controlDraft.opacity=1-clamp(+e.target.value,0,100)/100;renderControlPreview();};setupControlPanelDrag();$('controlCancel').onclick=()=>closeControlEditor(false);$('controlSave').onclick=()=>closeControlEditor(true);window.addEventListener('resize',()=>{applyControlPrefs();if(controlDraft)renderControlPreview();});applyControlPrefs();}
+
+function setupControlPanelDrag(){const panel=$('controlTools'),handle=$('controlToolsHandle');let drag=null;handle.addEventListener('pointerdown',e=>{e.preventDefault();const r=panel.getBoundingClientRect();drag={id:e.pointerId,x:e.clientX,y:e.clientY,left:r.left,top:r.top};handle.setPointerCapture?.(e.pointerId);});handle.addEventListener('pointermove',e=>{if(!drag||drag.id!==e.pointerId)return;const r=panel.getBoundingClientRect();Object.assign(panel.style,{transform:'none',left:clamp(drag.left+e.clientX-drag.x,0,Math.max(0,window.innerWidth-r.width))+'px',top:clamp(drag.top+e.clientY-drag.y,0,Math.max(0,window.innerHeight-r.height))+'px'});});for(const name of ['pointerup','pointercancel','lostpointercapture'])handle.addEventListener(name,()=>drag=null);}
+
+function normalizeZoneIds(zones){const used=new Set(zones.filter(z=>Number.isInteger(z.id)&&z.id>0).map(z=>z.id));let next=Math.max(0,...used)+1;const seen=new Set();for(const z of zones){if(!Number.isInteger(z.id)||z.id<1||seen.has(z.id)){while(used.has(next))next++;z.id=next++;used.add(z.id);}seen.add(z.id);}return zones;}
+function reserveWizardZone(){const ids=new Set([nextEditorZoneId()-1,...darkZones.map(z=>z.id),...(wizard.ids.zone||[])]);walkRewards(t=>{if(base(t)==='lightswitch')ids.add(tileId(t));if(base(t)==='darkzone')try{ids.add(JSON.parse(decodeURIComponent(part(t,1))).id);}catch(e){}});let id=1;while(ids.has(id))id++;wizard.ids.zone=[...(wizard.ids.zone||[]),id];return id;}
+function cleanZoneSwitches(){const ids=new Set(darkZones.map(z=>z.id));walkRewards(t=>{if(base(t)==='darkzone')try{const c=JSON.parse(decodeURIComponent(part(t,1)));if(c.id)ids.add(c.id);}catch(e){}});if(pending?.type==='zoneSwitch')ids.add(pending.zoneId);for(const row of board)for(let i=0;i<row.length;i++)if(base(row[i])==='lightswitch'&&!ids.has(tileId(row[i])))row[i]='floor';}
+
+let gestureInput=null;
+function startGesture(id,x,y,type='touch'){if(controlPrefs.mode!==3||!G||G.paused||G.over||y<window.innerHeight/2||gestureInput)return false;gestureInput={id,x,y,cx:x,cy:y,type};touchDir=null;return true;}
+function moveGesture(id,x,y){const a=gestureInput;if(!a||a.id!==id)return;a.cx=x;a.cy=y;const dx=x-a.x,dy=y-a.y;touchDir=Math.hypot(dx,dy)<18?null:Math.abs(dx)>Math.abs(dy)?(dx<0?'L':'R'):(dy<0?'U':'D');}
+function endGesture(id){if(gestureInput?.id!==id)return;cancelGesture();suppressCenterClickUntil=performance.now()+700;}
+function cancelGesture(){gestureInput=null;touchDir=null;}
+function modeThreeAttack(kind,dir){if(!G||G.paused||G.over)return;if(kind==='sword'&&!G.hasSword||kind==='bow'&&!G.hasBow)return;const previous=G.weapon;G.weapon=kind;useWeapon(dir||G.player.facing);G.weapon=previous;}
+function gestureTouchStart(e){initAudio();if(!G||G.paused||G.over)return;for(const t of e.changedTouches){if(t.clientY>=window.innerHeight/2)startGesture(t.identifier,t.clientX,t.clientY);else if(!centerTouch)centerTouch={id:t.identifier,sx:t.clientX,sy:t.clientY,fired:false,since:G.time};}}
+function gestureTouchMove(e){if(!G)return;for(const t of e.changedTouches){if(gestureInput?.id===t.identifier){moveGesture(t.identifier,t.clientX,t.clientY);continue;}if(centerTouch?.id===t.identifier&&!centerTouch.fired){const dx=t.clientX-centerTouch.sx,dy=t.clientY-centerTouch.sy;if(Math.hypot(dx,dy)>30){centerTouch.fired=true;modeThreeAttack('bow',Math.abs(dx)>Math.abs(dy)?(dx<0?'L':'R'):(dy<0?'U':'D'));}}}}
+function gestureTouchEnd(e){for(const t of e.changedTouches){if(gestureInput?.id===t.identifier)endGesture(t.identifier);if(centerTouch?.id===t.identifier){if(!centerTouch.fired&&e.type!=='touchcancel')modeThreeAttack('sword');centerTouch=null;suppressCenterClickUntil=performance.now()+700;}}}
+function drawGestureStick(){const a=gestureInput;if(controlPrefs.mode!==3||!a)return;ctx.save();ctx.globalAlpha=controlPrefs.opacity;ctx.strokeStyle='#e4f0ff';ctx.fillStyle='#173956';ctx.lineWidth=2;ctx.beginPath();ctx.arc(a.x,a.y,48,0,Math.PI*2);ctx.fill();ctx.stroke();const dx=a.cx-a.x,dy=a.cy-a.y,scale=Math.min(1,42/Math.max(1,Math.hypot(dx,dy)));ctx.beginPath();ctx.arc(a.x+dx*scale,a.y+dy*scale,15,0,Math.PI*2);ctx.fillStyle='#d7eaff';ctx.fill();ctx.restore();}
+function queueWallContact(w){if(!G)return;G.wallContactQueue.push({x:w.x,y:w.y,t:G.grid[w.y][w.x]});}
+function flushWallContacts(){const g=G;if(!g||g.processingWallContacts||!g.wallContactQueue.length)return;g.processingWallContacts=true;const seen=new Set();try{let limit=256;while(g.wallContactQueue.length&&limit--){const q=g.wallContactQueue.shift(),key=q.x+','+q.y+','+q.t;if(seen.has(key))continue;seen.add(key);if(g.grid[q.y]?.[q.x]!==q.t)continue;if(['btn','mwbtn','switch','crossbtn','openBtn','closeBtn','cbtn','lightswitch','boxCreator'].includes(base(q.t)))stepOnButton(q.x,q.y);}g.wallContactQueue.length=0;computeHolds();}finally{g.processingWallContacts=false;}}
+function setupModeThree(){GUIDE_DETAILS.torch='La antorcha ilumina. Pulsa 🔥 para lanzar una flama hacia donde mira el personaje y encender antorchas o derretir hielo.';GUIDE_DETAILS.ftorch='Enciéndela lanzando una flama desde una casilla contigua.';GUIDE_DETAILS.ice='Solo se derrite cuando le lanzas fuego con la antorcha.';GUIDE_DETAILS.shop='Acércate y mantén la dirección hacia la tienda para entrar.';GUIDE_DETAILS.enemy3+=' Puede construir sobre objetos; al romper la barrera reaparecen. Si otro constructor ocupa su destino, retrocede y construye una casilla antes.';GUIDE_DETAILS.switch+=' También puede presionarlo una pared movible.';GUIDE_DETAILS.ftorch+=' Ocupa su casilla: debes encenderla desde un lado.';GUIDE_DETAILS.torchdecor='Antorcha encendida con intensidad configurable. Ilumina la oscuridad y bloquea el paso.';Object.assign(TOOL_NOTES,GUIDE_DETAILS);window.addEventListener('pointerup',e=>{if(gestureInput?.type==='mouse')endGesture(e.pointerId);});window.addEventListener('blur',cancelGesture);}
+
+setupStudio();
+setupNewFeatures();
+setupWorkspaceLayout();
+setupResponsiveEditor();
+setupObjectEditing();
+setupExpansion();
+setupLatestFeatures();
+setupAdventure();
+setupFloorsUI();
+setupColorDoors();
+setupRepairs();
+setupControlEditor();
+setupModeThree();
+
+
+    function activateBoxCreator(x,y,t){
+        const g=G;let c;try{c=JSON.parse(decodeURIComponent(part(t,1)));}catch(e){return;}
+        const id=`${x},${y}`;if(g.blocks.some(b=>b.sourceId===id))return;
+        if(!inb(c.x,c.y)||bt(c.x,c.y)!=='floor'||blockAt(c.x,c.y)||enemyAt(c.x,c.y)||mwallAt(c.x,c.y)||(g.player.x===c.x&&g.player.y===c.y)){toast('📦 La casilla de la caja está ocupada',1200);return;}
+        g.blocks.push({x:c.x,y:c.y,rx:c.x,ry:c.y,kind:'block',sourceId:id});showCinematic(c.x,c.y,'📦','appear');playSound('key');
+    }
+    function updateArenas(now){
+        const g=G;for(const a of g.arenas){if(a.done)continue;
+            a.living=(a.living||[]).filter(e=>g.enemies.includes(e)||g.chains.includes(e));
+            if(a.active&&(g.enemies.includes(a.active)||g.chains.includes(a.active))&&!a.living.includes(a.active))a.living.push(a.active);
+            a.active=null;
+            if(a.index>=a.enemies.length&&!a.living.length){
+                if(blockAt(a.rx,a.ry)||enemyAt(a.rx,a.ry)||mwallAt(a.rx,a.ry)||(g.player.x===a.rx&&g.player.y===a.ry))continue;
+                if(a.partner&&(blockAt(a.partner.x,a.partner.y)||enemyAt(a.partner.x,a.partner.y)||mwallAt(a.partner.x,a.partner.y)))continue;
+                a.done=true;if(a.partner)spawnObject(a.partner.tile,a.partner.x,a.partner.y);spawnObject(a.reward,a.rx,a.ry);toast('🎁 ¡Derrotaste a todos!',1800);continue;
+            }
+            if(a.index>=a.enemies.length||now<(a.next||0)||(a.waveMode!=='all'&&a.living.length))continue;
+            const free=(x,y)=>inb(x,y)&&floorIndex(g,y)===floorIndex(g,a.y)&&enemyCanEnter(x,y)&&!blockAt(x,y)&&!enemyAt(x,y)&&!mwallAt(x,y)&&!(g.player.x===x&&g.player.y===y);
+            let pos=free(a.x,a.y)?{x:a.x,y:a.y}:null;
+            if(!pos&&a.waveMode==='all'){
+                const queue=[{x:a.x,y:a.y}],seen=new Set([`${a.x},${a.y}`]);
+                while(queue.length&&!pos){const q=queue.shift();for(const [dx,dy] of Object.values(DIRS)){const x=q.x+dx,y=q.y+dy,k=`${x},${y}`;if(!inb(x,y)||seen.has(k)||floorIndex(g,y)!==floorIndex(g,a.y))continue;seen.add(k);if(!enemyCanEnter(x,y)||blockAt(x,y)||mwallAt(x,y))continue;if(free(x,y)){pos={x,y};break;}queue.push({x,y});}}
+            }
+            if(!pos)continue;
+            const t=a.enemies[a.index++];let e;
+            if(['snake','worm'].includes(base(t))){makeChain(g,pos.x,pos.y,t);e=g.chains[g.chains.length-1];}else{makeEnemy(g,pos.x,pos.y,t);e=g.enemies[g.enemies.length-1];}
+            e.next=now+600;a.living.push(e);a.next=now+600;
+            if(a.index===a.enemies.length&&base(g.grid[a.y][a.x])==='arena'){g.grid[a.y][a.x]='floor';g.effects.push({kind:'pop',x:a.x,y:a.y,t0:now,dur:450,ch:'💥'});}
+        }
+    }
+    function updateLighting(){} // La luz se dibuja por separado; solo la flama enciende o derrite.
+    function castFlame(){
+        const g=G;if(!g||g.over||g.paused)return;if(!g.hasTorch){toast('🔥 Necesitas una antorcha portátil',1000);return;}
+        if(g.time<g.nextAttack)return;const [dx,dy]=DIRS[g.player.facing],x=g.player.x+dx,y=g.player.y+dy;if(!inb(x,y))return;
+        g.flameX=x;g.flameY=y;g.flameUntil=g.time+350;g.nextAttack=g.time+350;playSound('shoot');
+        const t=g.grid[y][x],b=base(t);
+        if(b==='ftorch'&&!g.litTorches.has(y*g.n+x)){
+            g.litTorches.add(y*g.n+x);playSound('key');const wg=g.wgroups[tileId(t)];
+            if(wg&&wg.kind==='torch'&&!wg.done){wg.hit++;toast(`🕯️ ${wg.hit}/${wg.count} encendidas`,1200);if(wg.hit>=wg.count){wg.done=true;spawnObject(wg.obj,wg.sx,wg.sy);}}
+        }else if(b==='ice'||b==='icebox'){meltIceAt(x,y);playSound('door');computeBeams();}
+    }
+    function controlAction(w){if(!G||G.paused||G.over)return;if(controlPrefs.mode!==2){toggleWeapon(w);return;}
+        if(w==='sword'&&!G.hasSword||w==='bow'&&!G.hasBow||w==='hook'&&!G.hasHook||w==='bomb'&&G.bombCount<=0){toast('Aún no tienes ese objeto.',1000);return;}
+        const previous=G.weapon;G.weapon=w;useWeapon(G.player.facing);G.weapon=previous==='bomb'&&G.bombCount<=0?null:previous;G.hudKey='';
+    }
+    let cinemaCurrent=null,cinemaQueue=[],cinemaApplying=false;
+    function clearCinematic(){cinemaCurrent=null;cinemaQueue=[];cinemaApplying=false;}
+    function showCinematic(x,y,icon,kind){if(!G||G.over||cinemaApplying||Math.abs(x-G.player.x)+Math.abs(y-G.player.y)<4)return;
+        const q={x,y,icon,kind,t:0,from:{x:G.player.rx,y:G.player.ry},wasPaused:G.paused};cinemaQueue.push(q);
+        if(!cinemaCurrent){cinemaCurrent=cinemaQueue.shift();G.paused=true;heldKeys=[];touchDir=null;}
+    }
+    function advanceCinema(dt){if(!cinemaCurrent)return;cinemaCurrent.t+=dt;if(cinemaCurrent.t>=2.4){if(cinemaQueue.length){cinemaCurrent=cinemaQueue.shift();cinemaCurrent.from={x:G.player.rx,y:G.player.ry};}else{cinemaCurrent=null;if(G)G.paused=false;lastTs=performance.now();}}}
+    function cinemaFocus(g){const c=cinemaCurrent;if(!c)return{x:g.player.rx,y:g.player.ry};const ease=v=>v*v*(3-2*v),t=c.t;let k=t<.65?ease(t/.65):t<1.7?1:1-ease(Math.min(1,(t-1.7)/.7));return{x:c.from.x+(c.x-c.from.x)*k,y:c.from.y+(c.y-c.from.y)*k};}
+    function drawCinemaGhost(){const c=cinemaCurrent;if(!c||c.t<.5||c.t>1.7)return;const q=clamp((c.t-.65)/.85,0,1),alpha=c.kind==='remove'?1-q:q;ctx.save();ctx.globalAlpha=alpha;emoji(c.icon,(c.x+.5)*cv.ts,(c.y+.5)*cv.ts,cv.ts*.75);ctx.restore();}
+
+    buildPalette();
+    initEmptyBoard();
+    renderGrid();
+    renderBrushPanel();
+    updateWarn();
+    history=[snap()];historyIndex=0;refreshHistory();
+    window.addEventListener('resize', () => { if (!G) renderGrid(); });
+})();
+</script>
+</body>
+</html>
