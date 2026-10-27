@@ -573,7 +573,8 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
 
 #controlToolsHandle{cursor:move;touch-action:none;user-select:none;padding:8px;background:#284362;border-radius:8px}body.gesture-controls #mobileArrows{display:none!important}body.custom-controls #mobileArrows button{opacity:var(--control-opacity,.72)!important}body.custom-controls #btnHook.off{opacity:var(--control-opacity,.72)!important}#controlPreview.mode-three{background:linear-gradient(to bottom,transparent 49.8%,#b6cde866 50%,#041b2c66 50.2%)}#controlPreview.mode-three:after{content:'Desliza aquí para caminar';position:absolute;top:72%;left:10%;right:10%;text-align:center;color:#cde4ff;pointer-events:none;font-size:14px}.control-tools{max-height:45vh}body.gesture-controls .custom-play-control{touch-action:none!important}
 
-</style>
+#deathShade{position:absolute;inset:0;z-index:28;background:#000;opacity:0;transition:opacity 1.4s ease;pointer-events:none}#deathShade.dark{opacity:.82}
+    </style>
 </head>
 <body>
     <button class="theme-toggle-fixed" id="themeToggleFixed" title="Cambiar tema">🌙</button>
@@ -658,6 +659,11 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
             <div class="toolbar">
                 <span class="tool-label">Cajas y espejos</span>
                 <button class="tool-btn" data-tool="block">📦 Caja</button>
+                <button class="tool-btn" data-tool="pushblock">🧱 Bloque de empuje limitado</button>
+                <button class="tool-btn" data-tool="boxCreator">📦🔘 Botón creador de caja</button>
+                <button class="tool-btn" data-tool="singleButton">🔘 Botón independiente</button>
+                <button class="tool-btn" data-tool="singleDoor">🚧 Pared de botón independiente</button>
+                <button class="tool-btn" data-tool="heart">❤️ Corazón</button>
                 <button class="tool-btn" data-tool="mirrorNE">🪞↗ Espejo NE</button>
                 <button class="tool-btn" data-tool="mirrorNW">🪞↖ Espejo NO</button>
                 <button class="tool-btn" data-tool="mirrorSE">🪞↘ Espejo SE</button>
@@ -760,6 +766,7 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
     <button class="corner" id="btnSword" title="Espada (1)">🗡️</button>
     <button class="corner" id="btnBow" title="Arco (2)">🏹</button>
     <button class="corner" id="btnBomb" title="Bomba (3)">💣</button>
+    <div id="deathShade" class="hidden"></div>
     <div id="gameOverlay" class="hidden">
         <div class="ov-box">
             <h2 id="ovTitle"></h2>
@@ -776,7 +783,7 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
        CONSTANTES
     ===================================================== */
     const ID_COL = { 1: '#e74c3c', 2: '#3498db', 3: '#2ecc71', 4: '#e0a800',5:'#9b59b6',6:'#00a6a6',7:'#e67e22',8:'#d64c8c',9:'#607d8b',10:'#6d7f31' };
-    const ICONS = {enemy3:'🧌',bramble:'🪵',touchSpikes:'⚠️',lightswitch:'💡',redGate:'🟥',blueGate:'🟦',colorGem:'💠',stairs:'🪜',boxbox:'📦',hook:"🪝",anchor:"⚓",checkpoint:"💾",blinkboss:"🧿",blinkpad:"🔮",icebox:'🧊',torchdecor:'🔥',remwall:'🔲',gemwall:'💎',torchwall:'🕯️',bossdoor:'🚪',bosskey:'🗝️',switch:'🔘',crossgate:'🛂',crossbtn:'🔘',cash:'🪙',shop:'🏪',darkzone:'🌑',torch:'🔥',ftorch:'🕯️',ice:'🧊',
+    const ICONS = {heart:'❤️',pushblock:'🟫',boxCreator:'📦',singleButton:'🔘',singleDoor:'🚧',enemy3:'🧌',bramble:'🪵',touchSpikes:'⚠️',lightswitch:'💡',redGate:'🟥',blueGate:'🟦',colorGem:'💠',stairs:'🪜',boxbox:'📦',hook:"🪝",anchor:"⚓",checkpoint:"💾",blinkboss:"🧿",blinkpad:"🔮",icebox:'🧊',torchdecor:'🔥',remwall:'🔲',gemwall:'💎',torchwall:'🕯️',bossdoor:'🚪',bosskey:'🗝️',switch:'🔘',crossgate:'🛂',crossbtn:'🔘',cash:'🪙',shop:'🏪',darkzone:'🌑',torch:'🔥',ftorch:'🕯️',ice:'🧊',
         arena: '🏭', boxPath: '🪵', doubleDoor: '🚦', closeBtn: '🔴', openBtn: '🟢', snake: '🐍', worm: '🪱', wall: '🧱', coin: '🧍', enemy: '👹', enemy2: '👺', boss: '👁️', start: '🏁', exit: '🚪',
         key: '🔑', keydoor: '🔒', spikes: '🔺', btn: '🔘', bdoor: '🔲', hbtn: '⏺️',
         ddoor: '💠', diamond: '💎', rdoor: '🟥', rdiamond: '♦️', mwall: '🔳', mwbtn: '🟦',
@@ -807,8 +814,8 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
     const ENEMY_BLOCK = SOLID.concat(['keydoor']);
     const BEAM_STOP = ['bramble','anchor','shop','ice','wall', 'keydoor', 'bdoor', 'ddoor', 'rdoor', 'stone', 'laser'];
     const ARROW_STOP = BEAM_STOP.concat(['rdiamond']);
-    const BLOCK_OK = ['touchSpikes','floor', 'btn', 'mwbtn', 'hbtn', 'spikes', 'diamondY', 'wdY', 'arrowU', 'arrowD', 'arrowL', 'arrowR', 'portal', 'portal2', 'cbtn', 'cspawn'];
-    const WALL_OK = ['btn','mwbtn','hbtn','switch','crossbtn','openBtn','closeBtn','cbtn','lightswitch','floor', 'diamondY', 'wdY', 'arrowU', 'arrowD', 'arrowL', 'arrowR', 'cbtn', 'cspawn'];
+    const BLOCK_OK = ['boxCreator','switch','crossbtn','openBtn','closeBtn','lightswitch','touchSpikes','floor', 'btn', 'mwbtn', 'hbtn', 'spikes', 'diamondY', 'wdY', 'arrowU', 'arrowD', 'arrowL', 'arrowR', 'portal', 'portal2', 'cbtn', 'cspawn'];
+    const WALL_OK = ['boxCreator','btn','mwbtn','hbtn','switch','crossbtn','openBtn','closeBtn','cbtn','lightswitch','floor', 'diamondY', 'wdY', 'arrowU', 'arrowD', 'arrowL', 'arrowR', 'cbtn', 'cspawn'];
     const TERRITORY = 2;
     const HUD_HOLD_MS = 2200;
     const BOSS_OPEN_MS = 4000;
@@ -880,6 +887,8 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
         switch (type) {
             case 'coin': tone(880, 1320, 0.15, 0.15); break;
             case 'win': tone(523, 523, 0.15, 0.2); tone(659, 659, 0.15, 0.2, 'sine', 0.12); tone(784, 784, 0.3, 0.2, 'sine', 0.24); break;
+            case 'shieldHit': tone(950,480,0.18,0.16,'triangle');break;
+            case 'heartHit': tone(320,95,0.28,0.20,'sawtooth');break;
             case 'hit': tone(220, 110, 0.3, 0.2, 'sawtooth'); break;
             case 'move': tone(440, 440, 0.06, 0.025); break;
             case 'exit': tone(660, 880, 0.3, 0.15); break;
@@ -908,7 +917,7 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
     let playerSpeed = 5;
     let currentDraftId = null,editingSavedRoomId=null;
     let roomTimeLimit=120,darkZones=[],startGear={sword:false,bombs:0,bow:false,ammo:0};
-    const brush = {darknessLevel:'dim',hasSwitch:false,spikeRest:1800,spikeActive:1200,trapDelay:650,buildMs:1000,stairDir:'up',appearMs:1100,aimMs:1300,startTorch:false,startHook:false,territory:2,travel:1,hookLength:5,startShields:false,startShieldCount:1,sites:3,lightIntensity:5,goldDrop:0,startSword:false,startBombs:false,startBombCount:3,startBow:false,startAmmo:10,mode:'tap',target:'wall',amount:1, width:4,height:4,shape:'rect',startSpeed:5,channel:1, coin:false, waveCount: 2, length: 3, speed: 3, hp: 1, vision: 5, key: false, minis: 3, qty: 1, dir: 'R', count: 3, hid: 1 };
+    const brush = {startHearts:3,pushCount:3,waveMode:'sequential',darknessLevel:'dim',hasSwitch:false,spikeRest:1800,spikeActive:1200,trapDelay:650,buildMs:1000,stairDir:'up',appearMs:1100,aimMs:1300,startTorch:false,startHook:false,territory:2,travel:1,hookLength:5,startShields:false,startShieldCount:1,sites:3,lightIntensity:5,goldDrop:0,startSword:false,startBombs:false,startBombCount:3,startBow:false,startAmmo:10,mode:'tap',target:'wall',amount:1, width:4,height:4,shape:'rect',startSpeed:5,channel:1, coin:false, waveCount: 2, length: 3, speed: 3, hp: 1, vision: 5, key: false, minis: 3, qty: 1, dir: 'R', count: 3, hid: 1 };
     let pending = null;              // {type:'pair'|'wgroup'|'creator', ...}
     let spawnTool = null, spawnStore = null;
     const TOOL_LABELS = {};
@@ -931,7 +940,7 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
     /* =====================================================
        EDITOR: PANEL DE VALORES
     ===================================================== */
-    const PSPEC = {builderRange:{t:'range',field:'vision',label:'Radio de su cuarto y visión',min:1,max:8},darknessLevel:{t:'select',label:'Oscuridad de la zona',options:[['total','Total'],['dim','Tenue · actual'],['medium','Media'],['light','Clara']]},hasSwitch:{t:'check',label:'Colocar apagador para esta zona'},spikeRest:{t:'range',label:'Picos dentro · milisegundos',min:500,max:10000},spikeActive:{t:'range',label:'Picos fuera · milisegundos',min:200,max:6000},trapDelay:{t:'range',label:'Espera tras pisarlos · milisegundos',min:200,max:5000},buildMs:{t:'range',label:'Tiempo de construcción · milisegundos',min:300,max:5000},stairDir:{t:'select',label:'Destino de la escalera',options:[['up','Subir un piso'],['down','Bajar un piso']]},appearMs:{t:'range',label:'Tiempo de aparición · milisegundos',min:200,max:6000},aimMs:{t:'range',label:'Preparación de ataque · milisegundos',min:200,max:6000},startTorch:{t:'check',label:'Comienza con antorcha portátil'},startHook:{t:'check',label:'Comienza con gancho'},territory:{t:'range',label:'Radio del territorio · cuadros',min:1,max:15},travel:{t:'range',label:'Cuadros por activación',min:1,max:10},hookLength:{t:'range',label:'Alcance del gancho · cuadros',min:1,max:20},startShields:{t:'check',label:'Comienza con escudos'},startShieldCount:{t:'range',label:'Escudos iniciales',min:1,max:100},sites:{t:'range',label:'Lugares de aparición',min:2,max:6},lightIntensity:{t:'range',label:'Intensidad de luz',min:1,max:10},goldDrop:{t:'range',label:'🪙 Monedas al ser derrotado',min:0,max:100},startSword:{t:'check',label:'Comienza con espada'},startBombs:{t:'check',label:'Comienza con bombas'},startBombCount:{t:'range',label:'Bombas iniciales',min:0,max:100},startBow:{t:'check',label:'Comienza con arco'},startAmmo:{t:'range',label:'Flechas iniciales',min:0,max:100},mode:{t:'select',label:'Tipo de botón',options:[['tap','Una pisada'],['hold','Mantener presionado']]},target:{t:'select',label:'Objeto conectado',options:[['wall','Pared que se abre'],['move','Pared movible']]},amount:{t:'range',label:'🪙 Monedas',min:1,max:100},
+    const PSPEC = {startHearts:{t:'range',label:'❤️ Corazones iniciales',min:3,max:10},pushCount:{t:'range',label:'Empujones permitidos',min:1,max:5},waveMode:{t:'select',label:'Salida de enemigos',options:[['sequential','Uno por uno al derrotarlos'],['all','Todos: salen continuamente']]},builderRange:{t:'range',field:'vision',label:'Radio de su cuarto y visión',min:1,max:8},darknessLevel:{t:'select',label:'Oscuridad de la zona',options:[['total','Total'],['dim','Tenue · actual'],['medium','Media'],['light','Clara']]},hasSwitch:{t:'check',label:'Colocar apagador para esta zona'},spikeRest:{t:'range',label:'Picos dentro · milisegundos',min:500,max:10000},spikeActive:{t:'range',label:'Picos fuera · milisegundos',min:200,max:6000},trapDelay:{t:'range',label:'Espera tras pisarlos · milisegundos',min:200,max:5000},buildMs:{t:'range',label:'Tiempo de construcción · milisegundos',min:300,max:5000},stairDir:{t:'select',label:'Destino de la escalera',options:[['up','Subir un piso'],['down','Bajar un piso']]},appearMs:{t:'range',label:'Tiempo de aparición · milisegundos',min:200,max:6000},aimMs:{t:'range',label:'Preparación de ataque · milisegundos',min:200,max:6000},startTorch:{t:'check',label:'Comienza con antorcha portátil'},startHook:{t:'check',label:'Comienza con gancho'},territory:{t:'range',label:'Radio del territorio · cuadros',min:1,max:15},travel:{t:'range',label:'Cuadros por activación',min:1,max:10},hookLength:{t:'range',label:'Alcance del gancho · cuadros',min:1,max:20},startShields:{t:'check',label:'Comienza con escudos'},startShieldCount:{t:'range',label:'Escudos iniciales',min:1,max:100},sites:{t:'range',label:'Lugares de aparición',min:2,max:6},lightIntensity:{t:'range',label:'Intensidad de luz',min:1,max:10},goldDrop:{t:'range',label:'🪙 Monedas al ser derrotado',min:0,max:100},startSword:{t:'check',label:'Comienza con espada'},startBombs:{t:'check',label:'Comienza con bombas'},startBombCount:{t:'range',label:'Bombas iniciales',min:0,max:100},startBow:{t:'check',label:'Comienza con arco'},startAmmo:{t:'range',label:'Flechas iniciales',min:0,max:100},mode:{t:'select',label:'Tipo de botón',options:[['tap','Una pisada'],['hold','Mantener presionado']]},target:{t:'select',label:'Objeto conectado',options:[['wall','Pared que se abre'],['move','Pared movible']]},amount:{t:'range',label:'🪙 Monedas',min:1,max:100},
         startSpeed:{t:'range',label:'🏃 Velocidad del personaje',min:2,max:10},
         width:{t:'range',label:'↔ Ancho',min:1,max:20},height:{t:'range',label:'↕ Largo',min:1,max:20},shape:{t:'shape',label:'Forma'},
         waveCount: {t:"range", label:"Enemigos o jefes",min:2,max:8},
@@ -949,8 +958,8 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
         dir:    { t: 'dir', label: 'Dirección:' },
         hid:    { t: 'doorid', label: 'Abre la pared-botón número:' }
     };
-    const TOOL_PARAMS = {spikes:['spikeRest','spikeActive'],touchSpikes:['trapDelay'],enemy3:['speed','hp','builderRange','buildMs','key','coin','goldDrop'],stairs:['stairDir'],hook:['hookLength'],blinkboss:['sites','speed','hpBoss','vision','appearMs','aimMs','key','coin','goldDrop'],torchdecor:['lightIntensity'],gemwall:['count'],torchwall:['count'],switch:['channel','mode','target','dir','travel'],crossgate:['mode'],cash:['amount'],bdoor:['channel','mode'],btn:['channel'],start:['startSpeed','startSword','startBombs','startBombCount','startBow','startAmmo','startShields','startShieldCount','startTorch','startHook','hookLength'],darkzone:['shape','width','height','darknessLevel','hasSwitch'],ftorch:['count'],
-        arena: ["waveCount"],
+    const TOOL_PARAMS = {pushblock:['dir','pushCount'],singleButton:['channel','mode'],singleDoor:['channel'],spikes:['spikeRest','spikeActive'],touchSpikes:['trapDelay'],enemy3:['speed','hp','builderRange','buildMs','key','coin','goldDrop'],stairs:['stairDir'],hook:['hookLength'],blinkboss:['sites','speed','hpBoss','vision','appearMs','aimMs','key','coin','goldDrop'],torchdecor:['lightIntensity'],gemwall:['count'],torchwall:['count'],switch:['channel','mode','target','dir','travel'],crossgate:['mode'],cash:['amount'],bdoor:['channel','mode'],btn:['channel'],start:['startSpeed','startHearts','startSword','startBombs','startBombCount','startBow','startAmmo','startShields','startShieldCount','startTorch','startHook','hookLength'],darkzone:['shape','width','height','darknessLevel','hasSwitch'],ftorch:['count'],
+        arena: ["waveCount","waveMode"],
         snake: ['speed', 'hpBoss', 'length','vision', 'key','coin','goldDrop'], worm: ['speed', 'hpBoss','vision', 'key','coin','goldDrop'],
         enemy: ['speed', 'hp', 'vision', 'key','coin','goldDrop'],
         enemy2: ['speed', 'hp', 'vision','key','coin','goldDrop'],
@@ -959,7 +968,7 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
         laser: ['dir'], mwall: ['channel','mode','dir','travel'], mwbtn:['channel'],
         hbtn: ['hid'], wdiamond: ['count']
     };
-    const TOOL_NOTES = {bdoor:'Elige canal 1–10. Al pisar su botón, desaparecen todas las paredes-botón conectadas a ese canal.',btn:'Elige el mismo canal de las paredes-botón que quieres abrir.',start:'Elige aquí la velocidad y coloca el inicio. Puedes volver a colocarlo para cambiarla.',darkzone:'La casilla elegida es la esquina superior izquierda del área. Forma y medidas se ven en el tablero. Usa Borrar sobre piso oscuro para quitar esa zona.',torch:'Al recogerla, la llevas durante todo el cuarto. Ilumina la oscuridad y derrite hielo cercano.',ftorch:'Elige una cantidad, coloca cada antorcha y configura la recompensa. Se encienden al pasar a su lado después de recoger la antorcha portátil y permanecen encendidas.',ice:'Bloquea el paso. Se derrite al acercarte con una antorcha o con una antorcha fija encendida al lado.',
+    const TOOL_NOTES = {heart:'Recoge el corazón para sumar una vida.',pushblock:'Elige la dirección permitida y de 1 a 5 empujones.',boxCreator:'Coloca el botón y después el lugar donde aparece la caja. Solo crea otra cuando la anterior se destruya.',singleButton:'Comparte el canal con una o más paredes y paredes movibles.',singleDoor:'Elige el mismo canal que el botón independiente.',bdoor:'Elige canal 1–10. Al pisar su botón, desaparecen todas las paredes-botón conectadas a ese canal.',btn:'Elige el mismo canal de las paredes-botón que quieres abrir.',start:'Elige aquí la velocidad y coloca el inicio. Puedes volver a colocarlo para cambiarla.',darkzone:'La casilla elegida es la esquina superior izquierda del área. Forma y medidas se ven en el tablero. Usa Borrar sobre piso oscuro para quitar esa zona.',torch:'Al recogerla, la llevas durante todo el cuarto. Ilumina la oscuridad y derrite hielo cercano.',ftorch:'Elige una cantidad, coloca cada antorcha y configura la recompensa. Se encienden al pasar a su lado después de recoger la antorcha portátil y permanecen encendidas.',ice:'Bloquea el paso. Se derrite al acercarte con una antorcha o con una antorcha fija encendida al lado.',
         arena: "Elige de 2 a 8 integrantes, iguales o variados, uno por uno. Salen del creador de uno en uno; al derrotarlos todos aparece la recompensa elegida en su casilla.",
         snake: 'Largo total de 3 a 10 casillas. Recorre los caminos disponibles; solo su cola dorada recibe daño. Deja espacio para su cuerpo.',
         worm: 'Coloca la cola creadora. La cabeza crece formando un camino continuo sin cruzarse. Cortar el cuerpo destruye progresivamente la parte desconectada; solo agotar la vida de la cola derrota al jefe.',
@@ -1055,6 +1064,9 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
     }
 
     function tileFromTool(tool, st) {
+        if(tool==='pushblock')return `pushblock:${st.dir||'R'}:${clamp(st.pushCount||1,1,5)}`;
+        if(tool==='singleButton')return `switch:${clamp(st.channel||1,1,10)}:${st.mode||'tap'}`;
+        if(tool==='singleDoor')return `bdoor:${clamp(st.channel||1,1,10)}`;
         if(tool==='spikes')return `spikes:${st.spikeRest||1800}:${st.spikeActive||1200}`;if(tool==='touchSpikes')return `touchSpikes:${st.trapDelay||650}`;
         if(tool==='enemy3')return `enemy3:${st.speed}:${st.hp}:${st.vision}:${st.key?1:0}:${st.coin?1:0}:${st.goldDrop||0}:${st.buildMs||1000}`;
         if(tool==='blinkboss')return blinkTile(blinkConfig(st,st.id||1,st.points||[]));
@@ -1346,6 +1358,7 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
         if(objectMove){pendingBar.classList.remove('hidden');pendingText.textContent='↗ Toca una casilla libre para mover el objeto. Sus conexiones se conservan.';return;}
         if(wizard) { wizardHint(); return; }
         if (!pending) return;
+        if(pending.type==='boxCreator'){pendingText.textContent='📦 Toca la casilla donde aparecerá la caja.';pendingBar.classList.remove('hidden');return;}
         let txt = '';
         if (pending.type === 'arena') {
             txt = pending.step==='enemy' ? `Elige integrante ${pending.enemies.length+1} de ${pending.total} y confirma.` : pending.step==='spawn' ? 'Coloca la casilla de la recompensa.' : pending.step==='partner' ? 'Coloca la pareja del objeto recompensa.' : 'Elige la recompensa y confirma.';
@@ -1381,7 +1394,8 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
         pending = null;
         hidePending();
         closeSpawnModal();
-        if (p.type === 'arena') {
+        if(p.type==='boxCreator'){board[p.y][p.x]='floor';}
+        else if (p.type === 'arena') {
             // No se escribe en el tablero hasta completar la configuración.
             if(p.parentGid) removeGroup(p.parentGid);
         } else if (p.type === 'double') {
@@ -1436,6 +1450,11 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
         cleanOrphans(); renderGrid(); showPending();
     }
     function resolvePending(x, y) {
+        const boxPending = pending;
+        if(boxPending?.type==='boxCreator') {
+            if(base(board[y][x])!=='floor'||futureReservations().some(q=>q.x===x&&q.y===y)){setStatus('Elige otra casilla libre.',2000);return;}
+            board[boxPending.y][boxPending.x]='boxCreator:'+encodeURIComponent(JSON.stringify({x,y}));pending=null;hidePending();afterEdit();return;
+        }
         if(pending?.type==='zoneSwitch'){placeZoneSwitch(x,y);return;}
         if(pending?.type==='blinkPoints'){placeBlinkPoint(x,y);return;}
         if(pending&&['wallGroup','bossKeys'].includes(pending.type)){resolveLatestPending(x,y);return;}
@@ -1509,6 +1528,14 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
     }
 
     function handleCellClick(x, y) {
+        if(!pending&&!wizard&&!objectMove&&selectedTool==='boxCreator') {
+            if(base(board[y][x])!=='floor'||futureReservations().some(q=>q.x===x&&q.y===y)){setStatus('Elige piso libre.',1800);return;}
+            board[y][x]='boxCreator';pending={type:'boxCreator',x,y};renderGrid();showPending();return;
+        }
+        if(!pending&&!wizard&&!objectMove&&['singleButton','singleDoor'].includes(selectedTool)) {
+            if(base(board[y][x])!=='floor'){setStatus('Elige piso libre.',1800);return;}
+            board[y][x]=tileFromTool(selectedTool,brush);afterEdit();return;
+        }
         if(!pending&&!wizard&&!objectMove&&selectedTool==='erase'&&base(board[y][x])==='stairs'){removeStairsAt(x,y);afterEdit();return;}
         if(!pending&&!wizard&&!objectMove&&selectedTool==='erase'&&['blinkboss','blinkpad'].includes(base(board[y][x]))){removeBlinkFamily(tileId(board[y][x]));afterEdit();return;}
         if(!pending&&!wizard&&!objectMove&&selectedTool==='stairs'){placeStairs(x,y);return;}
@@ -1534,7 +1561,7 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
         if (tool === 'erase' || tool === 'floor') { board[y][x] = 'floor'; afterEdit(); return; }
         if (tool === 'arena') {
             if(base(board[y][x])!=='floor') {setStatus('Elige una casilla vacía.',1800);return;}
-            pending={type:'arena',step:'enemy',x,y,total:clamp(brush.waveCount||2,2,8),enemies:[],config:{}};
+            pending={type:'arena',step:'enemy',x,y,total:clamp(brush.waveCount||2,2,8),enemies:[],config:{waveMode:brush.waveMode||'sequential'}};
             showPending(); openSpawnModal(); return;
         }
         if (tool === 'doubleDoor') {
@@ -1555,7 +1582,7 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
 
     /* --- Modal: qué aparece --- */
     function buildPalette() {
-        const skip = ['floor', 'erase', 'start'];
+        const skip = ['floor', 'erase', 'start','boxCreator'];
         spawnPalette.innerHTML = '';
         Object.keys(TOOL_LABELS).forEach(tool => {
             if (skip.indexOf(tool) >= 0) return;
@@ -1933,7 +1960,7 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
         if(base(tile)==='arena') {try{const a=JSON.parse(decodeURIComponent(part(tile,1)));return futureCoins(a.reward)+(a.enemies||[]).reduce((n,t)=>n+futureCoins(t),0);}catch(err){return 0;}}
         return 0;
     }
-    function setupRoom(room) {gestureInput=null;
+    function setupRoom(room) {gestureInput=null;clearCinematic();
         room=clone(room);checkpointState=null;const originalRoom=clone(room);
         clearTimeout(S.timer);
         const n = room.gridSize || room.board.length;
@@ -2011,6 +2038,8 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
                 makeEnemy(g, x, y, t);if(initial)g.totalCoins+=futureCoins(t);
                 g.grid[y][x] = 'floor';
                 break;
+            case 'pushblock':
+                g.blocks.push({x,y,rx:x,ry:y,kind:'pushblock',dir:part(t,1)||'R',remaining:clamp(+part(t,2)||1,1,5)});g.grid[y][x]='floor';break;
             case 'block':
                 g.blocks.push({ x, y, rx: x, ry: y, kind: 'block' });
                 g.grid[y][x] = 'floor';
@@ -2063,7 +2092,7 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
             key:part(t,4)==='1',coin:part(t,5)==='1',gold:clamp(+part(t,6)||0,0,100),cells:[{x,y}],next:600,flash:0,decay:[]};
         g.chains.push(c);
     }
-    function updateArenas(now) {
+    function updateArenasLegacy(now) {
         const g=G;
         for(const a of g.arenas) {
             if(a.done) continue;
@@ -2422,7 +2451,12 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
         g.over = true;
         playSound('hit');
         toast(msg || '💀 ¡Perdiste!', 0);
-        S.timer = setTimeout(() => { if (G){if(checkpointState)restoreCheckpoint();else restartRoom();} }, 900);
+        heldKeys=[];touchDir=null;clearCinematic();
+        const shade=$('deathShade');shade.classList.remove('hidden');requestAnimationFrame(()=>shade.classList.add('dark'));
+        S.timer=setTimeout(()=>{if(!G||G!==g)return;const confirmAction=(label,fn)=>()=>{if(confirm('¿Estás seguro de '+label+'?')){shade.classList.remove('dark');shade.classList.add('hidden');fn();}};
+            const choices=[];if(checkpointState)choices.push(['💾 Continuar desde el punto guardado',confirmAction('continuar desde el punto guardado',restoreCheckpoint),true]);
+            choices.push(['🔄 Reiniciar cuarto',confirmAction('reiniciar el cuarto',restartRoom)],['🏠 Menú principal',confirmAction('salir al menú principal',()=>exitGame('main'))]);
+            showOverlay('💀 Has perdido',choices,'death');},1500);
     }
     function win() {
         const g = G;
@@ -2468,12 +2502,12 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
         if (g.shields > 0) {
             g.shields--;
             g.invuln = g.time + 1200;
-            playSound('hit');
+            playSound('shieldHit');
             g.effects.push({ kind: 'pop', x: g.player.x, y: g.player.y, t0: g.time, dur: 450, ch: '🛡️' });
             if (e) e.stun = g.time + 1000;
             toast('🛡️ ¡El escudo te protegió!', 900);
             g.hudShowUntil = g.time + HUD_HOLD_MS;
-        } else die(msg);
+        } else {g.hearts=Math.max(0,(g.hearts??3)-1);g.invuln=g.time+1200;playSound('heartHit');if(e)e.stun=g.time+1000;g.effects.push({kind:'pop',x:g.player.x,y:g.player.y,t0:g.time,dur:450,ch:'💔'});if(g.hearts<=0)die(msg);else toast(`❤️ ${g.hearts} corazón(es)`,1000);}
     }
 
     /* =====================================================
@@ -2524,6 +2558,7 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
     }
 
     function spawnObject(tile, x, y) {
+        if(G&&!cinemaApplying&&!['bundle','reveal','preparedFloor'].includes(base(tile))){const removed=base(tile)==='floor'&&base(G.grid[y][x])!=='floor';showCinematic(x,y,removed?(ICONS[base(G.grid[y][x])]||'🧱'):(ICONS[base(tile)]||'✨'),removed?'remove':'appear');}
         if(base(tile)==='preparedFloor')return;
         if(base(tile)==='reveal'){const c=JSON.parse(decodeURIComponent(part(tile,1)));spawnObject(c.tile,c.x,c.y);return;}
         if(base(tile)==='bundle') {
@@ -2550,6 +2585,7 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
             for (let yy = 0; yy < g.n; yy++) for (let xx = 0; xx < g.n; xx++) {
                 if (base(g.grid[yy][xx]) === 'ddoor' && tileId(g.grid[yy][xx]) === id) {
                     g.grid[yy][xx] = 'floor';
+                    showCinematic(xx,yy,'💠','remove');
                     g.effects.push({ kind: 'pop', x: xx, y: yy, t0: g.time, dur: 450, ch: '✨' });
                 }
             }
@@ -2712,6 +2748,7 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
         if (g.pressed.has(id)) return;
         g.pressed.add(id);
         g.permOpen.add(id);
+        for(let y=0;y<g.n;y++)for(let x=0;x<g.n;x++)if(base(g.grid[y][x])==='bdoor'&&tileId(g.grid[y][x])===id)showCinematic(x,y,'🚧','remove');
         playSound('press');
         playSound('door');
         computeBeams();
@@ -2723,13 +2760,14 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
         // Simultaneous motion: a row can advance together, but no overlaps or swaps.
         possible=possible.filter(q=>candidates.filter(r=>r.x===q.x&&r.y===q.y).length===1);
         let changed=true;while(changed){const old=possible.length;possible=possible.filter(q=>{const other=mwallAt(q.x,q.y);return !other||possible.some(r=>r.w===other&&!(r.x===q.w.x&&r.y===q.w.y));});changed=old!==possible.length;}
-        possible.forEach(q=>{q.w.x=q.x;q.w.y=q.y;queueWallContact(q.w);});if(possible.length)playSound('push');computeBeams();
+        possible.forEach(q=>{q.w.x=q.x;q.w.y=q.y;queueWallContact(q.w);showCinematic(q.x,q.y,'🔳','move');});if(possible.length)playSound('push');computeBeams();
     }
     function stepOnButton(x, y) {
         const t = G.grid[y][x], b = base(t);
+        if(b==='boxCreator'){activateBoxCreator(x,y,t);return;}
         if(b==='lightswitch'){toggleZone(tileId(t));return;}
         if (b === 'openBtn' || b === 'closeBtn') {
-            if (b === 'openBtn') {G.doubleOpen.add(tileId(t));G.pendingClosing.delete(tileId(t));} else {G.pendingClosing.add(tileId(t));updateDoubleDoors();}
+            if (b === 'openBtn') {const id=tileId(t),was=G.doubleOpen.has(id);G.doubleOpen.add(id);G.pendingClosing.delete(id);if(!was)for(let yy=0;yy<G.n;yy++)for(let xx=0;xx<G.n;xx++)if(base(G.grid[yy][xx])==='doubleDoor'&&tileId(G.grid[yy][xx])===id)showCinematic(xx,yy,'🚧','remove');} else {G.pendingClosing.add(tileId(t));updateDoubleDoors();}
             playSound('press'); playSound('door');
         }
         else if (b === 'btn') press(tileId(t));
@@ -2757,6 +2795,10 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
     }
     function computeHolds() {
         const g = G, s = new Set();
+        for(const id of [...g.switchLatched]) {
+            let occupied=false;for(let yy=0;yy<g.n;yy++)for(let xx=0;xx<g.n;xx++)if(base(g.grid[yy][xx])==='switch'&&tileId(g.grid[yy][xx])===id&&part(g.grid[yy][xx],2)==='tap'&&((g.player.x===xx&&g.player.y===yy)||blockAt(xx,yy)||mwallAt(xx,yy)))occupied=true;
+            if(!occupied)g.switchLatched.delete(id);
+        }
         for(let y=0;y<g.n;y++)for(let x=0;x<g.n;x++)if(base(g.grid[y][x])==='switch'&&part(g.grid[y][x],2)==='hold'&&((g.player.x===x&&g.player.y===y)||blockAt(x,y)||mwallAt(x,y)))s.add(tileId(g.grid[y][x]));
         for (const h of g.hbtns) if ((g.player.x === h.x && g.player.y === h.y) || blockAt(h.x, h.y)||mwallAt(h.x,h.y)) s.add(h.id);
         let changed = s.size !== g.holdIds.size;
@@ -2767,6 +2809,7 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
 
     function canBlockMove(b, dir) {
         const g = G;
+        if(b.kind==='pushblock'&&(b.dir!==dir||b.remaining<=0))return false;
         const tx = b.x + DIRS[dir][0], ty = b.y + DIRS[dir][1];
         if (!inb(tx, ty)) return false;
         if (!arrowOK(b.x, b.y, dir) || !arrowOK(tx, ty, dir)) return false;
@@ -2784,7 +2827,12 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
         const nx = p.x + DIRS[dir][0], ny = p.y + DIRS[dir][1];
         if (!inb(nx, ny)) return false;
         if (!arrowOK(p.x, p.y, dir) || !arrowOK(nx, ny, dir)) return false;
-        const raw=g.grid[ny][nx];if(base(raw)==='bossdoor'&&g.bossKeys.get(tileId(raw))?.size===2){g.bossDoorsOpen.add(tileId(raw));g.bossKeys.delete(tileId(raw));playSound('door');}
+        const raw=g.grid[ny][nx];if(base(raw)==='shop'){
+            const key=`${nx},${ny},${p.x},${p.y},${dir}`;
+            if(!g.shopDwell||g.shopDwell.key!==key)g.shopDwell={key,since:g.time};
+            else if(g.time-g.shopDwell.since>=350){g.shopDwell=null;openGameShop(nx,ny);}
+            return false;
+        }g.shopDwell=null;if(base(raw)==='bossdoor'&&g.bossKeys.get(tileId(raw))?.size===2){g.bossDoorsOpen.add(tileId(raw));g.bossKeys.delete(tileId(raw));playSound('door');}
         const t = bt(nx, ny);
         if ((SOLID.includes(t)&&t!=='hole') || mwallAt(nx, ny)) return false;
         if (t === 'spikes' && spikeState(g.grid[ny][nx]) === 'up') return false;
@@ -2798,6 +2846,7 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
         if (b) {
             if (!canBlockMove(b, dir)) return false;
             b.x += DIRS[dir][0]; b.y += DIRS[dir][1];
+            if(b.kind==='pushblock')b.remaining--;
             playSound('push');
             if(bt(b.x,b.y)==='hole' && b.kind==='block') {
                 fallBox(b);
@@ -2908,8 +2957,9 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
         else if(t==='cash'){const amount=clamp(tileId(tile),1,100);g.gold+=amount;pickup('🪙',`🪙 +${amount} monedas`);}
         else if(t==='torch'){g.hasTorch=true;pickup('🔥','🔥 Ahora puedes iluminar zonas oscuras y derretir hielo.');}
         else if (t === 'shield') { g.shields++; pickup('🛡️'); }
+        else if(t==='heart'){g.hearts=(g.hearts||0)+1;pickup('❤️','❤️ +1 corazón');}
         // FIX: faltaba 'cbtn' — el personaje al pisar el botón-creador no lo activaba
-        else if (t === 'btn' || t === 'mwbtn' || t === 'cbtn' || t==='openBtn' || t==='closeBtn'||t==='switch'||t==='crossbtn'||t==='lightswitch') stepOnButton(p.x, p.y);
+        else if (t === 'btn' || t === 'mwbtn' || t === 'cbtn' || t==='openBtn' || t==='closeBtn'||t==='switch'||t==='crossbtn'||t==='lightswitch'||t==='boxCreator') stepOnButton(p.x, p.y);
 
         updateLighting();
         const e = enemyAt(p.x, p.y);
@@ -2980,7 +3030,7 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
         const g = G;
         g.time += dt * 1000;updateInputHolds();updateTraps();updateHookFlight(dt);if(g.over)return;
         if(g.room.timeLimit>0&&g.time>=g.room.timeLimit*1000){die('⌛ ¡Se acabó el tiempo del cuarto!');return;}
-        updateDoubleDoors();retryLoot();updateLighting();updateNewMechanisms();updateShop();
+        updateDoubleDoors();retryLoot();updateLighting();updateNewMechanisms();
         if(g.paused)return;
         const now = g.time, p = g.player;
 
@@ -3065,9 +3115,9 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
 
     function updateHud() {
         const g = G;
-        let txt = `🧍 ${g.coins}/${g.totalCoins}  🔑 ${g.keys}  🛡️ ${g.shields}  ${g.exitActive ? '🚪' : '🔒'}`;
+        let txt = `❤️ ${g.hearts}  🧍 ${g.coins}/${g.totalCoins}  🔑 ${g.keys}  🛡️ ${g.shields}  ${g.exitActive ? '🚪' : '🔒'}`;
         if((g.room.floorCount||1)>1)txt+=`  · ${floorName(floorIndex(g,g.player.y))}`;
-        txt+=`  🪙 ${g.gold}`;if(g.bossKeys.size)txt+=`  🗝️ ${[...g.bossKeys.values()].reduce((n,v)=>n+v.size,0)} partes`;if(g.hasTorch)txt+='  🔥';if(g.hasHook)txt+=`  🪝 ${g.hookLength}`;if($('btnHook')){$('btnHook').classList.toggle('off',!g.hasHook);$('btnHook').classList.toggle('sel',g.weapon==='hook');}
+        txt+=`  🪙 ${g.gold}`;if(g.bossKeys.size)txt+=`  🗝️ ${[...g.bossKeys.values()].reduce((n,v)=>n+v.size,0)} partes`;if(g.hasTorch)txt+='  🔥';if(g.hasHook)txt+=`  🪝 ${g.hookLength}`;if($('btnHook')){$('btnHook').classList.toggle('off',!g.hasHook);if($('btnTorch'))$('btnTorch').classList.toggle('off',!g.hasTorch);$('btnHook').classList.toggle('sel',g.weapon==='hook');}
         if(g.room.timeLimit>0){const left=Math.max(0,Math.ceil(g.room.timeLimit-g.time/1000));txt+=`  ⏳ ${Math.floor(left/60)}:${String(left%60).padStart(2,'0')}`;}
         txt += S.mode === 'route' ? `  ·  Cuarto ${S.index + 1}/${S.rooms.length}` : '  ·  Prueba';
         if (txt !== g.hudText) { g.hudText = txt; hud.textContent = txt; }
@@ -3092,8 +3142,9 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
         if (!G) return;
         const dt = Math.min(0.1, (ts - lastTs) / 1000 || 0.016);
         lastTs = ts;
-        if (!G.paused && !G.over) update(dt);
-        if (G) { lerpAll(dt); draw(); updateHud(); }
+        if(cinemaCurrent)advanceCinema(dt);
+        if (!G.paused && !G.over && !cinemaCurrent) update(dt);
+        if (G) { if(!cinemaCurrent&&!G.over)lerpAll(dt); draw(); updateHud(); }
         rafId = requestAnimationFrame(frame);
     }
 
@@ -3241,6 +3292,7 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
                 break;
             }
             case 'shield': emoji('🛡️', cx, cy + Math.sin(g.time / 320 + x + y) * ts * 0.05, ts * 0.6); break;
+            case 'heart': emoji('❤️',cx,cy + Math.sin(g.time/320+x+y)*ts*.05,ts*.6);break;
             case 'ammo': {
                 drawArrowShape(cx, cy + Math.sin(g.time / 300 + x + y) * ts * 0.04, -Math.PI / 4, ts * 0.55);
                 const q = tileId(tile); if (q > 1) numTag(px + ts * 0.8, py + ts * 0.8, 'x' + q, ts * 0.14, '#333');
@@ -3501,9 +3553,9 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
         const g = G, { w, h, ts } = cv, n = g.n;
         ctx.fillStyle = colors.bg;
         ctx.fillRect(0, 0, w, h);
-        const bounds=floorBounds(g,g.player.y),mw=bounds.size*ts,mh=bounds.size*ts,off=bounds.y*ts;
-        let camX = g.player.rx * ts + ts / 2 - w / 2;
-        let camY = g.player.ry * ts + ts / 2 - h / 2;
+        const focus=cinemaFocus(g);const bounds=floorBounds(g,focus.y),mw=bounds.size*ts,mh=bounds.size*ts,off=bounds.y*ts;
+        let camX = focus.x * ts + ts / 2 - w / 2;
+        let camY = focus.y * ts + ts / 2 - h / 2;
         camX = mw <= w ? -(w - mw) / 2 : clamp(camX, 0, mw - w);
         camY = mh <= h ? off-(h - mh) / 2 : clamp(camY, off, off+mh-h);
         camX = Math.round(camX); camY = Math.round(camY);
@@ -3513,8 +3565,11 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
         const x0 = Math.max(0, Math.floor(camX / ts)), x1 = Math.min(bounds.size - 1, Math.floor((camX + w) / ts));
         const y0 = Math.max(bounds.y, Math.floor(camY / ts)), y1 = Math.min(bounds.y+bounds.size-1, Math.floor((camY + h) / ts));
         const sp = spikeState();
-        for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++) drawTile(x, y, sp);
+        for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++) {
+            if(cinemaCurrent&&cinemaCurrent.kind==='appear'&&cinemaCurrent.x===x&&cinemaCurrent.y===y&&cinemaCurrent.t<1.45){ctx.fillStyle=colors.floor;ctx.fillRect(x*ts,y*ts,ts,ts);}else drawTile(x,y,sp);
+        }
         drawBeams();
+        drawCinemaGhost();
 
         ctx.strokeStyle = colors.accent; ctx.lineWidth = 3;
         ctx.strokeRect(-1.5,off-1.5,mw+3,mh+3);
@@ -3536,6 +3591,7 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
         // Cajas y espejos
         for (const b of g.blocks) {
             const px = b.rx * ts, py = b.ry * ts;
+            if(b.kind==='pushblock'){ctx.fillStyle='#6c7486';ctx.fillRect(px+3,py+3,ts-6,ts-6);emoji(DIR_EMO[b.dir],px+ts/2,py+ts/2,ts*.5);numTag(px+ts*.8,py+ts*.8,b.remaining,ts*.13);continue;}
             if (b.kind === 'mirror') { drawMirror(px, py, b.face); continue; }
             ctx.fillStyle = '#9c6b3f'; ctx.fillRect(px + 3, py + 3, ts - 6, ts - 6);
             ctx.strokeStyle = '#5b3a1e'; ctx.lineWidth = 3; ctx.strokeRect(px + 3, py + 3, ts - 6, ts - 6);
@@ -3586,7 +3642,7 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
             const blink = g.time < g.invuln && Math.floor(g.time / 80) % 2 === 0;
             ctx.fillStyle = 'rgba(0,0,0,0.2)';
             ctx.beginPath(); ctx.ellipse(cx, cy + ts * 0.32, ts * 0.25, ts * 0.08, 0, 0, Math.PI * 2); ctx.fill();
-            ctx.globalAlpha = blink ? 0.3 : 1;
+            ctx.globalAlpha = 1;
             emoji('🧑', cx, cy, ts * 0.72);
             ctx.globalAlpha = 1;
             if (g.shields > 0) {
@@ -3674,9 +3730,9 @@ body.custom-controls #mobileArrows{display:block!important}body.custom-controls 
     window.addEventListener('blur', () => { turnOnlyKeys.clear();heldKeys = []; touchDir = null; centerTouch = null; });
 
     btnMenu.addEventListener('click', openMenu);
-    btnSword.addEventListener('click', () => toggleWeapon('sword'));
-    btnBow.addEventListener('click', () => toggleWeapon('bow'));
-    btnBomb.addEventListener('click', () => toggleWeapon('bomb'));
+    btnSword.addEventListener('click', () => controlAction('sword'));
+    btnBow.addEventListener('click', () => controlAction('bow'));
+    btnBomb.addEventListener('click', () => controlAction('bomb'));
 
     function zoneOf(t) {return 'C';}
     function recomputeTouchDir(touches) {
@@ -3767,7 +3823,7 @@ function wizardBuild(tool,st,pos,done){
  wizard.tasks.push({label:'Coloca dónde aparecerá la recompensa del grupo.',run:q=>wizard.tasks.unshift({select:true,label:'Elige la recompensa del grupo.',run:(t,values)=>wizardBuild(t,values,q,child=>{cfg.wgroups[id]={kind:fixed?'torch':undefined,count,obj:child,sx:q.x,sy:q.y,hit:0,done:false};finish();})})});
  }
  else if(tool==='arena'){
- const arena={enemies:[]};const count=clamp(st.waveCount||2,2,8);
+ const arena={enemies:[],waveMode:st.waveMode||'sequential'};const count=clamp(st.waveCount||2,2,8);
  for(let i=0;i<count;i++)wizard.tasks.push({select:true,enemy:true,label:`Creador: elige el enemigo ${i+1} de ${count}.`,run:(t,values)=>{if(!['enemy','enemy2','enemy3','boss','snake','worm'].includes(t))throw Error('Tipo de enemigo inválido');arena.enemies.push(tileFromTool(t,values));}});
  wizard.tasks.push({label:'Coloca dónde aparecerá la recompensa al derrotar a todos.',run:q=>{arena.rx=q.x;arena.ry=q.y;wizard.tasks.unshift({select:true,label:'Elige la recompensa del creador de enemigos.',run:(t,values)=>wizardBuild(t,values,q,child=>{arena.reward=child;cfg.tile='arena:'+encodeURIComponent(JSON.stringify(arena));finish();})});}});
  }
@@ -3817,7 +3873,7 @@ function updateDoubleDoors(){
  if(!G)return;const g=G;
  for(const id of g.pendingClosing){let occupied=false;
   for(let y=0;y<g.n;y++)for(let x=0;x<g.n;x++)if(base(g.grid[y][x])==='doubleDoor'&&tileId(g.grid[y][x])===id){if((g.player.x===x&&g.player.y===y)||blockAt(x,y)||enemyAt(x,y)||mwallAt(x,y))occupied=true;}
-  if(!occupied){g.doubleOpen.delete(id);g.pendingClosing.delete(id);}
+  if(!occupied){const was=g.doubleOpen.has(id);g.doubleOpen.delete(id);g.pendingClosing.delete(id);if(was)for(let yy=0;yy<g.n;yy++)for(let xx=0;xx<g.n;xx++)if(base(g.grid[yy][xx])==='doubleDoor'&&tileId(g.grid[yy][xx])===id)showCinematic(xx,yy,'🚧','appear');}
  }
 }
 function waitBeforeEnemyAttack(e,p,now,pos=e){
@@ -3890,7 +3946,7 @@ function startFixedTorches(x,y){
  const gid=freeGid(),count=clamp(brush.count||1,1,5);if(!gid)return;
  board[y][x]=`ftorch:${gid}`;groups[gid]={kind:'torch',count,obj:null};pending={type:'wgroup',gid,remaining:count-1,step:count>1?'diamonds':'spawn'};renderGrid();showPending();
 }
-function updateLighting(){
+function updateLightingOldest(){
  if(!G)return;const g=G,p=g.player;const sources=[];
  if(g.hasTorch)sources.push({x:p.x,y:p.y});
  for(let y=0;y<g.n;y++)for(let x=0;x<g.n;x++)if(base(g.grid[y][x])==='ftorch'){
@@ -4007,13 +4063,14 @@ function toolForTile(tile){const b=base(tile);if(b==='wd')return'wdiamond';if(b=
 function valuesForObject(ref){
  const t=ref.read(),b=base(t),a=String(t).split(':'),values={...brush,channel:tileId(t)};
  if(ref.zone)return{...values,...ref.zone,darknessLevel:ref.zone.darknessLevel||'dim',hasSwitch:!!ref.zone.hasSwitch};
- if(b==='blinkboss'){const c=readBlink(t);return{...values,...c,sites:c.points?.length||3,goldDrop:c.gold||0};}
+ if(b==='boxCreator'){try{const c=JSON.parse(decodeURIComponent(part(t,1)));if(!coord(c.x,c.y))throw Error();}catch(e){throw Error('Destino del botón de caja inválido.');}}
+  if(b==='blinkboss'){const c=readBlink(t);return{...values,...c,sites:c.points?.length||3,goldDrop:c.gold||0};}
  if(b==='spikes'){values.spikeRest=+a[1]||1800;values.spikeActive=+a[2]||1200;}if(b==='touchSpikes')values.trapDelay=+a[1]||650;if(b==='enemy3')values.buildMs=+a[7]||1000;
  if(b==='stairs')values.stairDir=part(t,1)==='down'?'down':'up';
  if(b==='switch'){values.mode=part(t,2)||'tap';}if(b==='crossgate'){Object.assign(values,parseCross(t));}if(b==='cash')values.amount=clamp(tileId(t),1,100);
  if(['enemy','enemy2','enemy3','boss','snake','worm'].includes(b)){values.territory=clamp(+a[7]||2,1,15);values.speed=+a[1]||3;values.hp=+a[2]||1;values.key=a[4]==='1';values.coin=a[5]==='1';values.goldDrop=clamp(+a[6]||0,0,100);if(b==='boss')values.minis=+a[3]||3;else if(['snake','worm'].includes(b))values.length=+a[3]||3;else values.vision=+a[3]||5;if(['boss','snake','worm'].includes(b))values.vision=clamp(+a[7]||5,1,20);}
  if(b==='torchdecor')values.lightIntensity=clamp(+part(t,1)||5,1,10);
- if(b==='ammo'||b==='bomb')values.qty=tileId(t);if(b==='laser')values.dir=dirOf(t);if(b==='hook')values.hookLength=clamp(+a[1]||5,1,20);if(b==='mwall')values.travel=clamp(+a[3]||1,1,10);if(b==='mwall')values.dir=mwDir(t);if(b==='hbtn')values.hid=tileId(t);if(b==='start'){values.startSpeed=playerSpeed;Object.assign(values,brushFromGear(startGear));}
+ if(b==='arena'){try{values.waveMode=JSON.parse(decodeURIComponent(part(t,1))).waveMode||'sequential';}catch(e){}}if(b==='pushblock'){values.dir=part(t,1)||'R';values.pushCount=+part(t,2)||1;}if(b==='ammo'||b==='bomb')values.qty=tileId(t);if(b==='laser')values.dir=dirOf(t);if(b==='hook')values.hookLength=clamp(+a[1]||5,1,20);if(b==='mwall')values.travel=clamp(+a[3]||1,1,10);if(b==='mwall')values.dir=mwDir(t);if(b==='hbtn')values.hid=tileId(t);if(b==='start'){values.startSpeed=playerSpeed;Object.assign(values,brushFromGear(startGear));}
  if(['wd','ftorch','wspawn','remwall'].includes(b))values.count=(ref.env?.wgroups?.[tileId(t)]||groups[tileId(t)])?.count||1;
  if(b==='darkzone'&&!ref.zone){try{Object.assign(values,JSON.parse(decodeURIComponent(part(t,1))));}catch(e){}}
  if(b==='arena'){try{values.waveCount=JSON.parse(decodeURIComponent(part(t,1))).enemies.length;}catch(e){}}
@@ -4089,7 +4146,7 @@ function openObjectEditor(inputRef){
   else if(tool!==originalTool){rebuildEditorObject(ref,tool,values);return;}
   else if(['wd','ftorch'].includes(b)&&values.count!==valuesForObject(ref).count){rebuildEditorObject(ref,tool,values);return;}
   else if(b==='arena'){
-   const cfg=JSON.parse(decodeURIComponent(part(token,1)));if(values.waveCount!==cfg.enemies.length){rebuildEditorObject(ref,'arena',values);return;}cfg.enemies=enemyEdits.map(e=>tileFromTool(e.pick.value,e.st));ref.write('arena:'+encodeURIComponent(JSON.stringify(cfg)));
+   const cfg=JSON.parse(decodeURIComponent(part(token,1)));cfg.waveMode=values.waveMode||'sequential';if(values.waveCount!==cfg.enemies.length){rebuildEditorObject(ref,'arena',values);return;}cfg.enemies=enemyEdits.map(e=>tileFromTool(e.pick.value,e.st));ref.write('arena:'+encodeURIComponent(JSON.stringify(cfg)));
   }else if(['portal','portal2','ddoor','diamond','rdoor','rdiamond','doubleDoor','closeBtn','openBtn'].includes(b)){
    const family=['portal','portal2'].includes(b)?['portal','portal2']:['ddoor','diamond'].includes(b)?['ddoor','diamond']:['rdoor','rdiamond'].includes(b)?['rdoor','rdiamond']:['doubleDoor','closeBtn','openBtn'];const id=tileId(token),newId=values.channel;
    const refs=editorObjectRefs();if(newId!==id&&refs.some(r=>family.includes(base(r.read()))&&tileId(r.read())===newId)){setStatus('Ese canal ya está ocupado por otro mecanismo de este tipo.',2600);return;}refs.filter(r=>family.includes(base(r.read()))&&tileId(r.read())===id).forEach(r=>r.write(`${base(r.read())}:${newId}`));
@@ -4139,7 +4196,7 @@ function updateNewMechanisms(){const g=G;
 function trackCrossing(before,after){const g=G;if(Math.abs(after.x-before.x)+Math.abs(after.y-before.y)!==1)return;
  if(base(g.grid[after.y][after.x])==='crossgate'){const c=parseCross(g.grid[after.y][after.x]);if(!g.crossActivated.has(c.id))g.crossEntries.set(c.id,{from:{...before},x:after.x,y:after.y});}
  if(base(g.grid[before.y][before.x])==='crossgate'){const c=parseCross(g.grid[before.y][before.x]),entry=g.crossEntries.get(c.id);if(entry&&!g.crossActivated.has(c.id)&&after.x-before.x===before.x-entry.from.x&&after.y-before.y===before.y-entry.from.y){g.crossActivated.add(c.id);g.grid[c.by][c.bx]=`crossbtn:${c.id}:${c.mode}`;playSound('door');toast('🛂 La puerta se cerró: apareció su botón.',1600);}g.crossEntries.delete(c.id);}}
-function updateLighting(){if(!G)return;const g=G,p=g.player,sources=[];if(g.hasTorch)sources.push({x:p.x,y:p.y,portable:true});const heating=new Map(),igniting=new Set();
+function updateLightingOld(){if(!G)return;const g=G,p=g.player,sources=[];if(g.hasTorch)sources.push({x:p.x,y:p.y,portable:true});const heating=new Map(),igniting=new Set();
  for(let y=0;y<g.n;y++)for(let x=0;x<g.n;x++)if(base(g.grid[y][x])==='ftorch'){const key=y*g.n+x;
   if(g.hasTorch&&!g.litTorches.has(key)&&Math.abs(x-p.x)+Math.abs(y-p.y)<=1){igniting.add(key);if(!g.torchTimers.has(key))g.torchTimers.set(key,{since:g.time,position:`${p.x},${p.y}`});let timer=g.torchTimers.get(key);if(timer.position!==`${p.x},${p.y}`){timer={since:g.time,position:`${p.x},${p.y}`};g.torchTimers.set(key,timer);}if(g.time-timer.since>=850){g.litTorches.add(key);g.torchTimers.delete(key);playSound('key');const wg=g.wgroups[tileId(g.grid[y][x])];if(wg&&wg.kind==='torch'&&!wg.done){wg.hit++;toast(`🕯️ ${wg.hit}/${wg.count} encendidas`,1200);if(wg.hit>=wg.count){wg.done=true;spawnObject(wg.obj,wg.sx,wg.sy);}}}}
   if(g.litTorches.has(key))sources.push({x,y});}
@@ -4149,8 +4206,9 @@ function updateLighting(){if(!G)return;const g=G,p=g.player,sources=[];if(g.hasT
  for(const key of g.heatTimers.keys())if(!heating.has(key)){g.heatTimers.delete(key);g.heatPositions.delete(key);}
 }
 function drawHeatProgress(x,y){const key=y*G.n+x,t=G.heatTimers.get(key),c=G.torchTimers.get(key);let progress=null;if(t!==undefined)progress=(G.time-t)/1400;else if(c)progress=(G.time-c.since)/850;if(progress===null)return;const ts=cv.ts;ctx.strokeStyle='#ffc86e';ctx.lineWidth=3;ctx.beginPath();ctx.arc((x+.5)*ts,(y+.5)*ts,ts*.35,-Math.PI/2,-Math.PI/2+Math.PI*2*clamp(progress,0,1));ctx.stroke();}
-function drawExtraTileCore(x,y){const t=G.grid[y][x],b=base(t),ts=cv.ts,cx=(x+.5)*ts,cy=(y+.5)*ts;if(!['cash','shop','switch','crossgate','crossbtn'].includes(b))return false;
+function drawExtraTileCore(x,y){const t=G.grid[y][x],b=base(t),ts=cv.ts,cx=(x+.5)*ts,cy=(y+.5)*ts;if(!['boxCreator','cash','shop','switch','crossgate','crossbtn'].includes(b))return false;
  ctx.fillStyle=colors.floor;ctx.fillRect(x*ts,y*ts,ts,ts);
+ if(b==='boxCreator'){emoji('📦',(x+.5)*ts,(y+.5)*ts,ts*.5);return true;}
  if(b==='cash'){emoji(tileId(t)>10?'💰':'🪙',cx,cy,ts*.65);if(tileId(t)>1)numTag(cx+ts*.3,cy+ts*.3,tileId(t),ts*.16,'#b97d17');}
  if(b==='shop')emoji('🏪',cx,cy,ts*.8);
  if(b==='switch'||b==='crossbtn'){emoji(part(t,2)==='hold'?'⏺️':'🔘',cx,cy,ts*.6);numTag(cx+ts*.32,cy+ts*.32,tileId(t),ts*.15);}
@@ -4225,14 +4283,14 @@ function setupExpansion(){
  document.body.classList.add('catalog-v2');document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(!$('gameShopModal').classList.contains('hidden')){closeGameShop();return;}for(const id of ['routesModal','objectGuideModal','learningModal','iconCatalogModal','shopEditModal'])$(id).classList.add('hidden');cleanupIconDrag();});
 }
 
-function futureReservations(){const out=futureReservationsCore();for(const ref of editorObjectRefsCore())if(ref.future&&ref.env?.insideIce){const p=ref.pos();if(!out.some(q=>q.x===p.x&&q.y===p.y))out.push({...p,tile:ref.read()});}for(const ref of editorObjectRefsCore())if(base(ref.read())==='crossgate'){const c=parseCross(ref.read());if(c.bx>=0&&c.by>=0)out.push({x:c.bx,y:c.by,tile:`crossbtn:${c.id}:${c.mode}`});}return out;}
+function futureReservations(){const out=futureReservationsCore();for(const row of board)for(const t of row)if(base(t)==='boxCreator')try{const c=JSON.parse(decodeURIComponent(part(t,1)));out.push({x:c.x,y:c.y,tile:'block'});}catch(e){}for(const ref of editorObjectRefsCore())if(ref.future&&ref.env?.insideIce){const p=ref.pos();if(!out.some(q=>q.x===p.x&&q.y===p.y))out.push({...p,tile:ref.read()});}for(const ref of editorObjectRefsCore())if(base(ref.read())==='crossgate'){const c=parseCross(ref.read());if(c.bx>=0&&c.by>=0)out.push({x:c.bx,y:c.by,tile:`crossbtn:${c.id}:${c.mode}`});}return out;}
 function editorObjectRefs(){const refs=editorObjectRefsCore();for(const owner of [...refs])if(base(owner.read())==='crossgate'){const cfg=parseCross(owner.read());if(cfg.bx<0||cfg.by<0)continue;const flush=()=>owner.write(crossTile(cfg));refs.push({future:true,ownerCross:owner,pos:()=>({x:cfg.bx,y:cfg.by}),read:()=>`crossbtn:${cfg.id}:${cfg.mode}`,write:t=>{cfg.mode=part(t,2)||cfg.mode;flush();},move:q=>{cfg.bx=q.x;cfg.by=q.y;flush();},delete:()=>owner.write('floor')});}for(const ref of refs){const b=base(ref.read());if(!['blinkboss','blinkpad'].includes(b))continue;const move=ref.move;ref.move=q=>{const prev=ref.pos(),id=tileId(ref.read());for(const owner of refs)if(base(owner.read())==='blinkboss'&&tileId(owner.read())===id){const c=readBlink(owner.read());c.points=c.points.map(p=>p.x===prev.x&&p.y===prev.y?{...q}:p);owner.write(blinkTile(c));}move(q);};}return refs;}
 
 const ICE_CONTENT_TOOLS=['cash','key','bomb','ammo','switch','cbtn','doubleDoor','wdiamond','shield'];
-function normalizeStartGear(value){const v=value&&typeof value==='object'?value:{};const qty=n=>Number.isFinite(+n)?clamp(Math.floor(+n),0,100):0;return{sword:!!v.sword,bombs:qty(v.bombs),bow:!!v.bow,torch:!!v.torch,hook:!!v.hook,hookLength:clamp(qty(v.hookLength)||5,1,20),shields:qty(v.shields),ammo:v.bow?qty(v.ammo):0};}
-function gearFromBrush(v){return normalizeStartGear({sword:v.startSword,bombs:v.startBombs?v.startBombCount:0,bow:v.startBow,ammo:v.startAmmo,torch:v.startTorch,hook:v.startHook,hookLength:v.hookLength,shields:v.startShields?v.startShieldCount:0});}
-function brushFromGear(v){const g=normalizeStartGear(v);return{startSword:g.sword,startBombs:g.bombs>0,startBombCount:g.bombs||3,startBow:g.bow,startAmmo:g.ammo,startTorch:g.torch,startHook:g.hook,hookLength:g.hookLength,startShields:g.shields>0,startShieldCount:g.shields||1};}
-function applyStartingGear(g,value){const gear=normalizeStartGear(value);g.hasTorch=gear.torch;g.hasHook=gear.hook;g.hookLength=gear.hookLength;g.shields=gear.shields;g.hasSword=gear.sword;g.hasBow=gear.bow;g.bombCount=gear.bombs;g.ammo=gear.ammo;g.weapon=gear.sword?'sword':gear.bow?'bow':gear.bombs?'bomb':null;}
+function normalizeStartGear(value){const v=value&&typeof value==='object'?value:{};const qty=n=>Number.isFinite(+n)?clamp(Math.floor(+n),0,100):0;return{sword:!!v.sword,bombs:qty(v.bombs),bow:!!v.bow,torch:!!v.torch,hook:!!v.hook,hookLength:clamp(qty(v.hookLength)||5,1,20),shields:qty(v.shields),hearts:clamp(Number.isFinite(+v.hearts)?Math.floor(+v.hearts):3,3,10),ammo:v.bow?qty(v.ammo):0};}
+function gearFromBrush(v){return normalizeStartGear({sword:v.startSword,bombs:v.startBombs?v.startBombCount:0,bow:v.startBow,ammo:v.startAmmo,torch:v.startTorch,hook:v.startHook,hookLength:v.hookLength,shields:v.startShields?v.startShieldCount:0,hearts:v.startHearts});}
+function brushFromGear(v){const g=normalizeStartGear(v);return{startHearts:g.hearts,startSword:g.sword,startBombs:g.bombs>0,startBombCount:g.bombs||3,startBow:g.bow,startAmmo:g.ammo,startTorch:g.torch,startHook:g.hook,hookLength:g.hookLength,startShields:g.shields>0,startShieldCount:g.shields||1};}
+function applyStartingGear(g,value){const gear=normalizeStartGear(value);g.hasTorch=gear.torch;g.hasHook=gear.hook;g.hookLength=gear.hookLength;g.shields=gear.shields;g.hearts=gear.hearts;g.hasSword=gear.sword;g.hasBow=gear.bow;g.bombCount=gear.bombs;g.ammo=gear.ammo;g.weapon=gear.sword?'sword':gear.bow?'bow':gear.bombs?'bomb':null;}
 function iceTile(obj){return'icebox:'+encodeURIComponent(JSON.stringify({obj}));}
 function readIce(t){try{const c=JSON.parse(decodeURIComponent(part(t,1)));return c&&typeof c.obj==='string'?c:{obj:'floor'};}catch(e){return{obj:'floor'};}}
 function freezeIceContents(payload){if(base(payload)==='bundle'){const c=unpackBundle(payload);if(base(c.tile)==='wd')c.extras=(c.extras||[]).map(e=>({...e,tile:base(e.tile)==='wd'?iceTile(e.tile):e.tile}));return iceTile(packBundle(c));}return iceTile(payload);}
@@ -4317,8 +4375,8 @@ function finishHook(){const g=G;g.hookAction=null;if(g.hookLine)g.hookLine.until
 function updateHookFlight(dt){const g=G,a=g.hookAction;if(!a||g.paused||g.over)return;if(g.time<a.next)return;a.next=g.time+70;const [dx,dy]=DIRS[a.dir],p=g.player;
  if(a.phase==='extend'){const x=a.head.x+dx,y=a.head.y+dy;if(!inb(x,y)||floorIndex(g,y)!==floorIndex(g,a.origin.y)){a.phase='return';return;}a.head={x,y};a.length++;const t=g.grid[y][x],b=base(t),block=blockAt(x,y);
   if(b==='anchor'){a.phase='pull';a.anchor={x,y};}
-  else if(['coin','key','cash','shield','bomb','ammo','sword','bow','torch','hook','bosskey'].includes(b)){a.loot=t;g.grid[y][x]='floor';a.phase='return';}
-  else if(block){a.block=block;a.phase='block';}
+  else if(['heart','coin','key','cash','shield','bomb','ammo','sword','bow','torch','hook','bosskey'].includes(b)){a.loot=t;g.grid[y][x]='floor';a.phase='return';}
+  else if(block){if(block.kind==='pushblock'){a.phase='return';}else{a.block=block;a.phase='block';}}
   else if((SOLID.includes(bt(x,y))&&bt(x,y)!=='hole')||b==='keydoor'||enemyAt(x,y)||mwallAt(x,y)||a.length>=a.range)a.phase='return';
  }else if(a.phase==='pull'){
   const x=p.x+dx,y=p.y+dy;if(!inb(x,y)||blockAt(x,y)||mwallAt(x,y)||enemyAt(x,y)||((SOLID.includes(bt(x,y))&&bt(x,y)!=='hole')||bt(x,y)==='keydoor')){finishHook();return;}
@@ -4343,9 +4401,10 @@ function makeBlinkBoss(g,x,y,t){const c=readBlink(t);g.blinkPlatforms??=[];for(c
 function chooseBlink(e,now){let options=e.points.filter(q=>Math.abs(q.x-G.player.x)+Math.abs(q.y-G.player.y)>1&&!blockAt(q.x,q.y)&&!mwallAt(q.x,q.y)&&!G.enemies.some(o=>o!==e&&o.x===q.x&&o.y===q.y));const other=options.filter(q=>q.x!==e.x||q.y!==e.y);if(other.length)options=other;if(!options.length){e.phase='cooldown';e.until=now+200;return;}const q=options[Math.floor(Math.random()*options.length)];e.x=e.rx=q.x;e.y=e.ry=q.y;e.phase='warning';e.until=now+(e.appearMs||Math.max(400,1400-e.speed*90));}
 function bossRay(e){const g=G,cells=[];let x=e.x,y=e.y;const tx=e.target.x,ty=e.target.y,dx=Math.abs(tx-x),sx=x<tx?1:-1,dy=-Math.abs(ty-y),sy=y<ty?1:-1;let err=dx+dy;for(let i=0;i<g.n*2;i++){if(x===tx&&y===ty)break;const v=2*err;if(v>=dy){err+=dy;x+=sx;}if(v<=dx){err+=dx;y+=sy;}if(!inb(x,y)||BEAM_STOP.includes(bt(x,y))||mwallAt(x,y))break;cells.push({x,y});}g.bossRays??=[];g.bossRays.push({cells,until:g.time+320});if(cells.some(q=>q.x===g.player.x&&q.y===g.player.y))hurtPlayer('⚡ ¡Te alcanzó el jefe de destellos!');playSound('shoot');}
 function blinkLogic(e,now){if(!wakeBoss(e,e))return;if(e.phase==='sleep'){chooseBlink(e,now);return;}if(e.phase==='warning'&&Math.abs(e.x-G.player.x)+Math.abs(e.y-G.player.y)<=1){chooseBlink(e,now);return;}if(now<e.until)return;if(e.phase==='warning'){if(G.player.x===e.x&&G.player.y===e.y||blockAt(e.x,e.y)){chooseBlink(e,now);return;}e.phase='aim';e.target={x:G.player.x,y:G.player.y};e.until=now+(e.aimMs||Math.max(500,1500-e.speed*80));playSound('alert');}else if(e.phase==='aim'){if(now<e.stun)return;bossRay(e);e.phase='cooldown';e.until=now+Math.max(250,1000-e.speed*65);}else chooseBlink(e,now);}
-function drawAdventureEffects(){const g=G,ts=cv.ts;for(const p of g.blinkPlatforms||[])if(base(g.grid[p.y][p.x])!=='blinkpad')drawBlinkBase(p.x,p.y);if(g.hookAction?.loot){const a=g.hookAction;emoji(ICONS[base(a.loot)]||'🎁',(a.head.x+.5)*ts,(a.head.y+.5)*ts,ts*.52);}for(const e of g.enemies)if(e.kind===5&&e.phase==='aim'&&e.target){ctx.strokeStyle='#f1a6ff88';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo((e.x+.5)*ts,(e.y+.5)*ts);ctx.lineTo((e.target.x+.5)*ts,(e.target.y+.5)*ts);ctx.stroke();}g.bossRays=(g.bossRays||[]).filter(r=>r.until>g.time);ctx.fillStyle='#e2b7ffb0';for(const r of g.bossRays)for(const p of r.cells)ctx.fillRect(p.x*ts+ts*.25,p.y*ts+ts*.25,ts*.5,ts*.5);if(g.hookLine?.until>g.time){const l=g.hookLine;ctx.strokeStyle='#bedbea';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo((l.from.x+.5)*ts,(l.from.y+.5)*ts);ctx.lineTo((l.to.x+.5)*ts,(l.to.y+.5)*ts);ctx.stroke();}}
+function drawAdventureEffects(){const g=G,ts=cv.ts;if(g.flameUntil>g.time){emoji('🔥',(g.flameX+.5)*ts,(g.flameY+.5)*ts,ts*.65);}for(const p of g.blinkPlatforms||[])if(base(g.grid[p.y][p.x])!=='blinkpad')drawBlinkBase(p.x,p.y);if(g.hookAction?.loot){const a=g.hookAction;emoji(ICONS[base(a.loot)]||'🎁',(a.head.x+.5)*ts,(a.head.y+.5)*ts,ts*.52);}for(const e of g.enemies)if(e.kind===5&&e.phase==='aim'&&e.target){ctx.strokeStyle='#f1a6ff88';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo((e.x+.5)*ts,(e.y+.5)*ts);ctx.lineTo((e.target.x+.5)*ts,(e.target.y+.5)*ts);ctx.stroke();}g.bossRays=(g.bossRays||[]).filter(r=>r.until>g.time);ctx.fillStyle='#e2b7ffb0';for(const r of g.bossRays)for(const p of r.cells)ctx.fillRect(p.x*ts+ts*.25,p.y*ts+ts*.25,ts*.5,ts*.5);if(g.hookLine?.until>g.time){const l=g.hookLine;ctx.strokeStyle='#bedbea';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo((l.from.x+.5)*ts,(l.from.y+.5)*ts);ctx.lineTo((l.to.x+.5)*ts,(l.to.y+.5)*ts);ctx.stroke();}}
 function removeBlinkFamily(id){removeById('blinkboss',id);removeById('blinkpad',id);}
-function setupAdventure(){const h=document.createElement('button');h.id='btnHook';h.textContent='🪝';h.title='Gancho · 4 para seleccionar / H para lanzar';h.setAttribute('aria-label',h.title);h.onclick=()=>{toggleWeapon('hook');};gameScreen.appendChild(h);
+function setupAdventure(){const h=document.createElement('button');h.id='btnHook';h.textContent='🪝';h.title='Gancho · 4 para seleccionar / H para lanzar';h.setAttribute('aria-label',h.title);h.onclick=()=>controlAction('hook');gameScreen.appendChild(h);
+ const fire=document.createElement('button');fire.id='btnTorch';fire.className='corner';fire.textContent='🔥';fire.title='Lanzar llama';fire.style.cssText='top:62px;left:84px;opacity:.6';fire.onclick=()=>castFlame();gameScreen.appendChild(fire);
  canvas.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'||e.button!==0||!G||G.paused||G.over)return;if(controlPrefs.mode===3&&e.clientY>=window.innerHeight/2){startGesture(e.pointerId,e.clientX,e.clientY,'mouse');return;}mouseCenter={sx:e.clientX,sy:e.clientY,since:G.time,fired:false};});
  canvas.addEventListener('pointermove',e=>{if(gestureInput?.type==='mouse'){moveGesture(e.pointerId,e.clientX,e.clientY);return;}if(mouseCenter&&!mouseCenter.fired&&Math.hypot(e.clientX-mouseCenter.sx,e.clientY-mouseCenter.sy)>30){mouseCenter.fired=true;if(controlPrefs.mode===3){suppressCenterClickUntil=performance.now()+700;const dx=e.clientX-mouseCenter.sx,dy=e.clientY-mouseCenter.sy;modeThreeAttack('bow',Math.abs(dx)>Math.abs(dy)?(dx<0?'L':'R'):(dy<0?'U':'D'));}}});
  for(const event of ['pointerup','pointercancel','pointerleave'])canvas.addEventListener(event,e=>{mouseCenter=null;if(gestureInput?.type==='mouse')endGesture(e.pointerId);});window.addEventListener('blur',()=>{mouseCenter=null;cancelGesture();});
@@ -4432,69 +4491,10 @@ function builderStep(e,step,now){if(!step)return;const other=enemyAt(step.x,step
 
 function setupRepairs(){for(const[id,icon,label]of [['undoStudio','↶','Deshacer'],['redoStudio','↷','Rehacer']]){const b=$(id);b.textContent=icon;b.title=label;b.setAttribute('aria-label',label);}const h=document.createElement('span');h.id='historyQuick';$('mobileEditorBar').prepend(h);syncQuickTools();Object.assign(GUIDE_DETAILS,{enemy2:'Su visión define también su territorio alrededor del punto inicial. Persigue al entrar; al salir, espera un momento y vuelve a su lugar.',enemy3:'Constructor territorial. Levanta un recinto de barricadas alrededor de su centro; las paredes y hoyos existentes cierran el borde. Las barricadas se rompen solo con espada. Sale a reconstruir huecos, tarda el tiempo elegido y ataca si entras en su rango.',bramble:'Barricada que se destruye solo con la espada. Detiene flechas, rayos y movimiento. Un constructor cercano puede repararla.',touchSpikes:'Se activan al pisarlos: primero avisan y salen tras el retardo elegido. Puedes escapar antes de que emerjan.',spikes:'Elige cuánto tiempo permanecen dentro y cuánto tiempo fuera. Destellan antes de salir.',darkzone:'Elige cuatro niveles de oscuridad y si tendrá un apagador propio. Coloca la zona y después su interruptor; solo controla esa zona, incluso desde otro piso.'});Object.assign(TOOL_NOTES,GUIDE_DETAILS);}
 
-const CONTROL_IDS=['moveLeft','moveUp','moveRight','moveDown','btnSword','btnBow','btnBomb','btnHook'];
-const CONTROL_NAMES=['Izquierda','Arriba','Derecha','Abajo','Espada','Arco','Bombas','Gancho'];
-const CONTROL_ICONS=['←','↑','→','↓','🗡️','🏹','💣','🪝'];
+const CONTROL_IDS=['moveLeft','moveUp','moveRight','moveDown','btnSword','btnBow','btnBomb','btnHook','btnTorch'];
+const CONTROL_NAMES=['Izquierda','Arriba','Derecha','Abajo','Espada','Arco','Bombas','Gancho','Antorcha'];
+const CONTROL_ICONS=['←','↑','→','↓','🗡️','🏹','💣','🪝','🔥'];
 let controlPrefs=readControlPrefs(),controlDraft=null,controlOriginalStyles=new Map(),controlDrag=null,controlSelected='moveUp';
-function defaultControls(){const points=[[.08,.7],[.2,.57],[.32,.7],[.2,.83],[.91,.57],[.79,.7],[.91,.83],[.79,.44]];return Object.fromEntries(CONTROL_IDS.map((id,i)=>[id,{x:points[i][0],y:points[i][1],size:.15}]));}
+function defaultControls(){const points=[[.08,.7],[.2,.57],[.32,.7],[.2,.83],[.91,.57],[.79,.7],[.91,.83],[.79,.44],[.67,.32]];return Object.fromEntries(CONTROL_IDS.map((id,i)=>[id,{x:points[i][0],y:points[i][1],size:.15}]));}
 function activeControlIds(p){return +p.mode===3?CONTROL_IDS.slice(4):CONTROL_IDS;}
 function controlMap(p){return +p.mode===3?p.mode3Buttons:p.buttons;}
-function defaultMode3(){return Object.fromEntries(CONTROL_IDS.slice(4).map((id,i)=>[id,{x:.22+i*.2,y:.22,size:.13}]));}
-function readControlPrefs(){let c;try{c=JSON.parse(localStorage.getItem('entropiaControlsV2')||'null');}catch(e){}const valid=m=>m&&Object.values(m).every(v=>Number.isFinite(v.x)&&Number.isFinite(v.y)&&Number.isFinite(v.size));return{mode:[1,2,3].includes(c?.mode)?c.mode:1,buttons:valid(c?.buttons)&&CONTROL_IDS.every(id=>c.buttons[id])?c.buttons:defaultControls(),mode3Buttons:valid(c?.mode3Buttons)&&CONTROL_IDS.slice(4).every(id=>c.mode3Buttons[id])?c.mode3Buttons:defaultMode3(),opacity:clamp(Number.isFinite(c?.opacity)?c.opacity:.72,0,1)};}
-function controlRects(prefs,w=window.innerWidth,h=window.innerHeight){const placed=[],short=Math.min(w,h),limit=+prefs.mode===3?h/2:h,menu={x:5,y:5,w:65,h:65};for(const id of activeControlIds(prefs)){const c=controlMap(prefs)[id],size=clamp(c.size*short,28,Math.min(short*.28,130));let r={id,x:clamp(c.x*w-size/2,0,w-size),y:clamp(c.y*h-size/2,0,limit-size),w:size,h:size};const fits=q=>![...placed,menu].some(p=>rectsOverlap(q,p,4));if(!fits(r)){let best=null,score=Infinity;for(let y=0;y<=limit-size;y+=12)for(let x=0;x<=w-size;x+=12){const q={...r,x,y},d=Math.hypot(x-r.x,y-r.y);if(d<score&&fits(q)){best=q;score=d;}}if(best)r=best;else{r={...r,w:28,h:28};for(let y=0;y<limit-28;y+=30)for(let x=0;x<w-28;x+=30)if(fits({...r,x,y})){r.x=x;r.y=y;y=limit;break;}}}placed.push(r);}return placed;}
-function rectsOverlap(a,b,gap=0){return a.x<b.x+b.w+gap&&a.x+a.w+gap>b.x&&a.y<b.y+b.h+gap&&a.y+a.h+gap>b.y;}
-function applyControlPrefs(){cancelGesture();document.body.style.setProperty("--control-opacity",String(controlPrefs.opacity));document.body.classList.toggle('custom-controls',controlPrefs.mode!==1);document.body.classList.toggle('gesture-controls',controlPrefs.mode===3);for(const id of CONTROL_IDS){const el=$(id);if(!el)continue;if(!controlOriginalStyles.has(id))controlOriginalStyles.set(id,el.getAttribute('style')||'');el.style.cssText=controlOriginalStyles.get(id);el.classList.remove('custom-play-control');}if(controlPrefs.mode===1)return;for(const r of controlRects(controlPrefs)){const el=$(r.id);el.classList.add('custom-play-control');for(const[k,v]of Object.entries({left:r.x+'px',top:r.y+'px',right:'auto',bottom:'auto',width:r.w+'px',height:r.h+'px',opacity:String(controlPrefs.opacity),color:'#fff',background:'#152339b8',position:'absolute',border:'1px solid #b6c9df90','border-radius':'16px','font-size':Math.max(20,r.w*.45)+'px','z-index':'10',display:'flex','align-items':'center','justify-content':'center','pointer-events':'auto'}))el.style.setProperty(k,v,'important');if(r.id.startsWith('move'))el.textContent=CONTROL_ICONS[CONTROL_IDS.indexOf(r.id)];}}
-function normalizeControlDraft(){for(const r of controlRects(controlDraft)){controlMap(controlDraft)[r.id]={x:(r.x+r.w/2)/window.innerWidth,y:(r.y+r.h/2)/window.innerHeight,size:r.w/Math.min(window.innerWidth,window.innerHeight)};}}
-function openControlEditor(){if(!G||G.over)return;G.paused=true;cancelGesture();heldKeys=[];touchDir=null;centerTouch=null;overlay.classList.add('hidden');controlDraft=clone(controlPrefs);$('controlMode').value=controlDraft.mode;$('controlEditor').classList.remove('hidden');renderControlPreview();}
-function renderControlPreview(){if(!controlDraft)return;normalizeControlDraft();if(!activeControlIds(controlDraft).includes(controlSelected))controlSelected=activeControlIds(controlDraft)[0];const pick=$('controlPick');pick.innerHTML='';for(const id of activeControlIds(controlDraft)){const o=document.createElement('option');o.value=id;o.textContent=CONTROL_NAMES[CONTROL_IDS.indexOf(id)];pick.appendChild(o);}pick.value=controlSelected;const preview=$('controlPreview');preview.innerHTML='';for(const r of controlRects(controlDraft)){const b=document.createElement('button');b.className='control-preview-button'+(r.id===controlSelected?' selected':'');b.dataset.control=r.id;b.textContent=CONTROL_ICONS[CONTROL_IDS.indexOf(r.id)];b.title=CONTROL_NAMES[CONTROL_IDS.indexOf(r.id)];Object.assign(b.style,{left:r.x+'px',top:r.y+'px',width:r.w+'px',height:r.h+'px',fontSize:Math.max(20,r.w*.45)+'px',opacity:String(Math.max(.15,controlDraft.opacity))});b.onclick=()=>{if(controlDrag)return;controlSelected=r.id;$('controlPick').value=r.id;syncControlSize();renderControlPreview();};b.addEventListener('pointerdown',e=>{e.preventDefault();controlSelected=r.id;$('controlPick').value=r.id;syncControlSize();b.setPointerCapture?.(e.pointerId);controlDrag={id:r.id,x:e.clientX,y:e.clientY,rect:r,since:performance.now(),active:false};});b.addEventListener('pointermove',e=>moveControlPreview(e,b));for(const name of ['pointerup','pointercancel','lostpointercapture'])b.addEventListener(name,()=>{if(controlDrag){controlDrag=null;renderControlPreview();}});preview.appendChild(b);}syncControlSize();$('controlTransparency').value=Math.round((1-controlDraft.opacity)*100);$('controlTransparencyValue').textContent=Math.round((1-controlDraft.opacity)*100)+'%';$('controlPreview').classList.toggle('mode-three',+controlDraft.mode===3);$('controlPreview').classList.toggle('mode-one',+controlDraft.mode===1);$('controlEditHint').textContent=+controlDraft.mode===1?'Modo 1 conserva las zonas invisibles originales. Elige modo 2 o 3 para personalizar.':'Mantén pulsado un botón y arrástralo. Selecciónalo para cambiar su tamaño. No se permiten superposiciones. Arrastra la cabecera del panel para apartarlo. En modo 3: abajo desliza para caminar; arriba toca para espada, mantén para bomba y desliza para flecha.';}
-function moveControlPreview(e,button){const d=controlDrag;if(!d||d.id!==button.dataset.control||+controlDraft.mode===1)return;if(!d.active){if(performance.now()-d.since<280)return;d.active=true;}const r={...d.rect,x:clamp(d.rect.x+e.clientX-d.x,0,window.innerWidth-d.rect.w),y:clamp(d.rect.y+e.clientY-d.y,0,(+controlDraft.mode===3?window.innerHeight/2:window.innerHeight)-d.rect.h)},others=controlRects(controlDraft).filter(q=>q.id!==d.id);if(others.some(q=>rectsOverlap(r,q,4))||rectsOverlap(r,{x:5,y:5,w:65,h:65},4)){button.classList.add('blocked');return;}button.classList.remove('blocked');controlMap(controlDraft)[d.id]={x:(r.x+r.w/2)/window.innerWidth,y:(r.y+r.h/2)/window.innerHeight,size:r.w/Math.min(window.innerWidth,window.innerHeight)};button.style.left=r.x+'px';button.style.top=r.y+'px';}
-function syncControlSize(){const r=controlRects(controlDraft).find(r=>r.id===controlSelected);$('controlSize').value=Math.round(r.w);$('controlSizeValue').textContent=Math.round(r.w)+' px';$('controlSize').disabled=+controlDraft.mode===1;}
-function resizeSelectedControl(px){if(!controlDraft||+controlDraft.mode===1)return;if(!activeControlIds(controlDraft).includes(controlSelected))controlSelected=activeControlIds(controlDraft)[0];controlMap(controlDraft)[controlSelected].size=clamp(px,28,130)/Math.min(window.innerWidth,window.innerHeight);normalizeControlDraft();renderControlPreview();}
-function closeControlEditor(save){if(save){normalizeControlDraft();controlPrefs=clone(controlDraft);controlPrefs.mode=+$('controlMode').value;try{localStorage.setItem('entropiaControlsV2',JSON.stringify(controlPrefs));}catch(e){toast('Controles aplicados en esta sesión.',1200);}applyControlPrefs();}controlDraft=null;controlDrag=null;$('controlEditor').classList.add('hidden');if(G){G.paused=false;S.overlayKind=null;lastTs=performance.now();}}
-function setupControlEditor(){const modal=document.createElement('div');modal.id='controlEditor';modal.className='hidden';modal.innerHTML='<div id="controlPreview"></div><section class="control-tools" id="controlTools"><strong id="controlToolsHandle">⠿ Controles · arrastra aquí</strong><select id="controlMode" aria-label="Modo de control"><option value="1">Modo 1 · original invisible</option><option value="2">Modo 2 · personalizable</option><option value="3">Modo 3 · deslizar abajo</option></select><select id="controlPick" aria-label="Botón a modificar"></select><label>Tamaño <input id="controlSize" type="range" min="28" max="130" step="1"><span id="controlSizeValue"></span></label><label>Transparencia <input id="controlTransparency" type="range" min="0" max="100"><span id="controlTransparencyValue"></span></label><p id="controlEditHint"></p><div><button id="controlReset">Restablecer posiciones</button><button id="controlCancel">Cancelar</button><button id="controlSave">Guardar y jugar</button></div></section>';document.body.appendChild(modal);for(let i=0;i<CONTROL_IDS.length;i++){const o=document.createElement('option');o.value=CONTROL_IDS[i];o.textContent=CONTROL_NAMES[i];$('controlPick').appendChild(o);}$('controlPick').value=controlSelected;$('controlPick').onchange=e=>{controlSelected=e.target.value;renderControlPreview();};$('controlMode').onchange=e=>{controlDraft.mode=+e.target.value;renderControlPreview();};$('controlSize').oninput=e=>resizeSelectedControl(+e.target.value);$('controlReset').onclick=()=>{if(+controlDraft.mode===3)controlDraft.mode3Buttons=defaultMode3();else controlDraft.buttons=defaultControls();renderControlPreview();};$('controlTransparency').oninput=e=>{controlDraft.opacity=1-clamp(+e.target.value,0,100)/100;renderControlPreview();};setupControlPanelDrag();$('controlCancel').onclick=()=>closeControlEditor(false);$('controlSave').onclick=()=>closeControlEditor(true);window.addEventListener('resize',()=>{applyControlPrefs();if(controlDraft)renderControlPreview();});applyControlPrefs();}
-
-function setupControlPanelDrag(){const panel=$('controlTools'),handle=$('controlToolsHandle');let drag=null;handle.addEventListener('pointerdown',e=>{e.preventDefault();const r=panel.getBoundingClientRect();drag={id:e.pointerId,x:e.clientX,y:e.clientY,left:r.left,top:r.top};handle.setPointerCapture?.(e.pointerId);});handle.addEventListener('pointermove',e=>{if(!drag||drag.id!==e.pointerId)return;const r=panel.getBoundingClientRect();Object.assign(panel.style,{transform:'none',left:clamp(drag.left+e.clientX-drag.x,0,Math.max(0,window.innerWidth-r.width))+'px',top:clamp(drag.top+e.clientY-drag.y,0,Math.max(0,window.innerHeight-r.height))+'px'});});for(const name of ['pointerup','pointercancel','lostpointercapture'])handle.addEventListener(name,()=>drag=null);}
-
-function normalizeZoneIds(zones){const used=new Set(zones.filter(z=>Number.isInteger(z.id)&&z.id>0).map(z=>z.id));let next=Math.max(0,...used)+1;const seen=new Set();for(const z of zones){if(!Number.isInteger(z.id)||z.id<1||seen.has(z.id)){while(used.has(next))next++;z.id=next++;used.add(z.id);}seen.add(z.id);}return zones;}
-function reserveWizardZone(){const ids=new Set([nextEditorZoneId()-1,...darkZones.map(z=>z.id),...(wizard.ids.zone||[])]);walkRewards(t=>{if(base(t)==='lightswitch')ids.add(tileId(t));if(base(t)==='darkzone')try{ids.add(JSON.parse(decodeURIComponent(part(t,1))).id);}catch(e){}});let id=1;while(ids.has(id))id++;wizard.ids.zone=[...(wizard.ids.zone||[]),id];return id;}
-function cleanZoneSwitches(){const ids=new Set(darkZones.map(z=>z.id));walkRewards(t=>{if(base(t)==='darkzone')try{const c=JSON.parse(decodeURIComponent(part(t,1)));if(c.id)ids.add(c.id);}catch(e){}});if(pending?.type==='zoneSwitch')ids.add(pending.zoneId);for(const row of board)for(let i=0;i<row.length;i++)if(base(row[i])==='lightswitch'&&!ids.has(tileId(row[i])))row[i]='floor';}
-
-let gestureInput=null;
-function startGesture(id,x,y,type='touch'){if(controlPrefs.mode!==3||!G||G.paused||G.over||y<window.innerHeight/2||gestureInput)return false;gestureInput={id,x,y,cx:x,cy:y,type};touchDir=null;return true;}
-function moveGesture(id,x,y){const a=gestureInput;if(!a||a.id!==id)return;a.cx=x;a.cy=y;const dx=x-a.x,dy=y-a.y;touchDir=Math.hypot(dx,dy)<18?null:Math.abs(dx)>Math.abs(dy)?(dx<0?'L':'R'):(dy<0?'U':'D');}
-function endGesture(id){if(gestureInput?.id!==id)return;cancelGesture();suppressCenterClickUntil=performance.now()+700;}
-function cancelGesture(){gestureInput=null;touchDir=null;}
-function modeThreeAttack(kind,dir){if(!G||G.paused||G.over)return;if(kind==='sword'&&!G.hasSword||kind==='bow'&&!G.hasBow)return;const previous=G.weapon;G.weapon=kind;useWeapon(dir||G.player.facing);G.weapon=previous;}
-function gestureTouchStart(e){initAudio();if(!G||G.paused||G.over)return;for(const t of e.changedTouches){if(t.clientY>=window.innerHeight/2)startGesture(t.identifier,t.clientX,t.clientY);else if(!centerTouch)centerTouch={id:t.identifier,sx:t.clientX,sy:t.clientY,fired:false,since:G.time};}}
-function gestureTouchMove(e){if(!G)return;for(const t of e.changedTouches){if(gestureInput?.id===t.identifier){moveGesture(t.identifier,t.clientX,t.clientY);continue;}if(centerTouch?.id===t.identifier&&!centerTouch.fired){const dx=t.clientX-centerTouch.sx,dy=t.clientY-centerTouch.sy;if(Math.hypot(dx,dy)>30){centerTouch.fired=true;modeThreeAttack('bow',Math.abs(dx)>Math.abs(dy)?(dx<0?'L':'R'):(dy<0?'U':'D'));}}}}
-function gestureTouchEnd(e){for(const t of e.changedTouches){if(gestureInput?.id===t.identifier)endGesture(t.identifier);if(centerTouch?.id===t.identifier){if(!centerTouch.fired&&e.type!=='touchcancel')modeThreeAttack('sword');centerTouch=null;suppressCenterClickUntil=performance.now()+700;}}}
-function drawGestureStick(){const a=gestureInput;if(controlPrefs.mode!==3||!a)return;ctx.save();ctx.globalAlpha=controlPrefs.opacity;ctx.strokeStyle='#e4f0ff';ctx.fillStyle='#173956';ctx.lineWidth=2;ctx.beginPath();ctx.arc(a.x,a.y,48,0,Math.PI*2);ctx.fill();ctx.stroke();const dx=a.cx-a.x,dy=a.cy-a.y,scale=Math.min(1,42/Math.max(1,Math.hypot(dx,dy)));ctx.beginPath();ctx.arc(a.x+dx*scale,a.y+dy*scale,15,0,Math.PI*2);ctx.fillStyle='#d7eaff';ctx.fill();ctx.restore();}
-function queueWallContact(w){if(!G)return;G.wallContactQueue.push({x:w.x,y:w.y,t:G.grid[w.y][w.x]});}
-function flushWallContacts(){const g=G;if(!g||g.processingWallContacts||!g.wallContactQueue.length)return;g.processingWallContacts=true;const seen=new Set();try{let limit=256;while(g.wallContactQueue.length&&limit--){const q=g.wallContactQueue.shift(),key=q.x+','+q.y+','+q.t;if(seen.has(key))continue;seen.add(key);if(g.grid[q.y]?.[q.x]!==q.t)continue;if(['btn','mwbtn','switch','crossbtn','openBtn','closeBtn','cbtn','lightswitch'].includes(base(q.t)))stepOnButton(q.x,q.y);}g.wallContactQueue.length=0;computeHolds();}finally{g.processingWallContacts=false;}}
-function setupModeThree(){GUIDE_DETAILS.enemy3+=' Puede construir sobre objetos; al romper la barrera reaparecen. Si otro constructor ocupa su destino, retrocede y construye una casilla antes.';GUIDE_DETAILS.switch+=' También puede presionarlo una pared movible.';GUIDE_DETAILS.ftorch+=' Ocupa su casilla: debes encenderla desde un lado.';GUIDE_DETAILS.torchdecor='Antorcha encendida con intensidad configurable. Ilumina la oscuridad y bloquea el paso.';Object.assign(TOOL_NOTES,GUIDE_DETAILS);window.addEventListener('pointerup',e=>{if(gestureInput?.type==='mouse')endGesture(e.pointerId);});window.addEventListener('blur',cancelGesture);}
-
-setupStudio();
-setupNewFeatures();
-setupWorkspaceLayout();
-setupResponsiveEditor();
-setupObjectEditing();
-setupExpansion();
-setupLatestFeatures();
-setupAdventure();
-setupFloorsUI();
-setupColorDoors();
-setupRepairs();
-setupControlEditor();
-setupModeThree();
-
-    buildPalette();
-    initEmptyBoard();
-    renderGrid();
-    renderBrushPanel();
-    updateWarn();
-    history=[snap()];historyIndex=0;refreshHistory();
-    window.addEventListener('resize', () => { if (!G) renderGrid(); });
-})();
-</script>
-</body>
-</html>
