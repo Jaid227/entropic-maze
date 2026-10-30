@@ -4911,7 +4911,7 @@ setupModeThree();
             if(g.keys>0){g.keys--;g.handPose={kind:'open',until:g.time+350};g.grid[y][x]='floor';playSound('door');computeBeams();toast('🔑 Puerta abierta',900);}else toast('🔒 Necesitas una llave.',1000);
         }else if(b==='bossdoor'&&!g.bossDoorsOpen.has(tileId(t))){
             if(g.bossKeys.get(tileId(t))?.size===2){g.handPose={kind:'open',until:g.time+350};g.bossDoorsOpen.add(tileId(t));g.bossKeys.delete(tileId(t));playSound('door');computeBeams();}else toast(g.bossCrossed?.has(tileId(t))?'Pisa el botón que apareció para volver a abrirla.':'🗝️ Necesitas las dos mitades de la gran llave.',1200);
-        }else if(blockAt(x,y)||mwallAt(x,y)){g.grabDir=p.facing;}
+        }else if(mwallAt(x,y)){playSound('clang');toast('Esta pared solo se mueve con su mecanismo.',1200);}else if(blockAt(x,y)){g.grabDir=p.facing;}
     }
     function endAction(){if(!G)return;G.actionHeld=false;G.grabDir=null;G.actionPointer=null;G.turnInput=null;}
     function primeDirection(dir){
@@ -4936,7 +4936,8 @@ setupModeThree();
         if(!G||G.hookAction||G.time<(G.hookSettleUntil||0))return false;
         const g=G,p=g.player,facing=g.grabDir||p.facing,[fx,fy]=DIRS[facing],front={x:p.x+fx,y:p.y+fy};
         if(!inb(front.x,front.y))return null;
-        const block=blockAt(front.x,front.y),wall=mwallAt(front.x,front.y),obj=block||wall;
+        if(mwallAt(front.x,front.y)){g.grabDir=null;return null;}
+        const block=blockAt(front.x,front.y),wall=null,obj=block;
         if(!obj){g.grabDir=null;return null;}
         g.grabDir=facing;p.facing=facing;
         if(dir!==facing&&dir!==OPP[facing])return false;
