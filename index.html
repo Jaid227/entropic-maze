@@ -811,7 +811,7 @@ body.studio-editing .editor-grid-container{padding:5px;border-radius:9px}
        CONSTANTES
     ===================================================== */
     const ID_COL = { 1: '#e74c3c', 2: '#3498db', 3: '#2ecc71', 4: '#e0a800',5:'#9b59b6',6:'#00a6a6',7:'#e67e22',8:'#d64c8c',9:'#607d8b',10:'#6d7f31' };
-    const ICONS = {poisonGas:'☁️',gasGenerator:'☣️',spider:'🕷️',healHeart:'💗',sanctuary:'♨️',antidote:'🧪',platform:'▦',thinWall:'▥',thinDoor:'🚪',web:'🕸️',shell:'🐢',grave:'🪦',zombie:'🧟',skeleton:'💀',rat:'🐀',laserEnemy:'🫥',cracked:'▧',heart:'❤️',pushblock:'🟫',boxCreator:'🔘',singleButton:'🔘',singleDoor:'🚧',enemy3:'🧌',bramble:'🪵',touchSpikes:'⚠️',lightswitch:'💡',redGate:'🟥',blueGate:'🟦',colorGem:'💠',stairs:'🪜',boxbox:'📦',hook:"🪝",anchor:"⚓",checkpoint:"💾",blinkboss:"🧿",blinkpad:"🔮",icebox:'🧊',torchdecor:'🔥',remwall:'🔲',gemwall:'💎',torchwall:'🕯️',bossdoor:'🚪',bosskey:'🗝️',switch:'🔘',crossgate:'🛂',crossbtn:'🔘',cash:'🪙',shop:'🏪',darkzone:'🌑',torch:'🔥',ftorch:'🕯️',ice:'🧊',
+    const ICONS = {roomNext:"⇨",roomBack:"⇦",poisonGas:'☁️',gasGenerator:'☣️',spider:'🕷️',healHeart:'💗',sanctuary:'♨️',antidote:'🧪',platform:'▦',thinWall:'▥',thinDoor:'🚪',web:'🕸️',shell:'🐢',grave:'🪦',zombie:'🧟',skeleton:'💀',rat:'🐀',laserEnemy:'🫥',cracked:'▧',heart:'❤️',pushblock:'🟫',boxCreator:'🔘',singleButton:'🔘',singleDoor:'🚧',enemy3:'🧌',bramble:'🪵',touchSpikes:'⚠️',lightswitch:'💡',redGate:'🟥',blueGate:'🟦',colorGem:'💠',stairs:'🪜',boxbox:'📦',hook:"🪝",anchor:"⚓",checkpoint:"💾",blinkboss:"🧿",blinkpad:"🔮",icebox:'🧊',torchdecor:'🔥',remwall:'🔲',gemwall:'💎',torchwall:'🕯️',bossdoor:'🚪',bosskey:'🗝️',switch:'🔘',crossgate:'🛂',crossbtn:'🔘',cash:'🪙',shop:'🏪',darkzone:'🌑',torch:'🔥',ftorch:'🕯️',ice:'🧊',
         arena: '🏭', boxPath: '🪵', doubleDoor: '🚦', closeBtn: '🔴', openBtn: '🟢', snake: '🐍', worm: '🪱', wall: '🧱', coin: '🧍', enemy: '👹', enemy2: '👺', boss: '👁️', start: '🏁', exit: '🚩',
         key: '🔑', keydoor: '🔒', spikes: '🔺', btn: '🔘', bdoor: '🔲', hbtn: '⏺️',
         ddoor: '💠', diamond: '💎', rdoor: '🟥', rdiamond: '♦️', mwall: '🔳', mwbtn: '🟦',
@@ -969,7 +969,7 @@ body.studio-editing .editor-grid-container{padding:5px;border-radius:9px}
     /* =====================================================
        EDITOR: PANEL DE VALORES
     ===================================================== */
-    const PSPEC = {gasRange:{t:'range',label:'Alcance del gas · casillas',min:1,max:20},
+    const PSPEC = {routeKeep:{t:'select',label:'Al cambiar de cuarto',options:[['keep','Conservar los cambios'],['reset','Reiniciar los cuartos']]},gasRange:{t:'range',label:'Alcance del gas · casillas',min:1,max:20},
  platformSize:{t:'select',label:'Tamaño de plataforma',options:[[1,'1 casilla'],[4,'4 casillas · 2 × 2']]},platformWait:{t:'range',label:'Espera en extremos · ms',min:400,max:5000},edgeSide:{t:'select',label:'Borde de la casilla',options:[['U','Horizontal · arriba'],['D','Horizontal · abajo'],['L','Vertical · izquierda'],['R','Vertical · derecha']]},edgeBehavior:{t:'select',label:'Apertura',options:[['channel','Botón por canal'],['key','Llave + Acción'],['action','Abrir / cerrar con Acción'],['cross','Cruce automático + cierre']]},
 
  venom:{t:'check',label:'Araña venenosa'},poisonMs:{t:'range',label:'Intervalo de daño por veneno · ms',min:500,max:10000},
@@ -1003,7 +1003,7 @@ body.studio-editing .editor-grid-container{padding:5px;border-radius:9px}
         dir:    { t: 'dir', label: 'Dirección:' },
         hid:    { t: 'doorid', label: 'Abre la pared-botón número:' }
     };
-    const TOOL_PARAMS = {poisonGas:['poisonMs'],gasGenerator:['gasRange','poisonMs'],platform:['platformSize','platformWait'],thinWall:['edgeSide'],thinDoor:['edgeSide','edgeBehavior','channel','crossReturn','mode'],spider:['speed','hp','vision','venom','poisonMs','key','coin','goldDrop'],antidote:['qty'],shell:['speed','hp','vision','fireRange','windupMs','cooldownMs','key','coin','goldDrop'],grave:['speed','hp','vision','spawnMs','warnMs'],zombie:['speed','hp','vision'],skeleton:['speed','hp','vision','reviveMs','key','coin','goldDrop'],rat:['speed','hp','dir'],laserEnemy:['hp','dir'],hole:['holeMode'],pushblock:['dir','pushCount','pushEffect','channel'],singleButton:['channel','mode'],singleDoor:['channel'],spikes:['spikeRest','spikeActive'],touchSpikes:['trapDelay'],enemy3:['speed','hp','builderRange','buildMs','key','coin','goldDrop'],stairs:['stairDir'],hook:['hookLength'],blinkboss:['sites','speed','hpBoss','vision','appearMs','aimMs','key','coin','goldDrop'],torchdecor:['lightIntensity'],gemwall:['count'],torchwall:['count'],switch:['channel','mode','buttonUses'],crossgate:['crossReturn','mode'],cash:['amount'],bdoor:['channel','doorBehavior','dir','travel'],btn:['channel'],start:['hero','startSpeed','startHearts','startSword','startBombs','startBombCount','startBow','startAmmo','startShields','startShieldCount','startTorch','startHook','hookLength'],darkzone:['shape','width','height','darknessLevel','hasSwitch'],ftorch:['count'],
+    const TOOL_PARAMS = {roomNext:['routeKeep'],roomBack:[],poisonGas:['poisonMs'],gasGenerator:['gasRange','poisonMs'],platform:['platformSize','platformWait'],thinWall:['edgeSide'],thinDoor:['edgeSide','edgeBehavior','channel','crossReturn','mode'],spider:['speed','hp','vision','venom','poisonMs','key','coin','goldDrop'],antidote:['qty'],shell:['speed','hp','vision','fireRange','windupMs','cooldownMs','key','coin','goldDrop'],grave:['speed','hp','vision','spawnMs','warnMs'],zombie:['speed','hp','vision'],skeleton:['speed','hp','vision','reviveMs','key','coin','goldDrop'],rat:['speed','hp','dir'],laserEnemy:['hp','dir'],hole:['holeMode'],pushblock:['dir','pushCount','pushEffect','channel'],singleButton:['channel','mode'],singleDoor:['channel'],spikes:['spikeRest','spikeActive'],touchSpikes:['trapDelay'],enemy3:['speed','hp','builderRange','buildMs','key','coin','goldDrop'],stairs:['stairDir'],hook:['hookLength'],blinkboss:['sites','speed','hpBoss','vision','appearMs','aimMs','key','coin','goldDrop'],torchdecor:['lightIntensity'],gemwall:['count'],torchwall:['count'],switch:['channel','mode','buttonUses'],crossgate:['crossReturn','mode'],cash:['amount'],bdoor:['channel','doorBehavior','dir','travel'],btn:['channel'],start:['hero','startSpeed','startHearts','startSword','startBombs','startBombCount','startBow','startAmmo','startShields','startShieldCount','startTorch','startHook','hookLength'],darkzone:['shape','width','height','darknessLevel','hasSwitch'],ftorch:['count'],
         arena: ["waveCount","waveMode"],
         snake: ['speed', 'hpBoss', 'length','vision', 'key','coin','goldDrop'], worm: ['speed', 'hpBoss','vision', 'key','coin','goldDrop'],
         enemy: ['speed', 'hp', 'vision', 'key','coin','goldDrop'],
@@ -1111,7 +1111,7 @@ body.studio-editing .editor-grid-container{padding:5px;border-radius:9px}
         brushPanel.classList.remove('hidden');
     }
 
-    function tileFromTool(tool,st){if(tool==='poisonGas')return `poisonGas:${st.poisonMs||2500}`;if(tool==='gasGenerator')return `gasGenerator:${st.gasRange||4}:${st.poisonMs||2500}`;
+    function tileFromTool(tool,st){if(tool==='roomNext')return 'roomNext:'+(st.routeKeep==='reset'?'reset':'keep');if(tool==='poisonGas')return `poisonGas:${st.poisonMs||2500}`;if(tool==='gasGenerator')return `gasGenerator:${st.gasRange||4}:${st.poisonMs||2500}`;
  if(tool==='spider')return `spider:${st.speed||3}:${st.hp||8}:${st.vision||5}:${st.key?1:0}:${st.coin?1:0}:${st.goldDrop||0}:${st.venom?1:0}:${st.poisonMs||2500}`;if(tool==='antidote')return `antidote:${st.qty||1}`;
 
         if(tool==='hole')return st.holeMode==='step'?'cracked:step':st.holeMode==='bomb'?'cracked:bomb':'hole';
@@ -1826,7 +1826,7 @@ body.studio-editing .editor-grid-container{padding:5px;border-radius:9px}
     async function clearGrid() {
         if (!(await padDialog('¿Seguro que quieres limpiar todo el cuarto? Se borrará todo el contenido.','confirm'))) return;
         if(pending)cancelPending();const keepTime=roomTimeLimit;
-        const keepName=currentRoomName,keepSize=floorSize,keepFloors=floorCount;GRID_SIZE=keepSize;initEmptyBoard();configureFloors(keepSize,keepFloors);currentRoomName=keepName;roomTimeLimit=keepTime;syncRoomTimer();
+        const keepSavedId=editingSavedRoomId,keepName=currentRoomName,keepSize=floorSize,keepFloors=floorCount;GRID_SIZE=keepSize;initEmptyBoard();configureFloors(keepSize,keepFloors);editingSavedRoomId=keepSavedId;currentRoomName=keepName;roomTimeLimit=keepTime;syncRoomTimer();
         afterEdit();
         setStatus('🧹 Tablero limpiado.', 1500);
     }
@@ -1849,7 +1849,7 @@ body.studio-editing .editor-grid-container{padding:5px;border-radius:9px}
     }
     function saveDrafts(d) { localStorage.setItem('entropicDrafts', JSON.stringify(d)); }
 
-    function saveCurrentRoom() {
+    function saveCurrentRoom(leaveEditor=true) {
         if (pending) {setStatus('Completa o cancela la configuración antes de guardar.',2500);return;}
         if (!countTile('start') || !countTile('exit')) {
             setStatus('❌ Debes colocar inicio y salida antes de guardar.', 2200);
@@ -1861,18 +1861,23 @@ body.studio-editing .editor-grid-container{padding:5px;border-radius:9px}
         const rooms = roomsWithIds();
         data.id=editingSavedRoomId||newLocalId('room');
         const old=rooms.findIndex(r=>r.id===editingSavedRoomId);
-        if(old>=0){if(!currentRoomName.trim())data.name=rooms[old].name;rooms[old]=data;}else rooms.push(data);editingSavedRoomId=null;
-        saveRooms(rooms);
+        if(old>=0){if(!currentRoomName.trim())data.name=rooms[old].name;rooms[old]=data;}else rooms.push(data);
+        try{saveRooms(rooms);}catch(e){setStatus('No se pudo guardar: revisa el espacio del navegador o exporta un respaldo.',3500);return;}
+        editingSavedRoomId=data.id;
         if (currentDraftId) {
             saveDrafts(loadDrafts().filter(d => d.id !== currentDraftId));
             currentDraftId = null;
         }
+        history=[snap()];historyIndex=0;refreshHistory();
+        try{localStorage.setItem('entropiaStudioAutosave',snap());}catch(e){}
         loadRoomList();
-        showScreen('list');
+        if(leaveEditor!==false)showScreen('list');else setStatus('Cambios guardados en el mismo cuarto del historial.',3000);
     }
     function saveDraft() {
+        if(editingSavedRoomId&&countTile('start')&&countTile('exit')){saveCurrentRoom(false);return;}
         if (pending) {setStatus('Completa o cancela la configuración antes de guardar.',2500);return;}
         const data = currentRoomData();
+        data.savedRoomId=editingSavedRoomId||null;
         data.id = currentDraftId || ('d' + Date.now());
         data.timestamp = Date.now();
         data.name=currentRoomName.trim()||`Borrador ${floorSize}×${floorSize} · ${floorCount} piso(s)`;
@@ -1884,6 +1889,7 @@ body.studio-editing .editor-grid-container{padding:5px;border-radius:9px}
         setStatus('🛠️ Guardado en "Cuartos en construcción". Aún no está en la ruta.', 3000);
     }
     function openDraft(d) {
+        editingSavedRoomId=d.savedRoomId||null;
         pending = null; hidePending(); closeSpawnModal();
         GRID_SIZE = d.gridSize || d.board.length;
         gridSizeSelect.value = String(GRID_SIZE);
@@ -2038,7 +2044,7 @@ body.studio-editing .editor-grid-container{padding:5px;border-radius:9px}
         const g = {
             n,grid,room,edges:clone(room.edges||[]).map(e=>({...e,open:false})),platforms:clone(room.platforms||[]).map(p=>({...p,index:0,direction:1,next:p.wait||1200,riders:[]})),visitedZones:new Set(),
             player: { x: 0, y: 0, rx: 0, ry: 0, facing: 'D' },
-            colorGateState:'blue',bossKeys:new Map(),bossDoorsOpen:new Set(),gold:0,shopDwell:null,shopSuppressed:null,heatTimers:new Map(),heatPositions:new Map(),torchTimers:new Map(),crossActivated:new Set(),crossOpen:new Set(),crossEntries:new Map(),switchLatched:new Set(),holdWallOrigins:new Map(),hasTorch:false,litTorches:new Set(),builderCovers:new Map(),wallContactQueue:[],zoneDisabled:new Set(),zones:normalizeZoneIds(clone(room.darkZones||[])),trapTimers:new Map(),darkCells:new Set((room.darkZones||[]).flatMap(z=>zoneCells(z,n)).map(c=>c.y*n+c.x)),pendingClosing:new Set(),pendingLoot:[],arenas: [], chains: [], doubleOpen: new Set(), enemies: [], blocks: [], mwalls: [], bombs: [], arrows: [], lasers: [], rdias: [], hbtns: [],
+            colorGateState:'blue',bossKeys:new Map(),bossDoorsOpen:new Set(),gold:0,shopDwell:null,shopSuppressed:null,heatTimers:new Map(),heatPositions:new Map(),torchTimers:new Map(),crossActivated:new Set(),crossUnlocked:new Set(),crossOpen:new Set(),crossEntries:new Map(),switchLatched:new Set(),holdWallOrigins:new Map(),hasTorch:false,litTorches:new Set(),builderCovers:new Map(),wallContactQueue:[],zoneDisabled:new Set(),zones:normalizeZoneIds(clone(room.darkZones||[])),trapTimers:new Map(),darkCells:new Set((room.darkZones||[]).flatMap(z=>zoneCells(z,n)).map(c=>c.y*n+c.x)),pendingClosing:new Set(),pendingLoot:[],arenas: [], chains: [], doubleOpen: new Set(), enemies: [], blocks: [], mwalls: [], bombs: [], arrows: [], lasers: [], rdias: [], hbtns: [],
             beamCells: [], beamSet: new Set(), litIds: new Set(), holdIds: new Set(),
             permOpen: new Set(), pressed: new Set(), mwDone: new Set(), pressedCreators: new Set(), wgroups: {},
             totalCoins: 0, coins: 0, keys: 0, shields: 0, ammo: 0, bombCount: 0,
@@ -2497,6 +2503,7 @@ function releaseEnemyReward(e,x=e.x,y=e.y){if(!e.deathReward)return;const reward
         lastTs = performance.now();
     }
     function beginGame() {
+        S.roomStates=new Map();S.roomReturns=new Map();
         initAudio();
         document.body.style.overflow = 'hidden';
         gameScreen.classList.remove('hidden');
@@ -2553,6 +2560,42 @@ function releaseEnemyReward(e,x=e.x,y=e.y){if(!e.deathReward)return;const reward
             choices.push(['🔄 Reiniciar cuarto',confirmAction('reiniciar el cuarto',restartRoom)],['🏠 Menú principal',confirmAction('salir al menú principal',()=>exitGame('main'))]);
             showOverlay('💀 Has perdido',choices,'death');},1500);
     }
+    function requestRoomTravel(delta){
+        if(S.mode!=='route'||S.rooms?.length<2){toast('Estos pasos necesitan una ruta con al menos dos cuartos.',1800);return;}
+        const target=S.index+delta;
+        if(target<0||target>=S.rooms.length){toast(delta>0?'Este es el último cuarto de la ruta.':'Este es el primer cuarto de la ruta.',1600);return;}
+        if(delta<0&&!S.roomReturns?.has(S.index)){toast('Llegaste sin retorno. Usa un paso al siguiente cuarto para poder regresar.',1900);return;}
+        if(G.doorTransit||G.hookAction)return;
+        G.routeTravel=delta;
+    }
+    function travelInventory(g){
+        const inventory={};for(const key of ['keys','gold','shields','hearts','maxHearts','antidotes','hasSword','hasBow','hasTorch','hasHook','hookLength','ammo','bombCount','weapon','hero'])if(g[key]!==undefined)inventory[key]=g[key];
+        inventory.poison=g.poison?{...g.poison,next:Math.max(0,g.poison.next-g.time)}:null;return inventory;
+    }
+    function performRoomTravel(){
+        const inventory=travelInventory(G);
+        const delta=G.routeTravel;delete G.routeTravel;
+        const oldIndex=S.index,target=oldIndex+delta;
+        S.roomStates??=new Map();S.roomReturns??=new Map();
+        const arrival=delta<0?S.roomReturns.get(oldIndex):null;
+        const keep=delta>0?part(G.grid[G.player.y][G.player.x],1)!=='reset':arrival.keep!==false;
+        if(delta>0)S.roomReturns.set(target,{x:G.player.x,y:G.player.y,keep});
+        endAction();releasePad();padReady=false;heldKeys=[];turnOnlyKeys.clear();touchDir=null;centerTouch=null;gestureInput=null;mouseCenter=null;
+        G.player.rx=G.player.x;G.player.ry=G.player.y;
+        if(keep)S.roomStates.set(oldIndex,{game:structuredClone(G),checkpoint:checkpointState?structuredClone(checkpointState):null});else S.roomStates.delete(oldIndex);
+        clearCinematic();clearTimeout(S.timer);S.index=target;S.currentRoom=S.rooms[target];
+        if(!keep)S.roomStates.delete(target);
+        const saved=S.roomStates.get(target);
+        if(saved){G=structuredClone(saved.game);checkpointState=saved.checkpoint?structuredClone(saved.checkpoint):null;}
+        else setupRoom(S.currentRoom);
+        Object.assign(G,inventory);if(G.poison)G.poison.next+=G.time;
+        let position=arrival;
+        if(!position){for(let y=0;y<G.n;y++)for(let x=0;x<G.n;x++)if(base(S.currentRoom.board[y][x])==='start')position={x,y};}
+        if(position){Object.assign(G.player,{x:position.x,y:position.y,rx:position.x,ry:position.y});G.routeArrivalLock=position.x+','+position.y;}
+        G.over=false;G.paused=false;G.hudText='';G.nextPlayer=G.time+200;G.invuln=Math.max(G.invuln,G.time+800);G.lastMotion=G.time;
+        S.overlayKind=null;overlay.classList.add('hidden');hideBanner();lastTs=performance.now();visitDarkZones();playSound('door');toast(`Cuarto ${target+1}/${S.rooms.length}`,1200);
+    }
+
     function win() {
         const g = G;
         if (!g || g.over) return;
@@ -2563,6 +2606,12 @@ function releaseEnemyReward(e,x=e.x,y=e.y){if(!e.deathReward)return;const reward
                 toast('🎉 ¡Cuarto completado!', 0);
                 S.timer = setTimeout(() => {
                     if (!G) return;
+                    // A return object in the destination explicitly enables a two-way connection.
+                    S.roomReturns??=new Map();S.roomStates??=new Map();
+                    const canReturn=S.rooms[S.index+1].board.some(row=>row.some(t=>base(t)==='roomBack'));
+                    if(canReturn){G.routeTravel=1;performRoomTravel();return;}
+                    S.roomReturns.delete(S.index+1);
+                    S.roomStates.delete(S.index+1);
                     S.index++;
                     S.currentRoom = S.rooms[S.index];
                     releasePad();padReady=false;
@@ -2660,7 +2709,7 @@ function releaseEnemyReward(e,x=e.x,y=e.y){if(!e.deathReward)return;const reward
     }
 
     function spawnObject(tile, x, y) {
-        if(base(tile)==='openCross'){G.crossOpen.add(tileId(tile));for(const e of G.edges||[])if(e.cross?.id===tileId(tile))showCinematic(e.x,e.y,'art:thinDoor','remove');for(let yy=0;yy<G.n;yy++)for(let xx=0;xx<G.n;xx++)if(base(G.grid[yy][xx])==='crossgate'&&parseCross(G.grid[yy][xx]).id===tileId(tile))showCinematic(xx,yy,'art:crossgate','remove');computeBeams();return;}
+        if(base(tile)==='openCross'){unlockCrossDoor(tileId(tile));G.crossOpen.add(tileId(tile));for(const e of G.edges||[])if(e.cross?.id===tileId(tile))showCinematic(e.x,e.y,'art:thinDoor','remove');for(let yy=0;yy<G.n;yy++)for(let xx=0;xx<G.n;xx++)if(base(G.grid[yy][xx])==='crossgate'&&parseCross(G.grid[yy][xx]).id===tileId(tile))showCinematic(xx,yy,'art:crossgate','remove');computeBeams();return;}
         if(G&&!cinemaApplying&&!deathEnemy(tile)&&!['bundle','reveal','preparedFloor','redGate','blueGate'].includes(base(tile))){const removed=base(tile)==='floor'&&base(G.grid[y][x])!=='floor';showCinematic(x,y,'art:'+(removed?base(G.grid[y][x]):base(tile)),removed?'remove':'appear');}
         if(base(tile)==='preparedFloor')return;
         if(base(tile)==='reveal'){const c=JSON.parse(decodeURIComponent(part(tile,1)));spawnObject(c.tile,c.x,c.y);return;}
@@ -2882,7 +2931,7 @@ function releaseEnemyReward(e,x=e.x,y=e.y){if(!e.deathReward)return;const reward
         else if (b === 'btn') press(tileId(t));
         else if (b === 'mwbtn') activateUnifiedSwitch(tileId(t),'tap',x,y);
         else if (b === 'switch')activateUnifiedSwitch(tileId(t),part(t,2)||'tap',x,y);
-        else if(b==='crossbtn'){if(part(t,3)==='boss'){G.bossDoorsOpen.add(tileId(t));playSound('press');playSound('door');}else if(part(t,2)!=='hold')G.crossOpen.add(tileId(t));computeBeams();}
+        else if(b==='crossbtn'){if(part(t,3)==='boss'){G.bossDoorsOpen.add(tileId(t));playSound('press');playSound('door');}else if(part(t,2)!=='hold'){unlockCrossDoor(tileId(t));G.crossOpen.add(tileId(t));}computeBeams();}
         else if (b === 'cbtn') activateCreator(tileId(t));
     }
 
@@ -3060,6 +3109,8 @@ function releaseEnemyReward(e,x=e.x,y=e.y){if(!e.deathReward)return;const reward
         if(!g.hookAction&&!standingOnBox(g)&&base(g.grid[p.y][p.x])==='hole'&&!platformAt(p.x,p.y)){fallPlayer();return;}
         if(!g.hookAction&&base(g.grid[p.y][p.x])==='stairs'){activateStairs();return;}
         const tile = g.grid[p.y][p.x], t = base(tile);
+        if(g.routeArrivalLock!==p.x+','+p.y)g.routeArrivalLock=null;
+        if((t==='roomNext'||t==='roomBack')&&!g.routeArrivalLock){requestRoomTravel(t==='roomNext'?1:-1);return;}
         if(t==='hook'){g.hasHook=true;g.hookLength=clamp(tileId(tile),1,20);pickup('🪝',`🪝 Gancho: ${g.hookLength} cuadros. Usa H o el botón del gancho.`);}
         else if (t === 'coin') {
             g.grid[p.y][p.x] = 'floor';
@@ -3088,7 +3139,7 @@ function releaseEnemyReward(e,x=e.x,y=e.y){if(!e.deathReward)return;const reward
         const e = enemyAt(p.x, p.y);
         if (e&&e.phase!=='down') { hurtPlayer('💀 ¡Atrapado por un enemigo!', e); if (g.over) return; }
         if(t==='checkpoint'&&!g.over)captureCheckpoint();
-        if (t === 'exit' && g.exitActive) win();
+        if (t === 'exit' && g.exitActive&&!g.routeArrivalLock) win();
     }
 
     /* --- Jefe ojo y movimiento errante --- */
@@ -3281,6 +3332,7 @@ function releaseEnemyReward(e,x=e.x,y=e.y){if(!e.deathReward)return;const reward
         lastTs = ts;
         if(cinemaCurrent)advanceCinema(dt);
         if (!G.paused && !G.over && !cinemaCurrent) update(dt);
+        if(G?.routeTravel&&!G.over&&!cinemaCurrent&&!G.paused)performRoomTravel();
         if (G && S.overlayKind!=='pause') { if(!cinemaCurrent&&!G.over)lerpAll(dt); draw(); updateHud(); }
         rafId = requestAnimationFrame(frame);
     }
@@ -3982,10 +4034,10 @@ function abortWizard(){const p=wizard.parent;wizard=null;pending=p;cancelPending
 function futureReservationsCore(){const out=[];const visit=(t,pos)=>{if(base(t)==='crossgate'){const c=parseCross(t);if(c.enemy)visit(c.enemy,{x:c.bx,y:c.by});}if(deathPayload(t))visit(deathPayload(t),pos);if(base(t)==='reveal'){const c=JSON.parse(decodeURIComponent(part(t,1)));visit(base(c.tile)==='bundle'?c.tile:packBundle({tile:c.tile}),c);return;}if(base(t)==='arena'){const a=JSON.parse(decodeURIComponent(part(t,1)));visit(a.reward,{x:a.rx,y:a.ry});return;}if(base(t)!=='bundle')return;const c=unpackBundle(t);out.push({...pos,tile:c.tile});if(deathPayload(c.tile))visit(deathPayload(c.tile),pos);if(base(c.tile)==='arena')visit(c.tile,pos);for(const e of c.extras||[])visit(packBundle({tile:e.tile}),e);for(const cr of Object.values(c.creators||{}))visit(cr.obj,{x:cr.rx,y:cr.ry});for(const wg of Object.values(c.wgroups||{}))visit(wg.obj,{x:wg.sx,y:wg.sy});};
  for(let y=0;y<GRID_SIZE;y++)for(let x=0;x<GRID_SIZE;x++){const t=board[y][x],b=base(t);if(b==='crossgate')visit(t,{x,y});if(deathPayload(t))visit(deathPayload(t),{x,y});if(b==='cspawn')visit(creatorGroup[tileId(t)]?.obj,{x,y});if(b==='wspawn')visit(groups[tileId(t)]?.obj,{x,y});if(b==='arena'){try{const c=JSON.parse(decodeURIComponent(part(t,1)));visit(c.reward,{x:c.rx,y:c.ry});}catch(e){}}}return out;}
 function paintFuture(){for(const q of [...futureReservations(),...(wizard?.marks||[])]){const el=editorCellAt(q.x,q.y);if(el){el.classList.add('future');el.title=`Aparición reservada (${q.x+1}, ${q.y+1}) · ${q.tile?base(q.tile):'pieza en configuración'}`;if(q.tile&&base(board[q.y][q.x])==='floor'){el.textContent=ICONS[base(q.tile)]||'✦';}}}}
-function snap(){return JSON.stringify({currentRoomName,floorSize,floorCount,editorFloor,board,groups,creatorGroup,GRID_SIZE,playerSpeed,roomTimeLimit,darkZones,startGear,editorEdges,editorPlatforms});}
+function snap(){return JSON.stringify({editingSavedRoomId,currentDraftId,currentRoomName,floorSize,floorCount,editorFloor,board,groups,creatorGroup,GRID_SIZE,playerSpeed,roomTimeLimit,darkZones,startGear,editorEdges,editorPlatforms});}
 function recordHistory(){if(restoring||pending||wizard||editTransaction)return;const v=snap();if(history[historyIndex]===v)return;history=history.slice(0,historyIndex+1);history.push(v);if(history.length>80)history.shift();historyIndex=history.length-1;try{localStorage.setItem('entropiaStudioAutosave',v);}catch(e){setStatus('No hay espacio para autoguardar. Exporta un respaldo.',3000);}refreshHistory();}
 function refreshHistory(){if($('undoStudio')){$('undoStudio').disabled=historyIndex<=0;$('redoStudio').disabled=historyIndex>=history.length-1;}}
-function restoreSnap(v){const c=JSON.parse(v);currentRoomName=String(c.currentRoomName||'');restoring=true;board=c.board;startGear=normalizeStartGear(c.startGear);darkZones=clone(c.darkZones||[]);editorEdges=clone(c.editorEdges||[]);editorPlatforms=clone(c.editorPlatforms||[]);groups=c.groups||{};creatorGroup=c.creatorGroup||{};GRID_SIZE=c.GRID_SIZE;floorSize=c.floorSize||GRID_SIZE;floorCount=c.floorCount||1;editorFloor=clamp(c.editorFloor||0,0,floorCount-1);playerSpeed=c.playerSpeed||5;roomTimeLimit=Number(c.roomTimeLimit)||0;syncRoomTimer();gridSizeSelect.value=GRID_SIZE;playerSpeedInput.value=playerSpeed;playerSpeedVal.textContent=playerSpeed;afterEdit();restoring=false;refreshHistory();}
+function restoreSnap(v){const c=JSON.parse(v);editingSavedRoomId=c.editingSavedRoomId||null;currentDraftId=c.currentDraftId||null;currentRoomName=String(c.currentRoomName||'');restoring=true;board=c.board;startGear=normalizeStartGear(c.startGear);darkZones=clone(c.darkZones||[]);editorEdges=clone(c.editorEdges||[]);editorPlatforms=clone(c.editorPlatforms||[]);groups=c.groups||{};creatorGroup=c.creatorGroup||{};GRID_SIZE=c.GRID_SIZE;floorSize=c.floorSize||GRID_SIZE;floorCount=c.floorCount||1;editorFloor=clamp(c.editorFloor||0,0,floorCount-1);playerSpeed=c.playerSpeed||5;roomTimeLimit=Number(c.roomTimeLimit)||0;syncRoomTimer();gridSizeSelect.value=GRID_SIZE;playerSpeedInput.value=playerSpeed;playerSpeedVal.textContent=playerSpeed;afterEdit();restoring=false;refreshHistory();}
 function undoStudio(d){if(wizard||pending)cancelPending();const i=historyIndex+d;if(i<0||i>=history.length)return;historyIndex=i;restoreSnap(history[i]);}
 function setupStudio(){
  const workspace=document.createElement('div');workspace.className='studio-workspace';const side=document.createElement('aside');side.className='studio-sidebar';side.innerHTML='<h3>◈ Catálogo de objetos</h3><input id="toolSearch" type="search" placeholder="Buscar objeto…" aria-label="Buscar objeto"><div class="studio-help">Elige un objeto y toca el tablero. Los mecanismos te guían paso a paso.</div>';
@@ -4200,6 +4252,7 @@ function editorObjectAt(x,y,preferFuture=false){if(!preferFuture){const r=geomet
 function toolForTile(tile){const b=base(tile);if(b==='mwall')return'bdoor';if(b==='cracked')return'hole';if(b==='wd')return'wdiamond';if(b==='mirror')return'mirror'+(part(tile,1)||'NE');return b;}
 function valuesForObject(ref){
  const t=ref.read(),b=base(t),a=String(t).split(':'),values={...brush,channel:tileId(t)};
+ if(b==='roomNext')values.routeKeep=part(t,1)==='reset'?'reset':'keep';
  if(ref.zone)return{...values,...ref.zone,darknessLevel:ref.zone.darknessLevel||'dim',hasSwitch:!!ref.zone.hasSwitch};
 
   if(b==='blinkboss'){const c=readBlink(t);return{...values,...c,sites:c.points?.length||3,goldDrop:c.gold||0};}
@@ -4415,7 +4468,7 @@ function deleteEditorObject(ref){if(!ref)return;if(ref.zone)darkZones=darkZones.
 
 function newLocalId(prefix){return prefix+'-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,9);}
 function roomsWithIds(){const rooms=loadRooms();let changed=false;const used=new Set();for(const room of rooms){if(!room.id||used.has(room.id)){room.id=newLocalId('room');changed=true;}used.add(room.id);}if(changed)saveRooms(rooms);return rooms;}
-function openSavedRoom(id){const room=roomsWithIds().find(r=>r.id===id);if(!room)return;openDraft({...clone(room),id:null});editingSavedRoomId=id;currentDraftId=null;setStatus('Editando un cuarto guardado. Terminar y guardar actualizará este mismo cuarto.',3500);}
+function openSavedRoom(id){const room=roomsWithIds().find(r=>r.id===id);if(!room)return;openDraft({...clone(room),id:null,savedRoomId:id});editingSavedRoomId=id;currentDraftId=null;setStatus('Editando un cuarto guardado. Terminar y guardar actualizará este mismo cuarto.',3500);}
 function downloadJson(data,name){const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);}
 function exportRoom(room){downloadJson({format:'entropia-room',version:1,room:clone(room)},'Entropia-cuarto.json');}
 async function exportCurrentRoute(){const rooms=loadRooms();if(!rooms.length){(await padDialog('Guarda al menos un cuarto para exportar la ruta.','alert'));return;}const name=(await padDialog('Nombre de la ruta','prompt','Mi ruta'));if(name===null)return;downloadJson({format:'entropia-route',version:1,name:name.trim()||'Mi ruta',rooms:clone(rooms)},'Entropia-ruta.json');}
@@ -4442,7 +4495,7 @@ function normalizeRoute(data){let source=data.rooms;if(data.format==='entropia-s
 async function importSharedFile(file){if(!file)return;if(file.size>5*1024*1024)throw Error('El archivo debe pesar menos de 5 MB.');const data=JSON.parse(await file.text());if(data.format==='entropia-room'){const room=validatedRoom(data.room,false),playable=room.board.flat().includes('start')&&room.board.flat().includes('exit');if(playable)saveRooms([...roomsWithIds(),room]);else saveDrafts([...loadDrafts(),room]);loadRoomList();return{room};}const route=normalizeRoute(data);writeRoutes([...readRoutes(),route]);return{route};}
 function playRouteRooms(rooms,index=0,name='Ruta'){if(!rooms?.length)return;for(const id of ['routesModal','learningModal','objectGuideModal','iconCatalogModal'])$(id)?.classList.add('hidden');closeMobileEditorMenu();S={mode:'route',rooms:clone(rooms),index,currentRoom:clone(rooms[index]),routeName:name,timer:null,toastT:null,overlayKind:null};beginGame();}
 function showRoutes(){const box=$('routesList');box.innerHTML='';const routes=readRoutes();if(!routes.length){const p=document.createElement('p');p.textContent='Importa una ruta para jugarla aquí. Tus cuartos del historial se conservan por separado.';box.appendChild(p);}routes.forEach(route=>{const row=document.createElement('div');row.className='route-card';const title=document.createElement('strong');title.textContent=route.name;const subtitle=document.createElement('small');subtitle.textContent=`${route.rooms.length} cuartos · orden de juego incluido`;const controls=document.createElement('div');controls.className='btn-group';const play=makeActionButton('▶ Jugar','Jugar ruta',()=>playRouteRooms(route.rooms,0,route.name));const exp=makeActionButton('↓ Exportar','Exportar ruta',()=>downloadJson({format:'entropia-route',version:1,name:route.name,rooms:route.rooms},'Entropia-ruta.json'));const copy=makeActionButton('✎ Copiar cuartos al historial','Copiar para editar',()=>{const copied=route.rooms.map(r=>({...clone(r),id:newLocalId('room')}));saveRooms([...roomsWithIds(),...copied]);loadRoomList();$('routesModal').classList.add('hidden');showScreen('list');});const del=makeActionButton('🗑','Borrar ruta',async ()=>{if((await padDialog('¿Quitar esta ruta importada?','confirm'))){writeRoutes(readRoutes().filter(r=>r.id!==route.id));showRoutes();}});controls.append(play,exp,copy,del);row.append(title,subtitle,controls);box.appendChild(row);});$('routesModal').classList.remove('hidden');}
-const GUIDE_DETAILS={floor:'Piso transitable. Sirve para abrir caminos y reemplazar elementos.',wall:'Pared fija: bloquea al personaje, enemigos y proyectiles.',coin:'Persona que debes rescatar. La salida aparece después de rescatar a todas, incluidas las que liberan enemigos o mecanismos.',cash:'Dinero para comprar en tiendas. Cada pila contiene de 1 a 100 monedas; con más de 10 se muestra una bolsa. No bloquea la salida.',shop:'Quédate 0.8 segundos a un lado para comprar con tus monedas. Su creador elige artículos, precios y cantidades.',start:'Posición inicial del personaje. Al colocarlo eliges su velocidad.',exit:'Salida del cuarto. Permanece oculta hasta rescatar a todas las personas.',erase:'Borra una casilla. Sobre piso oscuro puede eliminar la zona de oscuridad.',switch:'Botón unificado por canal 1–10. Controla paredes normales y movibles. Una pisada lo activa una vez; mantenerlo presionado abre mientras haya una caja o el personaje encima. La pared movible vuelve al soltar si su origen está libre.',crossgate:'Empieza abierta. Debes atravesarla de lado a lado, sin volver por donde entraste; entonces se cierra y aparece su botón. Puede abrirse con una pisada o mientras sostienes el botón.',bdoor:'Pared oculta conectada a un canal. Se ve como una pared normal y desaparece cuando su botón abre el canal.',mwall:'Pared que se desplaza una casilla en la dirección elegida al activar su canal. No atraviesa objetos ni al personaje.',doubleDoor:'Puerta con dos botones: verde abre y rojo cierra. El cierre espera si alguien ocupa el paso.',hbtn:'Botón sostenido de cuartos anteriores: abre su canal mientras alguien lo ocupa.',btn:'Botón de pared de cuartos anteriores.',mwbtn:'Botón de pared movible de cuartos anteriores.',key:'Llave para abrir una puerta con llave; se consume al abrirla.',keydoor:'Puerta que necesita una llave.',stone:'Obstáculo de piedra que puedes destruir con una explosión.',hole:'Hoyo peligroso. Empuja una caja de madera para convertirlo en un camino que una bomba puede volver a destruir.',block:'Caja empujable. Sirve para sostener botones, bloquear rayos y rellenar hoyos.',torch:'Antorcha portátil. Al recogerla iluminas la oscuridad, puedes encender velas y calentar hielo.',ftorch:'Quédate quieto junto a ella durante 0.85 segundos llevando la antorcha portátil. Al encender el grupo completo aparece su recompensa.',ice:'Bloquea el paso. Mantén calor cercano de una antorcha durante 1.4 segundos para derretirlo; al alejar el calor se reinicia.',darkzone:'Capa de oscuridad con forma y medidas configurables. Las antorchas iluminan sus alrededores.',portal:'Dos extremos enlazados. Permiten transportar al personaje y, según la situación, cajas y proyectiles.',wdiamond:'Activa todos los diamantes blancos del grupo con espada, flecha o bomba para liberar la aparición que elegiste.',ddoor:'Puerta que se abre al activar su diamante azul con espada, flecha o bomba.',rdoor:'Puerta que se abre cuando un rayo ilumina su diamante rojo.',cbtn:'Botón regalo. Al pisarlo crea el objeto configurado, con sus conexiones; puedes encadenar regalos.',arena:'Creador de enemigos: emite integrantes uno a uno. Desaparece cuando sale el último; su recompensa espera a que todos sean derrotados.',sword:'Activa la espada para atacar cerca. Toca el centro hacia tu última dirección o desliza para elegir otra.',bow:'Permite disparar flechas en una dirección. Necesitas munición.',ammo:'Bolsa con la cantidad configurada de flechas.',bomb:'Bombas con retardo. La explosión afecta casillas cercanas: aléjate antes de que detone.',shield:'Absorbe un golpe y concede un breve momento de protección.',spikes:'Trampa que alterna entre reposo, aviso y activación.',laser:'Emisor de un rayo continuo en la dirección configurada. Los obstáculos lo detienen y los espejos lo desvían.',enemy:'Detecta y persigue al personaje; tiene vida, velocidad y visión configurables. Puede liberar llave y persona.',enemy2:'Enemigo territorial: persigue dentro de una zona limitada.',boss:'Jefe Ojo: invoca pequeños ojos. Al derrotarlos queda vulnerable unos segundos.',snake:'Serpiente de largo configurable. Su cola es el punto vulnerable.',worm:'Gusano que va creciendo. La cola creadora es vulnerable y cortar su cuerpo desconecta segmentos.',mirrorNE:'Espejo empujable orientado al noreste. Desvía rayos.',mirrorNW:'Espejo empujable orientado al noroeste. Desvía rayos.',mirrorSE:'Espejo empujable orientado al sureste. Desvía rayos.',mirrorSW:'Espejo empujable orientado al suroeste. Desvía rayos.',arrowU:'Casilla de sentido único hacia arriba.',arrowD:'Casilla de sentido único hacia abajo.',arrowL:'Casilla de sentido único hacia la izquierda.',arrowR:'Casilla de sentido único hacia la derecha.'};
+const GUIDE_DETAILS={roomNext:'En una ruta de dos o más cuartos, lleva al inicio del siguiente y permite regresar. Puedes elegir conservar los cambios o reiniciar los cuartos al cambiar. No requiere rescatar a todas las personas. En el último cuarto no avanza.',roomBack:'Regresa al paso de avance usado en el cuarto anterior y aplica la opción de conservar o reiniciar del paso utilizado. Al colocarlo también permite regresar si llegaste por una salida normal; en ese caso conserva los cambios.',floor:'Piso transitable. Sirve para abrir caminos y reemplazar elementos.',wall:'Pared fija: bloquea al personaje, enemigos y proyectiles.',coin:'Persona que debes rescatar. La salida aparece después de rescatar a todas, incluidas las que liberan enemigos o mecanismos.',cash:'Dinero para comprar en tiendas. Cada pila contiene de 1 a 100 monedas; con más de 10 se muestra una bolsa. No bloquea la salida.',shop:'Quédate 0.8 segundos a un lado para comprar con tus monedas. Su creador elige artículos, precios y cantidades.',start:'Posición inicial del personaje. Al colocarlo eliges su velocidad.',exit:'Salida del cuarto. Permanece oculta hasta rescatar a todas las personas.',erase:'Borra una casilla. Sobre piso oscuro puede eliminar la zona de oscuridad.',switch:'Botón unificado por canal 1–10. Controla paredes normales y movibles. Una pisada lo activa una vez; mantenerlo presionado abre mientras haya una caja o el personaje encima. La pared movible vuelve al soltar si su origen está libre.',crossgate:'Empieza abierta. Debes atravesarla de lado a lado, sin volver por donde entraste; entonces se cierra y aparece su botón. Puede abrirse con una pisada o mientras sostienes el botón.',bdoor:'Pared oculta conectada a un canal. Se ve como una pared normal y desaparece cuando su botón abre el canal.',mwall:'Pared que se desplaza una casilla en la dirección elegida al activar su canal. No atraviesa objetos ni al personaje.',doubleDoor:'Puerta con dos botones: verde abre y rojo cierra. El cierre espera si alguien ocupa el paso.',hbtn:'Botón sostenido de cuartos anteriores: abre su canal mientras alguien lo ocupa.',btn:'Botón de pared de cuartos anteriores.',mwbtn:'Botón de pared movible de cuartos anteriores.',key:'Llave para abrir una puerta con llave; se consume al abrirla.',keydoor:'Puerta que necesita una llave.',stone:'Obstáculo de piedra que puedes destruir con una explosión.',hole:'Hoyo peligroso. Empuja una caja de madera para convertirlo en un camino que una bomba puede volver a destruir.',block:'Caja empujable. Sirve para sostener botones, bloquear rayos y rellenar hoyos.',torch:'Antorcha portátil. Al recogerla iluminas la oscuridad, puedes encender velas y calentar hielo.',ftorch:'Quédate quieto junto a ella durante 0.85 segundos llevando la antorcha portátil. Al encender el grupo completo aparece su recompensa.',ice:'Bloquea el paso. Mantén calor cercano de una antorcha durante 1.4 segundos para derretirlo; al alejar el calor se reinicia.',darkzone:'Capa de oscuridad con forma y medidas configurables. Las antorchas iluminan sus alrededores.',portal:'Dos extremos enlazados. Permiten transportar al personaje y, según la situación, cajas y proyectiles.',wdiamond:'Activa todos los diamantes blancos del grupo con espada, flecha o bomba para liberar la aparición que elegiste.',ddoor:'Puerta que se abre al activar su diamante azul con espada, flecha o bomba.',rdoor:'Puerta que se abre cuando un rayo ilumina su diamante rojo.',cbtn:'Botón regalo. Al pisarlo crea el objeto configurado, con sus conexiones; puedes encadenar regalos.',arena:'Creador de enemigos: emite integrantes uno a uno. Desaparece cuando sale el último; su recompensa espera a que todos sean derrotados.',sword:'Activa la espada para atacar cerca. Toca el centro hacia tu última dirección o desliza para elegir otra.',bow:'Permite disparar flechas en una dirección. Necesitas munición.',ammo:'Bolsa con la cantidad configurada de flechas.',bomb:'Bombas con retardo. La explosión afecta casillas cercanas: aléjate antes de que detone.',shield:'Absorbe un golpe y concede un breve momento de protección.',spikes:'Trampa que alterna entre reposo, aviso y activación.',laser:'Emisor de un rayo continuo en la dirección configurada. Los obstáculos lo detienen y los espejos lo desvían.',enemy:'Detecta y persigue al personaje; tiene vida, velocidad y visión configurables. Puede liberar llave y persona.',enemy2:'Enemigo territorial: persigue dentro de una zona limitada.',boss:'Jefe Ojo: invoca pequeños ojos. Al derrotarlos queda vulnerable unos segundos.',snake:'Serpiente de largo configurable. Su cola es el punto vulnerable.',worm:'Gusano que va creciendo. La cola creadora es vulnerable y cortar su cuerpo desconecta segmentos.',mirrorNE:'Espejo empujable orientado al noreste. Desvía rayos.',mirrorNW:'Espejo empujable orientado al noroeste. Desvía rayos.',mirrorSE:'Espejo empujable orientado al sureste. Desvía rayos.',mirrorSW:'Espejo empujable orientado al suroeste. Desvía rayos.',arrowU:'Casilla de sentido único hacia arriba.',arrowD:'Casilla de sentido único hacia abajo.',arrowL:'Casilla de sentido único hacia la izquierda.',arrowR:'Casilla de sentido único hacia la derecha.'};
 function toolIcon(tool){return({wdiamond:'◇',erase:'🗑️',floor:'▫️',mirrorNE:'↗️',mirrorNW:'↖️',mirrorSE:'↘️',mirrorSW:'↙️'})[tool]||ICONS[tool]||'✦';}
 function guideText(tool){return GUIDE_DETAILS[tool]||TOOL_NOTES[tool]||'Selecciona este objeto para ver y configurar sus valores en el editor.';}
 function showObjectGuide(){closeMobileEditorMenu();const render=()=>{const query=$('guideSearch').value.toLocaleLowerCase(),box=$('objectGuideList');box.innerHTML='';for(const tool of Object.keys(TOOL_LABELS)){if(!(`${TOOL_LABELS[tool]} ${guideText(tool)}`.toLocaleLowerCase().includes(query)))continue;const card=document.createElement('article');card.className='guide-card';const icon=document.createElement('span');icon.appendChild(originalImage(tool));const text=document.createElement('div'),title=document.createElement('strong'),p=document.createElement('p');title.textContent=TOOL_LABELS[tool];p.textContent=guideText(tool);text.append(title,p);card.append(icon,text);box.appendChild(card);}};$('guideSearch').oninput=render;render();$('objectGuideModal').classList.remove('hidden');}
@@ -5125,6 +5178,8 @@ setupModeThree();
     originalArt.torchwall=originalArt.wall+`<g transform="translate(15 5) scale(.55)">${originalArt.ftorch}</g>`;
     originalArt.hook=L('M31 7L31 29Q7 22 12 44Q16 60 34 55Q50 50 45 34','#b8d8df',8)+P('M45 25L54 40 41 39Z','#e5e5cd')+C(31,10,6,'#d1ad68');
     originalArt.anchor=C(32,12,7,'#c8dbe0')+L('M32 20L32 52M19 29L45 29M9 39Q12 52 32 54Q53 51 55 39','#8ab8bf',6)+P('M5 41L10 30 19 40M45 40L54 30 59 41','#c8dbe0');
+    originalArt.roomNext=R(9,6,46,53,'#345c64')+R(15,12,34,41,'#182d39')+P('M22 24H34V18L47 32 34 46V39H22Z','#7ce6b5')+R(7,56,50,5,'#c9b98c');
+    originalArt.roomBack=R(9,6,46,53,'#655071')+R(15,12,34,41,'#2e223c')+P('M42 24H30V18L17 32 30 46V39H42Z','#e5b2f5')+R(7,56,50,5,'#c9b98c');
     originalArt.checkpoint=R(10,8,44,49,'#6e9a91')+R(17,14,30,23,'#bce4c7')+P('M32 17L38 25 32 33 26 25Z','#518478')+R(19,44,26,13,'#e4d9b3');
     originalArt.stairs=P('M5 55L5 44 18 44 18 32 31 32 31 20 44 20 44 8 59 8 59 55Z','#a5b3af')+L('M9 49L21 49 21 38 34 38 34 26 47 26 47 14','#e6e2cb',3);
     originalArt.exit=L('M17 59L17 5','#d9c7a0',5)+P('M19 7Q32 0 44 10L58 7 52 32Q40 38 30 29L19 31Z','#e16e72')+P('M28 14L40 18 37 26 26 22Z','#f6c88a');
@@ -5330,7 +5385,7 @@ setupModeThree();
     Object.assign(emojiArt,{'⏸️':'pause','🎛':'controls','🔄':'restart','🏠':'home','✏️':'edit','✋':'action','🎯':'object','🧑':'warrior','🔥':'flame','🧱':'wall','🚪':'bossdoor','🚩':'exit','☠️':'skeletonDown','💰':'cash','◇':'wd','🔷':'gemwall','🏮':'torchdecor','🪔':'torchwall','🗡️':'sword'});
     function drawOriginalTile(x,y){
         const t=G.grid[y][x],b=base(t),ts=cv.ts;
-        const supported=['poisonGas','gasGenerator','healHeart','antidote','sanctuary','web','wall','bdoor','keydoor','bossdoor','doubleDoor','ddoor','rdoor','redGate','blueGate','crossgate','remwall','coin','key','sword','bow','ammo','bomb','heart','shield','cash','bosskey','torch','ftorch','torchdecor','ice','icebox','stone','shop','boxCreator','switch','crossbtn','btn','mwbtn','hbtn','openBtn','closeBtn','diamond','rdiamond','colorGem','wd','cracked','stairs','hook','anchor','checkpoint','bramble','lightswitch','portal','portal2','boxPath','arrowU','arrowD','arrowL','arrowR'];
+        const supported=['roomNext','roomBack','poisonGas','gasGenerator','healHeart','antidote','sanctuary','web','wall','bdoor','keydoor','bossdoor','doubleDoor','ddoor','rdoor','redGate','blueGate','crossgate','remwall','coin','key','sword','bow','ammo','bomb','heart','shield','cash','bosskey','torch','ftorch','torchdecor','ice','icebox','stone','shop','boxCreator','switch','crossbtn','btn','mwbtn','hbtn','openBtn','closeBtn','diamond','rdiamond','colorGem','wd','cracked','stairs','hook','anchor','checkpoint','bramble','lightswitch','portal','portal2','boxPath','arrowU','arrowD','arrowL','arrowR'];
         if(!supported.includes(b))return false;
         ctx.fillStyle=colors.floor;ctx.fillRect(x*ts,y*ts,ts,ts);if(G.boxBridges?.has(y*G.n+x))drawOriginal('boxPath',(x+.5)*ts,(y+.5)*ts,ts);
         if(b==='poisonGas')return true;if(b==='crossgate'){drawCrossDoor(x,y);return true;}if(['redGate','blueGate'].includes(b)){drawColorMechanism(x,y,t);return true;}if(['bdoor','bossdoor','doubleDoor','rdoor','crossgate'].includes(b)&&bt(x,y)==='floor')return true;
@@ -5376,11 +5431,13 @@ setupModeThree();
     function makeVitals(g){const box=document.createElement('span');box.className='vitals';box.setAttribute('aria-label',`${g.hearts} de ${g.maxHearts} corazones, ${g.shields} escudos`);for(let i=0;i<g.maxHearts;i++){const heart=originalImage(i<g.hearts?'healHeart':'emptyHeart');heart.title=i<g.hearts?'Corazón lleno':'Contenedor vacío';box.append(heart);}const shields=document.createElement('span');shields.className='vital-shields';for(let i=0;i<g.shields;i++)shields.append(originalImage('shield'));box.append(shields);return box;}
     function useAntidote(fromPause=false){const g=G;if(!g||g.over||g.doorTransit||g.paused&&!fromPause)return;if(!g.poison){toast('No tienes veneno; conservas tus antídotos.',1000);return;}if(g.antidotes<=0){toast('No tienes antídotos.',1000);return;}g.antidotes--;g.poison=null;g.hudText='';g.handPose={kind:'drink',until:g.time+400};playSound('key');toast('Veneno eliminado.',1200);updateHud();}
     function updateLivingWorld(dt){const g=G,p=g.player;visitDarkZones();updatePlatforms(dt);updatePoisonGas();touchPoisonGas();const resting=base(g.grid[p.y]?.[p.x])==='sanctuary';if(resting){g.poison=null;if(g.time>=(g.nextHealing||0)){g.nextHealing=g.time+900;if(g.hearts<g.maxHearts){g.hearts++;playSound('key');g.effects.push({kind:'pop',x:p.x,y:p.y,t0:g.time,dur:450,ch:'💗'});}}}else g.nextHealing=0;if(g.poison&&g.time>=g.poison.next){g.poison.next=g.time+g.poison.interval;hurtPlayer('El veneno agotó tus corazones.',null,true);}const btn=$('btnAntidote');if(btn){const key=`${g.antidotes}|${!!g.poison}`;if(btn.dataset.state!==key){btn.dataset.state=key;btn.innerHTML='🧪<span class="cnt">'+g.antidotes+'</span>';btn.classList.toggle('off',!g.antidotes||!g.poison);}}}
+    function unlockCrossDoor(id){G.crossUnlocked??=new Set();G.crossUnlocked.add(id);}
     function startDoorTransit(x,y,dir,edge=null){const g=G,p=g.player,t=edge?null:g.grid[y][x],c=edge?edge:parseCross(t),[dx,dy]=DIRS[dir];const origin={x:p.x,y:p.y},end={x:p.x+dx*(edge?1:2),y:p.y+dy*(edge?1:2)};
         if(g.doorTransit)return false;
-        if(!edge&&g.crossActivated.has(c.id)&&!g.crossOpen.has(c.id)){if(c.returnType!=='action'||!c.entrySide||p.x-x!==c.entrySide.x||p.y-y!==c.entrySide.y){toast(c.returnType==='enemy'?'Derrota al enemigo para volver a abrir.':c.returnType==='action'?'Abre desde el lado de entrada.':'Activa el botón para volver a abrir.',1300);return false;}}
-        if(edge&&c.crossed&&!edgeOpen(c)&&(c.cross?.returnType!=='action'||c.entryDir!==dir)){toast('Abre desde el lado de entrada.',1000);return false;}
+        if(!edge&&!g.crossUnlocked?.has(c.id)&&g.crossActivated.has(c.id)&&!g.crossOpen.has(c.id)){if(c.returnType!=='action'||!c.entrySide||p.x-x!==c.entrySide.x||p.y-y!==c.entrySide.y){toast(c.returnType==='enemy'?'Derrota al enemigo para volver a abrir.':c.returnType==='action'?'Abre desde el lado de entrada.':'Activa el botón para volver a abrir.',1300);return false;}}
+        if(edge&&!g.crossUnlocked?.has(c.cross?.id)&&c.crossed&&!edgeOpen(c)&&(c.cross?.returnType!=='action'||c.entryDir!==dir)){toast('Abre desde el lado de entrada.',1000);return false;}
         if(!inb(end.x,end.y)||floorIndex(g,end.y)!==floorIndex(g,p.y)||SOLID.includes(bt(end.x,end.y))||bt(end.x,end.y)==='keydoor'||blockAt(end.x,end.y)||mwallAt(end.x,end.y)||enemyAt(end.x,end.y)||(!edge&&(blockAt(x,y)||mwallAt(x,y)||enemyAt(x,y)||edgeBlocked(p.x,p.y,x,y)||edgeBlocked(x,y,end.x,end.y)))){toast('Deja libre el paso y la casilla de salida.',1100);return false;}
+        const cross=edge?c.cross:c;if(cross&&(edge?c.crossed:g.crossActivated.has(cross.id))&&g.crossOpen.has(cross.id)&&(cross.returnType==='enemy'||cross.returnType==='button'&&cross.mode!=='hold'))unlockCrossDoor(cross.id);
         endAction();heldKeys=[];touchDir=null;p.facing=dir;g.handPose={kind:'open',until:g.time+500};if(edge){c.open=true;c.entryDir??=dir;}else g.crossOpen.add(c.id);g.doorTransit={origin,end,mid:{x,y},dir,edge,id:c.id,start:g.time,duration:edge?320:480};playSound('door');computeBeams();return true;
     }
     function updateDoorTransit(){const g=G,a=g.doorTransit,p=g.player;if(!a)return;const progress=clamp((g.time-a.start-65)/(a.duration-130),0,1),ease=progress*progress*(3-2*progress);p.rx=a.origin.x+(a.end.x-a.origin.x)*ease;p.ry=a.origin.y+(a.end.y-a.origin.y)*ease;
@@ -5388,7 +5445,7 @@ setupModeThree();
         if(a.edge){const e=a.edge;e.open=false;if(e.cross){g.crossOpen.delete(e.cross.id);if(!e.crossed){const c=e.cross;g.crossActivated.add(c.id);if(c.returnType==='enemy')spawnObject(c.enemy,c.bx,c.by);else if(c.returnType!=='action')spawnObject(`crossbtn:${c.id}:${c.mode}`,c.bx,c.by);}}e.crossed=true;}else{trackCrossing(a.origin,a.mid);trackCrossing(a.mid,a.end);g.crossOpen.delete(a.id);}playSound('door');afterPlayerArrive();computeHolds();computeBeams();visitDarkZones();
     }
     function visitDarkZones(){const g=G;if(!g)return;g.visitedZones??=new Set();for(const z of g.zones)if(zoneCells(z,g.n).some(c=>c.x===g.player.x&&c.y===g.player.y))g.visitedZones.add(z.id);}
-    function setupLivingTools(){const tools={poisonGas:'Humo venenoso',gasGenerator:'Generador de humo venenoso',spider:'Araña',healHeart:'Corazón de recuperación',sanctuary:'Zona de recuperación',antidote:'Antídoto',platform:'Plataforma sobre hoyos',thinWall:'Pared delgada entre casillas',thinDoor:'Puerta delgada entre casillas'};for(const [t,name]of Object.entries(tools)){const b=document.createElement('button');b.className='tool-btn';b.dataset.tool=t;b.textContent=(ICONS[t]||'')+' '+name;b.onclick=()=>{if(pending)cancelPending();selectedTool=t;document.querySelectorAll('#toolbar .tool-btn').forEach(el=>el.classList.toggle('active',el===b));renderBrushPanel();};$('toolbar').append(b);TOOL_LABELS[t]=name;}
+    function setupLivingTools(){const tools={roomNext:'Paso al siguiente cuarto',roomBack:'Retorno al cuarto anterior',poisonGas:'Humo venenoso',gasGenerator:'Generador de humo venenoso',spider:'Araña',healHeart:'Corazón de recuperación',sanctuary:'Zona de recuperación',antidote:'Antídoto',platform:'Plataforma sobre hoyos',thinWall:'Pared delgada entre casillas',thinDoor:'Puerta delgada entre casillas'};for(const [t,name]of Object.entries(tools)){const b=document.createElement('button');b.className='tool-btn';b.dataset.tool=t;b.textContent=(ICONS[t]||'')+' '+name;b.onclick=()=>{if(pending)cancelPending();selectedTool=t;document.querySelectorAll('#toolbar .tool-btn').forEach(el=>el.classList.toggle('active',el===b));renderBrushPanel();};$('toolbar').append(b);TOOL_LABELS[t]=name;}
         TOOL_LABELS.heart='Contenedor de corazón';const h=document.querySelector('[data-tool="heart"]');if(h){h.replaceChildren(originalImage('heart'),document.createTextNode(' Contenedor de corazón'));}
         Object.assign(GUIDE_DETAILS,{poisonGas:'Nube verde que envenena al tocarla. Configura cada cuánto hace daño; consume escudos antes que corazones.',gasGenerator:'Expande humo verde en todas las direcciones, una casilla cada 0.6 segundos, hasta el alcance elegido. Las paredes, puertas cerradas y cajas frenan el gas. Sal de la nube antes de usar el antídoto.',heart:'Aumenta en uno tu capacidad de corazones y llena ese nuevo contenedor.',healHeart:'Rellena un corazón vacío. Nunca aumenta tu capacidad.',web:'La telaraña ralentiza mucho tus pasos. Puedes destruirla con espada, bomba o fuego.',spider:'Persigue y ataca. Puede llevar veneno configurable: primero consume escudos, luego corazones, hasta usar antídoto o entrar en recuperación.',antidote:'Se acumula en el inventario. V o su botón elimina el veneno; también se vende en tiendas.',sanctuary:'Mientras permaneces aquí cura el veneno y recupera un corazón cada 0.9 segundos hasta llenar tus contenedores.',crossgate:'Empieza cerrada. Acción abre y te hace cruzar automáticamente dos casillas en menos de medio segundo. Luego se cierra y activa su botón o enemigo, o permite Acción desde la entrada.',platform:'Solo sobre hoyos. Elige 1 casilla o 2×2 y traza 1–20 pasos vecinos. Viaja de ida y vuelta, espera en los extremos y transporta al personaje y cajas.',thinWall:'Ocupa solo el borde elegido de una casilla. Bloquea el cruce de personajes, cajas, enemigos y ataques.',thinDoor:'Puerta en el borde de una casilla: canal, llave, Acción libre o cruce que se cierra detrás de ti.'});Object.assign(TOOL_NOTES,GUIDE_DETAILS);
         window.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='v'&&G&&!/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)){e.preventDefault();useAntidote();}});
